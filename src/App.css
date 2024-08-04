@@ -1,38 +1,158 @@
-.App {
-  text-align: center;
+html, body, .root {
+  margin: 0;
+  top: 0;
+  font-family: "poppins", Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#root {
+  display: flex;
+  justify-content: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1 {
+  font-size: 30px;
+  margin: 0px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+h2 {
+  font-size: 26px;
+  margin: 0px;
+}
+
+h3 {
+  font-size: 22px;  
+  margin: 0px;
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 18px;
+  margin: 0px;
+  font-weight: 400;
+}
+
+h5 {
+  font-size: 16px;
+  margin: 0px;
+  font-weight: 400;
+}
+
+.app {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  width: 390px;
+  height: 844px;
+  border: 1px solid blue;
+  margin: 0px 5;
+}
+
+.app-margin {
+  width: 360px;
+  height: 844px;
+  margin: 0px 15px;
+  border: 1px solid red;
+
+}
+
+.headingPhone {
+  width: 390px;
+  height: 47px;
+  background-color: #f4f4f4;
+}
+
+.headerLista {
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  background-color: #ffeec9;
+}
+
+.headerLista-firstLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLista-firstLine-icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.subHeaderLista-secondLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.icon-large {
+  font-size: 30px;
+}
+
+.icon-xlarge {
+  font-size: 36px;
+}
+
+.headerLista-secondLine {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.headerLista-secondLine-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.headerLista-secondLine-group span {
+  margin-right: 4px;
+}
+
+.votarButton {
+  font-size: medium;
+  border-radius: 5px;
+}
+
+.itemList {
+  margin-top: 25px;
+}
+
+.itemLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+
+.radioButton[type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 21px;
+}
+
+.ItemName {
+  width: 210px;
+  margin-right: 15.5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.categoryList {
+  margin-bottom: 15px;
+}
+
+.titleCategory {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
