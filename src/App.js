@@ -1,14 +1,45 @@
+import { useState, useEffect } from 'react';
 import './App.css';
-import HeadingPhone from './components/HeadingPhone';
 import Header from './Lista/Header';
 import SubHeader from './Lista/SubHeader';
-import FullList from './Lista/FullList';
-import NewList from './Lista/NewList';
+import ItemList from './components/ItemList';
 
 function App() {
+
+  const [items, setItems] = useState([])
+
+  
+  useEffect(() => {
+    const savedItems = localStorage.getItem("items")
+    if (savedItems) {
+      setItems(JSON.parse(savedItems))
+    }
+  }, [])
+  
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items))
+  }, [items])
+  
+  console.log(localStorage.getItem("items"))
+
+  const AddItem = (name, price) => {
+    setItems([...items, {id: items.length + 1, name, price, isChecked: false}])
+  }
+  
+  const handleCheck = (id) => {
+    setItems(items.map(item =>
+      item.id === id ? {...item, isChecked: !item.isChecked} : item,
+    ));
+  };
+
+  const ItemsChecked = () => {
+    return items.filter(item => item.isChecked).length;
+  };
+
+  const ItemListLength = items.length
+
   return (
     <div className="app">
-      <HeadingPhone />
       <div className='app-margin'>
         <Header 
           title={"Compra Cerdanya"}
@@ -17,14 +48,17 @@ function App() {
           plan={"Trip"}
         />
         <SubHeader 
-          items={"44"}
+          items={ItemListLength}
           price={"44,76"}
-          itemsAdquirido={"23"}
+          itemsAdquirido={ItemsChecked()}
           upNumber={"19"}
           downNumber={"6"}
         />
-        <FullList />
-        <NewList />
+        <ItemList 
+          items={items}
+          handleCheck={handleCheck}
+          AddItem={AddItem}
+        />
       </div>
     </div>
   );

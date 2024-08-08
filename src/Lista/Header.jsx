@@ -1,49 +1,46 @@
-import { useState, useRef, useEffect } from "react"
+// import { useState, } from "react"
 
 const Header = ({title, persons, planIcon, plan}) => {
-    const HeaderScrollRef = useRef(null)
-    const [border, setBorder] = useState("")
+    // const [stickyHeader, setStickyHeader] = useState("")
 
-    useEffect (() => {
-        const handleHeaderScroll = () => {
-            if(window.scrollY > 400) {
-                setBorder("position: sticky")
-            } else {
-                setBorder("none")
-            }
-        }
+    // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)
+    // useEffect(() => {
+    //     const handleHeaderScroll = () => {
+    //         setStickyHeader(window.scrollY > 1)
+    //     }
 
-        document.addEventListener("scroll", handleHeaderScroll)
-        return () => {
-            document.removeEventListener("scroll", handleHeaderScroll)
-        }
-    }, []);
-
-    useEffect (() => {
-        if(HeaderScrollRef.current) {
-            HeaderScrollRef.current.style.position = "sticky"
-        }
-    }, [border]);
+    //     window.addEventListener("scroll", handleHeaderScroll)
+    //     return () => {
+    //         window.removeEventListener("scroll", handleHeaderScroll)
+    //     }
+    //     }, []);
+    // position: stickyHeader ? "sticky" : "static",
 
   return (
-    <div className="headerLista" ref={HeaderScrollRef}>
-        <div className="headerLista-firstLine">
-            <h2>{title}</h2>
-            <div className="headerLista-firstLine-icons">
-                <span class="material-symbols-outlined icon-large">share</span>
-                <span class="material-symbols-outlined icon-xlarge">more_vert</span>
+    <div className="headerLista" style={{ position: "sticky", zIndex:"1000", top: "0" }}>
+        <div className="headerArrow">
+            <span class="material-symbols-outlined icon-large">arrow_back</span>
+        </div>
+        <div className="headerText">
+            <div className="headerLista-firstLine">
+                <h2 className="headerTitle">{title}</h2>
+                <div className="headerLista-firstLine-icons">
+                    <span class="material-symbols-outlined icon-large">share</span>
+                    <span class="material-symbols-outlined icon-large">more_vert</span>
+                </div>
+            </div>
+            <div className="headerLista-secondLine">
+                <div className="headerLista-secondLine-group">
+                    <span class="material-symbols-outlined icon-medium">group</span>
+                    <h5>{persons} pers.</h5>
+                </div>
+                <div className="headerLista-secondLine-group">
+                    <span class="material-symbols-outlined icon-medium">{planIcon}</span>
+                    <h5>{plan}</h5>
+                </div>
             </div>
         </div>
-        <div className="headerLista-secondLine">
-            <div className="headerLista-secondLine-group">
-                <span class="material-symbols-outlined">group</span>
-                <h4>{persons} pers.</h4>
-            </div>
-            <div className="headerLista-secondLine-group">
-                <span class="material-symbols-outlined">{planIcon}</span>
-                <h4>{plan}</h4>
-            </div>
-        </div>
+
     </div>
   )
 }

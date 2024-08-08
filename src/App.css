@@ -10,29 +10,29 @@ html, body, .root {
 }
 
 h1 {
-  font-size: 30px;
-  margin: 0px;
-}
-
-h2 {
   font-size: 26px;
   margin: 0px;
 }
 
+h2 {
+  font-size: 22px;
+  margin: 0px;
+}
+
 h3 {
-  font-size: 22px;  
+  font-size: 18px;  
   margin: 0px;
   font-weight: 500;
 }
 
 h4 {
-  font-size: 18px;
+  font-size: 16px;
   margin: 0px;
   font-weight: 400;
 }
 
 h5 {
-  font-size: 16px;
+  font-size: 14px;
   margin: 0px;
   font-weight: 400;
 }
@@ -63,23 +63,36 @@ h5 {
 }
 
 .headerLista {
-  margin-bottom: 18px;
+  margin-bottom: 8px;
   padding-bottom: 8px;
   background-color: #ffeec9;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.headerArrow {
+  margin: 4px 18px 0px 0px;
+}
+
+.headerTitle {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .headerLista-firstLine {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  white-space: nowrap;
+  flex: 1 1 0%;
 }
 
 .headerLista-firstLine-icons {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  margin: 4px 0px 0px 60px;
 }
 
 .subHeaderLista-secondLine {
@@ -87,14 +100,6 @@ h5 {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
-
-.icon-large {
-  font-size: 30px;
-}
-
-.icon-xlarge {
-  font-size: 36px;
 }
 
 .headerLista-secondLine {
@@ -116,31 +121,68 @@ h5 {
   margin-right: 4px;
 }
 
+.material-symbols-outlined:hover {
+  background-color: #e0e0e0;
+  border-radius: 40px;
+}
+
+.icon-medium {
+  font-size: 20px;
+}
+
+.icon-large {
+  font-size: 24px;
+}
+
+.icon-xlarge {
+  font-size: 36px;
+}
+
 .votarButton {
   font-size: medium;
   border-radius: 5px;
 }
 
 .itemList {
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .itemLine {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
-.radioButton[type="checkbox"] {
-  transform: scale(1.5);
-  margin-right: 21px;
+.ItemCheckbox {
+  width: 15px;
+  height: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-right: 18px;
+  margin-left: 3px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.ItemText {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .ItemName {
-  width: 210px;
-  margin-right: 15.5px;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ItemPrice {
+  margin-left: 22px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .hidden {
@@ -157,11 +199,29 @@ h5 {
   align-items: center;
 }
 
-.ItemCheckbox {
-  width: 18px;
-  height: 18px;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-right: 21px;
-  cursor: pointer;
+.newItem {
+  color: #9E9E9E;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.newItemText {
+  margin-left: 13.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1 1 0%;
+}
+
+.newItemText input, 
+.newItemText input:hover {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: black;
+  background: transparent;
 }
