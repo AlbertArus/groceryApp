@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 const NewItem = ({AddItem }) => {
 
   const [name, setName] = useState ("")
   const [price, setPrice] = useState ("")
+  const ItemNameInputFocusRef = useRef(null)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,6 +12,9 @@ const NewItem = ({AddItem }) => {
       AddItem(name, price);
       setName("")
       setPrice("")
+    }
+    if(ItemNameInputFocusRef.current) {
+      ItemNameInputFocusRef.current.focus()
     }
   }
 
@@ -23,11 +27,13 @@ const NewItem = ({AddItem }) => {
 
   return (
     <div className="newItem">
-      <span class="material-symbols-outlined">add</span>
-      <form className="newItemText" onKeyDown={handleKeyDown}>
-        <input type="text" placeholder="Nuevo Item" className="newItemDescription" onChange={(e) => setName(e.target.value)} value={name}></input>
-        <input type="number" placeholder="Price" className="newItemPrice" onChange={(e) => setPrice(e.target.value)} value={price}></input>
-      </form>
+      <div className="itemLineCommon">
+        <span class="material-symbols-outlined addIcon">add</span>
+        <form className="ItemText" onKeyDown={handleKeyDown}>
+          <input type="text" placeholder="Nuevo Item" className="ItemName" ref={ItemNameInputFocusRef} onChange={(e) => setName(e.target.value)} value={name}></input>
+          <input type="number" placeholder="Price" className="ItemPrice" onChange={(e) => setPrice(e.target.value)} value={price}></input>
+        </form>
+      </div>
     </div>
   )
 }

@@ -7,7 +7,6 @@ import ItemList from './components/ItemList';
 function App() {
 
   const [items, setItems] = useState([])
-
   
   useEffect(() => {
     const savedItems = localStorage.getItem("items")
@@ -19,11 +18,21 @@ function App() {
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(items))
   }, [items])
-  
-  console.log(localStorage.getItem("items"))
 
   const AddItem = (name, price) => {
     setItems([...items, {id: items.length + 1, name, price, isChecked: false}])
+  }
+
+  const EditItem = (id, name, price) => {
+    setItems(items.map(item =>
+      item.id === id ? {...item, name: name, price: price} : item
+    ))
+  }
+
+  const DeleteItem = (id) => {
+    setItems(items.filter(item =>
+      item.id === id ? "" : item
+    ))
   }
   
   const handleCheck = (id) => {
@@ -31,6 +40,8 @@ function App() {
       item.id === id ? {...item, isChecked: !item.isChecked} : item,
     ));
   };
+
+
 
   const ItemsChecked = () => {
     return items.filter(item => item.isChecked).length;
@@ -58,6 +69,8 @@ function App() {
           items={items}
           handleCheck={handleCheck}
           AddItem={AddItem}
+          EditItem={EditItem}
+          DeleteItem={DeleteItem}
         />
       </div>
     </div>

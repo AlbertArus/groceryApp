@@ -155,22 +155,35 @@ h5 {
   margin-bottom: 12px;
 }
 
+.itemLineCommon {
+  margin-left: 3px;
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .ItemCheckbox {
   width: 15px;
   height: 14px;
   border: 1px solid black;
   border-radius: 3px;
-  margin-right: 18px;
-  margin-left: 3px;
   margin-top: 3px;
   cursor: pointer;
 }
 
+.addIcon {
+  margin-left: 3px;
+  margin-right: -3px;
+}
+
 .ItemText {
+  margin-left: 18px;
   display: flex;
-  flex: 1;
   justify-content: space-between;
   align-items: flex-start;
+  flex: 1 1 0%;
+
 }
 
 .ItemName {
@@ -204,24 +217,27 @@ h5 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 25px;
+  margin-left: 18px;
 }
 
-.newItemText {
-  margin-left: 13.5px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1 1 0%;
-}
-
-.newItemText input, 
-.newItemText input:hover {
+.ItemText input, 
+.ItemText input:hover {
   border: none;
   outline: none;
   font-family: inherit;
   font-size: inherit;
   color: black;
   background: transparent;
+  flex: 1 1 0%;
+  padding: 0;
+}
+
+.ItemText input[type=number] {
+  width: 55px;
+}
+
+.ItemText input[type="number"]::-webkit-inner-spin-button,
+.ItemText input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
