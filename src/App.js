@@ -3,7 +3,7 @@ import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Header from './Lista/Header';
 import SubHeader from './Lista/SubHeader';
-import ItemList from './components/ItemList';
+import Categories from './Lista/Categories';
 
 function App() {
 
@@ -23,11 +23,6 @@ function App() {
     if(!loading) {
       localStorage.setItem("items", JSON.stringify(items))
     }
-  }, [items, loading])
-
-  useEffect(() => {
-    if(!loading)
-    console.log(localStorage.getItem("items"))
   }, [items, loading])
 
   const AddItem = (name, price) => {
@@ -74,12 +69,14 @@ function App() {
           upNumber={"19"}
           downNumber={"6"}
         />
-        <ItemList 
+        <Categories
           items={items}
           handleCheck={handleCheck}
           AddItem={AddItem}
           EditItem={EditItem}
           DeleteItem={DeleteItem}
+          nameCategory={"Desayuno"}
+          price={"23"}
         />
       </div>
     </div>

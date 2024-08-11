@@ -9,7 +9,7 @@ const ItemList = ({items, AddItem, EditItem, DeleteItem, handleCheck, ItemListLe
         <CategoryList 
           nameCategory={"Desayuno"}
           price={"23"}
-          items={ItemListLength}
+          items={items}
         />
       {items && items.map(item => (
         <Item 

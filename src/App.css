@@ -145,9 +145,9 @@ h5 {
   border-radius: 5px;
 }
 
-.itemList {
+/* .itemList {
   margin-top: 20px;
-}
+} */
 
 .itemLine {
   display: flex;
@@ -185,7 +185,8 @@ h5 {
   justify-content: space-between;
   align-items: flex-start;
   flex: 1 1 0%;
-
+  max-width: 100%;
+  overflow: hidden
 }
 
 .ItemName {
@@ -198,6 +199,7 @@ h5 {
   margin-left: 22px;
   white-space: nowrap;
   flex-shrink: 0;
+  overflow: hidden
 }
 
 .hidden {
@@ -205,13 +207,25 @@ h5 {
 }
 
 .categoryList {
-  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.categoryListheader {
+  margin-bottom: 12px;
 }
 
 .titleCategory {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.newCategory {
+  color: #9E9E9E;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
 }
 
 .newItem {
@@ -236,6 +250,7 @@ h5 {
 
 .ItemText input[type=number] {
   width: 55px;
+  box-sizing: border-box;
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
@@ -243,3 +258,5 @@ h5 {
   -webkit-appearance: none;
   margin: 0;
 }
+
+
