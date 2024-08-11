@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import { v4 as uuidv4 } from 'uuid';
 import Header from './Lista/Header';
 import SubHeader from './Lista/SubHeader';
 import ItemList from './components/ItemList';
@@ -7,20 +8,30 @@ import ItemList from './components/ItemList';
 function App() {
 
   const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
   
   useEffect(() => {
     const savedItems = localStorage.getItem("items")
     if (savedItems) {
       setItems(JSON.parse(savedItems))
-    }
+    } 
+
+    setLoading(false)
   }, [])
   
   useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items))
-  }, [items])
+    if(!loading) {
+      localStorage.setItem("items", JSON.stringify(items))
+    }
+  }, [items, loading])
+
+  useEffect(() => {
+    if(!loading)
+    console.log(localStorage.getItem("items"))
+  }, [items, loading])
 
   const AddItem = (name, price) => {
-    setItems([...items, {id: items.length + 1, name, price, isChecked: false}])
+    setItems([...items, {id: uuidv4(), name, price, isChecked: false}])
   }
 
   const EditItem = (id, name, price) => {
@@ -40,8 +51,6 @@ function App() {
       item.id === id ? {...item, isChecked: !item.isChecked} : item,
     ));
   };
-
-
 
   const ItemsChecked = () => {
     return items.filter(item => item.isChecked).length;

@@ -31,7 +31,7 @@ const NewItem = ({AddItem }) => {
         <span class="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
           <input type="text" placeholder="Nuevo Item" className="ItemName" ref={ItemNameInputFocusRef} onChange={(e) => setName(e.target.value)} value={name}></input>
-          <input type="number" placeholder="Price" className="ItemPrice" onChange={(e) => setPrice(e.target.value)} value={price}></input>
+          <input type="number" placeholder="Precio" className="ItemPrice" onChange={(e) => setPrice(e.target.value)} value={price}></input>
         </form>
       </div>
     </div>

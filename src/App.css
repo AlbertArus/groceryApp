@@ -42,18 +42,20 @@ h5 {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 390px;
-  height: 844px;
+  width: 100vw;
+  max-width: 390px;
+  height: 100vh;
+  max-height: 844px;
   border: 1px solid blue;
-  margin: 0px 5;
+  margin: 0px;
+  overflow: hidden;
 }
 
 .app-margin {
   width: 360px;
   height: 844px;
   margin: 0px 15px;
-  border: 1px solid red;
-
+  border: 1px solid red
 }
 
 .headingPhone {

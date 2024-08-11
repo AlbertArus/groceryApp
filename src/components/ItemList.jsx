@@ -14,9 +14,12 @@ const ItemList = ({items, AddItem, EditItem, DeleteItem, handleCheck, ItemListLe
       {items && items.map(item => (
         <Item 
           key={item.id}
+          id={item.id}
+          item={item}
           isChecked={item.isChecked}
           onClick={() => handleCheck(item.id)}
-          EditItem={(name, price) => EditItem(item.id, name, price)}
+          EditItem={EditItem}
+          // EditItem={(name, price) => EditItem(id, name, price)}
           DeleteItem={() => DeleteItem(item.id)}
           initialName={item.name}
           initialPrice={item.price}
