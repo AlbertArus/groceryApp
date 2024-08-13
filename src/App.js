@@ -65,7 +65,7 @@ function App() {
 
   const DeleteItem = (id) => {
     setItems(items.filter(item =>
-      item.id === id ? "" : item
+      item.id !== id
     ))
   }
   
@@ -93,7 +93,10 @@ function App() {
 
   const DeleteCategory = (id) => {
     setCategories(categories.filter(category =>
-      category.id === id ? "" : category
+      category.id !== id
+    ))
+    setItems(items.filter(item =>
+      item.categoryId !== id
     ))
   }
 
