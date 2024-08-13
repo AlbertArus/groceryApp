@@ -8,25 +8,53 @@ import Categories from './Lista/Categories';
 function App() {
 
   const [items, setItems] = useState([])
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   
   useEffect(() => {
-    const savedItems = localStorage.getItem("items")
+    const savedItems = localStorage.getItem("items");
     if (savedItems) {
-      setItems(JSON.parse(savedItems))
-    } 
+      try {
+        setItems(JSON.parse(savedItems));
+      } catch (error) {
+        console.error("Error parsing items from localStorage:", error);
+        localStorage.removeItem("items");
+      }
+    }
+  
+    const savedCategories = localStorage.getItem("categories");
+    if (savedCategories) {
+      try {
+        setCategories(JSON.parse(savedCategories));
+      } catch (error) {
+        console.error("Error parsing categories from localStorage:", error);
+        localStorage.removeItem("categories");
+      }
+    }
+  
+    setLoading(false);
+  }, []);
 
-    setLoading(false)
-  }, [])
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem("items", JSON.stringify(items));
+    }
+  }, [items, loading]);
   
   useEffect(() => {
-    if(!loading) {
-      localStorage.setItem("items", JSON.stringify(items))
+    if (!loading) {
+      localStorage.setItem("categories", JSON.stringify(categories));
     }
-  }, [items, loading])
+  }, [categories, loading]);
 
-  const AddItem = (name, price) => {
-    setItems([...items, {id: uuidv4(), name, price, isChecked: false}])
+  useEffect(() => {
+    if(!loading)
+    console.log("Items:", localStorage.getItem("items"));
+    console.log("Categories:", localStorage.getItem("categories"));
+  }, [items, categories, loading])
+
+  const AddItem = (name, price, categoryId) => {
+    setItems([...items, {id: uuidv4(), categoryId, name:name, price:price, isChecked: false}])
   }
 
   const EditItem = (id, name, price) => {
@@ -51,7 +79,38 @@ function App() {
     return items.filter(item => item.isChecked).length;
   };
 
-  const ItemListLength = items.length
+  const totalItemsLength = items.length
+
+  const AddCategory = (categoryName, categoryPrice) => {
+    setCategories([...categories, {id: uuidv4(), categoryName, items: [], categoryPrice, isChecked: false}])
+  }
+
+  const EditCategory = (id, categoryName) => {
+    setCategories(categories.map(category =>
+      category.id === id ? {...category, categoryName} : category
+    ))
+  }
+
+  const DeleteCategory = (id) => {
+    setCategories(categories.filter(category =>
+      category.id === id ? "" : category
+    ))
+  }
+
+  const categoriesSums = categories.map(category => {
+    const categoryItems = items.filter(item => item.categoryId === category.id);
+    const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0);
+
+    return {
+      ...category,
+      itemsCount: categoryItems.length,
+      sumPrice: sumPrice
+    };
+  });
+
+  const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0);
+
+  console.log(items)
 
   return (
     <div className="app">
@@ -63,8 +122,8 @@ function App() {
           plan={"Trip"}
         />
         <SubHeader 
-          items={ItemListLength}
-          price={"44,76"}
+          items={totalItemsLength}
+          price={totalPrice}
           itemsAdquirido={ItemsChecked()}
           upNumber={"19"}
           downNumber={"6"}
@@ -72,11 +131,13 @@ function App() {
         <Categories
           items={items}
           handleCheck={handleCheck}
+          categories={categories}
+          AddCategory={AddCategory}
+          EditCategory={EditCategory}
+          DeleteCategory={DeleteCategory}
           AddItem={AddItem}
           EditItem={EditItem}
           DeleteItem={DeleteItem}
-          nameCategory={"Desayuno"}
-          price={"23"}
         />
       </div>
     </div>

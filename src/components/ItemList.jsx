@@ -1,4 +1,4 @@
-import CategoryList from "../components/CategoryList"
+import Category from "../components/Category"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
@@ -6,7 +6,7 @@ const ItemList = ({items, AddItem, EditItem, DeleteItem, handleCheck, ItemListLe
 
   return (
     <div className="itemList">
-        <CategoryList 
+        <Category 
           nameCategory={"Desayuno"}
           price={"23"}
           items={items}

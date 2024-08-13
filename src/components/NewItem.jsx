@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const NewItem = ({ AddItem, ItemNameInputRef }) => {
+const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
 
   const [name, setName] = useState ("")
   const [price, setPrice] = useState ("")
@@ -8,7 +8,7 @@ const NewItem = ({ AddItem, ItemNameInputRef }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(name.trim() && price.trim()) {
-      AddItem(name, price);
+      AddItem(name, price, categoryId);
       setName("")
       setPrice("")
     }
@@ -34,7 +34,7 @@ const NewItem = ({ AddItem, ItemNameInputRef }) => {
   return (
     <div className="newItem">
       <div className="itemLineCommon">
-        <span class="material-symbols-outlined addIcon">add</span>
+        <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
           <input type="text" placeholder="Nuevo Item" className="ItemName" ref={ItemNameInputRef} onChange={(e) => setName(e.target.value)} value={name}></input>
           <input type="number" placeholder="Precio" className="ItemPrice" onChange={(e) => setPrice(e.target.value)} value={price}></input>

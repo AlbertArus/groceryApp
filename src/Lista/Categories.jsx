@@ -1,21 +1,29 @@
-import CategoryList from "../components/CategoryList"
+import Category from "../components/Category"
 import NewCategory from "../components/NewCategory"
 
-const Categories = ({ items, handleCheck, AddItem, EditItem, DeleteItem}) => {
+const Categories = ({ items, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem}) => {
+  
+  // const categoriesLength = categories.length
+  
   return (
     <div>
-      <CategoryList 
-        items={items}
-        // ItemListLength={ItemListLength}
-        handleCheck={handleCheck}
-        AddItem={AddItem}
-        EditItem={EditItem}
-        DeleteItem={DeleteItem}
-        nameCategory={"Desayuno"}
-        price={"23"}
-      />
+      {categories && categories.map(category => (
+        <Category
+          key={category.id}
+          id={category.id}
+          items={items.filter(item=> item.categoryId === category.id)}
+          // ItemListLength={ItemListLength}
+          handleCheck={handleCheck}
+          EditCategory={EditCategory}
+          DeleteCategory={DeleteCategory}
+          AddItem={AddItem}
+          EditItem={EditItem}
+          DeleteItem={DeleteItem}
+          initialName={category.categoryName}
+        />
+      ))}
       <NewCategory 
-      
+        AddCategory={AddCategory}
       />
     </div>
   )
