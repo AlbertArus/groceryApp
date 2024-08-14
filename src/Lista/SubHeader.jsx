@@ -1,7 +1,24 @@
-const SubHeader = ({ items, itemsAdquirido, price, upNumber, downNumber}) => {
+import { useEffect, useRef } from "react"
+
+const SubHeader = ({ items, categories, itemsAdquirido, price, upNumber, downNumber}) => {
+
+    const SubHeaderRef = useRef(null)
+    const hideSubHeader = () => {
+        if(SubHeaderRef.current) {
+            if(categories.length < 2) {
+                SubHeaderRef.current.style.display = "none"
+            } else {
+                SubHeaderRef.current.style.display = "block"
+            }
+        }
+    }
+
+    useEffect(() => {
+        hideSubHeader()
+    }, [categories])
 
     return (
-        <div className="subHeaderLista">
+        <div className="subHeaderLista" ref={SubHeaderRef}>
             <div className="headerLista-firstLine">
                 <h3>Items: {items}</h3>
                 <h4>Total</h4>

@@ -1,11 +1,11 @@
-import { useState, useRef } from "react"
+import { useState } from "react"
+// import toast, { Toaster } from 'react-hot-toast'
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, ToastRef, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
-  const ItemNameInputRef = useRef(null)
 
   const itemsLength = items.length
   const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
@@ -28,6 +28,8 @@ const Category = ({ initialName, categories, id, EditCategory, DeleteCategory, i
       handleEdit(e);
     }
   }
+
+  // const notify = () => toast('Here is your toast.');
 
   const handleDelete = () => {
     DeleteCategory(id);

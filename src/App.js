@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
+// import { Toast } from 'primereact/toast';
+import toast, { Toaster } from 'react-hot-toast'
 import Header from './Lista/Header';
 import SubHeader from './Lista/SubHeader';
 import Categories from './Lista/Categories';
@@ -10,6 +12,8 @@ function App() {
   const [items, setItems] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
+  const [deletedItem, setDeletedItem] = useState(null)
+  const ToastRef = useRef(null)
   
   useEffect(() => {
     const savedItems = localStorage.getItem("items");
@@ -47,12 +51,6 @@ function App() {
     }
   }, [categories, loading]);
 
-  useEffect(() => {
-    if(!loading)
-    console.log("Items:", localStorage.getItem("items"));
-    console.log("Categories:", localStorage.getItem("categories"));
-  }, [items, categories, loading])
-
   const AddItem = (name, price, categoryId) => {
     setItems([...items, {id: uuidv4(), categoryId, name:name, price:price, isChecked: false}])
   }
@@ -67,6 +65,18 @@ function App() {
     setItems(items.filter(item =>
       item.id !== id
     ))
+    toast((t) => (
+      <span style={{display:"flex", alignItems:"center"}}>
+        <span className="material-symbols-outlined" style={{marginRight:"8px", color:"#9E9E9E"}}>warning</span>
+        Item eliminado!
+        <button onClick={() => undoDelete()} style={{marginLeft:"10px", padding:"0", backgroundColor: "#FBE7C1", border:"none", fontFamily:"poppins", fontSize: "16px", cursor: "pointer"}}>
+          <semibold>Deshacer</semibold>
+        </button>
+      </span>
+      ), {
+        style:{border: "2px solid #ED9E04", backgroundColor:"#FBE7C1"}
+      }
+    )
   }
   
   const handleCheck = (id) => {
@@ -92,12 +102,37 @@ function App() {
   }
 
   const DeleteCategory = (id) => {
+    const CategoryToDelete = categories.find(category => category.id === id)
+    const ItemsToDelete = items.filter(item => item.id === id)
     setCategories(categories.filter(category =>
       category.id !== id
     ))
     setItems(items.filter(item =>
       item.categoryId !== id
     ))
+
+    setDeletedItem({category: CategoryToDelete, item: ItemsToDelete})
+
+    toast((t) => (
+      <span style={{display:"flex", alignItems:"center"}}>
+        <span className="material-symbols-outlined" style={{marginRight:"8px", color:"#9E9E9E"}}>warning</span>
+        Categoría eliminada!
+        <button onClick={() => undoDelete()} style={{marginLeft:"10px", padding:"0", backgroundColor: "#FBE7C1", border:"none", fontFamily:"poppins", fontSize: "16px", fontWeigth: "900", cursor: "pointer"}}>
+          Deshacer
+        </button>
+      </span>
+      ), {
+        style:{border: "2px solid #ED9E04", backgroundColor:"#FBE7C1"}
+      }
+    )
+  }
+
+  const undoDelete = () => {
+    if(deletedItem) {
+      setCategories(prevCategories => [...prevCategories, deletedItem.category])
+      setItems(prevItems => [...prevItems, deletedItem.items])
+    }
+    setDeletedItem(null)
   }
 
   const categoriesSums = categories.map(category => {
@@ -113,11 +148,13 @@ function App() {
 
   const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0);
 
-  console.log(items)
-
   return (
     <div className="app">
       <div className='app-margin'>
+        <Toaster 
+          position="bottom-center"
+          reverseOrder={false}
+        />
         <Header 
           title={"Compra Cerdanya"}
           persons={"4"}
@@ -130,6 +167,7 @@ function App() {
           itemsAdquirido={ItemsChecked()}
           upNumber={"19"}
           downNumber={"6"}
+          categories={categories}
         />
         <Categories
           items={items}
@@ -141,6 +179,7 @@ function App() {
           AddItem={AddItem}
           EditItem={EditItem}
           DeleteItem={DeleteItem}
+          ToastRef={ToastRef}
         />
       </div>
     </div>

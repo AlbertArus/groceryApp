@@ -1,8 +1,9 @@
+import {useRef} from "react"
 import Category from "../components/Category"
 import NewCategory from "../components/NewCategory"
 
-const Categories = ({ items, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem}) => {
-  
+const Categories = ({ items, handleCheck, ToastRef, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem}) => {
+  const ItemNameInputRef = useRef(null)
   // const categoriesLength = categories.length
   
   return (
@@ -20,10 +21,14 @@ const Categories = ({ items, handleCheck, categories, AddCategory, EditCategory,
           EditItem={EditItem}
           DeleteItem={DeleteItem}
           initialName={category.categoryName}
+          ToastRef={ToastRef}
+          ItemNameInputRef={ItemNameInputRef}
+
         />
       ))}
       <NewCategory 
         AddCategory={AddCategory}
+        ItemNameInputRef={ItemNameInputRef}
       />
     </div>
   )
