@@ -20,7 +20,8 @@ const NewCategory = ({AddCategory, ItemNameInputRef}) => {
       ItemNameInputRef.current.focus()
       setGetFocused(false)
     }
-  }, [getFocused, handleSubmit])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getFocused, handleSubmit]) //Comentario es de ChatGPT para sacar aviso de que añada en dependencia el ItemNameInputRef y lo callo porque no debería añadirlo
 
   const handleKeyDown = (e) => {
     if(e.key === "Enter") {
@@ -32,7 +33,7 @@ const NewCategory = ({AddCategory, ItemNameInputRef}) => {
   return (
     <div className="newCategory">
       <div className="itemLineCommon">
-        <span class="material-symbols-outlined addIcon">add</span>
+        <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
           <input type="text" placeholder="Nueva categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
         </form>

@@ -15,6 +15,7 @@ const SubHeader = ({ items, categories, itemsAdquirido, price, upNumber, downNum
 
     useEffect(() => {
         hideSubHeader()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories])
 
     return (
@@ -29,11 +30,11 @@ const SubHeader = ({ items, categories, itemsAdquirido, price, upNumber, downNum
             </div>
             <div className="headerLista-secondLine">
                 <div className="headerLista-secondLine-group">
-                    <span class="material-symbols-outlined icon-medium">thumb_up</span>
+                    <span className="material-symbols-outlined icon-medium">thumb_up</span>
                     <h4>{upNumber}</h4>
                 </div>
                 <div className="headerLista-secondLine-group">
-                    <span class="material-symbols-outlined icon-medium">thumb_down</span>
+                    <span className="material-symbols-outlined icon-medium">thumb_down</span>
                     <h4>{downNumber}</h4>
                 </div>
                 <button className="votarButton">Votar</button>
