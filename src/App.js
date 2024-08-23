@@ -33,9 +33,12 @@ function App() {
       } catch (error) {
         console.error("Error parsing categories from localStorage:", error);
         localStorage.removeItem("categories");
-      }
+        setCategories([]);  // Aseguramos que categories sea un array si hay un error
+      } 
+    } else {
+      setCategories([]); // Si no hay datos en localStorage, inicializamos como un array vacío
     }
-  
+      
     setLoading(false);
   }, []);
 
@@ -51,8 +54,16 @@ function App() {
     }
   }, [categories, loading]);
 
+  useEffect(() => {
+    if (!loading) {
+      console.log(localStorage.getItem("categories"))
+    }
+  }, [categories, loading]);
+
   const AddItem = (name, price, categoryId) => {
-    setItems([...items, {id: uuidv4(), categoryId, name:name, price:price, isChecked: false}])
+    const newItem = {id: uuidv4(), categoryId, name:name, price:price, isChecked: false}
+    setItems(prevItems => [...prevItems, newItem])
+    addItemToCategory(newItem)
   }
 
   const EditItem = (id, name, price) => {
@@ -80,14 +91,30 @@ function App() {
   }
   
   const handleCheck = (id) => {
-    setItems(items.map(item =>
-      item.id === id ? {...item, isChecked: !item.isChecked} : item,
-    ));
-  };
+    setItems(prevItems => {
+      const newItems = prevItems.map(item =>
+        item.id === id ? {...item, isChecked: !item.isChecked} : item
+      )
+      
+      setCategories(prevCategories => 
+        prevCategories.map(category => {
+          const categoryItems = newItems.filter(item => item.categoryId === category.id);
+          const allItemsChecked = categoryItems.every(item => item.isChecked);
+          return { 
+            ...category, 
+            isChecked: allItemsChecked,
+            items: categoryItems
+          }
+        })
+      )
+  
+      return newItems;
+    })
+  }
 
   const ItemsChecked = () => {
     return items.filter(item => item.isChecked).length;
-  };
+  }
 
   const totalItemsLength = items.length
 
@@ -95,11 +122,31 @@ function App() {
     setCategories([...categories, {id: uuidv4(), categoryName, items: [], categoryPrice, isChecked: false}])
   }
 
+  const addItemToCategory = (item) => {
+    setCategories(prevCategories => 
+      prevCategories.map(category => 
+        category.id === item.categoryId ? {...category, items:[...category.items, item]} : category
+      )
+    )
+  }
+
   const EditCategory = (id, categoryName) => {
     setCategories(categories.map(category =>
       category.id === id ? {...category, categoryName} : category
     ))
   }
+
+  // const checkCategory = (categoryId) => {
+  //   setCategories(prevCategories => 
+  //     prevCategories.map(category => {
+  //       if (category.id === categoryId) {
+  //         const allItemsChecked = category.items.every(item => item.isChecked);
+  //         return { ...category, isChecked: allItemsChecked };
+  //       }
+  //       return category;
+  //     })
+  //   )
+  // }
 
   const DeleteCategory = (id) => {
     const CategoryToDelete = categories.find(category => category.id === id)

@@ -2,7 +2,7 @@ import {useRef} from "react"
 import Category from "../components/Category"
 import NewCategory from "../components/NewCategory"
 
-const Categories = ({ items, handleCheck, ToastRef, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem}) => {
+const Categories = ({ items, itemsCategory, handleCheck, ToastRef, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem}) => {
   const ItemNameInputRef = useRef(null)
   // const categoriesLength = categories.length
   
@@ -23,7 +23,8 @@ const Categories = ({ items, handleCheck, ToastRef, categories, AddCategory, Edi
           initialName={category.categoryName}
           ToastRef={ToastRef}
           ItemNameInputRef={ItemNameInputRef}
-
+          itemsCategory={itemsCategory}
+          categories={categories}
         />
       ))}
       <NewCategory 
