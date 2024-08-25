@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, ToastRef, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -41,7 +41,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, ToastRef, Edi
 
   const currentCategory = categories.find(category => category.id === id);
   const isChecked = currentCategory ? currentCategory.isChecked : false;
-  
+
   useEffect(() => {
     if(toggleRef.current) {
       toggleRef.current.style.transform = isCollapsed ? "rotate(180deg)" : "rotate(0deg)";
@@ -53,29 +53,9 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, ToastRef, Edi
       checkCategoryRef.current.style.display = isChecked ? "block" : "none";
     }
     if(isChecked) {
-      console.log('Category is checked, collapsing');
       setIsCollapsed(true);
     }
   }, [isChecked]);
-
-  // useEffect(() => {
-  //   setIsChecked(checkCategory)
-  //   console.log("items checked", isChecked)
-  // },[categories])
-  
-  // useEffect(() => {
-  //   if(checkCategoryRef.current) {
-  //     checkCategoryRef.current.style.display = isChecked ? "block" : "none"
-  //     collapseCategory()
-  //     console.log("colapsado", isCollapsed)
-  //   }
-  // },[isChecked])
-
-  // useEffect(() => {
-  //   if(checkCategoryRef.current) {
-  //     checkCategoryRef.current.style.display = isChecked ? "block" : "none"
-  //     collapseCategory()
-  // }}, [categories, checkCategory])
 
   return (
     <div className="categoryList">

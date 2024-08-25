@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 // import { Toast } from 'primereact/toast';
@@ -13,7 +13,6 @@ function App() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [deletedItem, setDeletedItem] = useState(null)
-  const ToastRef = useRef(null)
   
   useEffect(() => {
     const savedItems = localStorage.getItem("items");
@@ -33,10 +32,7 @@ function App() {
       } catch (error) {
         console.error("Error parsing categories from localStorage:", error);
         localStorage.removeItem("categories");
-        setCategories([]);  // Aseguramos que categories sea un array si hay un error
       } 
-    } else {
-      setCategories([]); // Si no hay datos en localStorage, inicializamos como un array vacío
     }
       
     setLoading(false);
@@ -73,19 +69,21 @@ function App() {
   }
 
   const DeleteItem = (id) => {
-    setItems(items.filter(item =>
-      item.id !== id
-    ))
-    toast((t) => (
-      <span style={{display:"flex", alignItems:"center"}}>
-        <span className="material-symbols-outlined" style={{marginRight:"8px", color:"#9E9E9E"}}>warning</span>
-        Item eliminado!
-        <button onClick={() => undoDelete()} style={{marginLeft:"10px", padding:"0", backgroundColor: "#FBE7C1", border:"none", fontFamily:"poppins", fontSize: "16px", cursor: "pointer"}}>
-          <semibold>Deshacer</semibold>
+    const itemToDelete = items.find(item => item.id === id)
+    setItems(items.filter(item => item.id !== id))
+    const newDeletedItem = { type: 'item', data: itemToDelete };
+    setDeletedItem(newDeletedItem);
+
+    const toasterId = toast((t) => (
+      <span style={{ display: "flex", alignItems: "center" }}>
+        <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+        {`Has eliminado "${itemToDelete.name}"`}
+        <button onClick={() => {undoDelete(newDeletedItem); toast.dismiss(t.id)}} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+          Deshacer
         </button>
       </span>
       ), {
-        style:{border: "2px solid #ED9E04", backgroundColor:"#FBE7C1"}
+        style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
       }
     )
   }
@@ -136,51 +134,40 @@ function App() {
     ))
   }
 
-  // const checkCategory = (categoryId) => {
-  //   setCategories(prevCategories => 
-  //     prevCategories.map(category => {
-  //       if (category.id === categoryId) {
-  //         const allItemsChecked = category.items.every(item => item.isChecked);
-  //         return { ...category, isChecked: allItemsChecked };
-  //       }
-  //       return category;
-  //     })
-  //   )
-  // }
-
   const DeleteCategory = (id) => {
     const CategoryToDelete = categories.find(category => category.id === id)
-    const ItemsToDelete = items.filter(item => item.id === id)
-    setCategories(categories.filter(category =>
-      category.id !== id
-    ))
-    setItems(items.filter(item =>
-      item.categoryId !== id
-    ))
+    const ItemsToDelete = items.filter(item => item.categoryId === id)
+    setCategories(categories.filter(category => category.id !== id))
+    setItems(items.filter(item =>item.categoryId !== id))
 
-    setDeletedItem({category: CategoryToDelete, item: ItemsToDelete})
+    const newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
+    setDeletedItem(newDeletedItem);
 
-    toast((t) => (
-      <span style={{display:"flex", alignItems:"center"}}>
-        <span className="material-symbols-outlined" style={{marginRight:"8px", color:"#9E9E9E"}}>warning</span>
-        Categoría eliminada!
-        <button onClick={() => undoDelete()} style={{marginLeft:"10px", padding:"0", backgroundColor: "#FBE7C1", border:"none", fontFamily:"poppins", fontSize: "16px", fontWeigth: "900", cursor: "pointer"}}>
+    const toasterId = toast((t) => (
+      <span style={{ display: "flex", alignItems: "center" }}>
+        <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+        {`Has eliminado "${CategoryToDelete.categoryName}"`}
+        <button onClick={() => {undoDelete(newDeletedItem); toast.dismiss(t.id)}} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
           Deshacer
         </button>
       </span>
       ), {
-        style:{border: "2px solid #ED9E04", backgroundColor:"#FBE7C1"}
+        style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
       }
     )
   }
 
-  const undoDelete = () => {
-    if(deletedItem) {
-      setCategories(prevCategories => [...prevCategories, deletedItem.category])
-      setItems(prevItems => [...prevItems, deletedItem.items])
+  const undoDelete = useCallback((itemToRestore) => {
+    if (itemToRestore) {
+      if (itemToRestore.type === 'category') {
+        setCategories(prevCategories => [...prevCategories, itemToRestore.data.category]);
+        setItems(prevItems => [...prevItems, ...itemToRestore.data.items]);
+      } else if (itemToRestore.type === 'item') {
+        setItems(prevItems => [...prevItems, itemToRestore.data]);
+      }
+      setDeletedItem(null);
     }
-    setDeletedItem(null)
-  }
+  }, []);
 
   const categoriesSums = categories.map(category => {
     const categoryItems = items.filter(item => item.categoryId === category.id);
@@ -226,7 +213,6 @@ function App() {
           AddItem={AddItem}
           EditItem={EditItem}
           DeleteItem={DeleteItem}
-          ToastRef={ToastRef}
         />
       </div>
     </div>
