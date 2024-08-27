@@ -237,9 +237,11 @@ h5 {
 }
 
 .ItemText input[type=number] {
-  width: 5px;
+  /* width: 5px; */
+  max-width: 50px;
   box-sizing: border-box;
-  flex: 1;
+  flex: 1 0;
+  text-align: end;
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
