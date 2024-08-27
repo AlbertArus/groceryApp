@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-const SubHeader = ({ items, categories, itemsAdquirido, price, upNumber, downNumber}) => {
+const SubHeader = ({ items, categories, itemsAdquirido, price }) => {
 
     const SubHeaderRef = useRef(null)
     const hideSubHeader = () => {
@@ -19,25 +19,14 @@ const SubHeader = ({ items, categories, itemsAdquirido, price, upNumber, downNum
     }, [categories])
 
     return (
-        <div className="subHeaderLista" ref={SubHeaderRef}>
-            <div className="headerLista-firstLine">
+        <div className="subHeaderLista app-margin" ref={SubHeaderRef}>
+            <div className="fila-between">
                 <h3>Items: {items}</h3>
                 <h4>Total</h4>
             </div>
-            <div className="subHeaderLista-secondLine">
+            <div className="fila-between">
                 <h5>Adquirido: {itemsAdquirido}</h5>
                 <h3>{price} €</h3>
-            </div>
-            <div className="headerLista-secondLine">
-                <div className="headerLista-secondLine-group">
-                    <span className="material-symbols-outlined icon-medium">thumb_up</span>
-                    <h4>{upNumber}</h4>
-                </div>
-                <div className="headerLista-secondLine-group">
-                    <span className="material-symbols-outlined icon-medium">thumb_down</span>
-                    <h4>{downNumber}</h4>
-                </div>
-                <button className="votarButton">Votar</button>
             </div>
         </div>
       )

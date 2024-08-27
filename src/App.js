@@ -13,7 +13,13 @@ function App() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [deletedItem, setDeletedItem] = useState(null)
-  
+  const [votesShown, setVotesShown] = useState(true)
+  const [thumbUp, setThumbUp] = useState(false)
+  const [counterUp, setCounterUp] = useState(0)
+  const [thumbDown, setThumbDown] = useState(false)
+  const [counterDown, setCounterDown] = useState(0)
+  const votesRef = useRef(null)
+
   useEffect(() => {
     const savedItems = localStorage.getItem("items");
     if (savedItems) {
@@ -57,7 +63,7 @@ function App() {
   }, [categories, loading]);
 
   const AddItem = (name, price, categoryId) => {
-    const newItem = {id: uuidv4(), categoryId, name:name, price:price, isChecked: false}
+    const newItem = {id: uuidv4(), categoryId, name:name, price:price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false}
     setItems(prevItems => [...prevItems, newItem])
     addItemToCategory(newItem)
   }
@@ -74,7 +80,7 @@ function App() {
     const newDeletedItem = { type: 'item', data: itemToDelete };
     setDeletedItem(newDeletedItem);
 
-    const toasterId = toast((t) => (
+    toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
         <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
         {`Has eliminado "${itemToDelete.name}"`}
@@ -143,7 +149,7 @@ function App() {
     const newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
     setDeletedItem(newDeletedItem);
 
-    const toasterId = toast((t) => (
+    toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
         <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
         {`Has eliminado "${CategoryToDelete.categoryName}"`}
@@ -167,7 +173,7 @@ function App() {
       }
       setDeletedItem(null);
     }
-  }, []);
+  }, [])
 
   const categoriesSums = categories.map(category => {
     const categoryItems = items.filter(item => item.categoryId === category.id);
@@ -177,14 +183,52 @@ function App() {
       ...category,
       itemsCount: categoryItems.length,
       sumPrice: sumPrice
-    };
-  });
+    }
+  })
 
   const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0);
 
+  const handleThumbUp = () => {
+    // items.every(item => )
+    if (thumbUp) {
+      setThumbUp(false);
+      setCounterUp(prevState => prevState - 1)
+    } else {
+      if (thumbDown) {
+        setThumbDown(false)
+        setCounterDown(prevState => prevState - 1)
+      }
+      setThumbUp(true)
+      setCounterUp(prevState => prevState + 1)
+    }
+  }
+  
+  const handleThumbDown = () => {
+    if (thumbDown) {
+      setThumbDown(false)
+      setCounterDown(prevState => prevState - 1)
+    } else {
+      if (thumbUp) {
+        setThumbUp(false)
+        setCounterUp(prevState => prevState - 1)
+      }
+      setThumbDown(true)
+      setCounterDown(prevState => prevState + 1)
+    }
+  }
+
+  const handleVotesVisible = () => {
+    setVotesShown(prevState => !prevState)
+  }
+
+  useEffect(() => {
+    if(votesRef.current) {
+      votesRef.current.style.display = votesShown ? "flex" : "none"
+    }
+  })
+
   return (
     <div className="app">
-      <div className='app-margin'>
         <Toaster 
           position="bottom-center"
           reverseOrder={false}
@@ -194,13 +238,12 @@ function App() {
           persons={"4"}
           planIcon={"travel"}
           plan={"Trip"}
+          handleVotesVisible={handleVotesVisible}
         />
         <SubHeader 
           items={totalItemsLength}
           price={totalPrice}
           itemsAdquirido={ItemsChecked()}
-          upNumber={"19"}
-          downNumber={"6"}
           categories={categories}
         />
         <Categories
@@ -213,8 +256,14 @@ function App() {
           AddItem={AddItem}
           EditItem={EditItem}
           DeleteItem={DeleteItem}
+          handleThumbDown={handleThumbDown}
+          handleThumbUp={handleThumbUp}
+          thumbUp={thumbUp}
+          thumbDown={thumbDown}
+          counterUp={counterUp}
+          counterDown={counterDown}
+          votesRef={votesRef}
         />
-      </div>
     </div>
   );
 }

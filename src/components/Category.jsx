@@ -3,12 +3,13 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleThumbUp, handleThumbDown, thumbUp, thumbDown, counterUp, counterDown, votesRef }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggleRef = useRef(null)
   const checkCategoryRef = useRef(null)
+
 
   const itemsLength = items.length
   const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
@@ -44,7 +45,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
 
   useEffect(() => {
     if(toggleRef.current) {
-      toggleRef.current.style.transform = isCollapsed ? "rotate(180deg)" : "rotate(0deg)";
+      toggleRef.current.style.transform = isCollapsed ? "rotate(270deg)" : "rotate(0deg)";
     }
   }, [isCollapsed]);
 
@@ -56,19 +57,21 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
       setIsCollapsed(true);
     }
   }, [isChecked]);
+ 
+
 
   return (
     <div className="categoryList">
       <div className="categoryListheader">
-        <div className="headerLista-firstLine">
+        <div className="fila-between">
           <div className="titleCategory" onKeyDown={handleKeyDown}>
             <input type="text" placeholder="Tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
             <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory}>keyboard_arrow_down</span>
           </div>
           <h3>{sumPrices} €</h3>
         </div>
-        <div className="subHeaderLista-secondLine">
-          <div className="subHeaderLista-secondLine firstPart">
+        <div className="fila-between">
+          <div className="fila-between firstPart">
             <h5>Items: {itemsLength}</h5>
             <span className="material-symbols-outlined icon-medium" ref={checkCategoryRef} style={{color:"green", marginLeft:"8px"}}>task_alt</span>
           </div>
@@ -92,6 +95,13 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
               DeleteItem={() => DeleteItem(item.id)}
               initialName={item.name}
               initialPrice={item.price}
+              handleThumbDown={handleThumbDown}
+              handleThumbUp={handleThumbUp}
+              thumbUp={thumbUp}
+              thumbDown={thumbDown}    
+              counterUp={counterUp}
+              counterDown={counterDown}
+              votesRef={votesRef}
             />
           ))}
           <NewItem 

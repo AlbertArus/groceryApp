@@ -33,7 +33,7 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
 
   return (
     <div className="newItem">
-      <div className="itemLineCommon">
+      <div className="fila-between" style={{marginLeft:"3px"}}>
         <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
           <input type="text" placeholder="Nuevo Item" className="ItemName" ref={ItemNameInputRef} onChange={(e) => setName(e.target.value)} value={name}></input>

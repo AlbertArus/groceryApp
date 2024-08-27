@@ -51,9 +51,9 @@ h5 {
 
 .app-margin {
   width: 360px;
-  height: 844px;
+  /* height: 844px; */
   margin: 0px 15px;
-  border: 1px solid red
+  /* border: 1px solid red */
 }
 
 .headingPhone {
@@ -62,10 +62,13 @@ h5 {
   background-color: #f4f4f4;
 }
 
-.headerLista {
+.header {
   margin-bottom: 8px;
   padding-bottom: 8px;
   background-color: #ffeec9;
+}
+
+.headerLista {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -82,7 +85,11 @@ h5 {
   text-overflow: ellipsis;
 }
 
-.headerLista-firstLine {
+.headerLista-firstLine-icons {
+  margin: 4px 0px 0px 60px;
+}
+
+.fila-between {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -91,39 +98,32 @@ h5 {
   flex: 1 1 0%;
 }
 
-.headerLista-firstLine-icons {
-  margin: 4px 0px 0px 60px;
-}
-
-.subHeaderLista-secondLine {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.headerLista-secondLine {
+.fila-start {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
 }
 
-.headerLista-secondLine-group {
+.fila-start-group {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
-.headerLista-secondLine-group span {
-  margin-right: 4px;
+.fila-start-group span {
+  margin-right: 2px;
 }
 
 .material-symbols-outlined:hover {
   background-color: #e0e0e0;
   border-radius: 40px;
+}
+
+.icon-small {
+  font-size: 16px;
 }
 
 .icon-medium {
@@ -143,24 +143,8 @@ h5 {
   border-radius: 5px;
 }
 
-/* .itemList {
-  margin-top: 20px;
-} */
-
-.itemLine {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
+.item {
   margin-bottom: 12px;
-}
-
-.itemLineCommon {
-  margin-left: 3px;
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: flex-start;
 }
 
 .ItemCheckbox {
@@ -184,13 +168,19 @@ h5 {
   align-items: flex-start;
   flex: 1 1 0%;
   max-width: 100%;
-  overflow: hidden
 }
 
 .ItemName {
-  flex-shrink: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ItemName.expanded {
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal; 
+  word-wrap: break-word;
 }
 
 .ItemPrice {
@@ -205,17 +195,15 @@ h5 {
 }
 
 .categoryList {
-  margin-top: 20px;
-}
-
-.categoryListheader {
-  margin-bottom: 12px;
+  margin-top: 23px;
+  /* background-color: #f4f4f4; */
 }
 
 .titleCategory {
   display: flex;
   flex-direction: row;
   align-items: center;
+
 }
 
 .newCategory {
@@ -235,7 +223,7 @@ h5 {
 }
 
 .ItemText input, 
-.ItemText input:hover, 
+.ItemText input:hover,
 .titleCategory input, 
 .titleCategory input:hover {
   border: none;
@@ -244,13 +232,14 @@ h5 {
   font-size: inherit;
   color: black;
   background: transparent;
-  flex: 1 1 0%;
+  flex: 1;
   padding: 0;
 }
 
 .ItemText input[type=number] {
-  width: 55px;
+  width: 5px;
   box-sizing: border-box;
+  flex: 1;
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
