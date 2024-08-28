@@ -95,7 +95,7 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
           <span className="material-symbols-outlined icon-medium hidden" onClick={handleDelete} ref={deleteRef}>delete</span>
         </div>
       </div>
-      <div className="fila-start" style={{margin:"3px 0px 0px 62px"}} ref={votesRef[id]}>
+      <div className="fila-start" style={{margin:"3px 0px 0px 62px"}} ref={el => votesRef.current[id] = el}>
         <div className="fila-start-group">
             <span className="material-symbols-outlined icon-small" onClick={handleThumbUp} style={{color: thumbUp ? "blue" : ""}}>thumb_up</span>
             <h5>{counterUp}</h5>

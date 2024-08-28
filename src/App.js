@@ -18,7 +18,7 @@ function App() {
   const [counterUp, setCounterUp] = useState(0)
   const [thumbDown, setThumbDown] = useState(false)
   const [counterDown, setCounterDown] = useState(0)
-  const votesRef = useRef(null)
+  const votesRef = useRef({})
 
   useEffect(() => {
     const savedItems = localStorage.getItem("items");
@@ -232,12 +232,13 @@ function App() {
   }
 
   useEffect(() => {
-    items.every(item => {
-      if(votesRef.current) {
-        return (votesRef.current.style.display = votesShown ? "flex" : "none")
+    items.forEach(item => {
+      const currentRef = votesRef.current[item.id]
+      if(currentRef) {
+        currentRef.style.display = votesShown ? "flex" : "none"
       }
     })
-  },[votesShown])
+  },[votesShown, items])
 
   return (
     <div className="app">
@@ -251,6 +252,7 @@ function App() {
           planIcon={"travel"}
           plan={"Trip"}
           handleVotesVisible={handleVotesVisible}
+          votesShown={votesShown}
         />
         <SubHeader 
           items={totalItemsLength}

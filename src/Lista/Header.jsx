@@ -1,6 +1,6 @@
 // import { useState, } from "react"
 
-const Header = ({title, persons, planIcon, plan, handleVotesVisible}) => {
+const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}) => {
     // const [stickyHeader, setStickyHeader] = useState("")
 
     // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)
@@ -40,6 +40,7 @@ const Header = ({title, persons, planIcon, plan, handleVotesVisible}) => {
                             <span className="material-symbols-outlined icon-medium">{planIcon}</span>
                             <h5>{plan}</h5>
                         </div>
+                        <button onClick={handleVotesVisible}>{votesShown ? "Ocultar" : "Mostrar" } </button>
                     </div>
                 </div>
             </div>
