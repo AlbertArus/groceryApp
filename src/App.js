@@ -189,32 +189,42 @@ function App() {
   const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0)
   const formattedTotalPrice = totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
-  const handleThumbUp = () => {
-    if (thumbUp) {
-      setThumbUp(false);
-      setCounterUp(prevState => prevState - 1)
-    } else {
-      if (thumbDown) {
-        setThumbDown(false)
-        setCounterDown(prevState => prevState - 1)
-      }
-      setThumbUp(true)
-      setCounterUp(prevState => prevState + 1)
-    }
+  const handleThumbUp = (id) => {
+    setItems(prevItems => 
+      prevItems.map(item => {
+        if(item.id === id) {
+          if (item.thumbUp) {
+            return {...item, thumbUp: false, counterUp: item.counterUp -1}
+          } else {
+            if (item.thumbDown) {
+              return { ...item, thumbUp: true, thumbDown: false, counterDown: item.counterDown - 1, counterUp: item.counterUp + 1 };
+            } else {
+              return { ...item, thumbUp: true, counterUp: item.counterUp + 1 };
+            }
+          }
+        }
+        return item
+      })      
+    )
   }
   
-  const handleThumbDown = () => {
-    if (thumbDown) {
-      setThumbDown(false)
-      setCounterDown(prevState => prevState - 1)
-    } else {
-      if (thumbUp) {
-        setThumbUp(false)
-        setCounterUp(prevState => prevState - 1)
-      }
-      setThumbDown(true)
-      setCounterDown(prevState => prevState + 1)
-    }
+  const handleThumbDown = (id) => {
+    setItems(prevItems => 
+      prevItems.map(item => {
+        if(item.id === id) {
+          if (item.thumbDown) {
+            return {...item, thumbDown: false, counterDown: item.counterDown -1}
+          } else {
+            if (item.thumbUp) {
+              return { ...item, thumbDown: true, thumbUp: false, counterUp: item.counterUp - 1, counterDown: item.counterDown + 1 };
+            } else {
+              return { ...item, thumbDown: true, counterDown: item.counterDown + 1 };
+            }
+          }
+        }
+        return item
+      })
+    )
   }
 
   const handleVotesVisible = () => {

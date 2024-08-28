@@ -10,7 +10,6 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const toggleRef = useRef(null)
   const checkCategoryRef = useRef(null)
 
-
   const itemsLength = items.length
   const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
   const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
@@ -96,12 +95,12 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
               DeleteItem={() => DeleteItem(item.id)}
               initialName={item.name}
               initialPrice={item.price}
-              handleThumbDown={handleThumbDown}
-              handleThumbUp={handleThumbUp}
-              thumbUp={thumbUp}
-              thumbDown={thumbDown}    
-              counterUp={counterUp}
-              counterDown={counterDown}
+              handleThumbDown={() => handleThumbDown(item.id)}
+              handleThumbUp={() => handleThumbUp(item.id)}
+              thumbUp={item.thumbUp}
+              thumbDown={item.thumbDown}    
+              counterUp={item.counterUp}
+              counterDown={item.counterDown}
               votesRef={votesRef}
             />
           ))}
