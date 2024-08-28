@@ -93,6 +93,7 @@ h6 {
 
 .headerLista-firstLine-icons {
   margin: 4px 0px 0px 60px;
+  position: relative;
 }
 
 .fila-between {
@@ -252,7 +253,7 @@ h6 {
   max-width: 50px;
   box-sizing: border-box;
   flex: 1 0;
-  text-align: end;
+  /* text-align: end; */
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
@@ -261,4 +262,25 @@ h6 {
   margin: 0;
 }
 
+.optionsMenu {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  width: 190px;
+  height: auto;
+  background-color: white;
+  padding: 10px 5px;
+  position: absolute;
+  z-index: 1000;
+  top: 100%;
+  right: 0;
+}
 
+.itemMenu {
+  margin: 4px 0px 4px 8px;
+  border-radius: 5px;
+}
+
+.itemMenu:hover {
+  background-color: #f4f4f4;
+  padding-left: 3px;
+}

@@ -79,8 +79,6 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
   //     setPrice(''); // O manejar valor vacío si el número no es válido
   //   }
   // };
-
-  console.log(typeof formattedPrice)
   
   return (
     <div className="item">
