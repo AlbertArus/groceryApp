@@ -13,6 +13,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
 
   const itemsLength = items.length
   const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
+  const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleAddingItem = () => {
     if (ItemNameInputRef.current) {
@@ -68,7 +69,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
             <input type="text" placeholder="Tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
             <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory}>keyboard_arrow_down</span>
           </div>
-          <h3>{sumPrices} €</h3>
+          <h3>{FormattedSumPrices}</h3>
         </div>
         <div className="fila-between">
           <div className="fila-between firstPart">

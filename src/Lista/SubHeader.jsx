@@ -26,7 +26,7 @@ const SubHeader = ({ items, categories, itemsAdquirido, price }) => {
             </div>
             <div className="fila-between">
                 <h5>Adquirido: {itemsAdquirido}</h5>
-                <h3>{price} €</h3>
+                <h3>{price}</h3>
             </div>
         </div>
       )

@@ -1,17 +1,13 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
 const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, DeleteItem, handleThumbUp, handleThumbDown, thumbUp, thumbDown, counterUp, counterDown, votesRef }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
   const [isExpanded, setIsExpanded] = useState(false)
-  // const [thumbUp, setThumbUp] = useState(false)
-  // const [counterUp, setCounterUp] = useState(0)
-  // const [thumbDown, setThumbDown] = useState(false)
-  // const [counterDown, setCounterDown] = useState(0)
   const deleteRef = useRef(null)
   const ItemTextRef = useRef(null)
-  // const votesRef = useRef(null)
+  const ItemPriceRef = useRef(null)
 
   const handleEdit = (e) => {
     if(name.trim() && price.trim()) {
@@ -45,23 +41,46 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
     setIsExpanded(!isExpanded)
   }
 
-  // const handleThumbUp = () => {
-  //   if(!thumbUp) {
-  //     setCounterUp(prevState => prevState + 1)
-  //   } else {
-  //     setCounterUp(prevState => prevState - 1)
-  //   }
-  //   setThumbUp(!thumbUp)
-  // }
+  const priceFormatting = (event) => {
+    let newPrice = event.target.value
+    newPrice = newPrice.replace(",",".")
+    const regex = /^\d*\.?\d{0,2}/;
+    const match = newPrice.match(regex);
 
-  // const handleThumbDown = () => {
-  //   if(!thumbDown) {
-  //     setCounterDown(prevState => prevState + 1)
+    if (match) {
+      setPrice(match[0]);
+    }
+  }
+
+  useEffect(() => {
+    if(ItemPriceRef) {
+      ItemPriceRef.current.price = price
+    }
+  },[price])
+
+  // const priceFormatting = (event) => {
+  //   let newPrice = event.target.value;
+  
+  //   // Reemplazar comas por puntos
+  //   newPrice = newPrice.replace(",", ".");
+  
+  //   // Convertir a número
+  //   const numberPrice = parseFloat(newPrice);
+  
+  //   if (!isNaN(numberPrice)) {
+  //     // Redondear a dos decimales
+  //     const roundedPrice = Math.round(numberPrice * 100) / 100;
+  
+  //     // Formatear como moneda
+  //     const formattedPrice = roundedPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+  
+  //     setPrice(formattedPrice);
   //   } else {
-  //     setCounterDown(prevState => prevState - 1)
+  //     setPrice(''); // O manejar valor vacío si el número no es válido
   //   }
-  //   setThumbDown(!thumbDown)
-  // }
+  // };
+
+  console.log(typeof formattedPrice)
   
   return (
     <div className="item">
@@ -71,7 +90,7 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
           <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: isChecked ? "green" : "transparent"}}></div>
           <form className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
             <input type="text" placeholder="Modifica tu texto" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
-            <input type="number" placeholder="Modifica tu precio" onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setPrice(e.target.value)} value={price}></input>
+            <input type="number" placeholder="Modifica tu precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={priceFormatting} value={price}></input>
           </form>
           <span className="material-symbols-outlined hidden" onClick={handleDelete} ref={deleteRef}>delete</span>
         </div>

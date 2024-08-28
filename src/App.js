@@ -56,11 +56,11 @@ function App() {
     }
   }, [categories, loading]);
 
-  useEffect(() => {
-    if (!loading) {
-      console.log(localStorage.getItem("categories"))
-    }
-  }, [categories, loading]);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     console.log(localStorage.getItem("categories"))
+  //   }
+  // }, [categories, loading]);
 
   const AddItem = (name, price, categoryId) => {
     const newItem = {id: uuidv4(), categoryId, name:name, price:price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false}
@@ -177,19 +177,19 @@ function App() {
 
   const categoriesSums = categories.map(category => {
     const categoryItems = items.filter(item => item.categoryId === category.id);
-    const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0);
+    const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
 
-    return {
-      ...category,
-      itemsCount: categoryItems.length,
+    return { 
+      ...category, 
+      itemsCount: categoryItems.length, 
       sumPrice: sumPrice
-    }
-  })
+    };
+  });
 
-  const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0);
+  const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0)
+  const formattedTotalPrice = totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleThumbUp = () => {
-    // items.every(item => )
     if (thumbUp) {
       setThumbUp(false);
       setCounterUp(prevState => prevState - 1)
@@ -242,7 +242,7 @@ function App() {
         />
         <SubHeader 
           items={totalItemsLength}
-          price={totalPrice}
+          price={formattedTotalPrice}
           itemsAdquirido={ItemsChecked()}
           categories={categories}
         />
