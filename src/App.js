@@ -232,10 +232,12 @@ function App() {
   }
 
   useEffect(() => {
-    if(votesRef.current) {
-      votesRef.current.style.display = votesShown ? "flex" : "none"
-    }
-  })
+    items.every(item => {
+      if(votesRef.current) {
+        return (votesRef.current.style.display = votesShown ? "flex" : "none")
+      }
+    })
+  },[votesShown])
 
   return (
     <div className="app">

@@ -37,6 +37,12 @@ h5 {
   font-weight: 400;
 }
 
+h6 {
+  font-size: 10px;
+  margin: 0px;
+  font-weight: 400;
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -174,6 +180,7 @@ h5 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: capitalize;
 }
 
 .ItemName.expanded {
@@ -181,6 +188,7 @@ h5 {
   text-overflow: unset;
   white-space: normal; 
   word-wrap: break-word;
+  text-transform: capitalize;
 }
 
 .ItemPrice {
@@ -194,8 +202,11 @@ h5 {
   display: none;
 }
 
+.categories {
+  margin-top: 10px
+}
 .categoryList {
-  margin-top: 23px;
+  margin-bottom: 18px;
   /* background-color: #f4f4f4; */
 }
 

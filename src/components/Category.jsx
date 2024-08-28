@@ -68,7 +68,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
             <input type="text" placeholder="Tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
             <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory}>keyboard_arrow_down</span>
           </div>
-          <h3>{FormattedSumPrices}</h3>
+          <h4 style={{fontWeight:"500"}}>{FormattedSumPrices}</h4>
         </div>
         <div className="fila-between">
           <div className="fila-between firstPart">
@@ -76,8 +76,8 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
             <span className="material-symbols-outlined icon-medium" ref={checkCategoryRef} style={{color:"green", marginLeft:"8px"}}>task_alt</span>
           </div>
           <div className="icons">
-            <span className="material-symbols-outlined" onClick={handleAddingItem}>add</span>
-            <span className="material-symbols-outlined" onClick={handleDelete}>delete</span>
+            <span className="material-symbols-outlined icon-medium" onClick={handleAddingItem}>add</span>
+            <span className="material-symbols-outlined icon-medium" onClick={handleDelete}>delete</span>
             </div>
         </div>
       </div>

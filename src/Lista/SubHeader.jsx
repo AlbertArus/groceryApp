@@ -21,12 +21,14 @@ const SubHeader = ({ items, categories, itemsAdquirido, price }) => {
     return (
         <div className="subHeaderLista app-margin" ref={SubHeaderRef}>
             <div className="fila-between">
-                <h3>Items: {items}</h3>
-                <h4>Total</h4>
-            </div>
-            <div className="fila-between">
-                <h5>Adquirido: {itemsAdquirido}</h5>
-                <h3>{price}</h3>
+                <div className="columna-block">
+                    <h3>Items: {items}</h3>
+                    <h5>Adquirido: {itemsAdquirido}</h5>
+                </div>
+                <div className="columna-block">
+                    <h5 style={{display:"flex", justifyContent:"flex-end"}}>Total</h5>
+                    <h3>{price}</h3>
+                </div>
             </div>
         </div>
       )
