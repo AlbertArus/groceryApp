@@ -2,26 +2,34 @@ import { useState, useRef, useEffect } from "react"
 import OptionsMenu from "../components/OptionsMenu"
 
 const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}) => {
-    const [OptionsMenuVisible, setOptionsMenuVisible] = useState(false)
-    const OptionsMenuRef = useRef(null)
+    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const optionsMenuRef = useRef(null)
 
     const handleMenuVisibility = () => {
-        setOptionsMenuVisible(prevState => !prevState)
+        setIsOptionsMenuVisible(prevState => !prevState)
     }
 
+    // Ocultar desplegable si clicas fuera. No funciona
     useEffect(() => {
-        window.addEventListener("click", function() {
-            if(OptionsMenuVisible) {
-                setOptionsMenuVisible(false)
+        const handleClickOutside = (event) => {
+            if (isOptionsMenuVisible && optionsMenuRef.current && !optionsMenuRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false)
             }
-        })
-    },[OptionsMenuVisible])
+        }
+        if (isOptionsMenuVisible) {
+            document.addEventListener("click", handleClickOutside)
+        }
+        return () => {
+            document.removeEventListener("click", handleClickOutside)
+        }
+    }, [isOptionsMenuVisible])
+        console.log(isOptionsMenuVisible)
 
     useEffect(() => {
-        if(OptionsMenuRef.current) {
-            OptionsMenuRef.current.style.display(OptionsMenuVisible ? "block" : "none") 
+        if(optionsMenuRef.current) {
+            optionsMenuRef.current.style.display(isOptionsMenuVisible ? "block" : "none") 
         }
-    }, [OptionsMenuVisible])
+    }, [isOptionsMenuVisible])
     // const [stickyHeader, setStickyHeader] = useState("")
 
     // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)
@@ -51,12 +59,12 @@ const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}
                             <div className="headerLista-firstLine-icons">
                                 <span className="material-symbols-outlined icon-large">share</span>
                                 <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
-                                {OptionsMenuVisible && 
-                                <OptionsMenu 
-                                    ref={OptionsMenuRef}
-                                    votesShown={votesShown}
-                                    handleVotesVisible={handleVotesVisible}
-                                />
+                                {isOptionsMenuVisible && 
+                                    <OptionsMenu 
+                                        ref={optionsMenuRef}
+                                        votesShown={votesShown}
+                                        handleVotesVisible={handleVotesVisible}
+                                    />
                                 }
                             </div>
                         </div>
