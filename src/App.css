@@ -292,3 +292,84 @@ h6 {
   box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
   background-color: #f4f4f4;
 }
+
+.vistaListas {
+  width: 350px;
+  height: 70px;
+  border-radius: 10px;
+  border: 2px solid #ffeec9;
+}
+
+.iconsNavBar span {
+  margin-left: 6px;
+}
+
+.FormLista {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  width: 340px;
+  height: auto;
+  background-color: white;
+  padding: 10px 5px;
+  z-index: 1000;
+}
+
+.FormLista label {
+  font-size: 12px;
+  margin: 0px;
+  font-weight: 400;
+}
+
+.FormLista input, 
+.FormLista input:hover,
+.FormLista select, 
+.FormLista select:hover {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+  color: black;
+  background: transparent;
+  flex: 1;
+  padding: 0;
+  text-transform: capitalize;
+  margin: 5px 0px;
+}
+
+.FormLista textarea, 
+.FormLista textarea:hover {
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: black;
+  background: transparent;
+  flex: 1;
+  padding: 0;
+  margin: 5px 0px;
+  height: 100px;
+  width: 270px;
+  border-radius: 10px;
+}
+
+.FormLista input::placeholder {
+  color: lightgray;
+  opacity: 1;
+}
+
+button[type=submit] {
+  width: 250px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  border: 2.5px solid #9E9E9E;
+  margin-top: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 15px;
+}

@@ -1,6 +1,7 @@
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenu = ({ votesShown, handleVotesVisible }) => {
+const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => { 
+
   return (
     <div className="optionsMenu">
       <ItemMenu 
@@ -19,9 +20,14 @@ const OptionsMenu = ({ votesShown, handleVotesVisible }) => {
         onClick={handleVotesVisible}
       />
       <ItemMenu 
+        iconName={"archive"}
+        itemMenuName={"Archivar lista"}
+        onClick={handleVotesVisible}
+      />
+      <ItemMenu 
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
-        onClick={handleVotesVisible}
+        onClick={deleteLista}
       />
     </div>
   )

@@ -7,7 +7,7 @@ import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
 
-const Lista = () => {
+const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id}) => {
 
   const [items, setItems] = useState([])
   const [categories, setCategories] = useState([])
@@ -247,12 +247,14 @@ const Lista = () => {
           reverseOrder={false}
         />
         <Header 
-          title={"Compra Cerdanya"}
-          persons={"4"}
+          listaName={listaName}
+          members={members}
           planIcon={"travel"}
-          plan={"Trip"}
+          plan={plan}
+          descriptionLista={descriptionLista}
           handleVotesVisible={handleVotesVisible}
           votesShown={votesShown}
+          deleteLista={() => deleteLista(id)}
         />
         <SubHeader 
           items={totalItemsLength}

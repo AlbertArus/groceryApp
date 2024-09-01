@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import OptionsMenu from "../components/OptionsMenu"
 
-const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}) => {
+const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShown, handleVotesVisible, deleteLista}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuRef = useRef(null)
 
@@ -23,13 +23,15 @@ const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}
             document.removeEventListener("click", handleClickOutside)
         }
     }, [isOptionsMenuVisible])
-        console.log(isOptionsMenuVisible)
 
     useEffect(() => {
         if(optionsMenuRef.current) {
             optionsMenuRef.current.style.display(isOptionsMenuVisible ? "block" : "none") 
         }
     }, [isOptionsMenuVisible])
+
+    console.log({ listaName, members, plan, planIcon, isOptionsMenuVisible, handleMenuVisibility, votesShown, handleVotesVisible, deleteLista, optionsMenuRef });
+
     // const [stickyHeader, setStickyHeader] = useState("")
 
     // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)
@@ -55,7 +57,7 @@ const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}
                     </div>
                     <div className="headerText">
                         <div className="fila-between">
-                            <h2 className="headerTitle">{title}</h2>
+                            <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
                             <div className="headerLista-firstLine-icons">
                                 <span className="material-symbols-outlined icon-large">share</span>
                                 <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
@@ -64,6 +66,7 @@ const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}
                                         ref={optionsMenuRef}
                                         votesShown={votesShown}
                                         handleVotesVisible={handleVotesVisible}
+                                        deleteLista={deleteLista}
                                     />
                                 }
                             </div>
@@ -71,13 +74,12 @@ const Header = ({title, persons, planIcon, plan, votesShown, handleVotesVisible}
                         <div className="fila-start">
                             <div className="fila-start-group">
                                 <span className="material-symbols-outlined icon-medium">group</span>
-                                <h5>{persons} pers.</h5>
+                                <h5>{members} pers.</h5>
                             </div>
                             <div className="fila-start-group">
                                 <span className="material-symbols-outlined icon-medium">{planIcon}</span>
                                 <h5>{plan}</h5>
                             </div>
-                            {/* <button onClick={handleVotesVisible}>{votesShown ? "Ocultar" : "Mostrar" } </button> */}
                         </div>
                     </div>
                 </div>

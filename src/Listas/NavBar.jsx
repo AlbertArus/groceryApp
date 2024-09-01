@@ -1,23 +1,54 @@
-import OptionsMenu from "../components/OptionsMenu"
+import { useState, useEffect, useRef } from "react"
+import OptionsMenuHome from "../components/OptionsMenuHome"
 
 const NavBar = () => {
 
+    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const optionsMenuHomeRef = useRef(null)
+
+    const handleMenuVisibility = () => {
+        setIsOptionsMenuVisible(prevState => !prevState)
+    }
+
+    // Ocultar desplegable si clicas fuera. No funciona
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (isOptionsMenuVisible && optionsMenuHomeRef.current && !optionsMenuHomeRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false)
+            }
+        }
+        if (isOptionsMenuVisible) {
+            document.addEventListener("click", handleClickOutside)
+        }
+        return () => {
+            document.removeEventListener("click", handleClickOutside)
+        }
+    }, [isOptionsMenuVisible])
+
+    useEffect(() => {
+        if(optionsMenuHomeRef.current) {
+            optionsMenuHomeRef.current.style.display = isOptionsMenuVisible ? "block" : "none"
+        }
+    }, [isOptionsMenuVisible])
+
     return (
-        <div className="NavBar header">
-            <span class="material-symbols-outlined">settings</span>
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="material-symbols-outlined">search</span>
-            <span class="material-symbols-outlined">more_vert</span>
-            <OptionsMenu 
-                iconName={"campaign"}
-                itemMenuName={"Enviar sugerencias"}
-                // onClick={handleVotesVisible}
-            />
-            <OptionsMenu
-                iconName={"manage_accounts"}
-                itemMenuName={"Mi perfil"}
-                // onClick={handleVotesVisible}
-            />
+        <div className="NavBar header headingPhone">
+            <div className="fila-between app-margin" style={{marginTop: "5px"}}>
+                <div className="titleNavBar fila-start-group">
+                <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
+                <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
+                </div>
+                <div className="iconsNavBar" style={{position: "relative"}}>
+                    <span className="material-symbols-outlined">search</span>
+                    <span className="material-symbols-outlined">notifications</span>
+                    <span className="material-symbols-outlined" onClick={handleMenuVisibility}>more_vert</span>
+                    {isOptionsMenuVisible && 
+                        <OptionsMenuHome
+                            ref={optionsMenuHomeRef}
+                        />
+                    }
+                </div>
+            </div>
         </div>
     )
 }
