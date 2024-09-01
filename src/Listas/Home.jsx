@@ -27,29 +27,31 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength}) => {
                 </div>
             </div>
             <div className="vistaListas">
-                {/* <div className="fila-between">
-                    <h4>{listaName}</h4>
-                    <span className="material-symbols-outlined">more_vert</span>
-                </div>
-                <div className="fila-start">
-                    <div className="fila-start-group">
-                        <span className="material-symbols-outlined icon-medium">group</span>
-                        <h5>{members} pers.</h5>
-                    </div>
-                    <div className="fila-start-group">
-                        <span className="material-symbols-outlined icon-medium">{""}</span>
-                        <h5>{plan}</h5>
-                    </div>
-                </div> */}
                 {listas && listas.map(lista => (
-                    <Lista 
-                        key={lista.id}
-                        id={lista.id}
-                        listaName={lista.listaName}
-                        members={lista.members}
-                        plan={lista.plan}
-                        deleteLista={deleteLista}
-                    />
+                    <div key={lista.id}>
+                        <div className="fila-between">
+                            <h4>{lista.listaName}</h4>
+                            <span className="material-symbols-outlined">more_vert</span>
+                        </div>
+                        <div className="fila-start">
+                            <div className="fila-start-group">
+                                <span className="material-symbols-outlined icon-medium">group</span>
+                                <h5>{lista.members} pers.</h5>
+                            </div>
+                            <div className="fila-start-group">
+                                <span className="material-symbols-outlined icon-medium">{""}</span>
+                                <h5>{lista.plan}</h5>
+                            </div>
+                        </div>
+                        <Lista 
+                            key={lista.id}
+                            id={lista.id}
+                            listaName={lista.listaName}
+                            members={lista.members}
+                            plan={lista.plan}
+                            deleteLista={deleteLista}
+                        />
+                    </div>
                 ))}
             </div>
         </div>
