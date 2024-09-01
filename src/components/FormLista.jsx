@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const FormLista = ({ addLista }) => {
+const FormLista = ({ addLista, isFormVisible, setIsFormVisible }) => {
   const [listaName, setListaName] = useState("");
   const [members, setMembers] = useState("");
   const [plan, setPlan] = useState("");
@@ -14,6 +14,7 @@ const FormLista = ({ addLista }) => {
       setMembers("");
       setPlan("");
       setDescriptionLista("");
+      setIsFormVisible(false)
     }
   };
 

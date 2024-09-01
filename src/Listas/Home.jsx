@@ -13,10 +13,7 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength}) => {
             
             />
             <NewLista
-                addLista={addLista}
-            />
-            <FormLista 
-                addLista={addLista}
+            addLista={addLista}
             />
             <div className="app-margin">
                 <div className="welcome" style={{marginBottom: "12px"}}>
