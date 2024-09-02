@@ -1,9 +1,8 @@
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import FormLista from "../components/FormLista"
 const NewLista = ({addLista}) => {
 
     const [isFormVisible, setIsFormVisible] = useState (false)
-    const FormListaRef = useRef(null)
 
     const showForm = () => {
         setIsFormVisible(true)
@@ -18,7 +17,6 @@ const NewLista = ({addLista}) => {
             </div>
             {isFormVisible && (
                 <FormLista
-                    ref={FormListaRef}
                     addLista={addLista}
                     isFormVisible={isFormVisible}
                     setIsFormVisible={setIsFormVisible}

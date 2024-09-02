@@ -300,8 +300,18 @@ h6 {
   border: 2px solid #ffeec9;
 }
 
+.iconsNavBar {
+  margin-left: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .iconsNavBar span {
   margin-left: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .FormLista {
@@ -372,4 +382,13 @@ form {
   align-items: flex-start;
   justify-content: flex-start;
   margin: 15px;
+}
+
+.buttonRegistro {
+  /* width: 250px;
+  height: 30px; */
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  border: 2.5px solid #9E9E9E;
+  top: 0;
 }

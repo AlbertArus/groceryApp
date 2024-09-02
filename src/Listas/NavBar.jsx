@@ -33,18 +33,18 @@ const NavBar = () => {
 
     return (
         <div className="NavBar header headingPhone">
-            <div className="fila-between app-margin" style={{marginTop: "5px"}}>
+            <div className="fila-between app-margin" style={{marginTop: "7px", display: "flex", alignItems: "center"}}>
                 <div className="titleNavBar fila-start-group">
                 <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
                 <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
                 </div>
                 <div className="iconsNavBar" style={{position: "relative"}}>
-                    <span className="material-symbols-outlined">search</span>
+                    <button className="buttonRegistro">Registrarse</button>
                     <span className="material-symbols-outlined">notifications</span>
                     <span className="material-symbols-outlined" onClick={handleMenuVisibility}>more_vert</span>
                     {isOptionsMenuVisible && 
                         <OptionsMenuHome
-                            ref={optionsMenuHomeRef}
+                            // ref={optionsMenuHomeRef}
                         />
                     }
                 </div>

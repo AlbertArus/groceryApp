@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Home from "./Listas/Home"
@@ -7,8 +7,8 @@ function App() {
 
   const [listas, setListas] = useState([])
 
-  const addLista = (listaName, members, plan, descriptionLista) => {
-      const newLista = {id: uuidv4(), listaName, members, plan, descriptionLista}
+  const addLista = (listaName, members, plan, descriptionLista, categories, items) => {
+      const newLista = {id: uuidv4(), listaName, members, plan, descriptionLista, categories, items}
       setListas(prevListas => [...prevListas, newLista])
   }
 

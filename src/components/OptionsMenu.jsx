@@ -10,6 +10,11 @@ const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => {
         onClick={handleVotesVisible}
       />
       <ItemMenu 
+        iconName={"search"}
+        itemMenuName={"Buscar en lista"}
+        onClick={deleteLista}
+      />
+      <ItemMenu 
         iconName={"check_box"}
         itemMenuName={"Completar todo"}
         onClick={handleVotesVisible}
@@ -28,7 +33,7 @@ const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => {
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
         onClick={deleteLista}
-      />
+      />      
     </div>
   )
 }

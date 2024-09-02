@@ -3,9 +3,8 @@
 import Lista from "../Lista/Lista"
 import NewLista from "./NewLista"
 import NavBar from "./NavBar"
-import FormLista from "../components/FormLista"
 
-const Home = ({usuario, listas, addLista, deleteLista, listaslength}) => {
+const Home = ({usuario, listas, addLista, deleteLista, listaslength, items, categories}) => {
 
     return (
         <div className="Home app">
@@ -13,7 +12,7 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength}) => {
             
             />
             <NewLista
-            addLista={addLista}
+                addLista={addLista}
             />
             <div className="app-margin">
                 <div className="welcome" style={{marginBottom: "12px"}}>

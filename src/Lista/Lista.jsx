@@ -7,7 +7,7 @@ import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
 
-const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id}) => {
+const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id, listas}) => {
 
   const [items, setItems] = useState([])
   const [categories, setCategories] = useState([])
