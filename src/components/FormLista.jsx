@@ -18,13 +18,21 @@ const FormLista = ({ addLista, isFormVisible, setIsFormVisible }) => {
     }
   };
 
+  const handleFormClose = () => {
+    setIsFormVisible(false)
+  }
+
   return (
     <div className="FormLista">
+      <div className="fila-between" style={{margin:"15px"}}>
+        <h5 style={{textDecoration:"underline"}}>Configura tu nueva lista</h5>
+        <span class="material-symbols-outlined icon-medium" onClick={handleFormClose}>close</span>
+      </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="nombre">Nombre</label>
         <input
           type="text"
-          placeholder="BuscarCosta"
+          placeholder="Finde en la costa"
           id="nombre"
           onChange={(e) => setListaName(e.target.value)}
           value={listaName}
