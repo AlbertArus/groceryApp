@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Home from "./Listas/Home"
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import FormLista from './components/FormLista';
+import Lista from './Lista/Lista';
 
 function App() {
 
@@ -66,16 +69,16 @@ function App() {
   return (
     <div>
       <Home
-        usuario={"Marcos"}
-        listaslength={listaslength}
-        addLista={addLista}
-        listas={listas}
-        setListas={setListas}
-        deleteLista={deleteLista}
-        updateListaCategories={updateListaCategories}
-        updateListaItems={updateListaItems}
-        loading={loading}
-        setLoading={setLoading}
+          usuario={"Marcos"}
+          listaslength={listas.length}
+          addLista={addLista}
+          listas={listas}
+          setListas={setListas}
+          deleteLista={deleteLista}
+          updateListaCategories={updateListaCategories}
+          updateListaItems={updateListaItems}
+          loading={loading}
+          setLoading={setLoading}
       />
     </div>
   )

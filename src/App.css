@@ -316,12 +316,14 @@ h6 {
 
 .FormLista {
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
   width: 340px;
   height: auto;
   background-color: white;
   padding: 10px 5px;
   z-index: 1000;
+  position: absolute;
+  top: 241px;
 }
 
 .FormLista label {
@@ -335,6 +337,7 @@ h6 {
 .FormLista select, 
 .FormLista select:hover {
   border: none;
+  border-bottom: 2px solid #9E9E9E;
   outline: none;
   font-family: inherit;
   font-size: 16px;
@@ -348,17 +351,18 @@ h6 {
 
 .FormLista textarea, 
 .FormLista textarea:hover {
+  border: none;
+  border-bottom: 2px solid #9E9E9E;
   outline: none;
+  resize: none;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   color: black;
   background: transparent;
   flex: 1;
   padding: 0;
   margin: 5px 0px;
-  height: 100px;
-  width: 270px;
-  border-radius: 10px;
+  width: 240px;
 }
 
 .FormLista input::placeholder {
@@ -391,4 +395,16 @@ button[type=submit] {
   background-color: #f4f4f4;
   border: 2.5px solid #9E9E9E;
   top: 0;
+}
+
+#plan {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#plan button {
+  margin-right: 10px;
+  border-radius: 7px;
 }
