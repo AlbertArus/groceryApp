@@ -30,8 +30,6 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
         }
     }, [isOptionsMenuVisible])
 
-    console.log({ listaName, members, plan, planIcon, isOptionsMenuVisible, handleMenuVisibility, votesShown, handleVotesVisible, deleteLista, optionsMenuRef });
-
     // const [stickyHeader, setStickyHeader] = useState("")
 
     // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)

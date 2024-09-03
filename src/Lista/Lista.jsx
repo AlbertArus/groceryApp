@@ -7,11 +7,10 @@ import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
 
-const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id, listas}) => {
+const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading, setLoading, id, lista, setListas, items: initialItems, categories: initialCategories, updateListaItems, updateListaCategories}) => {
 
-  const [items, setItems] = useState([])
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [items, setItems] = useState(initialItems);
+  const [categories, setCategories] = useState(initialCategories);
   const [deletedItem, setDeletedItem] = useState(null)
   const [votesShown, setVotesShown] = useState(true)
   const [thumbUp, setThumbUp] = useState(false)
@@ -40,19 +39,21 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id, lis
         localStorage.removeItem("categories");
       } 
     }
-      
+    
     setLoading(false);
   }, []);
 
   useEffect(() => {
     if (!loading) {
       localStorage.setItem("items", JSON.stringify(items));
+      updateListaItems(id, items); // Update the items in App.js
     }
   }, [items, loading]);
-  
+
   useEffect(() => {
     if (!loading) {
       localStorage.setItem("categories", JSON.stringify(categories));
+      updateListaCategories(id, categories); // Update the categories in App.js
     }
   }, [categories, loading]);
 
@@ -63,7 +64,7 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id, lis
   // }, [categories, loading]);
 
   const AddItem = (name, price, categoryId) => {
-    const newItem = {id: uuidv4(), categoryId, name:name, price:price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false}
+    const newItem = {id: uuidv4(), listaId: id, categoryId, name:name, price:price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false}
     setItems(prevItems => [...prevItems, newItem])
     addItemToCategory(newItem)
   }
@@ -123,7 +124,15 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, id, lis
   const totalItemsLength = items.length
 
   const AddCategory = (categoryName, categoryPrice) => {
-    setCategories([...categories, {id: uuidv4(), categoryName, items: [], categoryPrice, isChecked: false}])
+    const newCategory = {id: uuidv4(), listaId: id, categoryName, items: [], categoryPrice, isChecked: false}
+    setCategories([...categories,newCategory])
+  }
+  // addCategoriesToList(newCategory)
+
+  const addCategoriesToList = (category) => {
+    setListas(prevListas => prevListas.map(lista => 
+      lista.id === category.listaId ? {...lista, categories: [...lista.categories, category]} : lista
+    ))
   }
 
   const addItemToCategory = (item) => {

@@ -4,7 +4,7 @@ import Lista from "../Lista/Lista"
 import NewLista from "./NewLista"
 import NavBar from "./NavBar"
 
-const Home = ({usuario, listas, addLista, deleteLista, listaslength, items, categories}) => {
+const Home = ({usuario, listas, addLista, deleteLista, listaslength, updateListaItems, updateListaCategories, setListas, loading, setLoading,}) => {
 
     return (
         <div className="Home app">
@@ -46,6 +46,13 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength, items, cate
                             members={lista.members}
                             plan={lista.plan}
                             deleteLista={deleteLista}
+                            setListas={setListas}
+                            categories={lista.categories}
+                            items={lista.items}
+                            updateListaCategories={updateListaCategories}
+                            updateListaItems={updateListaItems}
+                            loading={loading}
+                            setLoading={setLoading}
                         />
                     </div>
                 ))}
