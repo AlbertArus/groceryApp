@@ -6,9 +6,12 @@ import toast, { Toaster } from 'react-hot-toast'
 import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
+import { useParams } from 'react-router-dom'
 
-const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading, setLoading, id, lista, setListas, items: initialItems, categories: initialCategories, updateListaItems, updateListaCategories}) => {
-
+const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading, setLoading, id, listas, setListas, items: initialItems, categories: initialCategories, updateListaItems, updateListaCategories}) => {
+  
+  let params = useParams();
+  console.log(params)
   const [items, setItems] = useState(initialItems);
   const [categories, setCategories] = useState(initialCategories);
   const [deletedItem, setDeletedItem] = useState(null)
@@ -18,6 +21,10 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
   const [thumbDown, setThumbDown] = useState(false)
   const [counterDown, setCounterDown] = useState(0)
   const votesRef = useRef({})
+  
+  console.log(listas)
+  const selectedList = listas.find(lista => lista.id === params.id)
+  console.log(selectedList)
 
   useEffect(() => {
     const savedItems = localStorage.getItem("items");
@@ -248,6 +255,7 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
       }
     })
   },[votesShown, items])
+
 
   return (
     <div className="app">

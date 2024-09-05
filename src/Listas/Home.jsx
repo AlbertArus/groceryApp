@@ -1,5 +1,6 @@
 // import { useState } from "react"
 // import { v4 as uuidv4 } from 'uuid'
+import { Link } from "react-router-dom";
 import Lista from "../Lista/Lista"
 import NewLista from "./NewLista"
 import NavBar from "./NavBar"
@@ -25,10 +26,10 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength, updateLista
             <div className="vistaListas">
                 {listas && listas.map(lista => (
                     <div key={lista.id}>
-                        <div className="fila-between">
+                        <Link to={`/list/${lista.id}`} className="fila-between">
                             <h4>{lista.listaName}</h4>
                             <span className="material-symbols-outlined">more_vert</span>
-                        </div>
+                        </Link>
                         <div className="fila-start">
                             <div className="fila-start-group">
                                 <span className="material-symbols-outlined icon-medium">group</span>
@@ -39,7 +40,7 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength, updateLista
                                 <h5>{lista.plan}</h5>
                             </div>
                         </div>
-                        <Lista 
+                        {/* <Lista 
                             key={lista.id}
                             id={lista.id}
                             listaName={lista.listaName}
@@ -53,7 +54,7 @@ const Home = ({usuario, listas, addLista, deleteLista, listaslength, updateLista
                             updateListaItems={updateListaItems}
                             loading={loading}
                             setLoading={setLoading}
-                        />
+                        /> */}
                     </div>
                 ))}
             </div>

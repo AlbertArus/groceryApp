@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Home from "./Listas/Home"
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Routes, useParams } from 'react-router-dom';
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 
 function App() {
-
+  
   const [listas, setListas] = useState([])
   const [loading, setLoading] = useState(true)
 
   const addLista = (listaName, members, plan, descriptionLista) => {
-      const newLista = {id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: []}
-      setListas(prevListas => [...prevListas, newLista])
+    const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [] }
+    setListas(prevListas => [...prevListas, newLista])
   }
 
   useEffect(() => {
@@ -26,10 +26,10 @@ function App() {
         localStorage.removeItem("listas");
       }
     }
-    
+
     setLoading(false);
   }, []);
-  
+
   useEffect(() => {
     if (!loading) {
       localStorage.setItem("listas", JSON.stringify(listas));
@@ -51,7 +51,7 @@ function App() {
   }
 
   const updateListaItems = (listaId, updatedItems) => {
-    setListas(prevListas => 
+    setListas(prevListas =>
       prevListas.map(lista =>
         lista.id === listaId ? { ...lista, items: updatedItems } : lista
       )
@@ -59,16 +59,18 @@ function App() {
   };
 
   const updateListaCategories = (listaId, updatedCategories) => {
-    setListas(prevListas => 
+    setListas(prevListas =>
       prevListas.map(lista =>
         lista.id === listaId ? { ...lista, categories: updatedCategories } : lista
       )
     );
   };
 
+
   return (
-    <div>
-      <Home
+    <Routes>
+      <Route path="/" element={
+        <Home
           usuario={"Marcos"}
           listaslength={listas.length}
           addLista={addLista}
@@ -79,8 +81,28 @@ function App() {
           updateListaItems={updateListaItems}
           loading={loading}
           setLoading={setLoading}
+        />}
+      /> {/* 👈 Renders at /app/ */}
+      <Route path="/list/:id" element={
+        
+        <Lista
+          // key={lista.id}
+          // id={lista.id}
+          // listaName={lista.listaName}
+          // members={lista.members}
+          // plan={lista.plan}
+          // deleteLista={deleteLista}
+          // setListas={setListas}
+          // categories={lista.categories}
+          // items={lista.items}
+          // updateListaCategories={updateListaCategories}
+          // updateListaItems={updateListaItems}
+          // loading={loading}
+          // setLoading={setLoading}
+          listas={listas}
+        />}
       />
-    </div>
+    </Routes>
   )
 }
 
