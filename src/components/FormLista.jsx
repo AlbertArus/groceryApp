@@ -26,7 +26,7 @@ const FormLista = ({ addLista, isFormVisible, setIsFormVisible }) => {
     <div className="FormLista">
       <div className="fila-between" style={{margin:"15px"}}>
         <h5 style={{fontWeight:"600"}}>Configura tu nueva lista</h5>
-        <span class="material-symbols-outlined icon-medium" onClick={handleFormClose}>close</span>
+        <span className="material-symbols-outlined icon-medium" onClick={handleFormClose}>close</span>
       </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="nombre">Nombre</label>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Home from "./Listas/Home"
-import { BrowserRouter as Router, Route, Switch, Routes, useParams } from 'react-router-dom';
+import { Route, Routes, } from 'react-router-dom';
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 
@@ -42,10 +42,6 @@ function App() {
   //   }
   // }, [listas, loading]);
 
-  console.log(listas)
-
-  const listaslength = listas.length
-
   const deleteLista = (id) => {
     setListas(prevListas => prevListas.filter(lista => lista.id !== id))
   }
@@ -82,24 +78,23 @@ function App() {
           loading={loading}
           setLoading={setLoading}
         />}
-      /> {/* 👈 Renders at /app/ */}
+      />
       <Route path="/list/:id" element={
-        
         <Lista
           // key={lista.id}
           // id={lista.id}
           // listaName={lista.listaName}
           // members={lista.members}
           // plan={lista.plan}
-          // deleteLista={deleteLista}
-          // setListas={setListas}
           // categories={lista.categories}
           // items={lista.items}
-          // updateListaCategories={updateListaCategories}
-          // updateListaItems={updateListaItems}
-          // loading={loading}
-          // setLoading={setLoading}
           listas={listas}
+          setListas={setListas}
+          deleteLista={deleteLista}
+          updateListaCategories={updateListaCategories}
+          updateListaItems={updateListaItems}
+          loading={loading}
+          setLoading={setLoading}
         />}
       />
     </Routes>

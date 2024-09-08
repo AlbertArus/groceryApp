@@ -57,8 +57,6 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
       setIsCollapsed(true);
     }
   }, [isChecked]);
- 
-
 
   return (
     <div className="categoryList">

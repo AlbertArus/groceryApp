@@ -8,12 +8,14 @@ import SubHeader from './SubHeader'
 import Categories from './Categories'
 import { useParams } from 'react-router-dom'
 
-const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading, setLoading, id, listas, setListas, items: initialItems, categories: initialCategories, updateListaItems, updateListaCategories}) => {
-  
+const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, updateListaItems, updateListaCategories }) => {
+
   let params = useParams();
-  console.log(params)
-  const [items, setItems] = useState(initialItems);
-  const [categories, setCategories] = useState(initialCategories);
+  console.log("soy el id de la url", params)
+  
+  // const [selectedList, setSelectedList] = useState(null);
+  const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [deletedItem, setDeletedItem] = useState(null)
   const [votesShown, setVotesShown] = useState(true)
   const [thumbUp, setThumbUp] = useState(false)
@@ -21,64 +23,89 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
   const [thumbDown, setThumbDown] = useState(false)
   const [counterDown, setCounterDown] = useState(0)
   const votesRef = useRef({})
+
+  const selectedList = listas.find(lista => lista.id === params.id);
   
-  console.log(listas)
-  const selectedList = listas.find(lista => lista.id === params.id)
-  console.log(selectedList)
+  // useEffect(() => {
+  //   const currentList = listas.find(lista => lista.id === params.id);
+  //   if (currentList) {
+  //     setSelectedList(currentList);
+  //     setItems(currentList.items || []);
+  //     setCategories(currentList.categories || []);
+  //   }
+  //   setLoading(false);
+  // }, [params.id, listas]);
+
+  // useEffect(() => {
+  //   if (selectedList) {
+  //     const updatedList = {
+  //       ...selectedList,
+  //       items,
+  //       categories
+  //     };
+  //     setSelectedList(updatedList);
+  //   }
+  // }, [items, categories])
 
   useEffect(() => {
-    const savedItems = localStorage.getItem("items");
-    if (savedItems) {
-      try {
-        setItems(JSON.parse(savedItems));
-      } catch (error) {
-        console.error("Error parsing items from localStorage:", error);
-        localStorage.removeItem("items");
-      }
-    }
+    console.log("soy la lista completa", selectedList)
+  },[selectedList])
+
+  // useEffect(() => {
+  //     const savedItems = localStorage.getItem("items");
+  //     if (savedItems) {
+  //       try {
+  //         setItems(JSON.parse(savedItems));
+  //       } catch (error) {
+  //         console.error("Error parsing items from localStorage:", error);
+  //         localStorage.removeItem("items");
+  //       }
+  //     }
   
-    const savedCategories = localStorage.getItem("categories");
-    if (savedCategories) {
-      try {
-        setCategories(JSON.parse(savedCategories));
-      } catch (error) {
-        console.error("Error parsing categories from localStorage:", error);
-        localStorage.removeItem("categories");
-      } 
-    }
-    
-    setLoading(false);
-  }, []);
+  //     const savedCategories = localStorage.getItem("categories");
+  //     if (savedCategories) {
+  //       try {
+  //         setCategories(JSON.parse(savedCategories));
+  //       } catch (error) {
+  //         console.error("Error parsing categories from localStorage:", error);
+  //         localStorage.removeItem("categories");
+  //       }
+  //     }
 
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("items", JSON.stringify(items));
-      updateListaItems(id, items); // Update the items in App.js
-    }
-  }, [items, loading]);
-
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("categories", JSON.stringify(categories));
-      updateListaCategories(id, categories); // Update the categories in App.js
-    }
-  }, [categories, loading]);
+  //   setLoading(false);
+  // }, []);
 
   // useEffect(() => {
   //   if (!loading) {
-  //     console.log(localStorage.getItem("categories"))
+  //     localStorage.setItem("items", JSON.stringify(items));
+  //     updateListaItems(id, items);
+  //   }
+  // }, [items, loading]);
+
+  // useEffect(() => {
+  //   if (!loading) {
+  //     localStorage.setItem("categories", JSON.stringify(categories));
+  //     updateListaCategories(params.id, categories);
   //   }
   // }, [categories, loading]);
 
+  useEffect(() => {
+    if (selectedList) {
+      setItems(selectedList.items || []);
+      setCategories(selectedList.categories || []);
+    }
+    setLoading(false);
+  }, [selectedList]);
+
   const AddItem = (name, price, categoryId) => {
-    const newItem = {id: uuidv4(), listaId: id, categoryId, name:name, price:price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false}
+    const newItem = { id: uuidv4(), listaId: params.id, categoryId, name: name, price: price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false }
     setItems(prevItems => [...prevItems, newItem])
     addItemToCategory(newItem)
   }
 
   const EditItem = (id, name, price) => {
     setItems(items.map(item =>
-      item.id === id ? {...item, name: name, price: price} : item
+      item.id === id ? { ...item, name: name, price: price } : item
     ))
   }
 
@@ -92,34 +119,34 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
       <span style={{ display: "flex", alignItems: "center" }}>
         <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
         {`Has eliminado "${itemToDelete.name}"`}
-        <button onClick={() => {undoDelete(newDeletedItem); toast.dismiss(t.id)}} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+        <button onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
           Deshacer
         </button>
       </span>
-      ), {
-        style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
-      }
+    ), {
+      style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+    }
     )
   }
-  
+
   const handleCheck = (id) => {
     setItems(prevItems => {
       const newItems = prevItems.map(item =>
-        item.id === id ? {...item, isChecked: !item.isChecked} : item
+        item.id === id ? { ...item, isChecked: !item.isChecked } : item
       )
-      
-      setCategories(prevCategories => 
+
+      setCategories(prevCategories =>
         prevCategories.map(category => {
           const categoryItems = newItems.filter(item => item.categoryId === category.id);
           const allItemsChecked = categoryItems.every(item => item.isChecked);
-          return { 
-            ...category, 
+          return {
+            ...category,
             isChecked: allItemsChecked,
             items: categoryItems
           }
         })
       )
-  
+
       return newItems;
     })
   }
@@ -130,29 +157,72 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
 
   const totalItemsLength = items.length
 
-  const AddCategory = (categoryName, categoryPrice) => {
-    const newCategory = {id: uuidv4(), listaId: id, categoryName, items: [], categoryPrice, isChecked: false}
-    setCategories([...categories,newCategory])
-  }
-  // addCategoriesToList(newCategory)
+  // const AddCategory = (categoryName, categoryPrice) => {
+  //   const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false }
+  //   setCategories([...categories, newCategory])
+  // }
 
-  const addCategoriesToList = (category) => {
-    setListas(prevListas => prevListas.map(lista => 
-      lista.id === category.listaId ? {...lista, categories: [...lista.categories, category]} : lista
-    ))
-  }
+  const AddCategory = (categoryName, categoryPrice) => {
+    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false };
+    
+    // Actualiza las categorías en el estado local
+    const updatedCategories = [...categories, newCategory];
+    setCategories(updatedCategories);
+  
+    // Actualiza las categorías en selectedList
+    const updatedSelectedList = {
+      ...selectedList,
+      categories: updatedCategories
+    };
+  
+    // Actualiza listas en App
+    setListas(prevListas =>
+      prevListas.map(lista =>
+        lista.id === params.id ? updatedSelectedList : lista
+      )
+    );
+  
+    // Llamar a updateListaCategories para actualizar las categorías en el estado global
+    updateListaCategories(params.id, updatedCategories);
+  };
+
+  // const addItemToCategory = (item) => {
+  //   setCategories(prevCategories =>
+  //     prevCategories.map(category =>
+  //       category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
+  //     )
+  //   )
+  //   updateListaCategories(params.id, setCategories)
+  // }
 
   const addItemToCategory = (item) => {
-    setCategories(prevCategories => 
-      prevCategories.map(category => 
-        category.id === item.categoryId ? {...category, items:[...category.items, item]} : category
+    const updatedCategories = categories.map(category =>
+      category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
+    );
+  
+    setCategories(updatedCategories);
+    
+    // Actualiza las categorías e ítems en selectedList
+    const updatedSelectedList = {
+      ...selectedList,
+      categories: updatedCategories,
+      items: [...items, item]
+    };
+  
+    // Actualiza listas en App
+    setListas(prevListas =>
+      prevListas.map(lista =>
+        lista.id === params.id ? updatedSelectedList : lista
       )
-    )
-  }
+    );
+  
+    // Llamar a updateListaCategories para actualizar las categorías en el estado global
+    updateListaCategories(params.id, updatedCategories);
+  };
 
   const EditCategory = (id, categoryName) => {
     setCategories(categories.map(category =>
-      category.id === id ? {...category, categoryName} : category
+      category.id === id ? { ...category, categoryName } : category
     ))
   }
 
@@ -160,7 +230,7 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
     const CategoryToDelete = categories.find(category => category.id === id)
     const ItemsToDelete = items.filter(item => item.categoryId === id)
     setCategories(categories.filter(category => category.id !== id))
-    setItems(items.filter(item =>item.categoryId !== id))
+    setItems(items.filter(item => item.categoryId !== id))
 
     const newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
     setDeletedItem(newDeletedItem);
@@ -169,13 +239,13 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
       <span style={{ display: "flex", alignItems: "center" }}>
         <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
         {`Has eliminado "${CategoryToDelete.categoryName}"`}
-        <button onClick={() => {undoDelete(newDeletedItem); toast.dismiss(t.id)}} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+        <button onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
           Deshacer
         </button>
       </span>
-      ), {
-        style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
-      }
+    ), {
+      style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+    }
     )
   }
 
@@ -195,9 +265,9 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
     const categoryItems = items.filter(item => item.categoryId === category.id);
     const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
 
-    return { 
-      ...category, 
-      itemsCount: categoryItems.length, 
+    return {
+      ...category,
+      itemsCount: categoryItems.length,
       sumPrice: sumPrice
     };
   });
@@ -206,11 +276,11 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
   const formattedTotalPrice = totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleThumbUp = (id) => {
-    setItems(prevItems => 
+    setItems(prevItems =>
       prevItems.map(item => {
-        if(item.id === id) {
+        if (item.id === id) {
           if (item.thumbUp) {
-            return {...item, thumbUp: false, counterUp: item.counterUp -1}
+            return { ...item, thumbUp: false, counterUp: item.counterUp - 1 }
           } else {
             if (item.thumbDown) {
               return { ...item, thumbUp: true, thumbDown: false, counterDown: item.counterDown - 1, counterUp: item.counterUp + 1 };
@@ -220,16 +290,16 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
           }
         }
         return item
-      })      
+      })
     )
   }
-  
+
   const handleThumbDown = (id) => {
-    setItems(prevItems => 
+    setItems(prevItems =>
       prevItems.map(item => {
-        if(item.id === id) {
+        if (item.id === id) {
           if (item.thumbDown) {
-            return {...item, thumbDown: false, counterDown: item.counterDown -1}
+            return { ...item, thumbDown: false, counterDown: item.counterDown - 1 }
           } else {
             if (item.thumbUp) {
               return { ...item, thumbDown: true, thumbUp: false, counterUp: item.counterUp - 1, counterDown: item.counterDown + 1 };
@@ -250,39 +320,47 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
   useEffect(() => {
     items.forEach(item => {
       const currentRef = votesRef.current[item.id]
-      if(currentRef) {
+      if (currentRef) {
         currentRef.style.display = votesShown ? "flex" : "none"
       }
     })
-  },[votesShown, items])
+  }, [votesShown, items])
 
+  useEffect(() => {
+    console.log(categories)
+  })
+  useEffect(() => {
+    console.log(items)
+  })
 
   return (
     <div className="app">
-        <Toaster 
-          position="bottom-center"
-          reverseOrder={false}
-        />
-        <Header 
-          listaName={listaName}
-          members={members}
-          planIcon={"travel"}
-          plan={plan}
-          descriptionLista={descriptionLista}
-          handleVotesVisible={handleVotesVisible}
-          votesShown={votesShown}
-          deleteLista={() => deleteLista(id)}
-        />
-        <SubHeader 
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+      />
+      {selectedList && (
+        <>
+          <Header
+            listaName={selectedList.listaName}
+            members={selectedList.members}
+            planIcon={"travel"}
+            plan={selectedList.plan}
+            descriptionLista={selectedList.descriptionLista}
+            handleVotesVisible={handleVotesVisible}
+            votesShown={votesShown}
+            deleteLista={() => deleteLista(id)}
+          />
+          <SubHeader 
           items={totalItemsLength}
           price={formattedTotalPrice}
           itemsAdquirido={ItemsChecked()}
-          categories={categories}
-        />
-        <Categories
-          items={items}
+          categories={selectedList.categories}
+          />
+          <Categories
+          items={selectedList.items}
           handleCheck={handleCheck}
-          categories={categories}
+          categories={selectedList.categories}
           AddCategory={AddCategory}
           EditCategory={EditCategory}
           DeleteCategory={DeleteCategory}
@@ -296,7 +374,9 @@ const Lista = ({members, plan, listaName, descriptionLista, deleteLista, loading
           counterUp={counterUp}
           counterDown={counterDown}
           votesRef={votesRef}
-        />
+          />
+        </>
+      )}
     </div>
   )
 }

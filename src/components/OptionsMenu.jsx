@@ -1,39 +1,39 @@
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => { 
+const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => {
 
   return (
     <div className="optionsMenu">
-      <ItemMenu 
+      <ItemMenu
         iconName={`${votesShown ? "visibility_off" : "visibility"}`}
-        itemMenuName={`${votesShown ? "Ocultar votaciones" : "Mostrar votaciones" }`}
+        itemMenuName={`${votesShown ? "Ocultar votaciones" : "Mostrar votaciones"}`}
         onClick={handleVotesVisible}
       />
-      <ItemMenu 
+      <ItemMenu
         iconName={"search"}
         itemMenuName={"Buscar en lista"}
         onClick={deleteLista}
       />
-      <ItemMenu 
+      <ItemMenu
         iconName={"check_box"}
         itemMenuName={"Completar todo"}
         onClick={handleVotesVisible}
       />
-      <ItemMenu 
+      <ItemMenu
         iconName={"check_box_outline_blank"}
         itemMenuName={"Desmarcar todo"}
         onClick={handleVotesVisible}
       />
-      <ItemMenu 
+      <ItemMenu
         iconName={"archive"}
         itemMenuName={"Archivar lista"}
         onClick={handleVotesVisible}
       />
-      <ItemMenu 
+      <ItemMenu
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
         onClick={deleteLista}
-      />      
+      />
     </div>
   )
 }
