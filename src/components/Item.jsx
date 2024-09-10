@@ -58,28 +58,6 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
     }
   },[price])
 
-  // const priceFormatting = (event) => {
-  //   let newPrice = event.target.value;
-  
-  //   // Reemplazar comas por puntos
-  //   newPrice = newPrice.replace(",", ".");
-  
-  //   // Convertir a número
-  //   const numberPrice = parseFloat(newPrice);
-  
-  //   if (!isNaN(numberPrice)) {
-  //     // Redondear a dos decimales
-  //     const roundedPrice = Math.round(numberPrice * 100) / 100;
-  
-  //     // Formatear como moneda
-  //     const formattedPrice = roundedPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
-  
-  //     setPrice(formattedPrice);
-  //   } else {
-  //     setPrice(''); // O manejar valor vacío si el número no es válido
-  //   }
-  // };
-  
   return (
     <div className="item">
       <div className="fila-start">

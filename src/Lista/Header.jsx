@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react"
 import OptionsMenu from "../components/OptionsMenu"
+import { useNavigate } from "react-router-dom"
 
-const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShown, handleVotesVisible, deleteLista}) => {
+const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShown, handleVotesVisible, handleArchive, handleDuplicate, deleteLista}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuRef = useRef(null)
+    const navigate = useNavigate()
 
     const handleMenuVisibility = () => {
         setIsOptionsMenuVisible(prevState => !prevState)
@@ -30,6 +32,10 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
         }
     }, [isOptionsMenuVisible])
 
+    const handleBack = () => {
+        navigate("/")
+    }
+
     // const [stickyHeader, setStickyHeader] = useState("")
 
     // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)
@@ -51,7 +57,7 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
             <div className="app-margin">
                 <div className="headerLista">
                     <div className="headerArrow">
-                        <span className="material-symbols-outlined icon-large">arrow_back</span>
+                        <span className="material-symbols-outlined icon-large" onClick={handleBack}>arrow_back</span>
                     </div>
                     <div className="headerText">
                         <div className="fila-between">
@@ -65,6 +71,8 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
                                         votesShown={votesShown}
                                         handleVotesVisible={handleVotesVisible}
                                         deleteLista={deleteLista}
+                                        handleArchive={handleArchive}
+                                        handleDuplicate={handleDuplicate}
                                     />
                                 }
                             </div>

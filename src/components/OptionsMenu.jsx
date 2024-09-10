@@ -1,6 +1,6 @@
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => {
+const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista, handleArchive, handleDuplicate }) => {
 
   return (
     <div className="optionsMenu">
@@ -12,12 +12,12 @@ const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => {
       <ItemMenu
         iconName={"search"}
         itemMenuName={"Buscar en lista"}
-        onClick={deleteLista}
+        onClick={handleVotesVisible}
       />
       <ItemMenu
         iconName={"check_box"}
         itemMenuName={"Completar todo"}
-        onClick={handleVotesVisible}
+        onClick={handleDuplicate}
       />
       <ItemMenu
         iconName={"check_box_outline_blank"}
@@ -27,7 +27,7 @@ const OptionsMenu = ({ votesShown, handleVotesVisible, deleteLista }) => {
       <ItemMenu
         iconName={"archive"}
         itemMenuName={"Archivar lista"}
-        onClick={handleVotesVisible}
+        onClick={handleArchive}
       />
       <ItemMenu
         iconName={"delete"}

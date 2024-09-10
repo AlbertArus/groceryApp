@@ -8,10 +8,10 @@ import SubHeader from './SubHeader'
 import Categories from './Categories'
 import { useParams } from 'react-router-dom'
 
-const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, updateListaItems, updateListaCategories }) => {
+const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate }) => {
 
   let params = useParams();
-  console.log("soy el id de la url", params)
+  // console.log("soy el id de la url", params)
   
   // const [selectedList, setSelectedList] = useState(null);
   const [items, setItems] = useState([]);
@@ -50,44 +50,6 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
   useEffect(() => {
     console.log("soy la lista completa", selectedList)
   },[selectedList])
-
-  // useEffect(() => {
-  //     const savedItems = localStorage.getItem("items");
-  //     if (savedItems) {
-  //       try {
-  //         setItems(JSON.parse(savedItems));
-  //       } catch (error) {
-  //         console.error("Error parsing items from localStorage:", error);
-  //         localStorage.removeItem("items");
-  //       }
-  //     }
-  
-  //     const savedCategories = localStorage.getItem("categories");
-  //     if (savedCategories) {
-  //       try {
-  //         setCategories(JSON.parse(savedCategories));
-  //       } catch (error) {
-  //         console.error("Error parsing categories from localStorage:", error);
-  //         localStorage.removeItem("categories");
-  //       }
-  //     }
-
-  //   setLoading(false);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!loading) {
-  //     localStorage.setItem("items", JSON.stringify(items));
-  //     updateListaItems(id, items);
-  //   }
-  // }, [items, loading]);
-
-  // useEffect(() => {
-  //   if (!loading) {
-  //     localStorage.setItem("categories", JSON.stringify(categories));
-  //     updateListaCategories(params.id, categories);
-  //   }
-  // }, [categories, loading]);
 
   useEffect(() => {
     if (selectedList) {
@@ -163,7 +125,7 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
   // }
 
   const AddCategory = (categoryName, categoryPrice) => {
-    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false };
+    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], isChecked: false };
     
     // Actualiza las categorías en el estado local
     const updatedCategories = [...categories, newCategory];
@@ -192,7 +154,15 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
   //       category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
   //     )
   //   )
-  //   updateListaCategories(params.id, setCategories)
+  // }
+
+  // const addItemToCategory1 = (item) => {
+  //   const updatedCategories = categories.map(category =>
+  //     category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
+  //   );
+  
+  //   setCategories(updatedCategories);
+  //   updateListaCategories(params.id, updatedCategories)
   // }
 
   const addItemToCategory = (item) => {
@@ -251,6 +221,11 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
 
   const undoDelete = useCallback((itemToRestore) => {
     if (itemToRestore) {
+      // if (itemToRestore.type === 'lista') {
+      //   setListas(prevListas => [...prevListas, itemToRestore.data.lista]);
+      //   setCategories(prevCategories => [...prevCategories, itemToRestore.data.category]);
+      //   setItems(prevItems => [...prevItems, ...itemToRestore.data.items]);
+      // }
       if (itemToRestore.type === 'category') {
         setCategories(prevCategories => [...prevCategories, itemToRestore.data.category]);
         setItems(prevItems => [...prevItems, ...itemToRestore.data.items]);
@@ -326,12 +301,12 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
     })
   }, [votesShown, items])
 
-  useEffect(() => {
-    console.log(categories)
-  })
-  useEffect(() => {
-    console.log(items)
-  })
+  // useEffect(() => {
+  //   console.log(categories)
+  // })
+  // useEffect(() => {
+  //   console.log(items)
+  // })
 
   return (
     <div className="app">
@@ -349,7 +324,9 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
             descriptionLista={selectedList.descriptionLista}
             handleVotesVisible={handleVotesVisible}
             votesShown={votesShown}
-            deleteLista={() => deleteLista(id)}
+            deleteLista={() => deleteLista(params.id)}
+            handleArchive={handleArchive}
+            handleDuplicate={handleDuplicate}
           />
           <SubHeader 
           items={totalItemsLength}

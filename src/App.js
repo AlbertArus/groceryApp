@@ -1,29 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Home from "./Listas/Home"
-import { Route, Routes, } from 'react-router-dom';
+import { Route, Routes, useNavigate, } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast'
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
+import Archived from './Listas/Archived';
 
 function App() {
-  
+
   const [listas, setListas] = useState([])
   const [loading, setLoading] = useState(true)
+  const [archivedList, setArchivedList] = useState([])
+  const [deletedLista, setDeletedLista] = useState("")
+  const navigate = useNavigate()
 
   const addLista = (listaName, members, plan, descriptionLista) => {
-    const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [] }
+    const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
     setListas(prevListas => [...prevListas, newLista])
   }
 
   useEffect(() => {
     const savedListas = localStorage.getItem("listas");
+    const archivedListas = localStorage.getItem("archivedList")
     if (savedListas) {
       try {
         setListas(JSON.parse(savedListas));
       } catch (error) {
         console.error("Error parsing items from localStorage:", error);
         localStorage.removeItem("listas");
+      }
+    }
+
+    if (archivedListas) {
+      try {
+        setArchivedList(JSON.parse(archivedListas));
+      } catch (error) {
+        console.error("Error parsing items from localStorage:", error);
+        localStorage.removeItem("archivedList");
       }
     }
 
@@ -36,15 +51,50 @@ function App() {
     }
   }, [listas, loading]);
 
-  // useEffect(() => {
-  //   if (!loading) {
-  //     console.log(localStorage.getItem("listas"))
-  //   }
-  // }, [listas, loading]);
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem("archivedList", JSON.stringify(archivedList));
+      console.log(archivedList)
+    }
+  }, [archivedList, loading]);
+
+  useEffect(() => {
+    if (!loading) {
+      console.log(listas)
+    }
+  }, [listas, loading]);
+
 
   const deleteLista = (id) => {
-    setListas(prevListas => prevListas.filter(lista => lista.id !== id))
+    const ListToDelete = listas.find(lista => lista.id === id)
+    setListas(listas.filter(lista => lista.id !== id))
+    const newDeletedList = { type: 'lista', data: ListToDelete };
+    setDeletedLista(newDeletedList);
+    console.log(ListToDelete)
+    navigate("/")
+
+    toast((t) => (
+      <span style={{ display: "flex", alignItems: "center" }}>
+        <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+        {`Has eliminado "${ListToDelete.listaName}"`}
+        <button onClick={() => { undoDelete(newDeletedList); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+          Deshacer
+        </button>
+      </span>
+    ), {
+      style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+    }
+    )
   }
+
+  const undoDelete = useCallback((ListToRestore) => {
+    if (ListToRestore) {
+      if (ListToRestore.type === 'list') {
+        setListas(prevListas => [...prevListas, ListToRestore.data.list]);
+        setDeletedLista(null);
+      }
+    }
+  }, [])
 
   const updateListaItems = (listaId, updatedItems) => {
     setListas(prevListas =>
@@ -62,6 +112,63 @@ function App() {
     );
   };
 
+  // const markArchived = (id) => {
+  //   setListas(prevListas => {
+  //     const listsArchived = prevListas.map(lista =>
+  //       lista.id === id ? { ...lista, isArchived: !lista.isArchived } : lista
+  //     )
+  //     return listsArchived
+  //   })
+  // }
+
+  const markArchived = (id) => {
+    setListas(prevListas =>
+      prevListas.map(lista =>
+        lista.id === id ? { ...lista, isArchived: !lista.isArchived } : lista
+      )
+    )
+  }
+
+  useEffect(() => {
+    const newArchived = listas.filter(lista => lista.isArchived)
+    setArchivedList(newArchived)
+  }, [listas])
+
+  const handleArchive = (id) => {
+    markArchived(id)
+    setTimeout(() => navigate("/"), 0);
+  }
+
+  const AllArchived = archivedList.length
+
+  const showArchived = (e) => {
+    e.preventDefault()
+    navigate("/archived/")
+  }
+
+  const duplicarLista = (id) => {
+    console.log("ID buscado:", id);
+    const originalLista = listas.find(lista => lista.id === id)
+    console.log(originalLista)
+    // const duplicateLista = {...originalLista, id: uuidv4(), categories: originalLista.categories ? [...originalLista.categories] : [], items: originalLista.items ? [...originalLista.items]: []}
+    const duplicateLista = { ...originalLista, id: uuidv4(), }
+    setListas(prevListas => [...prevListas, duplicateLista])
+    console.log("duplicado")
+  }
+
+  const handleDuplicate = () => {
+    duplicarLista()
+    navigate("/")
+  }
+
+  const handleNotified = (id) => {
+    setListas(prevListas => {
+      const notified = prevListas.map(lista =>
+      lista.id === id ? { ...lista, isNotified: !lista.isNotified } : lista
+      )
+      return notified
+    })
+  }
 
   return (
     <Routes>
@@ -70,13 +177,16 @@ function App() {
           usuario={"Marcos"}
           listaslength={listas.length}
           addLista={addLista}
-          listas={listas}
+          listas={listas.filter(lista => !lista.isArchived)}
           setListas={setListas}
           deleteLista={deleteLista}
           updateListaCategories={updateListaCategories}
           updateListaItems={updateListaItems}
           loading={loading}
           setLoading={setLoading}
+          AllArchived={AllArchived}
+          showArchived={showArchived}
+          handleNotified={handleNotified}
         />}
       />
       <Route path="/list/:id" element={
@@ -95,6 +205,18 @@ function App() {
           updateListaItems={updateListaItems}
           loading={loading}
           setLoading={setLoading}
+          handleArchive={handleArchive}
+          handleDuplicate={handleDuplicate}
+        />}
+      />
+      <Route path='/newlist/' element={
+        <FormLista />}
+      />
+      <Route path='/archived/' element={
+        <Archived
+          AllArchived={AllArchived}
+          showArchived={showArchived}
+          listas={listas.filter(lista => lista.isArchived)}
         />}
       />
     </Routes>
