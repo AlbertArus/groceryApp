@@ -286,11 +286,22 @@ h6 {
   padding-left: 3px;
 }
 
+.NewLista {
+  position: absolute;
+  bottom: 60px;
+  right: 50px;
+}
+
 .addingLista {
   border: 1px solid blue;
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
   background-color: #f4f4f4;
+  padding: 10px;
+}
+
+.addingLista.material-symbols-outlined:hover {
+  border-radius: 10px;
 }
 
 .vistaListas {

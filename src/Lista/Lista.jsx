@@ -1,81 +1,61 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import '../App.css'
 import { v4 as uuidv4 } from 'uuid'
-// import { Toast } from 'primereact/toast'
 import toast, { Toaster } from 'react-hot-toast'
 import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
+import EStateLista from '../components/EStateLista'
 import { useParams } from 'react-router-dom'
 
-const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate }) => {
 
   let params = useParams();
   // console.log("soy el id de la url", params)
   
-  // const [selectedList, setSelectedList] = useState(null);
-  const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [deletedItem, setDeletedItem] = useState(null)
+  // const [items, setItems] = useState([]);
+  // const [categories, setCategories] = useState([]);
+  // const [deletedItem, setDeletedItem] = useState(null)
   const [votesShown, setVotesShown] = useState(true)
   const [thumbUp, setThumbUp] = useState(false)
   const [counterUp, setCounterUp] = useState(0)
   const [thumbDown, setThumbDown] = useState(false)
   const [counterDown, setCounterDown] = useState(0)
+  const [isEStateLista, setIsEStateLista] = useState(false)
   const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  
-  // useEffect(() => {
-  //   const currentList = listas.find(lista => lista.id === params.id);
-  //   if (currentList) {
-  //     setSelectedList(currentList);
-  //     setItems(currentList.items || []);
-  //     setCategories(currentList.categories || []);
-  //   }
-  //   setLoading(false);
-  // }, [params.id, listas]);
-
-  // useEffect(() => {
-  //   if (selectedList) {
-  //     const updatedList = {
-  //       ...selectedList,
-  //       items,
-  //       categories
-  //     };
-  //     setSelectedList(updatedList);
-  //   }
-  // }, [items, categories])
 
   useEffect(() => {
     console.log("soy la lista completa", selectedList)
   },[selectedList])
 
-  useEffect(() => {
-    if (selectedList) {
-      setItems(selectedList.items || []);
-      setCategories(selectedList.categories || []);
-    }
-    setLoading(false);
-  }, [selectedList]);
-
   const AddItem = (name, price, categoryId) => {
-    const newItem = { id: uuidv4(), listaId: params.id, categoryId, name: name, price: price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false }
-    setItems(prevItems => [...prevItems, newItem])
-    addItemToCategory(newItem)
+    const newItem = { id: uuidv4(), listaId: params.id, categoryId, name, price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false };
+    const updatedItems = [...selectedList.items, newItem];
+    updateListaItems(params.id, updatedItems);
+    
+    const updatedCategories = selectedList.categories.map(category => 
+      category.id === categoryId 
+        ? { ...category, items: [...category.items, newItem] }
+        : category
+    );
+    updateListaCategories(params.id, updatedCategories);
   }
 
-  const EditItem = (id, name, price) => {
-    setItems(items.map(item =>
-      item.id === id ? { ...item, name: name, price: price } : item
-    ))
+  const EditItem = (id, newName, newPrice) => {
+    const index = selectedList.items.find(item => item.id === id)
+    selectedList.items[index].name = newName 
+    selectedList.items[index].price = newPrice
+    updateListaItems(params.id, selectedList.items)
   }
 
   const DeleteItem = (id) => {
-    const itemToDelete = items.find(item => item.id === id)
-    setItems(items.filter(item => item.id !== id))
-    const newDeletedItem = { type: 'item', data: itemToDelete };
-    setDeletedItem(newDeletedItem);
+    const itemToDelete = selectedList.items.find(item => item.id === id)
+    const filteredItems = selectedList.items.filter(item => item.id !== id) 
+    updateListaItems(params.id, filteredItems)
+    let newDeletedItem = { type: 'item', data: itemToDelete };
+    // setDeletedItem(newDeletedItem);
 
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
@@ -92,14 +72,12 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
   }
 
   const handleCheck = (id) => {
-    setItems(prevItems => {
-      const newItems = prevItems.map(item =>
+    const updatedItems = selectedList.items.map(item =>
         item.id === id ? { ...item, isChecked: !item.isChecked } : item
       )
 
-      setCategories(prevCategories =>
-        prevCategories.map(category => {
-          const categoryItems = newItems.filter(item => item.categoryId === category.id);
+      const updatedCategories = selectedList.categories.map(category => {
+          const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
           const allItemsChecked = categoryItems.every(item => item.isChecked);
           return {
             ...category,
@@ -107,103 +85,41 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
             items: categoryItems
           }
         })
-      )
 
-      return newItems;
-    })
+      updateListaCategories(params.id, updatedItems)
+      updateListaCategories(params.id, updatedCategories)
   }
 
   const ItemsChecked = () => {
-    return items.filter(item => item.isChecked).length;
+    return selectedList.items.filter(item => item.isChecked).length;
   }
 
-  const totalItemsLength = items.length
-
-  // const AddCategory = (categoryName, categoryPrice) => {
-  //   const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false }
-  //   setCategories([...categories, newCategory])
-  // }
+  const totalItemsLength = selectedList.items.length
+  const totalCategoriesLength = selectedList.categories.length
 
   const AddCategory = (categoryName, categoryPrice) => {
-    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], isChecked: false };
-    
-    // Actualiza las categorías en el estado local
-    const updatedCategories = [...categories, newCategory];
-    setCategories(updatedCategories);
-  
-    // Actualiza las categorías en selectedList
-    const updatedSelectedList = {
-      ...selectedList,
-      categories: updatedCategories
-    };
-  
-    // Actualiza listas en App
-    setListas(prevListas =>
-      prevListas.map(lista =>
-        lista.id === params.id ? updatedSelectedList : lista
-      )
-    );
-  
-    // Llamar a updateListaCategories para actualizar las categorías en el estado global
-    updateListaCategories(params.id, updatedCategories);
-  };
+    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false }
+    const updatedCategories = [...selectedList.categories, newCategory]
+    updateListaCategories(params.id, updatedCategories)
+  }
 
-  // const addItemToCategory = (item) => {
-  //   setCategories(prevCategories =>
-  //     prevCategories.map(category =>
-  //       category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
-  //     )
-  //   )
-  // }
-
-  // const addItemToCategory1 = (item) => {
-  //   const updatedCategories = categories.map(category =>
-  //     category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
-  //   );
-  
-  //   setCategories(updatedCategories);
-  //   updateListaCategories(params.id, updatedCategories)
-  // }
-
-  const addItemToCategory = (item) => {
-    const updatedCategories = categories.map(category =>
-      category.id === item.categoryId ? { ...category, items: [...category.items, item] } : category
-    );
-  
-    setCategories(updatedCategories);
-    
-    // Actualiza las categorías e ítems en selectedList
-    const updatedSelectedList = {
-      ...selectedList,
-      categories: updatedCategories,
-      items: [...items, item]
-    };
-  
-    // Actualiza listas en App
-    setListas(prevListas =>
-      prevListas.map(lista =>
-        lista.id === params.id ? updatedSelectedList : lista
-      )
-    );
-  
-    // Llamar a updateListaCategories para actualizar las categorías en el estado global
-    updateListaCategories(params.id, updatedCategories);
-  };
-
-  const EditCategory = (id, categoryName) => {
-    setCategories(categories.map(category =>
-      category.id === id ? { ...category, categoryName } : category
-    ))
+  const EditCategory = (id, newCategoryName) => {
+    const index = selectedList.categories.findIndex(category => category.id === id)
+    selectedList.categories[index].categoryName = newCategoryName
+    updateListaCategories(params.id, selectedList.categories)
   }
 
   const DeleteCategory = (id) => {
-    const CategoryToDelete = categories.find(category => category.id === id)
-    const ItemsToDelete = items.filter(item => item.categoryId === id)
-    setCategories(categories.filter(category => category.id !== id))
-    setItems(items.filter(item => item.categoryId !== id))
+    const CategoryToDelete = selectedList.categories.find(category => category.id === id)
+    const ItemsToDelete = selectedList.items.filter(item => item.categoryId === id)
+    // setCategories(categories.filter(category => category.id !== id))
+    // setItems(items.filter(item => item.categoryId !== id))
 
-    const newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
-    setDeletedItem(newDeletedItem);
+    const filteredCategories = selectedList.categories.filter(category => category.id !== id)
+    updateListaCategories(params.id, filteredCategories)
+
+    let newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
+    // setDeletedItem(newDeletedItem);
 
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
@@ -221,23 +137,22 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
 
   const undoDelete = useCallback((itemToRestore) => {
     if (itemToRestore) {
-      // if (itemToRestore.type === 'lista') {
-      //   setListas(prevListas => [...prevListas, itemToRestore.data.lista]);
-      //   setCategories(prevCategories => [...prevCategories, itemToRestore.data.category]);
-      //   setItems(prevItems => [...prevItems, ...itemToRestore.data.items]);
-      // }
-      if (itemToRestore.type === 'category') {
-        setCategories(prevCategories => [...prevCategories, itemToRestore.data.category]);
-        setItems(prevItems => [...prevItems, ...itemToRestore.data.items]);
+      if (itemToRestore.type === 'lista') {
+        setListas(prevListas => [...prevListas, itemToRestore.data.lista]);
+      } else if (itemToRestore.type === 'category') {
+        const updatedCategories = [...selectedList.categories, itemToRestore.data.category];
+        updateListaCategories(params.id, updatedCategories);
+        const updatedItems = [...selectedList.items, ...itemToRestore.data.items];
+        updateListaItems(params.id, updatedItems);
       } else if (itemToRestore.type === 'item') {
-        setItems(prevItems => [...prevItems, itemToRestore.data]);
+        const updatedItems = [...selectedList.items, itemToRestore.data];
+        updateListaItems(params.id, updatedItems);
       }
-      setDeletedItem(null);
     }
-  }, [])
+  }, [params.id, selectedList, updateListaCategories, updateListaItems, setListas])
 
-  const categoriesSums = categories.map(category => {
-    const categoryItems = items.filter(item => item.categoryId === category.id);
+  const categoriesSums = selectedList.categories.map(category => {
+    const categoryItems = selectedList.items.filter(item => item.categoryId === category.id);
     const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
 
     return {
@@ -251,8 +166,7 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
   const formattedTotalPrice = totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleThumbUp = (id) => {
-    setItems(prevItems =>
-      prevItems.map(item => {
+    const updatedItems = selectedList.items.map(item => {
         if (item.id === id) {
           if (item.thumbUp) {
             return { ...item, thumbUp: false, counterUp: item.counterUp - 1 }
@@ -266,12 +180,11 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
         }
         return item
       })
-    )
+    updateListaItems(params.id, updatedItems)
   }
 
   const handleThumbDown = (id) => {
-    setItems(prevItems =>
-      prevItems.map(item => {
+    const updatedItems = selectedList.items.map(item => {
         if (item.id === id) {
           if (item.thumbDown) {
             return { ...item, thumbDown: false, counterDown: item.counterDown - 1 }
@@ -285,7 +198,7 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
         }
         return item
       })
-    )
+    updateListaItems(params.id, updatedItems)
   }
 
   const handleVotesVisible = () => {
@@ -293,20 +206,28 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
   }
 
   useEffect(() => {
-    items.forEach(item => {
+    selectedList.items.forEach(item => {
       const currentRef = votesRef.current[item.id]
       if (currentRef) {
         currentRef.style.display = votesShown ? "flex" : "none"
       }
     })
-  }, [votesShown, items])
+  }, [votesShown, selectedList.items])
 
-  // useEffect(() => {
-  //   console.log(categories)
-  // })
-  // useEffect(() => {
-  //   console.log(items)
-  // })
+  useEffect(() => {
+    if (totalCategoriesLength === 0) {
+      setIsEStateLista(true);
+    } else {
+      setIsEStateLista(false);
+    }
+  }, [totalCategoriesLength]);
+
+  useEffect(() => {
+    console.log(selectedList.categories)
+  },[selectedList])
+  useEffect(() => {
+    console.log(selectedList.items)
+  },[selectedList])
 
   return (
     <div className="app">
@@ -329,29 +250,36 @@ const Lista = ({ deleteLista, loading, setLoading, id, listas, setListas, update
             handleDuplicate={handleDuplicate}
           />
           <SubHeader 
-          items={totalItemsLength}
-          price={formattedTotalPrice}
-          itemsAdquirido={ItemsChecked()}
-          categories={selectedList.categories}
+            items={totalItemsLength}
+            price={formattedTotalPrice}
+            itemsAdquirido={ItemsChecked()}
+            categories={selectedList.categories}
           />
           <Categories
-          items={selectedList.items}
-          handleCheck={handleCheck}
-          categories={selectedList.categories}
-          AddCategory={AddCategory}
-          EditCategory={EditCategory}
-          DeleteCategory={DeleteCategory}
-          AddItem={AddItem}
-          EditItem={EditItem}
-          DeleteItem={DeleteItem}
-          handleThumbDown={handleThumbDown}
-          handleThumbUp={handleThumbUp}
-          thumbUp={thumbUp}
-          thumbDown={thumbDown}
-          counterUp={counterUp}
-          counterDown={counterDown}
-          votesRef={votesRef}
+            items={selectedList.items}
+            handleCheck={handleCheck}
+            categories={selectedList.categories}
+            AddCategory={AddCategory}
+            EditCategory={EditCategory}
+            DeleteCategory={DeleteCategory}
+            AddItem={AddItem}
+            EditItem={EditItem}
+            DeleteItem={DeleteItem}
+            handleThumbDown={handleThumbDown}
+            handleThumbUp={handleThumbUp}
+            thumbUp={thumbUp}
+            thumbDown={thumbDown}
+            counterUp={counterUp}
+            counterDown={counterDown}
+            votesRef={votesRef}
           />
+          {isEStateLista && 
+            <div className="emptyState">
+              <EStateLista 
+                AddCategory={AddCategory}
+              />
+            </div>
+          }
         </>
       )}
     </div>

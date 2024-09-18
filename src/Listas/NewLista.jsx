@@ -14,14 +14,13 @@ const NewLista = ({ addLista }) => {
     return (
         <>
             <div className="NewLista">
-                <button className="addingLista">
-                    <span className="material-symbols-outlined addIcon" onClick={showForm}>add</span>
+                <button style={{background:"none", border: "none"}}>
+                    <span className="material-symbols-outlined addIcon addingLista" style={{borderRadiusHover: "none"}} onClick={showForm}>add</span>
                 </button>
             </div>
             {isFormVisible && (
                 <FormLista
                     addLista={addLista}
-                    isFormVisible={isFormVisible}
                     setIsFormVisible={setIsFormVisible}
                 />
             )}

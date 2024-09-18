@@ -1,12 +1,20 @@
-// import { useState } from "react"
-// import { v4 as uuidv4 } from 'uuid'
 import { Link } from "react-router-dom";
 import NewLista from "./NewLista"
 import NavBar from "./NavBar"
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import EStateHome from "../components/EStateHome";
 
-const Home = ({ usuario, listas, addLista, deleteLista, listaslength, updateListaItems, updateListaCategories, setListas, loading, setLoading, showArchived, AllArchived, handleNotified }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchived, AllArchived, handleNotified }) => {
     const archivadosRef = useRef(null)
+    const [isEStateHome, setIsEStateHome] = useState(false)
+
+    useEffect(() => {
+        if (listaslength === 0) {
+          setIsEStateHome(true);
+        } else {
+            setIsEStateHome(false);
+        }
+      }, [listaslength]);
 
     useEffect(() => {
         if (AllArchived === 0) {
@@ -31,6 +39,13 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, updateList
                     <h5>{`Tienes ${listaslength} listas activas.`}</h5>
                 </div>
             </div>
+            {isEStateHome && 
+                <div className="emptyState">
+                    <EStateHome 
+                        addLista={addLista}
+                    />
+                </div>
+            }
             {listas && listas.map(lista => (
                 <div key={lista.id}>
                     <div className="vistaListas">
@@ -39,7 +54,6 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, updateList
                                 <h4>{lista.listaName}</h4>
                                 <div className="fila-start">
                                 <span className="material-symbols-outlined" onClick={() => handleNotified(lista.id)}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                {/* <span className="material-symbols-outlined" onClick={handleNotified} ref={notifiedRef}>{notificationsIcon}</span> */}
                                 <span className="material-symbols-outlined"style={{marginLeft:"4px"}}>more_vert</span>
                                 </div>
                             </div>

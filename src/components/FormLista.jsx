@@ -1,7 +1,7 @@
 import { useState } from "react";
 // import NavBar from "../Listas/NavBar";
 
-const FormLista = ({ addLista, isFormVisible, setIsFormVisible }) => {
+const FormLista = ({ addLista, setIsFormVisible }) => {
   const [listaName, setListaName] = useState("");
   const [members, setMembers] = useState("");
   const [plan, setPlan] = useState("");
@@ -11,24 +11,16 @@ const FormLista = ({ addLista, isFormVisible, setIsFormVisible }) => {
     e.preventDefault();
     if (listaName.trim() && members.trim() && plan.trim()) {
       addLista(listaName, members, plan, descriptionLista);
-      setListaName("");
-      setMembers("");
-      setPlan("");
-      setDescriptionLista("");
       setIsFormVisible(false)
     }
   };
-
-  const handleFormClose = () => {
-    setIsFormVisible(false)
-  }
 
   return (
       // <NavBar />
       <div className="FormLista">
         <div className="fila-between" style={{ margin: "15px" }}>
           <h5 style={{ fontWeight: "600" }}>Configura tu nueva lista</h5>
-          <span className="material-symbols-outlined icon-medium" onClick={handleFormClose}>close</span>
+          <span className="material-symbols-outlined icon-medium" onClick={() => setIsFormVisible(false)}>close</span>
         </div>
         <form onSubmit={handleSubmit}>
           <label htmlFor="nombre">Nombre</label>
@@ -47,6 +39,9 @@ const FormLista = ({ addLista, isFormVisible, setIsFormVisible }) => {
           <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
           <button type="submit">Crear lista</button>
         </form>
+        {/* <span class="material-symbols-outlined">travel</span>
+        <span class="material-symbols-outlined">home</span>
+        <span class="material-symbols-outlined">repeat</span> */}
       </div>
   );
 };

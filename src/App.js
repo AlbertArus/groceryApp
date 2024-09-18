@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 import Home from "./Listas/Home"
 import { Route, Routes, useNavigate, } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 import Archived from './Listas/Archived';
@@ -54,7 +54,7 @@ function App() {
   useEffect(() => {
     if (!loading) {
       localStorage.setItem("archivedList", JSON.stringify(archivedList));
-      console.log(archivedList)
+      // console.log(archivedList)
     }
   }, [archivedList, loading]);
 
@@ -178,12 +178,9 @@ function App() {
           listaslength={listas.length}
           addLista={addLista}
           listas={listas.filter(lista => !lista.isArchived)}
-          setListas={setListas}
           deleteLista={deleteLista}
           updateListaCategories={updateListaCategories}
           updateListaItems={updateListaItems}
-          loading={loading}
-          setLoading={setLoading}
           AllArchived={AllArchived}
           showArchived={showArchived}
           handleNotified={handleNotified}
@@ -191,20 +188,11 @@ function App() {
       />
       <Route path="/list/:id" element={
         <Lista
-          // key={lista.id}
-          // id={lista.id}
-          // listaName={lista.listaName}
-          // members={lista.members}
-          // plan={lista.plan}
-          // categories={lista.categories}
-          // items={lista.items}
           listas={listas}
           setListas={setListas}
           deleteLista={deleteLista}
           updateListaCategories={updateListaCategories}
           updateListaItems={updateListaItems}
-          loading={loading}
-          setLoading={setLoading}
           handleArchive={handleArchive}
           handleDuplicate={handleDuplicate}
         />}

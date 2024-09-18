@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react"
-import OptionsMenu from "../components/OptionsMenu"
 import { useNavigate } from "react-router-dom"
+import OptionsMenu from "../components/OptionsMenu"
+import ShareButton from "../components/ShareButton"
 
 const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShown, handleVotesVisible, handleArchive, handleDuplicate, deleteLista}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
@@ -63,7 +64,7 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
                         <div className="fila-between">
                             <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
                             <div className="headerLista-firstLine-icons">
-                                <span className="material-symbols-outlined icon-large">share</span>
+                                <ShareButton />
                                 <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
                                 {isOptionsMenuVisible && 
                                     <OptionsMenu 
