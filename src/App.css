@@ -58,21 +58,22 @@ h6 {
 
 .app-margin {
   width: 360px;
-  /* height: 844px; */
   margin: 0px 15px;
-  /* border: 1px solid red */
 }
 
-.headingPhone {
+/* .headingPhone {
   width: 390px;
   height: 47px;
   background-color: #f4f4f4;
-}
+} */
 
-.header {
+.head {
   margin-bottom: 8px;
   padding-bottom: 8px;
   background-color: #ffeec9;
+  position: sticky;
+  z-index: 1000;
+  top: 0;
 }
 
 .headerLista {

@@ -54,39 +54,37 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
 
   return (
     <div className="head">
-        <div className="header" style={{ position: "sticky", zIndex:"500", top: "0" }}>
-            <div className="app-margin">
-                <div className="headerLista">
-                    <div className="headerArrow">
-                        <span className="material-symbols-outlined icon-large" onClick={handleBack}>arrow_back</span>
-                    </div>
-                    <div className="headerText">
-                        <div className="fila-between">
-                            <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
-                            <div className="headerLista-firstLine-icons">
-                                <ShareButton />
-                                <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
-                                {isOptionsMenuVisible && 
-                                    <OptionsMenu 
-                                        ref={optionsMenuRef}
-                                        votesShown={votesShown}
-                                        handleVotesVisible={handleVotesVisible}
-                                        deleteLista={deleteLista}
-                                        handleArchive={handleArchive}
-                                        handleDuplicate={handleDuplicate}
-                                    />
-                                }
-                            </div>
+        <div className="app-margin">
+            <div className="headerLista">
+                <div className="headerArrow">
+                    <span className="material-symbols-outlined icon-large" onClick={handleBack}>arrow_back</span>
+                </div>
+                <div className="headerText">
+                    <div className="fila-between">
+                        <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
+                        <div className="headerLista-firstLine-icons">
+                            <ShareButton />
+                            <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
+                            {isOptionsMenuVisible && 
+                                <OptionsMenu 
+                                    ref={optionsMenuRef}
+                                    votesShown={votesShown}
+                                    handleVotesVisible={handleVotesVisible}
+                                    deleteLista={deleteLista}
+                                    handleArchive={handleArchive}
+                                    handleDuplicate={handleDuplicate}
+                                />
+                            }
                         </div>
-                        <div className="fila-start">
-                            <div className="fila-start-group">
-                                <span className="material-symbols-outlined icon-medium">group</span>
-                                <h5>{members} pers.</h5>
-                            </div>
-                            <div className="fila-start-group">
-                                <span className="material-symbols-outlined icon-medium">{planIcon}</span>
-                                <h5>{plan}</h5>
-                            </div>
+                    </div>
+                    <div className="fila-start">
+                        <div className="fila-start-group">
+                            <span className="material-symbols-outlined icon-medium">group</span>
+                            <h5>{members} pers.</h5>
+                        </div>
+                        <div className="fila-start-group">
+                            <span className="material-symbols-outlined icon-medium">{planIcon}</span>
+                            <h5>{plan}</h5>
                         </div>
                     </div>
                 </div>

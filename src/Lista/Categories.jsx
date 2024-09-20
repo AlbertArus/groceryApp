@@ -35,7 +35,7 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
           />
         ))}
       </div>
-      <NewCategory 
+      <NewCategory
         AddCategory={AddCategory}
         ItemNameInputRef={ItemNameInputRef}
       />

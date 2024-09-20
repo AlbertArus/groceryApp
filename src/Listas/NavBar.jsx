@@ -32,7 +32,7 @@ const NavBar = () => {
     }, [isOptionsMenuVisible])
 
     return (
-        <div className="NavBar header headingPhone">
+        <div className="NavBar head">
             <div className="fila-between app-margin" style={{marginTop: "7px", display: "flex", alignItems: "center"}}>
                 <div className="titleNavBar fila-start-group">
                 <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
