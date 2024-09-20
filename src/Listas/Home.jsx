@@ -5,13 +5,15 @@ import NavBar from "./NavBar"
 import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 
-const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchived, AllArchived, handleNotified }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const archivadosRef = useRef(null)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRef = useRef(null)
 
+    const listaslength = listas.length
+    console.log(listas)
     useEffect(() => {
         if (listaslength === 0) {
           setIsEStateHome(true);
@@ -20,17 +22,8 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
         }
       }, [listaslength]);
 
-    useEffect(() => {
-        if (AllArchived === 0) {
-            if (archivadosRef.current) {
-                archivadosRef.current.style.display = "none"
-            } else {
-                if (archivadosRef.current) {
-                    archivadosRef.current.style.display = "block"
-                }
-            }
-        }
-    }, [AllArchived])
+    console.log(listaslength)
+    console.log(AllArchived)
 
     const handleMenuVisibility = (event) => {
         event.stopPropagation()
@@ -70,7 +63,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
             {listas && listas.map(lista => (
                 <div key={lista.id}>
                     <div className="vistaListas app-margin">
-                        <Link to={`/list/${lista.id}`} className="linkListas">
+                        {/* <Link to={`/list/${lista.id}`} className="linkListas"> */}
                             <div className="fila-between">
                                 <h4>{lista.listaName}</h4>
                                 <div className="fila-start" style={{position: "relative"}}>
@@ -79,6 +72,9 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
                                     {isOptionsMenuVisible && 
                                         <OptionsMenuListHome
                                             ref={optionsMenuListHomeRef}
+                                            handleDuplicate={handleDuplicate}
+                                            handleArchive={() => handleArchive(lista.id)}
+                                            deleteLista={deleteLista}
                                         />
                                     }
                                 </div>
@@ -93,11 +89,11 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
                                     <h5>{lista.plan}</h5>
                                 </div>
                             </div>
-                        </Link>
+                        {/* </Link> */}
                     </div>
                 </div>
             ))}
-            <h5 className="archivedSummary" style={{ cursor: "pointer" }} onClick={showArchived} ref={archivadosRef}>{`${AllArchived} listas archivadas`}</h5>
+            <h5 className="archivedSummary" style={{ display: AllArchived > 0 ? "block" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{`${AllArchived} listas archivadas`}</h5>
             <NewLista
                 addLista={addLista}
             />

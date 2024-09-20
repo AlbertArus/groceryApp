@@ -242,7 +242,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleVotesVisible={handleVotesVisible}
             votesShown={votesShown}
             deleteLista={() => deleteLista(params.id)}
-            handleArchive={handleArchive}
+            handleArchive={() => handleArchive(params.id)}
             handleDuplicate={handleDuplicate}
           />
           <SubHeader 

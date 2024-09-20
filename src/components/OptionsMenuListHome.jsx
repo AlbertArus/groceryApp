@@ -1,24 +1,24 @@
 import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenuListHome = forwardRef((props, ref) => { 
+const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista}, ref) => { 
 
   return (
     <div className="optionsMenu" ref={ref}>
       <ItemMenu 
         iconName={"content_copy"}
         itemMenuName={"Duplicar lista"}
-        // onClick={handleVotesVisible}
+        onClick={handleDuplicate}
       />
       <ItemMenu 
         iconName={"archive"}
         itemMenuName={"Archivar lista"}
-        // onClick={handleVotesVisible}
+        onClick={handleArchive}
       />
       <ItemMenu 
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
-        // onClick={handleVotesVisible}
+        onClick={deleteLista}
       />
     </div>
   )

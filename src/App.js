@@ -89,7 +89,7 @@ function App() {
 
   const undoDelete = useCallback((ListToRestore) => {
     if (ListToRestore) {
-      if (ListToRestore.type === 'list') {
+      if (ListToRestore.type === 'lista') {
         setListas(prevListas => [...prevListas, ListToRestore.data.list]);
         setDeletedLista(null);
       }
@@ -112,15 +112,6 @@ function App() {
     );
   };
 
-  // const markArchived = (id) => {
-  //   setListas(prevListas => {
-  //     const listsArchived = prevListas.map(lista =>
-  //       lista.id === id ? { ...lista, isArchived: !lista.isArchived } : lista
-  //     )
-  //     return listsArchived
-  //   })
-  // }
-
   const markArchived = (id) => {
     setListas(prevListas =>
       prevListas.map(lista =>
@@ -136,12 +127,12 @@ function App() {
 
   const handleArchive = (id) => {
     markArchived(id)
-    setTimeout(() => navigate("/"), 0);
+    navigate("/")
   }
 
   const AllArchived = archivedList.length
 
-  const showArchived = (e) => {
+  const goToArchived = (e) => {
     e.preventDefault()
     navigate("/archived/")
   }
@@ -175,15 +166,16 @@ function App() {
       <Route path="/" element={
         <Home
           usuario={"Marcos"}
-          listaslength={listas.length}
           addLista={addLista}
           listas={listas.filter(lista => !lista.isArchived)}
           deleteLista={deleteLista}
           updateListaCategories={updateListaCategories}
           updateListaItems={updateListaItems}
+          handleArchive={handleArchive}
           AllArchived={AllArchived}
-          showArchived={showArchived}
+          goToArchived={goToArchived}
           handleNotified={handleNotified}
+          handleDuplicate={handleDuplicate}
         />}
       />
       <Route path="/list/:id" element={
@@ -203,7 +195,7 @@ function App() {
       <Route path='/archived/' element={
         <Archived
           AllArchived={AllArchived}
-          showArchived={showArchived}
+          goToArchived={goToArchived}
           listas={listas.filter(lista => lista.isArchived)}
         />}
       />
