@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import NewLista from "./NewLista"
 import NavBar from "./NavBar"
-import { useEffect, useRef, useState } from "react";
 import EStateHome from "../components/EStateHome";
+import OptionsMenuListHome from "../components/OptionsMenuListHome"
 
 const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchived, AllArchived, handleNotified }) => {
-    const archivadosRef = useRef(null)
     const [isEStateHome, setIsEStateHome] = useState(false)
+    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const archivadosRef = useRef(null)
+    const optionsMenuListHomeRef = useRef(null)
+    const buttonMenuRef = useRef(null)
 
     useEffect(() => {
         if (listaslength === 0) {
@@ -27,6 +31,23 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
             }
         }
     }, [AllArchived])
+
+    const handleMenuVisibility = (event) => {
+        event.stopPropagation()
+        setIsOptionsMenuVisible(prevState => !prevState)
+    }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if ( optionsMenuListHomeRef.current && !optionsMenuListHomeRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     
     return (
         <div className="Home app">
@@ -52,9 +73,14 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
                         <Link to={`/list/${lista.id}`} className="linkListas">
                             <div className="fila-between">
                                 <h4>{lista.listaName}</h4>
-                                <div className="fila-start">
-                                <span className="material-symbols-outlined" onClick={() => handleNotified(lista.id)}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                <span className="material-symbols-outlined"style={{marginLeft:"4px"}}>more_vert</span>
+                                <div className="fila-start" style={{position: "relative"}}>
+                                    <span className="material-symbols-outlined" onClick={() => handleNotified(lista.id)}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                    <span className="material-symbols-outlined"style={{marginLeft:"4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
+                                    {isOptionsMenuVisible && 
+                                        <OptionsMenuListHome
+                                            ref={optionsMenuListHomeRef}
+                                        />
+                                    }
                                 </div>
                             </div>
                             <div className="fila-start">

@@ -5,25 +5,25 @@ const NavBar = () => {
 
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuHomeRef = useRef(null)
+    const buttonMenuRef = useRef(null)
 
     const handleMenuVisibility = () => {
         setIsOptionsMenuVisible(prevState => !prevState)
     }
 
-    // Ocultar desplegable si clicas fuera. No funciona
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (isOptionsMenuVisible && optionsMenuHomeRef.current && !optionsMenuHomeRef.current.contains(event.target)) {
-                setIsOptionsMenuVisible(false)
+            if ( optionsMenuHomeRef.current && !optionsMenuHomeRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false);
             }
-        }
-        if (isOptionsMenuVisible) {
-            document.addEventListener("click", handleClickOutside)
-        }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+    
         return () => {
-            document.removeEventListener("click", handleClickOutside)
-        }
-    }, [isOptionsMenuVisible])
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         if(optionsMenuHomeRef.current) {
@@ -41,10 +41,10 @@ const NavBar = () => {
                 <div className="iconsNavBar" style={{position: "relative"}}>
                     <button className="buttonRegistro">Registrarse</button>
                     <span className="material-symbols-outlined">notifications</span>
-                    <span className="material-symbols-outlined" onClick={handleMenuVisibility}>more_vert</span>
+                    <span className="material-symbols-outlined" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 
                         <OptionsMenuHome
-                            // ref={optionsMenuHomeRef}
+                            ref={optionsMenuHomeRef}
                         />
                     }
                 </div>

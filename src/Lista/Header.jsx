@@ -3,68 +3,44 @@ import { useNavigate } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
 import ShareButton from "../components/ShareButton"
 
-const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShown, handleVotesVisible, handleArchive, handleDuplicate, deleteLista}) => {
+const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuRef = useRef(null)
+    const buttonMenuRef = useRef(null)
     const navigate = useNavigate()
 
-    const handleMenuVisibility = () => {
+    const handleMenuVisibility = (event) => {
+        event.stopPropagation()
         setIsOptionsMenuVisible(prevState => !prevState)
     }
 
-    // Ocultar desplegable si clicas fuera. No funciona
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (isOptionsMenuVisible && optionsMenuRef.current && !optionsMenuRef.current.contains(event.target)) {
-                setIsOptionsMenuVisible(false)
+            if ( optionsMenuRef.current && !optionsMenuRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false);
             }
-        }
-        if (isOptionsMenuVisible) {
-            document.addEventListener("click", handleClickOutside)
-        }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+    
         return () => {
-            document.removeEventListener("click", handleClickOutside)
-        }
-    }, [isOptionsMenuVisible])
-
-    useEffect(() => {
-        if(optionsMenuRef.current) {
-            optionsMenuRef.current.style.display(isOptionsMenuVisible ? "block" : "none") 
-        }
-    }, [isOptionsMenuVisible])
-
-    const handleBack = () => {
-        navigate("/")
-    }
-
-    // const [stickyHeader, setStickyHeader] = useState("")
-
-    // Flujo para que se haga sticky al hacer scroll. Útil cuando quiera cambiar información del Header por subHeader (porque se tapará con scroll)
-    // useEffect(() => {
-    //     const handleHeaderScroll = () => {
-    //         setStickyHeader(window.scrollY > 1)
-    //     }
-
-    //     window.addEventListener("scroll", handleHeaderScroll)
-    //     return () => {
-    //         window.removeEventListener("scroll", handleHeaderScroll)
-    //     }
-    //     }, []);
-    // position: stickyHeader ? "sticky" : "static",
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
   return (
     <div className="head">
         <div className="app-margin">
             <div className="headerLista">
                 <div className="headerArrow">
-                    <span className="material-symbols-outlined icon-large" onClick={handleBack}>arrow_back</span>
+                    <span className="material-symbols-outlined icon-large" onClick={() => navigate("/")}>arrow_back</span>
                 </div>
                 <div className="headerText">
                     <div className="fila-between">
                         <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
                         <div className="headerLista-firstLine-icons">
                             <ShareButton />
-                            <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
+                            <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                             {isOptionsMenuVisible && 
                                 <OptionsMenu 
                                     ref={optionsMenuRef}
@@ -72,7 +48,6 @@ const Header = ({listaName, members, planIcon, plan, descriptionLista, votesShow
                                     handleVotesVisible={handleVotesVisible}
                                     deleteLista={deleteLista}
                                     handleArchive={handleArchive}
-                                    handleDuplicate={handleDuplicate}
                                 />
                             }
                         </div>
