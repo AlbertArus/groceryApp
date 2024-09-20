@@ -17,10 +17,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   // const [categories, setCategories] = useState([]);
   // const [deletedItem, setDeletedItem] = useState(null)
   const [votesShown, setVotesShown] = useState(true)
-  const [thumbUp, setThumbUp] = useState(false)
-  const [counterUp, setCounterUp] = useState(0)
-  const [thumbDown, setThumbDown] = useState(false)
-  const [counterDown, setCounterDown] = useState(0)
   const [isEStateLista, setIsEStateLista] = useState(false)
   const votesRef = useRef({})
 
@@ -267,10 +263,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             DeleteItem={DeleteItem}
             handleThumbDown={handleThumbDown}
             handleThumbUp={handleThumbUp}
-            thumbUp={thumbUp}
-            thumbDown={thumbDown}
-            counterUp={counterUp}
-            counterDown={counterDown}
+            thumbUp={selectedList.items.thumbUp}
+            thumbDown={selectedList.items.thumbDown}
+            counterUp={selectedList.items.counterUp}
+            counterDown={selectedList.items.counterDown}
             votesRef={votesRef}
           />
           {isEStateLista && 

@@ -1,4 +1,4 @@
-import NewCategory from "./NewCategory"
+// import NewCategory from "./NewCategory"
 
 // const EStateLista = ({AddCategory}) => {
 //     return (
