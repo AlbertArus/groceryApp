@@ -62,7 +62,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
-          <div className="titleCategory" onKeyDown={handleKeyDown}>
+          <div className="fila-start titleCategory" onKeyDown={handleKeyDown}>
             <input type="text" placeholder="Tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
             <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory}>keyboard_arrow_down</span>
           </div>

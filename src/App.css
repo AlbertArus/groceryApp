@@ -50,15 +50,15 @@ h6 {
   align-items: center;
   justify-content: flex-start;
   width: 100vw;
-  height: 844px;
-  max-width: 390px;
+  height: 100vh;
   border: 1px solid blue;
   margin: 0px;
 }
 
 .app-margin {
-  width: 360px;
+  width: 95vw;
   margin: 0px 15px;
+  border: 1px solid red;
 }
 
 /* .headingPhone {
@@ -87,11 +87,11 @@ h6 {
   margin: 4px 18px 0px 0px;
 }
 
-.headerTitle {
+/* .headerTitle {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
 
 .headerLista-firstLine-icons {
   margin: 4px 0px 0px 60px;
@@ -165,11 +165,6 @@ h6 {
   cursor: pointer;
 }
 
-.addIcon {
-  margin-left: 3px;
-  margin-right: -3px;
-}
-
 .ItemText {
   margin-left: 18px;
   display: flex;
@@ -184,6 +179,8 @@ h6 {
   text-overflow: ellipsis;
   white-space: nowrap;
   text-transform: capitalize;
+  min-width: 0;
+  width: auto;
 }
 
 .ItemName.expanded {
@@ -217,7 +214,9 @@ h6 {
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
 }
 
 .newCategory {
@@ -245,8 +244,7 @@ h6 {
   font-family: inherit;
   font-size: inherit;
   color: black;
-  background: transparent;
-  flex: 1;
+  flex: 1 auto;
   padding: 0;
 }
 
@@ -290,11 +288,11 @@ h6 {
 .NewLista {
   position: absolute;
   bottom: 60px;
-  right: 50px;
+  right: 70px;
 }
 
 .addingLista {
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
   background-color: #f4f4f4;
@@ -306,7 +304,6 @@ h6 {
 }
 
 .vistaListas {
-  width: 350px;
   height: 70px;
   border-radius: 10px;
   border: 2px solid #ffeec9;
@@ -315,9 +312,6 @@ h6 {
 
 .iconsNavBar {
   margin-left: 6px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .iconsNavBar span {

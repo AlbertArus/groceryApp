@@ -226,7 +226,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   },[selectedList])
 
   return (
-    <div className="app">
+    <div className="lista app">
       <Toaster
         position="bottom-center"
         reverseOrder={false}

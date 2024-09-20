@@ -69,7 +69,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, listaslength, showArchiv
             }
             {listas && listas.map(lista => (
                 <div key={lista.id}>
-                    <div className="vistaListas">
+                    <div className="vistaListas app-margin">
                         <Link to={`/list/${lista.id}`} className="linkListas">
                             <div className="fila-between">
                                 <h4>{lista.listaName}</h4>

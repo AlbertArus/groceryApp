@@ -1,0 +1,423 @@
+html, body, .root {
+    margin: 0;
+    top: 0;
+    font-family: "poppins", Arial, Helvetica, sans-serif;
+  }
+  
+  #root {
+    display: flex;
+    justify-content: center;
+  }
+  
+  h1 {
+    font-size: 26px;
+    margin: 0px;
+  }
+  
+  h2 {
+    font-size: 22px;
+    margin: 0px;
+    font-weight: 600;
+  }
+  
+  h3 {
+    font-size: 18px;  
+    margin: 0px;
+    font-weight: 500;
+  }
+  
+  h4 {
+    font-size: 16px;
+    margin: 0px;
+    font-weight: 400;
+  }
+  
+  h5 {
+    font-size: 14px;
+    margin: 0px;
+    font-weight: 400;
+  }
+  
+  h6 {
+    font-size: 10px;
+    margin: 0px;
+    font-weight: 400;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100vw;
+    height: 844px;
+    max-width: 390px;
+    border: 1px solid blue;
+    margin: 0px;
+  }
+  
+  .app-margin {
+    width: 360px;
+    margin: 0px 15px;
+  }
+  
+  /* .headingPhone {
+    width: 390px;
+    height: 47px;
+    background-color: #f4f4f4;
+  } */
+  
+  .head {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    background-color: #ffeec9;
+    position: sticky;
+    z-index: 1000;
+    top: 0;
+  }
+  
+  .headerLista {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .headerArrow {
+    margin: 4px 18px 0px 0px;
+  }
+  
+  .headerTitle {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .headerLista-firstLine-icons {
+    margin: 4px 0px 0px 60px;
+    position: relative;
+  }
+  
+  .fila-between {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    white-space: nowrap;
+    flex: 1 1 0%;
+  }
+  
+  .fila-start {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .fila-start-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+  }
+  
+  .fila-start-group span {
+    margin-right: 2px;
+  }
+  
+  .material-symbols-outlined:hover {
+    background-color: #e0e0e0;
+    border-radius: 40px;
+  }
+  
+  .icon-small {
+    font-size: 16px;
+  }
+  
+  .icon-medium {
+    font-size: 20px;
+  }
+  
+  .icon-large {
+    font-size: 24px;
+  }
+  
+  .icon-xlarge {
+    font-size: 36px;
+  }
+  
+  .votarButton {
+    font-size: medium;
+    border-radius: 5px;
+  }
+  
+  .item {
+    margin-bottom: 12px;
+  }
+  
+  .ItemCheckbox {
+    width: 15px;
+    height: 14px;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-top: 3px;
+    cursor: pointer;
+  }
+  
+  .addIcon {
+    margin-left: 3px;
+    margin-right: -3px;
+  }
+  
+  .ItemText {
+    margin-left: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 1 0%;
+    max-width: 100%;
+  }
+  
+  .ItemName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: capitalize;
+  }
+  
+  .ItemName.expanded {
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal; 
+    word-wrap: break-word;
+    text-transform: capitalize;
+  }
+  
+  .ItemPrice {
+    margin-left: 22px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    overflow: hidden
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .categories {
+    margin-top: 10px
+  }
+  .categoryList {
+    margin-bottom: 18px;
+    /* background-color: #f4f4f4; */
+  }
+  
+  .titleCategory {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  
+  }
+  
+  .newCategory {
+    color: #9E9E9E;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+  }
+  
+  .newItem {
+    color: #9E9E9E;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 18px;
+  }
+  
+  .ItemText input, 
+  .ItemText input:hover,
+  .titleCategory input, 
+  .titleCategory input:hover {
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: black;
+    background: transparent;
+    flex: 1;
+    padding: 0;
+  }
+  
+  .ItemText input[type=number] {
+    /* width: 5px; */
+    max-width: 50px;
+    box-sizing: border-box;
+    flex: 1 0;
+    /* text-align: end; */
+  }
+  
+  .ItemText input[type="number"]::-webkit-inner-spin-button,
+  .ItemText input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .optionsMenu {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+    width: 190px;
+    height: auto;
+    background-color: white;
+    padding: 10px 5px;
+    position: absolute;
+    z-index: 1000;
+    top: 100%;
+    right: 0;
+  }
+  
+  .itemMenu {
+    margin: 4px 0px 4px 8px;
+    border-radius: 5px;
+  }
+  
+  .itemMenu:hover {
+    background-color: #f4f4f4;
+    padding-left: 3px;
+  }
+  
+  .NewLista {
+    position: absolute;
+    bottom: 60px;
+    right: 50px;
+  }
+  
+  .addingLista {
+    border: 1px solid blue;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    background-color: #f4f4f4;
+    padding: 10px;
+  }
+  
+  .addingLista.material-symbols-outlined:hover {
+    border-radius: 10px;
+  }
+  
+  .vistaListas {
+    width: 350px;
+    height: 70px;
+    border-radius: 10px;
+    border: 2px solid #ffeec9;
+    margin-bottom: 10px;
+  }
+  
+  .iconsNavBar {
+    margin-left: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .iconsNavBar span {
+    margin-left: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .FormLista {
+    border-radius: 10px;
+    box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
+    /* width: 340px;
+    height: auto; */
+    background-color: white;
+    padding: 10px 5px;
+    z-index: 1000;
+    position: absolute;
+    top: 200px;
+  }
+  
+  .FormLista label {
+    font-size: 12px;
+    margin: 0px;
+    font-weight: 400;
+  }
+  
+  .FormLista input, 
+  .FormLista input:hover,
+  .FormLista select, 
+  .FormLista select:hover {
+    border: none;
+    border-bottom: 2px solid #9E9E9E;
+    outline: none;
+    font-family: inherit;
+    font-size: 16px;
+    color: black;
+    background: transparent;
+    flex: 1;
+    padding: 0;
+    text-transform: capitalize;
+    margin: 5px 0px;
+  }
+  
+  .FormLista textarea, 
+  .FormLista textarea:hover {
+    border: none;
+    border-bottom: 2px solid #9E9E9E;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: 16px;
+    color: black;
+    background: transparent;
+    flex: 1;
+    padding: 0;
+    margin: 5px 0px;
+    width: 240px;
+  }
+  
+  .FormLista input::placeholder {
+    color: lightgray;
+    opacity: 1;
+  }
+  
+  button[type=submit] {
+    width: 250px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    border: 2.5px solid #9E9E9E;
+    margin-top: 15px;
+  }
+  
+  .FormLista form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 15px;
+  }
+  
+  .buttonRegistro {
+    /* width: 250px;
+    height: 30px; */
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    border: 2.5px solid #9E9E9E;
+    top: 0;
+  }
+  
+  #plan {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  #plan button {
+    margin-right: 10px;
+    border-radius: 7px;
+  }

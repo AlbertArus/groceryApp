@@ -35,10 +35,10 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                 <div className="headerArrow">
                     <span className="material-symbols-outlined icon-large" onClick={() => navigate("/")}>arrow_back</span>
                 </div>
-                <div className="headerText">
+                <div className="headerText" style={{flex: "1"}}>
                     <div className="fila-between">
                         <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
-                        <div className="headerLista-firstLine-icons">
+                        <div className="fila-start" style={{position: "relative"}}>
                             <ShareButton />
                             <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                             {isOptionsMenuVisible && 

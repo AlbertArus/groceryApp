@@ -33,12 +33,12 @@ const NavBar = () => {
 
     return (
         <div className="NavBar head">
-            <div className="fila-between app-margin" style={{marginTop: "7px", display: "flex", alignItems: "center"}}>
+            <div className="fila-between app-margin" style={{marginTop: "7px"}}>
                 <div className="titleNavBar fila-start-group">
                 <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
                 <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
                 </div>
-                <div className="iconsNavBar" style={{position: "relative"}}>
+                <div className="iconsNavBar fila-start" style={{position: "relative", alignItems: "center"}}>
                     <button className="buttonRegistro">Registrarse</button>
                     <span className="material-symbols-outlined">notifications</span>
                     <span className="material-symbols-outlined" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>

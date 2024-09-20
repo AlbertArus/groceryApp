@@ -64,10 +64,12 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
         <span className="material-symbols-outlined icon-large">drag_indicator</span>
         <div className="fila-between" style={{marginLeft:"3px"}}>
           <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: isChecked ? "green" : "transparent"}}></div>
-          <form className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
-            <input type="text" placeholder="Modifica tu texto" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
-            <input type="number" placeholder="Modifica tu precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={priceFormatting} value={price}></input>
-          </form>
+          <div className="fila-between">
+            <form className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
+              <input type="text" placeholder="Modifica tu texto" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
+              <input type="number" placeholder="Modifica tu precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: isChecked ? 'line-through' : 'none', color: isChecked ? '#9E9E9E' : 'black' }} onChange={priceFormatting} value={price}></input>
+            </form>
+          </div>
           <span className="material-symbols-outlined icon-medium hidden" onClick={handleDelete} ref={deleteRef}>delete</span>
         </div>
       </div>

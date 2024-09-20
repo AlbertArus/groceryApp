@@ -14,8 +14,8 @@ const NewLista = ({ addLista }) => {
     return (
         <>
             <div className="NewLista">
-                <button style={{background:"none", border: "none"}}>
-                    <span className="material-symbols-outlined addIcon addingLista" style={{borderRadiusHover: "none"}} onClick={showForm}>add</span>
+                <button style={{background:"none", border: "none", padding: "0"}}>
+                    <span className="material-symbols-outlined addingLista" style={{borderRadiusHover: "none"}} onClick={showForm}>add</span>
                 </button>
             </div>
             {isFormVisible && (
