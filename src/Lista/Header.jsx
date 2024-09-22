@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 
-const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength}) => {
+const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuRef = useRef(null)
     const buttonMenuRef = useRef(null)
@@ -50,6 +50,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                                     deleteLista={deleteLista}
                                     handleArchive={handleArchive}
                                     itemslength={itemslength}
+                                    lista={lista}
                                 />
                             }
                         </div>

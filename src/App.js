@@ -197,6 +197,9 @@ function App() {
           AllArchived={AllArchived}
           goToArchived={goToArchived}
           listas={listas.filter(lista => lista.isArchived)}
+          handleArchive={handleArchive}
+          deleteLista={deleteLista}
+          usuario={"Marcos"}
         />}
       />
     </Routes>

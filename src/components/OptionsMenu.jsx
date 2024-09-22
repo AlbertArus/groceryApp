@@ -1,7 +1,7 @@
 import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, handleArchive, handleDuplicate, itemslength }, ref) => {
+const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, handleArchive, handleDuplicate, itemslength, lista }, ref) => {
   console.log(itemslength)
 
   return (
@@ -31,7 +31,7 @@ const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, h
         />
       <ItemMenu
         iconName={"archive"}
-        itemMenuName={"Archivar lista"}
+        itemMenuName={`${lista.isArchived === true ? "Desarchivar lista" : "Archivar lista"}`}
         onClick={handleArchive}
       />
       <ItemMenu

@@ -245,6 +245,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleArchive={() => handleArchive(params.id)}
             handleDuplicate={handleDuplicate}
             itemslength={totalItemsLength}
+            lista={selectedList}
           />
           <SubHeader 
             items={totalItemsLength}
