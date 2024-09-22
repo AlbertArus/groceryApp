@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
-import ShareButton from "../components/ShareButton"
+import {ShareButton} from "../components/ShareButton"
 
-const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista}) => {
+const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuRef = useRef(null)
     const buttonMenuRef = useRef(null)
     const navigate = useNavigate()
+    const handleShare = ShareButton();
 
     const handleMenuVisibility = (event) => {
         event.stopPropagation()
@@ -39,7 +40,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                     <div className="fila-between">
                         <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
                         <div className="fila-start" style={{position: "relative"}}>
-                            <ShareButton />
+                            <span className="material-symbols-outlined icon-large" onClick={handleShare}>share</span>
                             <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                             {isOptionsMenuVisible && 
                                 <OptionsMenu 
@@ -48,6 +49,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                                     handleVotesVisible={handleVotesVisible}
                                     deleteLista={deleteLista}
                                     handleArchive={handleArchive}
+                                    itemslength={itemslength}
                                 />
                             }
                         </div>

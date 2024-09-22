@@ -1,5 +1,5 @@
 
-const ShareButton = () => {
+export const ShareButton = () => {
   const shareData = {
     title: 'GroceryApp',
     text: '¡Mira este increíble proyecto!',
@@ -19,9 +19,5 @@ const ShareButton = () => {
     }
   };
 
-  return (
-      <span className="material-symbols-outlined icon-large" onClick={handleShare}>share</span>
-  );
-};
-
-export default ShareButton;
+  return handleShare
+}

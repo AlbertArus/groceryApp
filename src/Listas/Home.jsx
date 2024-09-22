@@ -22,9 +22,6 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
         }
       }, [listaslength]);
 
-    console.log(listaslength)
-    console.log(AllArchived)
-
     const handleMenuVisibility = (event) => {
         event.stopPropagation()
         setIsOptionsMenuVisible(prevState => !prevState)
@@ -45,12 +42,11 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
     return (
         <div className="Home app">
             <NavBar
-
             />
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
                     <h2>{`Hola ${usuario}!`}</h2>
-                    <h5>{`Tienes ${listaslength} listas activas.`}</h5>
+                    <h5>{listaslength === 1 ? "Tienes 1 lista activa" : `Tienes ${listaslength} listas activas`}</h5>
                 </div>
             </div>
             {isEStateHome && 
@@ -63,7 +59,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
             {listas && listas.map(lista => (
                 <div key={lista.id}>
                     <div className="vistaListas app-margin">
-                        {/* <Link to={`/list/${lista.id}`} className="linkListas"> */}
+                        <Link to={`/list/${lista.id}`} className="linkListas">
                             <div className="fila-between">
                                 <h4>{lista.listaName}</h4>
                                 <div className="fila-start" style={{position: "relative"}}>
@@ -89,14 +85,16 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                     <h5>{lista.plan}</h5>
                                 </div>
                             </div>
-                        {/* </Link> */}
+                        </Link>
                     </div>
                 </div>
             ))}
-            <h5 className="archivedSummary" style={{ display: AllArchived > 0 ? "block" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{`${AllArchived} listas archivadas`}</h5>
-            <NewLista
-                addLista={addLista}
-            />
+            <h5 className="archivedSummary" style={{ display: AllArchived > 0 ? "block" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
+            {!isEStateHome && 
+                <NewLista
+                    addLista={addLista}
+                />
+            }
         </div>
     )
 }
