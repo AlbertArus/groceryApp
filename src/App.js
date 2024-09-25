@@ -197,7 +197,7 @@ function App() {
         {usuario ? (
           <>
             <Route path="/" element={
-              <Home
+              <Home 
               usuario={usuario.email}
               correoUsuario={usuario.email}
               addLista={addLista}
