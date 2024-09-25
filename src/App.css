@@ -44,6 +44,12 @@ h6 {
   font-weight: 400;
 }
 
+hr {
+  border: 0,05px solid rgb(180, 180, 180);
+  margin: 20px 0px;
+
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -407,4 +413,98 @@ button[type=submit] {
 #plan button {
   margin-right: 10px;
   border-radius: 7px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+}
+
+.login form{
+  display: flex;
+  flex-direction: column;
+}
+
+.login label {
+  font-size: 12px;
+}
+
+.login input {
+  border: 1px solid #9E9E9E;
+  border-radius: 5px;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: black;
+  background: transparent;
+  flex: 1;
+  padding: 0;
+  margin: 5px 0px;
+  padding: 3px 6px;
+}
+
+.password-container {
+  position: relative;
+  display: inline-flex;
+  width: 100%; /* Asegúrate de ajustar el ancho según lo que necesites */
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* Espacio suficiente para el ícono dentro del input */
+  box-sizing: border-box;
+}
+
+.password-container .material-symbols-outlined {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888; /* Puedes cambiar el color según prefieras */
+}
+
+.redirect {
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.redirect:hover {
+  text-decoration: underline;
+}
+
+.perfil {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;
+  align-items: center; */
+}
+
+.introPerfil {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.personalData {
+  border-radius: 15px;
+  background-color: #e2e0e0;
+}
+
+.infoPersonalData, .arrowPersonalData {
+  padding: 10px
+
+}
+
+.linksPerfil div {
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.linksPerfil div:hover {
+  text-decoration: underline;
 }

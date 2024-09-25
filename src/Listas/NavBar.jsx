@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react"
 import OptionsMenuHome from "../components/OptionsMenuHome"
+import { useNavigate } from "react-router-dom"
 
 const NavBar = () => {
 
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuHomeRef = useRef(null)
     const buttonMenuRef = useRef(null)
+    const navigate = useNavigate()
 
     const handleMenuVisibility = () => {
         setIsOptionsMenuVisible(prevState => !prevState)
@@ -39,7 +41,7 @@ const NavBar = () => {
                 <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
                 </div>
                 <div className="iconsNavBar fila-start" style={{position: "relative", alignItems: "center"}}>
-                    <button className="buttonRegistro">Registrarse</button>
+                    <button className="buttonRegistro" onClick={() => navigate("/Registro")}>Registrarse</button>
                     <span className="material-symbols-outlined">notifications</span>
                     <span className="material-symbols-outlined" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 

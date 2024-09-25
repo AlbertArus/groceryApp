@@ -1,12 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
-import './App.css';
 import { v4 as uuidv4 } from 'uuid';
-import Home from "./Listas/Home"
 import { Route, Routes, useNavigate, } from 'react-router-dom';
+import './App.css';
+import Home from "./Listas/Home"
 import toast from 'react-hot-toast'
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 import Archived from './Listas/Archived';
+import Registro from './configuración/Registro';
+import Perfil from './configuración/Perfil';
+
+import firebaseApp from "./firebase-config.js"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+const auth = getAuth(firebaseApp)
 
 function App() {
 
@@ -14,7 +20,8 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [archivedList, setArchivedList] = useState([])
   const [deletedLista, setDeletedLista] = useState("")
-  const navigate = useNavigate()
+  const [usuario, setUsuario] = useState(null)
+  const navigate = useNavigate() 
 
   const addLista = (listaName, members, plan, descriptionLista) => {
     const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
@@ -161,48 +168,87 @@ function App() {
     })
   }
 
+  // onAuthStateChanged(auth, (usuarioFirebase) => {
+  //   if(usuarioFirebase) {
+  //     setUsuario(usuarioFirebase)
+  //   } else {
+  //     setUsuario(null)
+  //   }
+  // })
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (usuarioFirebase) => {
+      if (usuarioFirebase) {
+        setUsuario(usuarioFirebase);
+      } else {
+        setUsuario(null);
+      }
+    });
+  
+    // Limpiar el efecto al desmontar
+    return () => unsubscribe();
+  }, []);
+
   return (
-    <Routes>
-      <Route path="/" element={
-        <Home
-          usuario={"Marcos"}
-          addLista={addLista}
-          listas={listas.filter(lista => !lista.isArchived)}
-          deleteLista={deleteLista}
-          updateListaCategories={updateListaCategories}
-          updateListaItems={updateListaItems}
-          handleArchive={handleArchive}
-          AllArchived={AllArchived}
-          goToArchived={goToArchived}
-          handleNotified={handleNotified}
-          handleDuplicate={handleDuplicate}
-        />}
-      />
-      <Route path="/list/:id" element={
-        <Lista
-          listas={listas}
-          setListas={setListas}
-          deleteLista={deleteLista}
-          updateListaCategories={updateListaCategories}
-          updateListaItems={updateListaItems}
-          handleArchive={handleArchive}
-          handleDuplicate={handleDuplicate}
-        />}
-      />
-      <Route path='/newlist/' element={
-        <FormLista />}
-      />
-      <Route path='/archived/' element={
-        <Archived
-          AllArchived={AllArchived}
-          goToArchived={goToArchived}
-          listas={listas.filter(lista => lista.isArchived)}
-          handleArchive={handleArchive}
-          deleteLista={deleteLista}
-          usuario={"Marcos"}
-        />}
-      />
-    </Routes>
+    <>
+      <div>
+        <Routes>
+        <Route path="/Registro" element={<Registro />} />
+        {usuario ? (
+          <>
+            <Route path="/" element={
+              <Home
+              usuario={usuario.email}
+              correoUsuario={usuario.email}
+              addLista={addLista}
+              listas={listas.filter(lista => !lista.isArchived)}
+              deleteLista={deleteLista}
+              updateListaCategories={updateListaCategories}
+              updateListaItems={updateListaItems}
+              handleArchive={handleArchive}
+              AllArchived={AllArchived}
+              goToArchived={goToArchived}
+              handleNotified={handleNotified}
+              handleDuplicate={handleDuplicate}
+              />}
+              />
+            <Route path="/list/:id" element={
+              <Lista
+              listas={listas}
+              setListas={setListas}
+              deleteLista={deleteLista}
+              updateListaCategories={updateListaCategories}
+              updateListaItems={updateListaItems}
+              handleArchive={handleArchive}
+              handleDuplicate={handleDuplicate}
+              />}
+              />
+            <Route path='/newlist/' element={
+              <FormLista />}
+              />
+            <Route path='/archived/' element={
+              <Archived
+              AllArchived={AllArchived}
+              goToArchived={goToArchived}
+              listas={listas.filter(lista => lista.isArchived)}
+              handleArchive={handleArchive}
+              deleteLista={deleteLista}
+              usuario={"Marcos"}
+              />}
+            />
+            <Route path='/profile' element={
+              <Perfil
+              usuario={usuario.email}
+              correoUsuario={usuario.email}
+              />}
+            />
+          </>
+          ) : (
+            <Route path='*' element={<Registro />} />
+          )}
+          </Routes>
+      </div>
+    </>
   )
 }
 

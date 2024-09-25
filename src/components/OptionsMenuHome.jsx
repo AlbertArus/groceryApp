@@ -1,7 +1,9 @@
 import ItemMenu from "./ItemMenu"
 import { forwardRef } from "react"
+import { useNavigate } from "react-router-dom"
 
 const OptionsMenuHome = forwardRef((props, ref) => { 
+  const navigate = useNavigate()
 
   return (
     <div className="optionsMenu" ref={ref}>
@@ -18,7 +20,7 @@ const OptionsMenuHome = forwardRef((props, ref) => {
         <ItemMenu
             iconName={"manage_accounts"}
             itemMenuName={"Mi perfil"}
-            // onClick={handleVotesVisible}
+            onClick={() => navigate("/profile")}
         />
     </div>
   )

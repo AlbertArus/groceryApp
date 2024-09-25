@@ -4,6 +4,7 @@ import NewLista from "./NewLista"
 import NavBar from "./NavBar"
 import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
+// import firebaseApp from "../firebase-config.js"
 
 const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
