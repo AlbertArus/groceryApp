@@ -13,18 +13,16 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   let params = useParams();
   // console.log("soy el id de la url", params)
   
-  // const [items, setItems] = useState([]);
-  // const [categories, setCategories] = useState([]);
-  // const [deletedItem, setDeletedItem] = useState(null)
   const [votesShown, setVotesShown] = useState(true)
   const [isEStateLista, setIsEStateLista] = useState(false)
   const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
+  console.log({listas, params})
 
-  useEffect(() => {
-    console.log("soy la lista completa", selectedList)
-  },[selectedList])
+  // useEffect(() => {
+  //   console.log("soy la lista completa", selectedList)
+  // },[selectedList])
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, categoryId, name, price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false };
@@ -90,8 +88,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return selectedList.items.filter(item => item.isChecked).length;
   }
 
-  const totalItemsLength = selectedList.items.length
-  const totalCategoriesLength = selectedList.categories.length
+  console.log({selectedList})
+  
+  const totalItemsLength = selectedList?.items.length
+  const totalCategoriesLength = selectedList?.categories.length
 
   const AddCategory = (categoryName, categoryPrice) => {
     const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false }
@@ -131,7 +131,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     )
   }
 
-  const undoDelete = useCallback((itemToRestore) => {
+  const undoDelete = ((itemToRestore) => {
     if (itemToRestore) {
       if (itemToRestore.type === 'lista') {
         setListas(prevListas => [...prevListas, itemToRestore.data.lista]);
@@ -147,7 +147,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   }, [params.id, selectedList, updateListaCategories, updateListaItems, setListas])
 
-  const categoriesSums = selectedList.categories.map(category => {
+  const categoriesSums = selectedList?.categories.map(category => {
     const categoryItems = selectedList.items.filter(item => item.categoryId === category.id);
     const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
 
@@ -158,8 +158,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     };
   });
 
-  const totalPrice = categoriesSums.reduce((total, category) => total + category.sumPrice, 0)
-  const formattedTotalPrice = totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+  const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
+  const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleThumbUp = (id) => {
     const updatedItems = selectedList.items.map(item => {
@@ -202,13 +202,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }
 
   useEffect(() => {
-    selectedList.items.forEach(item => {
+    selectedList?.items.forEach(item => {
       const currentRef = votesRef.current[item.id]
       if (currentRef) {
         currentRef.style.display = votesShown ? "flex" : "none"
       }
     })
-  }, [votesShown, selectedList.items])
+  }, [votesShown, selectedList?.items])
 
   useEffect(() => {
     if (totalCategoriesLength === 0) {
@@ -218,12 +218,16 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   }, [totalCategoriesLength]);
 
-  useEffect(() => {
-    console.log(selectedList.categories)
-  },[selectedList])
-  useEffect(() => {
-    console.log(selectedList.items)
-  },[selectedList])
+  // useEffect(() => {
+  //   console.log(selectedList.categories)
+  // },[selectedList])
+  // useEffect(() => {
+  //   console.log(selectedList.items)
+  // },[selectedList])
+
+  if(listas.length === 0) {
+    return <div>loading</div>
+  }
 
   return (
     <div className="lista app">

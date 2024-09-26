@@ -193,13 +193,13 @@ function App() {
     <>
       <div>
         <Routes>
-        <Route path="/Registro" element={<Registro />} />
-        {usuario ? (
+        {/* <Route path="/Registro" element={<Registro />} /> */}
+        {/* {usuario ? ( */}
           <>
             <Route path="/" element={
               <Home 
-              usuario={usuario.email}
-              correoUsuario={usuario.email}
+              // usuario={usuario.email}
+              // correoUsuario={usuario.email}
               addLista={addLista}
               listas={listas.filter(lista => !lista.isArchived)}
               deleteLista={deleteLista}
@@ -238,14 +238,15 @@ function App() {
             />
             <Route path='/profile' element={
               <Perfil
-              usuario={usuario.email}
-              correoUsuario={usuario.email}
+              // usuario={usuario.email}
+              // correoUsuario={usuario.email}
               />}
             />
           </>
-          ) : (
+          {/* ) : (
             <Route path='*' element={<Registro />} />
-          )}
+          ) */}
+          {/* } */}
           </Routes>
       </div>
     </>
