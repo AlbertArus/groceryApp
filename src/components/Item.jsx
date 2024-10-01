@@ -62,7 +62,7 @@ const Item = ({ id, initialName, initialPrice, isChecked, onClick, EditItem, Del
     <div className="item">
       <div className="fila-start">
         <span className="material-symbols-outlined icon-large">drag_indicator</span>
-        <div className="fila-between" style={{marginLeft:"3px"}}>
+        <div className="fila-between">
           <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: isChecked ? "green" : "transparent"}}></div>
           <div className="fila-between">
             <form className="ItemText"  onClick={showDelete} ref={ItemTextRef}>

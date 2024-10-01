@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import '../App.css'
 import { v4 as uuidv4 } from 'uuid'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
@@ -11,7 +11,6 @@ import { useParams } from 'react-router-dom'
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate }) => {
 
   let params = useParams();
-  // console.log("soy el id de la url", params)
   
   const [votesShown, setVotesShown] = useState(true)
   const [isEStateLista, setIsEStateLista] = useState(false)
@@ -19,10 +18,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   const selectedList = listas.find(lista => lista.id === params.id);
   console.log({listas, params})
-
-  // useEffect(() => {
-  //   console.log("soy la lista completa", selectedList)
-  // },[selectedList])
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, categoryId, name, price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false };
@@ -38,18 +33,31 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }
 
   const EditItem = (id, newName, newPrice) => {
-    const index = selectedList.items.find(item => item.id === id)
-    selectedList.items[index].name = newName 
-    selectedList.items[index].price = newPrice
-    updateListaItems(params.id, selectedList.items)
-  }
+    const updatedItems = selectedList.items.map(item => {
+      if (item.id === id) {
+        return { ...item, name: newName, price: newPrice }; // Crea un nuevo objeto
+      }
+      return item; // Retorna el objeto sin cambios
+    });
+  
+    updateListaItems(params.id, updatedItems); // Actualiza Firestore con el nuevo array
+  };
+  
 
   const DeleteItem = (id) => {
     const itemToDelete = selectedList.items.find(item => item.id === id)
-    const filteredItems = selectedList.items.filter(item => item.id !== id) 
+    const filteredItems = selectedList.items.filter(item => item.id !== id)
+    const categoryId = itemToDelete.categoryId
+    const categoryUpdated = selectedList.categories.find(category => category.id === categoryId)
+    const updatedCategoryItems = categoryUpdated.items.filter(item => item.id !== id)
     updateListaItems(params.id, filteredItems)
+    updateListaCategories(params.id, selectedList.categories.map(category => {
+      if(category.id === categoryId) {
+        return {...category, items: updatedCategoryItems}
+      }
+      return category
+    }))
     let newDeletedItem = { type: 'item', data: itemToDelete };
-    // setDeletedItem(newDeletedItem);
 
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
@@ -67,21 +75,16 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   const handleCheck = (id) => {
     const updatedItems = selectedList.items.map(item =>
-        item.id === id ? { ...item, isChecked: !item.isChecked } : item
-      )
+    item.id === id ? { ...item, isChecked: !item.isChecked } : item
+    )
+    const updatedCategories = selectedList.categories.map(category => {
+      const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
+      const allItemsChecked = categoryItems.every(item => item.isChecked);
+      return {...category, isChecked: allItemsChecked, items: categoryItems}
+    })
 
-      const updatedCategories = selectedList.categories.map(category => {
-          const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
-          const allItemsChecked = categoryItems.every(item => item.isChecked);
-          return {
-            ...category,
-            isChecked: allItemsChecked,
-            items: categoryItems
-          }
-        })
-
-      updateListaCategories(params.id, updatedItems)
-      updateListaCategories(params.id, updatedCategories)
+    updateListaItems(params.id, updatedItems)
+    updateListaCategories(params.id, updatedCategories)
   }
 
   const ItemsChecked = () => {
@@ -93,29 +96,31 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const totalItemsLength = selectedList?.items.length
   const totalCategoriesLength = selectedList?.categories.length
 
-  const AddCategory = (categoryName, categoryPrice) => {
-    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], categoryPrice, isChecked: false }
+  const AddCategory = (categoryName) => {
+    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], isChecked: false }
     const updatedCategories = [...selectedList.categories, newCategory]
     updateListaCategories(params.id, updatedCategories)
   }
 
   const EditCategory = (id, newCategoryName) => {
-    const index = selectedList.categories.findIndex(category => category.id === id)
-    selectedList.categories[index].categoryName = newCategoryName
-    updateListaCategories(params.id, selectedList.categories)
-  }
+    const updatedCategories = selectedList.categories.map(category => {
+      if (category.id === id) {
+        return { ...category, categoryName: newCategoryName};
+      }
+      return category;
+    });
+  
+    updateListaCategories(params.id, updatedCategories)
+  };
 
   const DeleteCategory = (id) => {
     const CategoryToDelete = selectedList.categories.find(category => category.id === id)
     const ItemsToDelete = selectedList.items.filter(item => item.categoryId === id)
-    // setCategories(categories.filter(category => category.id !== id))
-    // setItems(items.filter(item => item.categoryId !== id))
 
     const filteredCategories = selectedList.categories.filter(category => category.id !== id)
     updateListaCategories(params.id, filteredCategories)
 
     let newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
-    // setDeletedItem(newDeletedItem);
 
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
@@ -131,7 +136,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     )
   }
 
-  const undoDelete = ((itemToRestore) => {
+  const undoDelete = useCallback((itemToRestore) => {
     if (itemToRestore) {
       if (itemToRestore.type === 'lista') {
         setListas(prevListas => [...prevListas, itemToRestore.data.lista]);
@@ -218,23 +223,12 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   }, [totalCategoriesLength]);
 
-  // useEffect(() => {
-  //   console.log(selectedList.categories)
-  // },[selectedList])
-  // useEffect(() => {
-  //   console.log(selectedList.items)
-  // },[selectedList])
-
   if(listas.length === 0) {
     return <div>loading</div>
   }
 
   return (
     <div className="lista app">
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-      />
       {selectedList && (
         <>
           <Header

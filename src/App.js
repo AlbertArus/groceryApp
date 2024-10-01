@@ -3,140 +3,156 @@ import { v4 as uuidv4 } from 'uuid';
 import { Route, Routes, useNavigate, } from 'react-router-dom';
 import './App.css';
 import Home from "./Listas/Home"
-import toast from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 import Archived from './Listas/Archived';
 import Registro from './configuración/Registro';
 import Perfil from './configuración/Perfil';
 
-import firebaseApp from "./firebase-config.js"
+import firebaseApp, { db } from "./firebase-config.js"
+import { doc, setDoc, getDocs, collection, updateDoc, getDoc, deleteDoc } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 const auth = getAuth(firebaseApp)
 
 function App() {
 
   const [listas, setListas] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [archivedList, setArchivedList] = useState([])
-  const [deletedLista, setDeletedLista] = useState("")
+  const [deletedLista, setDeletedLista] = useState([])
   const [usuario, setUsuario] = useState(null)
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
+  console.log({deletedLista})
 
-  const addLista = (listaName, members, plan, descriptionLista) => {
+
+  const addLista = async (listaName, members, plan, descriptionLista) => {
     const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
-    setListas(prevListas => [...prevListas, newLista])
+    try {
+      await setDoc(doc(db, "listas", newLista.id), newLista);
+      setListas(prevListas => [...prevListas, newLista]);
+    } catch (error) {
+      console.error("Error al guardar la lista en Firebase:", error);
+    }  
+  }
+
+  const loadListasFromFirebase = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "listas"));
+      const loadedListas = querySnapshot.docs.map(doc => doc.data());
+      setListas(loadedListas);
+    } catch (error) {
+      console.error("Error al cargar las listas desde Firebase:", error);
+    }
   }
 
   useEffect(() => {
-    const savedListas = localStorage.getItem("listas");
-    const archivedListas = localStorage.getItem("archivedList")
-    if (savedListas) {
-      try {
-        setListas(JSON.parse(savedListas));
-      } catch (error) {
-        console.error("Error parsing items from localStorage:", error);
-        localStorage.removeItem("listas");
-      }
-    }
-
-    if (archivedListas) {
-      try {
-        setArchivedList(JSON.parse(archivedListas));
-      } catch (error) {
-        console.error("Error parsing items from localStorage:", error);
-        localStorage.removeItem("archivedList");
-      }
-    }
-
-    setLoading(false);
+    loadListasFromFirebase();
   }, []);
 
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("listas", JSON.stringify(listas));
+  const deleteLista = async (id) => {
+    const ListToDelete = listas.find(lista => lista.id === id);
+    setDeletedLista(prev => [...prev, ListToDelete]);  // Añadir la lista al array
+    setListas(listas.filter(lista => lista.id !== id));
+  
+    let timeoutId;
+    try {
+      await updateDoc(doc(db, "listas", id), { deleted: true });
+      navigate("/");
+  
+      toast((t) => (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+          {`Has eliminado "${ListToDelete.listaName}"`}
+          <button onClick={() => { 
+              undoDelete(ListToDelete.id);  // Pasa el ID de la lista a restaurar
+              clearTimeout(timeoutId);
+              toast.dismiss(t.id); 
+            }} 
+            style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+            Deshacer
+          </button>
+        </span>
+      ), {
+        style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+      });
+  
+      timeoutId = setTimeout(async () => {
+        try {
+          await deleteDoc(doc(db, "listas", id));
+          setDeletedLista(prev => prev.filter(lista => lista.id !== id));  // Eliminar del array después del tiempo
+        } catch (error) {
+          console.error("Error al eliminar definitivamente la lista:", error);
+        }
+      }, 3000);
+    } catch (error) {
+      console.error("Error al marcar como eliminada la lista en Firebase:", error);
     }
-  }, [listas, loading]);
+  };
 
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("archivedList", JSON.stringify(archivedList));
-      // console.log(archivedList)
+  const undoDelete = useCallback((id) => {
+    const listaToRestore = deletedLista.find(lista => lista.id === id);
+    if (listaToRestore) {
+      setListas(prevListas => [...prevListas, listaToRestore]);
+      setDeletedLista(prev => prev.filter(lista => lista.id !== id));
+
+      updateDoc(doc(db, "listas", listaToRestore.id), { deleted: false })
+        .catch(error => {
+          console.error("Error al restaurar la lista en Firebase:", error);
+        });
     }
-  }, [archivedList, loading]);
-
-  useEffect(() => {
-    if (!loading) {
-      console.log(listas)
-    }
-  }, [listas, loading]);
-
-
-  const deleteLista = (id) => {
-    const ListToDelete = listas.find(lista => lista.id === id)
-    setListas(listas.filter(lista => lista.id !== id))
-    const newDeletedList = { type: 'lista', data: ListToDelete };
-    setDeletedLista(newDeletedList);
-    console.log(ListToDelete)
-    navigate("/")
-
-    toast((t) => (
-      <span style={{ display: "flex", alignItems: "center" }}>
-        <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
-        {`Has eliminado "${ListToDelete.listaName}"`}
-        <button onClick={() => { undoDelete(newDeletedList); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
-          Deshacer
-        </button>
-      </span>
-    ), {
-      style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
-    }
-    )
-  }
-
-  const undoDelete = useCallback((ListToRestore) => {
-    if (ListToRestore) {
-      if (ListToRestore.type === 'lista') {
-        setListas(prevListas => [...prevListas, ListToRestore.data.list]);
-        setDeletedLista(null);
-      }
-    }
-  }, [])
-
-  const updateListaItems = (listaId, updatedItems) => {
+  }, [deletedLista]);
+  
+  
+  const updateListaItems = async (listaId, updatedItems) => {
     setListas(prevListas =>
       prevListas.map(lista =>
         lista.id === listaId ? { ...lista, items: updatedItems } : lista
       )
     );
+
+    try {
+      const listaRef = doc(db, "listas", listaId);
+      await updateDoc(listaRef, { items: updatedItems });
+    } catch (error) {
+      console.error("Error al actualizar los items en Firebase:", error);
+    }
   };
 
-  const updateListaCategories = (listaId, updatedCategories) => {
+  const updateListaCategories = async (listaId, updatedCategories) => {
+    console.log("Actualizando categorías con:", updatedCategories);
     setListas(prevListas =>
       prevListas.map(lista =>
         lista.id === listaId ? { ...lista, categories: updatedCategories } : lista
       )
     );
+
+    try {
+      const listaRef = doc(db, "listas", listaId);
+      await updateDoc(listaRef, { categories: updatedCategories });
+    } catch (error) {
+      console.error("Error al actualizar las categorías en Firebase:", error);
+    }
   };
 
-  const markArchived = (id) => {
+  const handleArchive = async (id) => {
+    const listaToUpdate = listas.find(lista => lista.id === id);
+    const newIsArchived = !listaToUpdate.isArchived;
     setListas(prevListas =>
       prevListas.map(lista =>
-        lista.id === id ? { ...lista, isArchived: !lista.isArchived } : lista
+        lista.id === id ? { ...lista, isArchived: newIsArchived } : lista
       )
     )
+  
+    try {
+      const listaRef = doc(db, "listas", id);
+      await updateDoc(listaRef, { isArchived: newIsArchived });
+    } catch (error) {
+      console.error("Error al archivar/desarchivar la lista en Firebase:", error);
+    }
+  
+    navigate("/");
   }
-
-  useEffect(() => {
-    const newArchived = listas.filter(lista => lista.isArchived)
-    setArchivedList(newArchived)
-  }, [listas])
-
-  const handleArchive = (id) => {
-    markArchived(id)
-    navigate("/")
-  }
-
+  
+  const archivedList = listas.filter(lista => lista.isArchived)
   const AllArchived = archivedList.length
 
   const goToArchived = (e) => {
@@ -168,38 +184,63 @@ function App() {
     })
   }
 
-  // onAuthStateChanged(auth, (usuarioFirebase) => {
-  //   if(usuarioFirebase) {
-  //     setUsuario(usuarioFirebase)
-  //   } else {
-  //     setUsuario(null)
-  //   }
-  // })
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (usuario) => {
+  //     if (usuario) {
+  //       setUsuario(usuario);
+  //       loadListasFromFirebase();
+  //     } else {
+  //       setUsuario(null);
+  //     }
+  //   });
+
+  //   return () => unsubscribe();
+  // }, []);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usuarioFirebase) => {
-      if (usuarioFirebase) {
-        setUsuario(usuarioFirebase);
+    const unsubscribe = onAuthStateChanged(auth, async (usuario) => {
+      if (usuario) {
+        setUsuario(usuario);
+        // Cargar la información del usuario desde Firestore
+        const docRef = doc(db, "usuarios", usuario.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            // Aquí puedes almacenar los datos en el estado si lo deseas
+            setUsuario({ ...usuario, ...userData });
+            loadListasFromFirebase();
+        } else {
+            console.log("No hay tal documento!");
+        }
       } else {
         setUsuario(null);
       }
     });
-  
-    // Limpiar el efecto al desmontar
     return () => unsubscribe();
+
   }, []);
+
+  const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
 
   return (
     <>
       <div>
+        <Toaster
+          position="bottom-center"
+          reverseOrder={false}
+        />
         <Routes>
-        {/* <Route path="/Registro" element={<Registro />} /> */}
-        {/* {usuario ? ( */}
+        <Route path="/Registro" element={
+          <Registro 
+            setUsuario={setUsuario}
+          />}
+        />
+        {usuario ? (
           <>
             <Route path="/" element={
               <Home 
-              // usuario={usuario.email}
-              // correoUsuario={usuario.email}
+              usuario={usuario.nombre}
+              correoUsuario={usuario.email}
               addLista={addLista}
               listas={listas.filter(lista => !lista.isArchived)}
               deleteLista={deleteLista}
@@ -233,21 +274,22 @@ function App() {
               listas={listas.filter(lista => lista.isArchived)}
               handleArchive={handleArchive}
               deleteLista={deleteLista}
-              usuario={"Marcos"}
+              usuario={usuario.nombre}
               />}
             />
             <Route path='/profile' element={
               <Perfil
-              // usuario={usuario.email}
-              // correoUsuario={usuario.email}
+              usuario={usuario.nombre}
+              usuarioCompleto={usuarioCompleto}
+              correoUsuario={usuario.email}
               />}
             />
           </>
-          {/* ) : (
+          ) : (
             <Route path='*' element={<Registro />} />
-          ) */}
-          {/* } */}
-          </Routes>
+          )
+        }
+        </Routes>
       </div>
     </>
   )

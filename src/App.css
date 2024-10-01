@@ -47,13 +47,13 @@ h6 {
 hr {
   border: 0.01px solid rgb(219, 216, 216);
   margin: 20px 0px;
-  width: 80%;
+  width: 20rem;
 }
 
 .app {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   justify-content: flex-start;
   width: 100vw;
   height: 100vh;
@@ -165,7 +165,7 @@ hr {
 }
 
 .ItemText {
-  margin-left: 18px;
+  /* margin-left: 18px; */
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -191,7 +191,7 @@ hr {
 }
 
 .ItemPrice {
-  margin-left: 22px;
+  /* margin-left: 22px; */
   white-space: nowrap;
   flex-shrink: 0;
   overflow: hidden
@@ -248,11 +248,10 @@ hr {
 }
 
 .ItemText input[type=number] {
-  /* width: 5px; */
   max-width: 50px;
   box-sizing: border-box;
   flex: 1 0;
-  /* text-align: end; */
+  text-align: end;
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
@@ -498,13 +497,13 @@ button[type=submit] {
 
 }
 
-.linksPerfil div > div {
+.linksPerfil h5 {
   cursor: pointer;
   font-size: 12px;
   margin-left: 10px;
 }
 
-.linksPerfil div > div:hover {
+.linksPerfil h5:hover {
   text-decoration: underline;
 }
 

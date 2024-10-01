@@ -14,7 +14,6 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
     const buttonMenuRef = useRef(null)
 
     const listaslength = listas.length
-    console.log(listas)
     useEffect(() => {
         if (listaslength === 0) {
           setIsEStateHome(true);

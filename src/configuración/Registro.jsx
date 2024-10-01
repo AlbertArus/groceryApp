@@ -1,9 +1,10 @@
 import { useState } from "react"
-import firebaseApp from "../firebase-config.js"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
+import firebaseApp, { db} from "../firebase-config.js"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
 const auth = getAuth(firebaseApp)
 
-const Registro = () => {
+const Registro = ({setUsuario}) => {
     const [isRegistered, setIsRegistered] = useState(false)
 
     const handleIsRegistered = () => {
@@ -12,15 +13,33 @@ const Registro = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault()
-        // const nombre = e.target.nombre.value
-        // const apellido = e.target.apellido.value
+        const nombre = e.target.nombre.value
+        const apellido = e.target.apellido.value
         const correo = e.target.correo.value
         const contraseña = e.target.contraseña.value
 
-        if(!isRegistered) {
-            await createUserWithEmailAndPassword(auth, correo, contraseña)
-        } else {
-            await signInWithEmailAndPassword (auth, correo, contraseña)
+        try {
+            let userCredential;
+            if(isRegistered) {
+                userCredential = await signInWithEmailAndPassword (auth, correo, contraseña)
+            } else {
+                userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña)
+                await updateProfile(userCredential.user, {
+                    displayName: `${nombre} ${apellido}`
+                });
+
+                await setDoc(doc(db, "usuarios", userCredential.user.uid), {
+                    uid: userCredential.user.uid,
+                    nombre: nombre,
+                    apellido: apellido,
+                    email: correo,
+                    createdAt: new Date(),
+                  });
+            }
+
+            setUsuario(userCredential.user);
+        } catch(error) {
+            console.error(isRegistered ? "Error al iniciar sesión:" : "Error al registrar el usuario:", error);
         }
     }
 
