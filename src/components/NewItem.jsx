@@ -12,17 +12,12 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
       setName("")
       setPrice("")
     }
-    if(ItemNameInputRef.current) {
+    if(categoryId) {
+      if(ItemNameInputRef.current) {
       ItemNameInputRef.current.focus()
+      }
     }
   }
-
-  // useEffect que uso para que el focus se haga solo después de cargar el DOM porque con props puede tardar
-  // useEffect(() => {
-  //   if(AddItem && ItemNameInputRef.current) {
-  //     ItemNameInputRef.current.focus()
-  //   }
-  // },[AddItem, ItemNameInputRef])
 
   const handleKeyDown = (e) => {
     if(e.key === "Enter") {

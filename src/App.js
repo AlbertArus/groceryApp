@@ -21,7 +21,7 @@ function App() {
   const [deletedLista, setDeletedLista] = useState([])
   const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
-  console.log({deletedLista})
+  // console.log({deletedLista})
 
 
   const addLista = async (listaName, members, plan, descriptionLista) => {
@@ -118,7 +118,7 @@ function App() {
   };
 
   const updateListaCategories = async (listaId, updatedCategories) => {
-    console.log("Actualizando categorías con:", updatedCategories);
+    console.log("Categorías:", updatedCategories);
     setListas(prevListas =>
       prevListas.map(lista =>
         lista.id === listaId ? { ...lista, categories: updatedCategories } : lista

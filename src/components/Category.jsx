@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-// import toast, { Toaster } from 'react-hot-toast'
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleThumbUp, handleThumbDown, thumbUp, thumbDown, counterUp, counterDown, votesRef }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleThumbUp, handleThumbDown, votesRef }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -14,10 +13,10 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
   const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
-  const handleAddingItem = () => {
-    if (ItemNameInputRef.current) {
-      ItemNameInputRef.current.focus()
-    }
+  const handleAddingItem = (id) => {
+        if (ItemNameInputRef.current) {
+          ItemNameInputRef.current.focus()
+        }
   }
   
   const handleEdit = (e) => {
@@ -40,23 +39,38 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
     setIsCollapsed(prevCollapsed => !prevCollapsed)
   }
 
-  const currentCategory = categories.find(category => category.id === id);
-  const isChecked = currentCategory ? currentCategory.isChecked : false;
-
   useEffect(() => {
     if(toggleRef.current) {
       toggleRef.current.style.transform = isCollapsed ? "rotate(270deg)" : "rotate(0deg)";
     }
   }, [isCollapsed]);
 
+  const currentCategory = categories.find(category => category.id === id)
+  const categoryChecked = currentCategory && currentCategory.isChecked===true
+
   useEffect(() => {
-    if(checkCategoryRef.current) {
-      checkCategoryRef.current.style.display = isChecked ? "block" : "none";
+    if(categoryChecked) {
+      setIsCollapsed(true)
+    } else {
+      setIsCollapsed(false)
     }
-    if(isChecked) {
-      setIsCollapsed(true);
-    }
-  }, [isChecked]);
+  },[categoryChecked])
+
+  // useEffect(() => {
+  //   const currentCategory = categories.find(category => category.id === id)
+    
+  //   if (currentCategory && currentCategory.isChecked===true) {
+  //     if (checkCategoryRef.current) {
+  //       checkCategoryRef.current.style.display = "block"
+  //     }
+  //     setIsCollapsed(true)
+  //   } else {
+  //     if (checkCategoryRef.current) {
+  //       checkCategoryRef.current.style.display = "none"
+  //     }
+  //     setIsCollapsed(false)
+  //   }
+  // }, [categories, id])
 
   return (
     <div className="categoryList">
@@ -64,17 +78,17 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
         <div className="fila-between">
           <div className="fila-start titleCategory" onKeyDown={handleKeyDown}>
             <input type="text" placeholder="Tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
-            <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory}>keyboard_arrow_down</span>
+            <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
           </div>
           <h4 style={{fontWeight:"500"}}>{FormattedSumPrices}</h4>
         </div>
         <div className="fila-between">
           <div className="fila-between firstPart">
             <h5>Items: {itemsLength}</h5>
-            <span className="material-symbols-outlined icon-medium" ref={checkCategoryRef} style={{color:"green", marginLeft:"8px"}}>task_alt</span>
+            <span className="material-symbols-outlined icon-medium" ref={checkCategoryRef} style={{color:"green", marginLeft:"8px", display: categoryChecked ? "block" : "none"}}>task_alt</span>
           </div>
           <div className="icons">
-            <span className="material-symbols-outlined icon-medium" onClick={handleAddingItem}>add</span>
+            <span className="material-symbols-outlined icon-medium" onClick={() => handleAddingItem(id)}>add</span>
             <span className="material-symbols-outlined icon-medium" onClick={handleDelete}>delete</span>
             </div>
         </div>

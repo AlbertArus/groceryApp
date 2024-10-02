@@ -17,7 +17,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  console.log({listas, params})
+  // console.log({listas, params})
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, categoryId, name, price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false };
@@ -35,14 +35,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const EditItem = (id, newName, newPrice) => {
     const updatedItems = selectedList.items.map(item => {
       if (item.id === id) {
-        return { ...item, name: newName, price: newPrice }; // Crea un nuevo objeto
+        return { ...item, name: newName, price: newPrice }
       }
-      return item; // Retorna el objeto sin cambios
-    });
+      return item
+    })
   
-    updateListaItems(params.id, updatedItems); // Actualiza Firestore con el nuevo array
-  };
-  
+    updateListaItems(params.id, updatedItems)
+  }
 
   const DeleteItem = (id) => {
     const itemToDelete = selectedList.items.find(item => item.id === id)
@@ -79,6 +78,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     )
     const updatedCategories = selectedList.categories.map(category => {
       const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
+      if (categoryItems.length === 0) {
+        return { ...category, items: categoryItems }
+      }
       const allItemsChecked = categoryItems.every(item => item.isChecked);
       return {...category, isChecked: allItemsChecked, items: categoryItems}
     })
@@ -91,7 +93,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return selectedList.items.filter(item => item.isChecked).length;
   }
 
-  console.log({selectedList})
+  // console.log({selectedList})
   
   const totalItemsLength = selectedList?.items.length
   const totalCategoriesLength = selectedList?.categories.length
@@ -156,11 +158,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     const categoryItems = selectedList.items.filter(item => item.categoryId === category.id);
     const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
 
-    return {
-      ...category,
-      itemsCount: categoryItems.length,
-      sumPrice: sumPrice
-    };
+    return {...category, itemsCount: categoryItems.length, sumPrice: sumPrice};
   });
 
   const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
@@ -227,6 +225,24 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return <div>loading</div>
   }
 
+  const handleCheckAll = () => {
+    const updatedCategories = selectedList.categories.map(category => {
+      const updatedItems = category.items.map(item => ({...item, isChecked: true }))
+
+      return {...category, items: updatedItems}
+    })
+    updateListaCategories(params.id, updatedCategories)
+  }
+
+  const handleUnCheckAll = () => {
+    const updatedCategories = selectedList.categories.map(category => {
+      const updatedItems = category.items.map(item => ({...item, isChecked: false }))
+
+      return {...category, items: updatedItems}
+    })
+    updateListaCategories(params.id, updatedCategories)
+  }
+
   return (
     <div className="lista app">
       {selectedList && (
@@ -244,6 +260,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleDuplicate={handleDuplicate}
             itemslength={totalItemsLength}
             lista={selectedList}
+            items={totalItemsLength}
+            price={formattedTotalPrice}
+            handleCheckAll={handleCheckAll}
+            handleUnCheckAll={handleUnCheckAll}
           />
           <SubHeader 
             items={totalItemsLength}
