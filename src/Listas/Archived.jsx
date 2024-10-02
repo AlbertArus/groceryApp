@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import NavBar from "./NavBar"
+import { useNavigate } from "react-router-dom"
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 
-const Archived = ({ listas, AllArchived, usuario, handleArchive, deleteLista }) => {
+const Archived = ({ listas, handleArchive, deleteLista }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRef = useRef(null)
+    const navigate = useNavigate()
     const listaslength = listas.length
     
     const handleMenuVisibility = (event) => {
@@ -28,11 +29,22 @@ const Archived = ({ listas, AllArchived, usuario, handleArchive, deleteLista }) 
 
     return (
         <div className="Home app">
-            <NavBar
-            />
+            <div className="head">
+                <div className="app-margin">
+                    <div className="headerLista">
+                        <div className="headerArrow">
+                            <span className="material-symbols-outlined icon-large" onClick={() => navigate("/")}>arrow_back</span>
+                        </div>
+                        <div className="headerText" style={{flex: "1"}}>
+                            <div className="fila-between">
+                                <h2 className="headerTitle">Archivo</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
-                    <h2>{`Hola ${usuario}!`}</h2>
                     <h5>{listaslength === 1 ? "Tienes 1 lista archivada" : `Tienes ${listaslength} listas archivadas`}</h5>
                 </div>
             </div>

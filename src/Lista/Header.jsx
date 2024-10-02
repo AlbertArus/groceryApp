@@ -54,7 +54,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                 </div>
                 <div className="headerText" style={{flex: "1"}}>
                     <div className="fila-between">
-                        <h2 className="headerTitle">{typeof listaName === 'string' ? listaName : ''}</h2>
+                        <h2 className="headerTitle">{listaName || ''}</h2>
                         <div className="fila-start" style={{position: "relative"}}>
                             <span className="material-symbols-outlined icon-large" onClick={handleShare}>share</span>
                             <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>

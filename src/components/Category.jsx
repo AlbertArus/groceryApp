@@ -14,9 +14,9 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleAddingItem = (id) => {
-        if (ItemNameInputRef.current) {
-          ItemNameInputRef.current.focus()
-        }
+    if (ItemNameInputRef.current) {
+      ItemNameInputRef.current.focus()
+    }
   }
   
   const handleEdit = (e) => {
@@ -44,17 +44,18 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
       toggleRef.current.style.transform = isCollapsed ? "rotate(270deg)" : "rotate(0deg)";
     }
   }, [isCollapsed]);
-
+  
   const currentCategory = categories.find(category => category.id === id)
-  const categoryChecked = currentCategory && currentCategory.isChecked===true
+  const hasItems = currentCategory.items.length > 0
+  const categoryChecked = hasItems && (currentCategory.isChecked===true || currentCategory.items.every(item => item.isChecked))
 
   useEffect(() => {
-    if(categoryChecked) {
-      setIsCollapsed(true)
-    } else {
-      setIsCollapsed(false)
-    }
-  },[categoryChecked])
+      if(categoryChecked) {
+        setIsCollapsed(true)
+      } else {
+        setIsCollapsed(false)
+      }
+  },[currentCategory, categoryChecked])
 
   // useEffect(() => {
   //   const currentCategory = categories.find(category => category.id === id)

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
@@ -6,6 +7,7 @@ const auth = getAuth(firebaseApp)
 
 const Registro = ({setUsuario}) => {
     const [isRegistered, setIsRegistered] = useState(false)
+    const navigate = useNavigate()
 
     const handleIsRegistered = () => {
         setIsRegistered(prevState => !prevState)
@@ -38,6 +40,7 @@ const Registro = ({setUsuario}) => {
             }
 
             setUsuario(userCredential.user);
+            navigate("/")
         } catch(error) {
             console.error(isRegistered ? "Error al iniciar sesión:" : "Error al registrar el usuario:", error);
         }
@@ -48,14 +51,14 @@ const Registro = ({setUsuario}) => {
         <h3 className="loginTitle" style={{marginBottom: "15px"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h3>
         <form className="loginForm" onSubmit={handleSubmit}>
             <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre</label>
-            <input type="text" placeholder="Sergio" id="nombre" style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
+            <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
             <label htmlFor="apellido" style={{display: isRegistered ? "none" : "block"}}>Apellido</label>
-            <input type="text" placeholder="Quintana" id="apellido" style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
+            <input type="text" autoComplete="family-name" placeholder="Quintana" id="apellido" style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
             <label htmlFor="correo">Correo electrónico</label>
-            <input type="text" placeholder="profesor@gmail.com" id="correo"/>
+            <input type="email" autoComplete="email" placeholder="profesor@gmail.com" inputMode="email" id="correo" required style={{textTransform: "lowercase"}} autoCapitalize="off"/>
             <label htmlFor="contraseña">Contraseña</label>
             <div className="password-container">
-                <input type="password" placeholder="*******" id="contraseña" />
+                <input type="password" placeholder="*******" aria-placeholder= "password" id="contraseña" required/>
                 <span id="togglePassword" className="material-symbols-outlined icon-medium">visibility_off</span>
             </div>
             <button type="submit">{isRegistered ? "Iniciar sesión" : "Registrarme"}</button>

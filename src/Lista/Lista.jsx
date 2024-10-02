@@ -72,11 +72,28 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     )
   }
 
+  // const handleCheck = (id) => {
+  //   const updatedItems = selectedList.items.map(item =>
+  //   item.id === id ? { ...item, isChecked: !item.isChecked } : item
+  //   )
+  //   const updatedCategories = selectedList.categories.map(category => {
+  //     const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
+  //     if (categoryItems.length === 0) {
+  //       return { ...category, items: categoryItems }
+  //     }
+  //     const allItemsChecked = categoryItems.every(item => item.isChecked);
+  //     return {...category, isChecked: allItemsChecked, items: categoryItems}
+  //   })
+
+  //   updateListaItems(params.id, updatedItems)
+  //   updateListaCategories(params.id, updatedCategories)
+  // }
+
   const handleCheck = (id) => {
-    const updatedItems = selectedList.items.map(item =>
-    item.id === id ? { ...item, isChecked: !item.isChecked } : item
-    )
     const updatedCategories = selectedList.categories.map(category => {
+      const updatedItems = category.items.map(item =>
+      item.id === id ? { ...item, isChecked: !item.isChecked } : item
+      )
       const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
       if (categoryItems.length === 0) {
         return { ...category, items: categoryItems }
@@ -85,12 +102,15 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       return {...category, isChecked: allItemsChecked, items: categoryItems}
     })
 
-    updateListaItems(params.id, updatedItems)
+    // updateListaItems(params.id, updatedItems)
     updateListaCategories(params.id, updatedCategories)
   }
 
   const ItemsChecked = () => {
-    return selectedList.items.filter(item => item.isChecked).length;
+    const totalCheckedItems = selectedList.categories.reduce((total, category) => {
+      return total + category.items.filter(item => item.isChecked).length;
+    },0)
+    return totalCheckedItems
   }
 
   // console.log({selectedList})
@@ -272,9 +292,11 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             categories={selectedList.categories}
           />
           <Categories
-            items={selectedList.items}
-            handleCheck={handleCheck}
+            items={selectedList.categories.flatMap(category => category.items)}
             categories={selectedList.categories}
+            handleCheck={handleCheck}
+            handleCheckAll={handleCheckAll}
+            handleUnCheckAll={handleUnCheckAll}
             AddCategory={AddCategory}
             EditCategory={EditCategory}
             DeleteCategory={DeleteCategory}

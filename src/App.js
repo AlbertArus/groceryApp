@@ -269,12 +269,10 @@ function App() {
               />
             <Route path='/archived/' element={
               <Archived
-              AllArchived={AllArchived}
               goToArchived={goToArchived}
               listas={listas.filter(lista => lista.isArchived)}
               handleArchive={handleArchive}
               deleteLista={deleteLista}
-              usuario={usuario.nombre}
               />}
             />
             <Route path='/profile' element={
