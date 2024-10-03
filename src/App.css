@@ -283,11 +283,11 @@ hr {
   padding-left: 3px;
 }
 
-.NewLista {
+/* .NewLista {
   position: absolute;
   bottom: 60px;
   right: 70px;
-}
+} */
 
 .addingLista {
   /* border: 1px solid blue; */
@@ -302,7 +302,7 @@ hr {
 }
 
 .vistaListas {
-  height: 70px;
+  height: auto;
   border-radius: 10px;
   border: 2px solid #ffeec9;
   margin-bottom: 10px;
@@ -512,4 +512,26 @@ button[type=submit] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.NewListaEState {
+  border: 1.5px solid #ED9E04;
+  border-radius: 5px;
+  background-color: #FBE7C1;
+  padding: 5px;
+  width: 8.5rem;
+  text-align: center;
+  cursor: pointer;
+
+}
+
+.NewCategoriaEstate {
+  padding: 5px;
+  background-color: #9E9E9E;
+  border: 1.5px solid #ED9E04;
+  border-radius: 5px;
+  background-color: #FBE7C1;
+  text-align: center;
+  cursor: pointer;
+
 }

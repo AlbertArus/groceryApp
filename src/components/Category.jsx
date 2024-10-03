@@ -57,28 +57,12 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
       }
   },[currentCategory, categoryChecked])
 
-  // useEffect(() => {
-  //   const currentCategory = categories.find(category => category.id === id)
-    
-  //   if (currentCategory && currentCategory.isChecked===true) {
-  //     if (checkCategoryRef.current) {
-  //       checkCategoryRef.current.style.display = "block"
-  //     }
-  //     setIsCollapsed(true)
-  //   } else {
-  //     if (checkCategoryRef.current) {
-  //       checkCategoryRef.current.style.display = "none"
-  //     }
-  //     setIsCollapsed(false)
-  //   }
-  // }, [categories, id])
-
   return (
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
           <div className="fila-start titleCategory" onKeyDown={handleKeyDown}>
-            <input type="text" placeholder="Tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
+            <input type="text" placeholder="Nombra tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
             <span className="material-symbols-outlined icon-large" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
           </div>
           <h4 style={{fontWeight:"500"}}>{FormattedSumPrices}</h4>

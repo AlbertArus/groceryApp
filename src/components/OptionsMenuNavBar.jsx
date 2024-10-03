@@ -2,7 +2,7 @@ import ItemMenu from "./ItemMenu"
 import { forwardRef } from "react"
 import { useNavigate } from "react-router-dom"
 
-const OptionsMenuHome = forwardRef((props, ref) => { 
+const OptionsMenuNavBar = forwardRef((props, ref) => { 
   const navigate = useNavigate()
 
   return (
@@ -10,7 +10,7 @@ const OptionsMenuHome = forwardRef((props, ref) => {
         <ItemMenu
             iconName={"settings"}
             itemMenuName={"Configuración"}
-            // onClick={handleVotesVisible}
+            onClick={() => navigate("/settings")}
         />
         <ItemMenu 
             iconName={"campaign"}
@@ -26,4 +26,4 @@ const OptionsMenuHome = forwardRef((props, ref) => {
   )
 })
 
-export default OptionsMenuHome
+export default OptionsMenuNavBar

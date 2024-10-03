@@ -9,6 +9,7 @@ import Lista from './Lista/Lista';
 import Archived from './Listas/Archived';
 import Registro from './configuración/Registro';
 import Perfil from './configuración/Perfil';
+import Settings from './configuración/Settings.jsx';
 
 import firebaseApp, { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, getDoc, deleteDoc } from "firebase/firestore"
@@ -22,7 +23,6 @@ function App() {
   const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   // console.log({deletedLista})
-
 
   const addLista = async (listaName, members, plan, descriptionLista) => {
     const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
@@ -160,22 +160,28 @@ function App() {
     navigate("/archived/")
   }
 
-  const duplicarLista = (id) => {
-    console.log("ID buscado:", id);
+  const duplicarLista = async (id) => {
     const originalLista = listas.find(lista => lista.id === id)
-    console.log(originalLista)
-    // const duplicateLista = {...originalLista, id: uuidv4(), categories: originalLista.categories ? [...originalLista.categories] : [], items: originalLista.items ? [...originalLista.items]: []}
-    const duplicateLista = { ...originalLista, id: uuidv4(), }
-    setListas(prevListas => [...prevListas, duplicateLista])
-    console.log("duplicado")
+    if (!originalLista) {
+      console.error("Lista original no encontrada");
+      return;
+    }
+    const duplicateLista = { ...originalLista, id: uuidv4(), categories: originalLista.categories.map(category => ({...category, id: uuidv4(), items: category.items.map(item => ({...item, id: uuidv4()}))})), items: originalLista.items.map(item => ({...item, id: uuidv4()}))}
+
+    try {
+      await setDoc(doc(db, "listas", duplicateLista.id), duplicateLista);
+      setListas(prevListas => [...prevListas, duplicateLista]);
+    } catch (error) {
+      console.error("Error al guardar la lista duplicada en Firebase:", error);
+    }  
   }
 
-  const handleDuplicate = () => {
-    duplicarLista()
+  const handleDuplicate = (id) => {
+    duplicarLista(id)
     navigate("/")
   }
 
-  const handleNotified = (id) => {
+  const handleNotified = (id, event) => {
     setListas(prevListas => {
       const notified = prevListas.map(lista =>
       lista.id === id ? { ...lista, isNotified: !lista.isNotified } : lista
@@ -277,6 +283,13 @@ function App() {
             />
             <Route path='/profile' element={
               <Perfil
+              usuario={usuario.nombre}
+              usuarioCompleto={usuarioCompleto}
+              correoUsuario={usuario.email}
+              />}
+            />
+            <Route path='/settings' element={
+              <Settings
               usuario={usuario.nombre}
               usuarioCompleto={usuarioCompleto}
               correoUsuario={usuario.email}

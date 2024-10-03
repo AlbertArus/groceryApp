@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react"
-import OptionsMenuHome from "../components/OptionsMenuHome"
+import OptionsMenuNavBar from "../components/OptionsMenuNavBar"
 import { useNavigate } from "react-router-dom"
 
 const NavBar = () => {
 
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
-    const optionsMenuHomeRef = useRef(null)
+    const optionsMenuNavBarRef = useRef(null)
     const buttonMenuRef = useRef(null)
     const navigate = useNavigate()
 
@@ -15,7 +15,7 @@ const NavBar = () => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if ( optionsMenuHomeRef.current && !optionsMenuHomeRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
+            if ( optionsMenuNavBarRef.current && !optionsMenuNavBarRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
                 setIsOptionsMenuVisible(false);
             }
         };
@@ -28,8 +28,21 @@ const NavBar = () => {
     }, []);
 
     useEffect(() => {
-        if(optionsMenuHomeRef.current) {
-            optionsMenuHomeRef.current.style.display = isOptionsMenuVisible ? "block" : "none"
+        const handleClickOnMenu = (event) => {
+            if(optionsMenuNavBarRef.current && optionsMenuNavBarRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false)
+            }
+        }
+        document.addEventListener("click", handleClickOnMenu);
+    
+        return () => {
+            document.removeEventListener("click", handleClickOnMenu);
+        };
+    },[])
+
+    useEffect(() => {
+        if(optionsMenuNavBarRef.current) {
+            optionsMenuNavBarRef.current.style.display = isOptionsMenuVisible ? "block" : "none"
         }
     }, [isOptionsMenuVisible])
 
@@ -45,8 +58,8 @@ const NavBar = () => {
                     <span className="material-symbols-outlined">notifications</span>
                     <span className="material-symbols-outlined" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 
-                        <OptionsMenuHome
-                            ref={optionsMenuHomeRef}
+                        <OptionsMenuNavBar
+                            ref={optionsMenuNavBarRef}
                         />
                     }
                 </div>

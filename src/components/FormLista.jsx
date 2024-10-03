@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import NavBar from "../Listas/NavBar";
 
 const FormLista = ({ addLista, setIsFormVisible }) => {
   const [listaName, setListaName] = useState("");
@@ -16,7 +15,6 @@ const FormLista = ({ addLista, setIsFormVisible }) => {
   };
 
   return (
-      // <NavBar />
       <div className="FormLista">
         <div className="fila-between" style={{ margin: "15px" }}>
           <h5 style={{ fontWeight: "600" }}>Configura tu nueva lista</h5>

@@ -33,14 +33,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }
 
   const EditItem = (id, newName, newPrice) => {
-    const updatedItems = selectedList.items.map(item => {
+    const updatedCategories = selectedList.categories.map(category => {
+      const updatedItems = category.items.map(item => {
       if (item.id === id) {
         return { ...item, name: newName, price: newPrice }
       }
       return item
     })
+    return {...category, items: updatedItems}
+  })
   
-    updateListaItems(params.id, updatedItems)
+    updateListaCategories(params.id, updatedCategories)
   }
 
   const DeleteItem = (id) => {
@@ -71,23 +74,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
     )
   }
-
-  // const handleCheck = (id) => {
-  //   const updatedItems = selectedList.items.map(item =>
-  //   item.id === id ? { ...item, isChecked: !item.isChecked } : item
-  //   )
-  //   const updatedCategories = selectedList.categories.map(category => {
-  //     const categoryItems = updatedItems.filter(item => item.categoryId === category.id);
-  //     if (categoryItems.length === 0) {
-  //       return { ...category, items: categoryItems }
-  //     }
-  //     const allItemsChecked = categoryItems.every(item => item.isChecked);
-  //     return {...category, isChecked: allItemsChecked, items: categoryItems}
-  //   })
-
-  //   updateListaItems(params.id, updatedItems)
-  //   updateListaCategories(params.id, updatedCategories)
-  // }
 
   const handleCheck = (id) => {
     const updatedCategories = selectedList.categories.map(category => {
@@ -295,8 +281,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             items={selectedList.categories.flatMap(category => category.items)}
             categories={selectedList.categories}
             handleCheck={handleCheck}
-            handleCheckAll={handleCheckAll}
-            handleUnCheckAll={handleUnCheckAll}
             AddCategory={AddCategory}
             EditCategory={EditCategory}
             DeleteCategory={DeleteCategory}
@@ -310,6 +294,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             counterUp={selectedList.items.counterUp}
             counterDown={selectedList.items.counterDown}
             votesRef={votesRef}
+            isEStateLista={isEStateLista}
           />
           {isEStateLista && 
             <div className="emptyState">

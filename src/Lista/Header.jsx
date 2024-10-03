@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 
-const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll}) => {
+const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleDuplicate, handleCheckAll, handleUnCheckAll}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const optionsMenuRef = useRef(null)
@@ -31,6 +31,19 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
     }, []);
 
     useEffect(() => {
+        const handleClickOnMenu = (event) => {
+            if(optionsMenuRef.current && optionsMenuRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(false)
+            }
+        }
+        document.addEventListener("click", handleClickOnMenu);
+    
+        return () => {
+            document.removeEventListener("click", handleClickOnMenu);
+        };
+    },[])
+
+    useEffect(() => {
         const handleScroll = () => {
             if(window.scrollY > 40) {
             setIsScrolled(true)
@@ -50,7 +63,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
         <div className="app-margin">
             <div className="headerLista">
                 <div className="headerArrow">
-                    <span className="material-symbols-outlined icon-large" onClick={() => navigate("/")}>arrow_back</span>
+                    <span className="material-symbols-outlined icon-large" onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
                 </div>
                 <div className="headerText" style={{flex: "1"}}>
                     <div className="fila-between">
@@ -69,6 +82,8 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                                     lista={lista}
                                     handleCheckAll={handleCheckAll}
                                     handleUnCheckAll={handleUnCheckAll}
+                                    handleDuplicate={handleDuplicate}
+
                                 />
                             }
                         </div>
