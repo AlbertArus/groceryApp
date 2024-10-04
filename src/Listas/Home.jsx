@@ -66,7 +66,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
             />
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
-                    <h2>{`Hola ${usuario}!`}</h2>
+                    <h2 style={{fontWeight: "500"}}>{`Hola ${usuario}!`}</h2>
                     <h5>{listaslength === 1 ? "Tienes 1 lista activa" : `Tienes ${listaslength} listas activas`}</h5>
                 </div>
             </div>
@@ -84,7 +84,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                             <div className="linkedPart" style={{flex: "1"}}>
                                 <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
                                     <div className="fila-between">
-                                        <h4>{lista.listaName}</h4>
+                                        <h3 style={{fontWeight: "500"}}>{lista.listaName}</h3>
                                     </div>
                                     <div className="fi">{`Items: ${getListaItemsLength(lista.id)}`}</div>
                                     <div className="fila-start">

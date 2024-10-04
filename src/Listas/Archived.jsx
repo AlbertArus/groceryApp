@@ -62,7 +62,7 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
                             <div className="linkedPart" style={{flex: "1"}}>
                                 <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
                                     <div className="fila-between">
-                                        <h4>{lista.listaName}</h4>
+                                        <h2>{lista.listaName}</h2>
                                     </div>
                                     <div className="fi">{`Items: ${getListaItemsLength(lista.id)}`}</div>
                                     <div className="fila-start">

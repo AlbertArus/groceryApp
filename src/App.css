@@ -514,24 +514,18 @@ button[type=submit] {
   align-items: center;
 }
 
-.NewListaEState {
+.button_emptyState {
+  padding: 5px;
   border: 1.5px solid #ED9E04;
   border-radius: 5px;
   background-color: #FBE7C1;
-  padding: 5px;
-  width: 8.5rem;
   text-align: center;
   cursor: pointer;
-
 }
 
-.NewCategoriaEstate {
-  padding: 5px;
-  background-color: #9E9E9E;
-  border: 1.5px solid #ED9E04;
-  border-radius: 5px;
-  background-color: #FBE7C1;
+.emptyState {
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  cursor: pointer;
-
+  justify-content: center;
 }

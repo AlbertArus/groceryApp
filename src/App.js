@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Route, Routes, useNavigate, } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Home from "./Listas/Home"
 import toast, { Toaster } from 'react-hot-toast'
@@ -24,29 +24,66 @@ function App() {
   const navigate = useNavigate()
   // console.log({deletedLista})
 
-  const addLista = async (listaName, members, plan, descriptionLista) => {
-    const newLista = { id: uuidv4(), listaName, members, plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
-    try {
-      await setDoc(doc(db, "listas", newLista.id), newLista);
-      setListas(prevListas => [...prevListas, newLista]);
-    } catch (error) {
-      console.error("Error al guardar la lista en Firebase:", error);
-    }  
-  }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (usuario) => {
+      if (usuario) {
+        setUsuario(usuario);
+        // Cargar la información del usuario desde Firestore
+        const docRef = doc(db, "usuarios", usuario.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            // Aquí puedes almacenar los datos en el estado si lo deseas
+            setUsuario({ ...usuario, ...userData });
+            loadListasFromFirebase();
+            } else {
+            console.log("No hay tal documento!");
+        }
+      } else {
+        setUsuario(null);
+      }
+    });
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
 
   const loadListasFromFirebase = async () => {
+    if (!usuario || !usuario.uid) {
+      console.warn("El usuario no está autenticado. Cargando usuario...");
+      return; // No continuar si el usuario no está autenticado
+    }
     try {
       const querySnapshot = await getDocs(collection(db, "listas"));
       const loadedListas = querySnapshot.docs.map(doc => doc.data());
-      setListas(loadedListas);
+      const filteredListas = loadedListas.filter(lista => 
+        lista.userCreator === usuario.uid || lista.userMember.includes(usuario.uid)
+      )
+      setListas(filteredListas);
     } catch (error) {
       console.error("Error al cargar las listas desde Firebase:", error);
     }
   }
 
   useEffect(() => {
-    loadListasFromFirebase();
-  }, []);
+    if(usuario && usuario.uid) {
+      loadListasFromFirebase()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[usuario]);
+
+  const addLista = async (listaName, members, plan, descriptionLista) => {
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [], createdAt: new Date(), members, plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
+    try {
+      await setDoc(doc(db, "listas", newLista.id), newLista);
+      setListas(prevListas => [...prevListas, newLista]);
+    } catch (error) {
+      console.error("Error al guardar la lista en Firebase:", error);
+    }
+  }
+
+  console.log(listas)
 
   const deleteLista = async (id) => {
     const ListToDelete = listas.find(lista => lista.id === id);
@@ -190,116 +227,73 @@ function App() {
     })
   }
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (usuario) => {
-  //     if (usuario) {
-  //       setUsuario(usuario);
-  //       loadListasFromFirebase();
-  //     } else {
-  //       setUsuario(null);
-  //     }
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (usuario) => {
-      if (usuario) {
-        setUsuario(usuario);
-        // Cargar la información del usuario desde Firestore
-        const docRef = doc(db, "usuarios", usuario.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const userData = docSnap.data();
-            // Aquí puedes almacenar los datos en el estado si lo deseas
-            setUsuario({ ...usuario, ...userData });
-            loadListasFromFirebase();
-        } else {
-            console.log("No hay tal documento!");
-        }
-      } else {
-        setUsuario(null);
-      }
-    });
-    return () => unsubscribe();
-
-  }, []);
-
-  const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
-
   return (
     <>
       <div>
-        <Toaster
-          position="bottom-center"
-          reverseOrder={false}
-        />
+        <Toaster position="bottom-center" reverseOrder={false} />
         <Routes>
         <Route path="/Registro" element={
           <Registro 
             setUsuario={setUsuario}
           />}
         />
-        {usuario ? (
-          <>
-            <Route path="/" element={
-              <Home 
-              usuario={usuario.nombre}
-              correoUsuario={usuario.email}
-              addLista={addLista}
-              listas={listas.filter(lista => !lista.isArchived)}
-              deleteLista={deleteLista}
-              updateListaCategories={updateListaCategories}
-              updateListaItems={updateListaItems}
-              handleArchive={handleArchive}
-              AllArchived={AllArchived}
-              goToArchived={goToArchived}
-              handleNotified={handleNotified}
-              handleDuplicate={handleDuplicate}
-              />}
+          {usuario ? (
+            <>
+              <Route path="/" element={
+                <Home
+                  usuario={usuario.nombre}
+                  correoUsuario={usuario.email}
+                  addLista={addLista}
+                  listas={listas.filter((lista) => !lista.isArchived)}
+                  deleteLista={deleteLista}
+                  updateListaCategories={updateListaCategories}
+                  updateListaItems={updateListaItems}
+                  handleArchive={handleArchive}
+                  AllArchived={AllArchived}
+                  goToArchived={goToArchived}
+                  handleNotified={handleNotified}
+                  handleDuplicate={handleDuplicate}
+                />}
               />
-            <Route path="/list/:id" element={
-              <Lista
-              listas={listas}
-              setListas={setListas}
-              deleteLista={deleteLista}
-              updateListaCategories={updateListaCategories}
-              updateListaItems={updateListaItems}
-              handleArchive={handleArchive}
-              handleDuplicate={handleDuplicate}
-              />}
+              <Route path="/list/:id" element={
+                <Lista
+                  listas={listas}
+                  setListas={setListas}
+                  deleteLista={deleteLista}
+                  updateListaCategories={updateListaCategories}
+                  updateListaItems={updateListaItems}
+                  handleArchive={handleArchive}
+                  handleDuplicate={handleDuplicate}
+                  usuario={usuario}
+                />}
               />
-            <Route path='/newlist/' element={
-              <FormLista />}
+              <Route path="/newlist/" element={<FormLista />} />
+              <Route path="/archived/" element={
+                <Archived
+                  goToArchived={goToArchived}
+                  listas={listas.filter((lista) => lista.isArchived)}
+                  handleArchive={handleArchive}
+                  deleteLista={deleteLista}
+                />}
               />
-            <Route path='/archived/' element={
-              <Archived
-              goToArchived={goToArchived}
-              listas={listas.filter(lista => lista.isArchived)}
-              handleArchive={handleArchive}
-              deleteLista={deleteLista}
-              />}
-            />
-            <Route path='/profile' element={
-              <Perfil
-              usuario={usuario.nombre}
-              usuarioCompleto={usuarioCompleto}
-              correoUsuario={usuario.email}
-              />}
-            />
-            <Route path='/settings' element={
-              <Settings
-              usuario={usuario.nombre}
-              usuarioCompleto={usuarioCompleto}
-              correoUsuario={usuario.email}
-              />}
-            />
-          </>
+              <Route path="/profile" element={
+                <Perfil
+                  usuario={usuario.nombre}
+                  usuarioCompleto={usuarioCompleto}
+                  correoUsuario={usuario.email}
+                />}
+              />
+              <Route path="/settings" element={
+                <Settings
+                  usuario={usuario.nombre}
+                  usuarioCompleto={usuarioCompleto}
+                  correoUsuario={usuario.email}
+                />}
+              />
+            </>
           ) : (
             <Route path='*' element={<Registro />} />
-          )
-        }
+          )}
         </Routes>
       </div>
     </>

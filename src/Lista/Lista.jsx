@@ -7,8 +7,10 @@ import SubHeader from './SubHeader'
 import Categories from './Categories'
 import EStateLista from '../components/EStateLista'
 import { useParams } from 'react-router-dom'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../firebase-config'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario }) => {
 
   let params = useParams();
   
@@ -17,7 +19,31 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  // console.log({listas, params})
+  console.log({listas, params})
+
+  const fetchLista = useCallback(async () => {
+    if (!params.id) return;
+
+    try {
+      const docRef = doc(db, "listas", params.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const listaData = docSnap.data();
+        setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
+        if (usuario && !listaData.userMember.includes(usuario.uid)) {
+          await updateDoc(docRef, { userMember: [...listaData.userMember, usuario.uid] });
+        }
+      } else {
+        console.error("No hay tal documento!");
+      }
+    } catch (error) {
+      console.error("Error al cargar la lista:", error);
+    }
+  }, [params.id, setListas, usuario]);
+
+  useEffect(() => {
+    fetchLista();
+  }, [fetchLista]);
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, categoryId, name, price, thumbUp: false, thumbDown: false, counterUp: 0, counterDown: 0, isChecked: false };
@@ -228,7 +254,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }, [totalCategoriesLength]);
 
   if(listas.length === 0) {
-    return <div>loading</div>
+    return <div>Cargando listas...</div>
   }
 
   const handleCheckAll = () => {
