@@ -86,11 +86,11 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                     <div className="fila-between">
                                         <h3 style={{fontWeight: "500"}}>{lista.listaName}</h3>
                                     </div>
-                                    <div className="fi">{`Items: ${getListaItemsLength(lista.id)}`}</div>
+                                    <div>{`Items: ${getListaItemsLength(lista.id)}`}</div>
                                     <div className="fila-start">
                                         <div className="fila-start-group">
                                             <span className="material-symbols-outlined icon-medium">group</span>
-                                            <h5>{lista.members} pers.</h5>
+                                            <h5>{`${lista.userMember.length} pers.`}</h5>
                                         </div>
                                         <div className="fila-start-group">
                                             <span className="material-symbols-outlined icon-medium">{""}</span>

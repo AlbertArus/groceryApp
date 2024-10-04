@@ -2,12 +2,15 @@ import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
+import MembersList from "../components/MembersList"
 
-const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleDuplicate, handleCheckAll, handleUnCheckAll}) => {
+const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleDuplicate, handleCheckAll, handleUnCheckAll, usuario}) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
+    const [isMembersShown, setIsMembersShown] = useState(false)
     const optionsMenuRef = useRef(null)
     const buttonMenuRef = useRef(null)
+    const membersListRef = useRef(null)
     const navigate = useNavigate()
     const handleShare = ShareButton();
 
@@ -18,7 +21,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if ( optionsMenuRef.current && !optionsMenuRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
+            if ( optionsMenuRef.current && !optionsMenuRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target) && membersListRef.current && !membersListRef.current.contains(event.target)) {
                 setIsOptionsMenuVisible(false);
             }
         };
@@ -32,7 +35,7 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
 
     useEffect(() => {
         const handleClickOnMenu = (event) => {
-            if(optionsMenuRef.current && optionsMenuRef.current.contains(event.target)) {
+            if(optionsMenuRef.current && optionsMenuRef.current.contains(event.target) && membersListRef.current && membersListRef.current.contains(event.target)) {
                 setIsOptionsMenuVisible(false)
             }
         }
@@ -57,6 +60,11 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
             window.removeEventListener("scroll", handleScroll)
         }
     },[])
+
+    const handleMembersShown = (event) => {
+        event.stopPropagation()
+        setIsMembersShown(prevState => !prevState)
+    }
 
   return (
     <div className="head">
@@ -89,9 +97,16 @@ const Header = ({listaName, members, planIcon, plan, votesShown, handleVotesVisi
                         </div>
                     </div>
                     <div className="fila-start" style={{display: !isScrolled ? "flex" : "none"}}>
-                        <div className="fila-start-group">
+                        <div className="fila-start-group" style={{position: "relative"}}>
                             <span className="material-symbols-outlined icon-medium">group</span>
-                            <h5>{members} pers.</h5>
+                            <h5 onClick={handleMembersShown}>{`${lista.userMember.length} pers.`}</h5>
+                            {isMembersShown &&
+                                <MembersList
+                                    ref={membersListRef}
+                                    lista={lista}
+                                    usuario={usuario}
+                                />
+                            }
                         </div>
                         <div className="fila-start-group">
                             <span className="material-symbols-outlined icon-medium">{planIcon}</span>

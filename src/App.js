@@ -83,8 +83,6 @@ function App() {
     }
   }
 
-  console.log(listas)
-
   const deleteLista = async (id) => {
     const ListToDelete = listas.find(lista => lista.id === id);
     setDeletedLista(prev => [...prev, ListToDelete]);  // Añadir la lista al array

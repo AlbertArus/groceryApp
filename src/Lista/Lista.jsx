@@ -19,7 +19,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  console.log({listas, params})
+  // console.log({listas, params})
 
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
@@ -296,6 +296,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             price={formattedTotalPrice}
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
+            usuario={usuario}
           />
           <SubHeader 
             items={totalItemsLength}
