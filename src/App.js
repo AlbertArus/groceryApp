@@ -239,10 +239,10 @@ function App() {
             <>
               <Route path="/" element={
                 <Home
-                  usuario={usuario.nombre}
-                  correoUsuario={usuario.email}
+                  usuario={usuario}
                   addLista={addLista}
                   listas={listas.filter((lista) => !lista.isArchived)}
+                  setListas={setListas}
                   deleteLista={deleteLista}
                   updateListaCategories={updateListaCategories}
                   updateListaItems={updateListaItems}

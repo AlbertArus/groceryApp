@@ -278,6 +278,10 @@ hr {
   border-radius: 5px;
 }
 
+.itemSettings {
+  margin-top: 8px;
+}
+
 .itemMenu:hover {
   background-color: #f4f4f4;
   padding-left: 3px;
@@ -528,4 +532,31 @@ button[type=submit] {
   flex-direction: column;
   text-align: center;
   justify-content: center;
+}
+
+.ToggleLista {
+  border-radius: 5px;
+  /* background-color: #FBE7C1; */
+  background-color: #ffeec9;
+  padding: 5px 8px;
+  margin: 5px 0px 30px 0px;
+}
+
+.toggle {
+  border-radius: 5px;
+  padding: 3px 5px;
+  margin: 0px 2px;
+}
+
+.toggleActive {
+  border-radius: 5px;
+  background-color: #dedcdc;
+  padding: 2px 3px;
+  margin: 0px 4px;
+}
+
+.verticalLine {
+  height: 20px;
+  width: 1.5px;
+  background-color: #a6a6a6;
 }

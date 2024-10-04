@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import firebaseApp from "../firebase-config.js";
 import { getAuth, signOut } from "firebase/auth";
+import ItemSettings from "../components/ItemSettings.jsx";
 const auth = getAuth(firebaseApp);
 
 const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
@@ -45,18 +46,21 @@ const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
             </div>
             <hr />
             <div className="linksPerfil">
-                <div className="fila-start">
-                    <span className="material-symbols-outlined icon-medium"style={{ marginRight: "7px" }}>description</span>
-                    <h4 className="TermsText">Términos del servicio</h4>
-                </div>
-                <div className="fila-start" style={{ marginTop: "8px" }}>
-                    <span className="material-symbols-outlined icon-medium" style={{ marginRight: "7px" }}>logout</span>
-                    <h4 onClick={handleSignOut}>Cerrar sesión</h4>
-                </div>
-                <div className="fila-start" style={{ marginTop: "8px" }}>
-                    <span className="material-symbols-outlined icon-medium" style={{ marginRight: "7px" }}>logout</span>
-                    <h4 onClick={handleDeleteUser}>Eliminar usuario (Pending)</h4>
-                </div>
+                <ItemSettings 
+                    iconName={"password"}
+                    itemSettingsName={"Cambiar contraseña"}
+                    // onClick={handleSignOut}
+                />
+                <ItemSettings 
+                    iconName={"logout"}
+                    itemSettingsName={"Cerrar sesión"}
+                    onClick={handleSignOut}
+                />
+                <ItemSettings 
+                    iconName={"delete_forever"}
+                    itemSettingsName={"Eliminar usuario (Pending)"}
+                    onClick={handleDeleteUser}
+                />
             </div>
         </div>
     </div>

@@ -280,11 +280,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       {selectedList && (
         <>
           <Header
-            listaName={selectedList.listaName}
-            members={selectedList.members}
-            planIcon={"travel"}
-            plan={selectedList.plan}
-            descriptionLista={selectedList.descriptionLista}
             handleVotesVisible={handleVotesVisible}
             votesShown={votesShown}
             deleteLista={() => deleteLista(params.id)}

@@ -4,11 +4,13 @@ import NewLista from "./NewLista"
 import NavBar from "./NavBar"
 import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
+import ToggleLista from "./ToggleLista";
 // import firebaseApp from "../firebase-config.js"
 
-const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate, setListas }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const [filteredListas, setFilteredListas] = useState(listas)
     const archivadosRef = useRef(null)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRef = useRef(null)
@@ -59,14 +61,14 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
             return total + category.items.length
         }, 0)
     }
-    
+
     return (
         <div className="Home app">
             <NavBar
             />
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
-                    <h2 style={{fontWeight: "500"}}>{`Hola ${usuario}!`}</h2>
+                    <h2 style={{fontWeight: "500"}}>{`Hola ${usuario.nombre}!`}</h2>
                     <h5>{listaslength === 1 ? "Tienes 1 lista activa" : `Tienes ${listaslength} listas activas`}</h5>
                 </div>
             </div>
@@ -77,7 +79,12 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                     />
                 </div>
             }
-            {listas && listas.map(lista => (
+            <ToggleLista
+                usuario={usuario}
+                listas={listas}
+                setFilteredListas={setFilteredListas}
+            />
+            {filteredListas && filteredListas.map(lista => (
                 <div key={lista.id}>
                     <div className="vistaListas app-margin">
                         <div className="fila-between" style={{padding: "7px", alignItems: "flex-start"}}>
