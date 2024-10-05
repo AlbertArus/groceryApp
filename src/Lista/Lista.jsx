@@ -46,7 +46,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }, [fetchLista]);
 
   const AddItem = (name, price, categoryId) => {
-    const newItem = { id: uuidv4(), listaId: params.id, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
+    const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: [], categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
     const updatedItems = [...selectedList.items, newItem];
     updateListaItems(params.id, updatedItems);
     
@@ -57,6 +57,25 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     );
     updateListaCategories(params.id, updatedCategories);
   }
+
+  // const handleItemUserMember = (id) => {
+  //   const selectedCategories = selectedList.categories.map(category => {
+  //     const updatedItems = category.items.map(item => {
+  //         if (item.id === id) {
+  //           const loadItemUserMember = item.counterDown.includes(usuario.uid)
+  //           const userInCounterUp = item.counterUp.includes(usuario.uid)
+
+  //           const updateCounterDown = userInCounterDown ? item.counterUp.filter(uid => uid !== usuario.uid) : [...item.counterDown, usuario.uid]
+  //           const updateCounterUp = (!userInCounterDown && userInCounterUp) ? item.counterUp.filter(uid => uid !== usuario.uid) : item.counterUp
+  //           return {...item, counterUp: updateCounterUp, counterDown: updateCounterDown}
+  //         }
+  //         return item
+  //       })
+  //       updateListaItems(params.id, updatedItems)
+  //     return {...category, items: updatedItems}
+  //   })
+  //   updateListaCategories(params.id, selectedCategories)
+  // }
 
   const EditItem = (id, newName, newPrice) => {
     const updatedCategories = selectedList.categories.map(category => {

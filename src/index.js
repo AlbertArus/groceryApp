@@ -3,10 +3,13 @@ import App from './App';
 import '@material/web/all.js';
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { UsuarioProvider } from './UsuarioContext';
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <App />
+    <UsuarioProvider>
+      <App />
+    </UsuarioProvider>
   </BrowserRouter>
 );

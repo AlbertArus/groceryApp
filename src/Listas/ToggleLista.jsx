@@ -23,9 +23,9 @@ const ToggleLista = ({listas, setFilteredListas, usuario}) => {
         <div>
             <div className='ToggleLista fila-between' style={{flex:"none"}}>
                 <h5 onClick={() => handleClick("todas")} className={isToggleActive === "todas" ? 'toggleActive' : "toggle"}>Todas</h5>
-                <div className="verticalLine"></div>
+                {/* <div className="verticalLine"></div> */}
                 <h5 onClick={() => handleClick("mislistas")} className={isToggleActive === "mislistas" ? 'toggleActive' : "toggle"}>Mis listas</h5>
-                <div className="verticalLine"></div>
+                {/* <div className="verticalLine"></div> */}
                 <h5 onClick={() => handleClick("compartidas")} className={isToggleActive === "compartidas" ? 'toggleActive' : "toggle"}>Compartidas</h5>
             </div>
         </div>

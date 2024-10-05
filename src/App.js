@@ -11,41 +11,18 @@ import Registro from './configuración/Registro';
 import Perfil from './configuración/Perfil';
 import Settings from './configuración/Settings.jsx';
 
-import firebaseApp, { db } from "./firebase-config.js"
-import { doc, setDoc, getDocs, collection, updateDoc, getDoc, deleteDoc } from "firebase/firestore"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
-const auth = getAuth(firebaseApp)
+import { db } from "./firebase-config.js"
+import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase/firestore"
+import { useUsuario } from './UsuarioContext.jsx';
 
 function App() {
-
+  
+  const { usuario, setUsuario } = useUsuario();
   const [listas, setListas] = useState([])
   const [deletedLista, setDeletedLista] = useState([])
-  const [usuario, setUsuario] = useState(null)
+  // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   // console.log({deletedLista})
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (usuario) => {
-      if (usuario) {
-        setUsuario(usuario);
-        // Cargar la información del usuario desde Firestore
-        const docRef = doc(db, "usuarios", usuario.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const userData = docSnap.data();
-            // Aquí puedes almacenar los datos en el estado si lo deseas
-            setUsuario({ ...usuario, ...userData });
-            loadListasFromFirebase();
-            } else {
-            console.log("No hay tal documento!");
-        }
-      } else {
-        setUsuario(null);
-      }
-    });
-    return () => unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
 
@@ -201,7 +178,7 @@ function App() {
       console.error("Lista original no encontrada");
       return;
     }
-    const duplicateLista = { ...originalLista, id: uuidv4(), categories: originalLista.categories.map(category => ({...category, id: uuidv4(), items: category.items.map(item => ({...item, id: uuidv4()}))})), items: originalLista.items.map(item => ({...item, id: uuidv4()}))}
+    const duplicateLista = { ...originalLista, id: uuidv4(), userCreator: usuario.uid, userMember: [], categories: originalLista.categories.map(category => ({...category, id: uuidv4(), items: category.items.map(item => ({...item, id: uuidv4()}))})), items: originalLista.items.map(item => ({...item, id: uuidv4()}))}
 
     try {
       await setDoc(doc(db, "listas", duplicateLista.id), duplicateLista);
@@ -265,7 +242,11 @@ function App() {
                   usuario={usuario}
                 />}
               />
-              <Route path="/newlist/" element={<FormLista />} />
+              <Route path="/newlist/" element={
+                <FormLista 
+                  addLista={addLista}
+                />}
+              />
               <Route path="/archived/" element={
                 <Archived
                   goToArchived={goToArchived}

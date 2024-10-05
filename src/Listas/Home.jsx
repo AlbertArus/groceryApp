@@ -5,7 +5,6 @@ import NavBar from "./NavBar"
 import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
-// import firebaseApp from "../firebase-config.js"
 
 const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate, setListas }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
@@ -121,7 +120,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                         handleDuplicate={() => handleDuplicate(lista.id)}
                                                         handleArchive={() => handleArchive(lista.id)}
                                                         deleteLista={deleteLista}
-                                                        listaNoArchivada={lista}
+                                                        lista={lista}
                                                     />
                                                 }
                                             </div>
@@ -146,7 +145,6 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
             <h5 className="archivedSummary" style={{ display: AllArchived > 0 ? "block" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
             {!isEStateHome && 
                 <NewLista
-                    addLista={addLista}
                     style={{position: "absolute", bottom: "60px", right: "70px"}}
                 />
             }

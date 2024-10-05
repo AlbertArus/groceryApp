@@ -69,7 +69,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
 
   return (
     <div className="head">
-        <div className="app-margin">
+        <div className="app-margin ">
             <div className="headerLista">
                 <div className="headerArrow">
                     <span className="material-symbols-outlined icon-large" onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>

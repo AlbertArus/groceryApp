@@ -2,8 +2,12 @@ import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 import { ShareButton } from "./ShareButton"
 
-const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista, listaArchivada}, ref) => { 
-  const handleShare = ShareButton();
+const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista, listaArchivada, lista}, ref) => { 
+  const handleShare = ShareButton({
+    // url: `${window.location.hostname === "localhost" ? "http://localhost:3000" : "https://grocery-app-lake-theta.vercel.app/"}/list/${lista.id}`,
+    url: `${window.location.origin}/list/${lista.id}`,
+    text: lista.descriptionLista
+  });
 
   return (
     <div className="optionsMenu" ref={ref}>
@@ -21,7 +25,7 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
       />
       <ItemMenu 
         iconName={"archive"}
-        itemMenuName={"Archivar lista"}
+        itemMenuName={listaArchivada ? "Desarchivar lista" : "Archivar lista"}
         onClick={handleArchive}
       />
       <ItemMenu 
