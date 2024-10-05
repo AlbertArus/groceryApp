@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleThumbUp, handleThumbDown, votesRef }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesRef }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -92,12 +92,8 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
               DeleteItem={() => DeleteItem(item.id)}
               initialName={item.name}
               initialPrice={item.price}
-              handleThumbDown={() => handleThumbDown(item.id)}
-              handleThumbUp={() => handleThumbUp(item.id)}
-              thumbUp={item.thumbUp}
-              thumbDown={item.thumbDown}    
-              counterUp={item.counterUp}
-              counterDown={item.counterDown}
+              handleCounterDown={() => handleCounterDown(item.id)}
+              handleCounterUp={() => handleCounterUp(item.id)}  
               votesRef={votesRef}
             />
           ))}

@@ -113,6 +113,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       const allItemsChecked = categoryItems.every(item => item.isChecked);
       return {...category, isChecked: allItemsChecked, items: categoryItems}
     })
+
     // updateListaItems(params.id, updatedItems)
     updateListaCategories(params.id, updatedCategories)
   }
@@ -199,16 +200,19 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     const selectedCategories = selectedList.categories.map(category => {
       const updatedItems = category.items.map(item => {
           if (item.id === id) {
-            const userInCounterUp = item.counterUp.includes(usuario.uid)
-            const userInCounterDown = item.counterDown.includes(usuario.uid)
-
-            const updateCounterUp = userInCounterUp ? item.counterUp.filter(uid => uid !== usuario.uid) : [...item.counterUp, usuario.uid]
-            const updateCounterDown = (!userInCounterUp && userInCounterDown) ? item.counterDown.filter(uid => uid !== usuario.uid) : item.counterDown
-            return {...item, counterUp: updateCounterUp, counterDown: updateCounterDown}
+            if (item.thumbUp) {
+              return { ...item, thumbUp: false, counterUp: item.counterUp - 1 }
+            } else {
+              if (item.thumbDown) {
+                return { ...item, thumbUp: true, thumbDown: false, counterDown: item.counterDown - 1, counterUp: item.counterUp + 1 };
+              } else {
+                return { ...item, thumbUp: true, counterUp: item.counterUp + 1 };
+              }
+            }
           }
           return item
         })
-        updateListaItems(params.id, updatedItems)
+      updateListaItems(params.id, updatedItems)
       return {...category, items: updatedItems}
     })
     updateListaCategories(params.id, selectedCategories)
@@ -216,21 +220,28 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   const handleCounterDown = (id) => {
     const selectedCategories = selectedList.categories.map(category => {
-      const updatedItems = category.items.map(item => {
-          if (item.id === id) {
-            const userInCounterDown = item.counterDown.includes(usuario.uid)
-            const userInCounterUp = item.counterUp.includes(usuario.uid)
-
-            const updateCounterDown = userInCounterDown ? item.counterUp.filter(uid => uid !== usuario.uid) : [...item.counterDown, usuario.uid]
-            const updateCounterUp = (!userInCounterDown && userInCounterUp) ? item.counterUp.filter(uid => uid !== usuario.uid) : item.counterUp
-            return {...item, counterUp: updateCounterUp, counterDown: updateCounterDown}
+      const updatedItems = selectedList.items.map(item => {
+        if (item.id === id) {
+          if (item.thumbDown) {
+            return { ...item, thumbDown: false, counterDown: item.counterDown - 1 }
+          } else {
+            if (item.thumbUp) {
+              return { ...item, thumbDown: true, thumbUp: false, counterUp: item.counterUp - 1, counterDown: item.counterDown + 1 };
+            } else {
+              return { ...item, thumbDown: true, counterDown: item.counterDown + 1 };
+            }
           }
-          return item
-        })
-        updateListaItems(params.id, updatedItems)
+        }
+        return item
+      })
+      updateListaItems(params.id, updatedItems)
       return {...category, items: updatedItems}
     })
     updateListaCategories(params.id, selectedCategories)
+  }
+
+  if(!counterUp.includes(usuario.uid)) {
+    {...item.counterUp, usuario.uid}
   }
 
   const handleVotesVisible = () => {
@@ -312,6 +323,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             DeleteItem={DeleteItem}
             handleCounterDown={handleCounterDown}
             handleCounterUp={handleCounterUp}
+            thumbUp={selectedList.items.thumbUp}
+            thumbDown={selectedList.items.thumbDown}
+            counterUp={selectedList.items.counterUp}
+            counterDown={selectedList.items.counterDown}
             votesRef={votesRef}
             isEStateLista={isEStateLista}
           />

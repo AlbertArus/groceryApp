@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 
-const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleThumbUp, handleThumbDown, thumbUp, thumbDown, counterUp, counterDown, votesRef }) => {
+const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesRef }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
@@ -85,12 +85,12 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
       </div>
       <div className="fila-start" style={{margin:"3px 0px 0px 62px"}} ref={el => votesRef.current[id] = el}>
         <div className="fila-start-group">
-            <span className="material-symbols-outlined icon-small" onClick={handleThumbUp} style={{color: thumbUp ? "blue" : ""}}>thumb_up</span>
-            <h5>{counterUp}</h5>
+            <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
+            <h5>{item.counterUp.length}</h5>
         </div>
         <div className="fila-start-group">
-            <span className="material-symbols-outlined icon-small" onClick={handleThumbDown} style={{color: thumbDown ? "red" : ""}}>thumb_down</span>
-            <h5>{counterDown}</h5>
+            <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
+            <h5>{item.counterDown.length}</h5>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, {useRef} from "react"
 import Category from "../components/Category"
 import NewCategory from "../components/NewCategory"
 
-const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleThumbUp, handleThumbDown, thumbUp, thumbDown, counterUp, counterDown, votesRef, isEStateLista }) => {
+const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesRef, isEStateLista }) => {
   const ItemNameInputRefs = useRef({})
   
   return (
@@ -23,12 +23,8 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
             ItemNameInputRef={ItemNameInputRefs.current[category.id] || (ItemNameInputRefs.current[category.id] = React.createRef())} // Objeto con la ref de cada categoría. Si esa (en base a id) no tiene ref, la creo con createRef y la asigno para que ahora [category.id] sí tenga valor (.current)
             itemsCategory={itemsCategory}
             categories={categories}
-            handleThumbDown={handleThumbDown}
-            handleThumbUp={handleThumbUp}
-            thumbUp={thumbUp}
-            thumbDown={thumbDown}  
-            counterUp={counterUp}
-            counterDown={counterDown}
+            handleCounterDown={handleCounterDown}
+            handleCounterUp={handleCounterUp}
             votesRef={votesRef}
           />
         ))}
