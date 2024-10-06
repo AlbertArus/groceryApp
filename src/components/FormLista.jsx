@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 
-const FormLista = ({ addLista}) => {
+const FormLista = ({ addLista, listas}) => {
   const [listaName, setListaName] = useState("");
   const [plan, setPlan] = useState("");
   const [descriptionLista, setDescriptionLista] = useState("");
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (listaName.trim() && plan.trim()) {
-      addLista(listaName, plan, descriptionLista);
-      navigate("/")
+      try {
+        const nuevaLista = await addLista(listaName, plan, descriptionLista)
+        navigate(`/list/${nuevaLista.id}`)
+      } catch (error) {
+        console.error("Error al crear la lista:", error)
+      }
     }
-  };
+  }
 
   return (
       <div className="FormLista">

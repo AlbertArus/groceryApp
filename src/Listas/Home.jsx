@@ -132,17 +132,14 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                         ) : (
                             <>
                                 {!isEStateHome && (
-                                    <div>No tienes listas aquí </div>
+                                    <div className="app-margin center">No tienes listas aquí </div>
                                 )}
                             </>
-                            // <EStateHome 
-                                // addLista={addLista}
-                            // />
                         )
                     }
                 </>
             )}
-            <h5 className="archivedSummary" style={{ display: AllArchived > 0 ? "block" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
+            <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
             {!isEStateHome && 
                 <NewLista
                 />

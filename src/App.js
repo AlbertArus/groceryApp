@@ -55,6 +55,7 @@ function App() {
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);
+      return newLista // Lo añado para que FormLista reciba newLista asíncronamente y sepa dónde redirigirlo
     } catch (error) {
       console.error("Error al guardar la lista en Firebase:", error);
     }
@@ -245,6 +246,7 @@ function App() {
               <Route path="/newlist/" element={
                 <FormLista 
                   addLista={addLista}
+                  listas={listas}
                 />}
               />
               <Route path="/archived/" element={

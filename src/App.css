@@ -57,7 +57,7 @@ hr {
 .app {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   width: 100vw;
   height: 100vh;
@@ -66,8 +66,12 @@ hr {
 }
 
 .app-margin {
-  width: 95vw;
   margin: 0px 15px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
 
 .head {
@@ -75,7 +79,7 @@ hr {
   padding-bottom: 8px;
   background-color: #ffeec9;
   position: sticky;
-  z-index: 1000;
+  /* z-index: 1000; */
   top: 0;
 }
 

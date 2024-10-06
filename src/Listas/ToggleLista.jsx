@@ -20,7 +20,7 @@ const ToggleLista = ({listas, setFilteredListas, usuario}) => {
     }, [isToggleActive, listas, usuario.uid, setFilteredListas])
 
     return (
-        <div>
+        <div className='app-margin center'>
             <div className='ToggleLista fila-between' style={{flex:"none"}}>
                 <h5 onClick={() => handleClick("todas")} className={isToggleActive === "todas" ? 'toggleActive' : "toggle"}>Todas</h5>
                 {/* <div className="verticalLine"></div> */}
