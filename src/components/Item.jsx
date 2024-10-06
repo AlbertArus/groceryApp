@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react"
+import MembersCounter from "./MembersCounter"
 import MembersItem from "./MembersItem"
 
 const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesRef }) => {
@@ -7,9 +8,13 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
   const [price, setPrice] = useState(initialPrice)
   const [isExpanded, setIsExpanded] = useState(false)
   const [itemIsChecked, setItemIsChecked] = useState(false)
-  const [isMembersShown, setIsMembersShown] = useState(false)
+  const [isCounterMembersShown, setIsCounterMembersShown] = useState(false)
+  const [isItemUserMembersShown, setIsItemUserMembersShown] = useState(false)
+  const membersCounterRef = useRef(null)
   const membersItemRef = useRef(null)
-  const buttonMembersListRef = useRef(null)
+  const buttonCounterUpMembersListRef = useRef(null)
+  const buttonCounterDownMembersListRef = useRef(null)
+  const buttonItemMembersListRef = useRef(null)
   const deleteRef = useRef(null)
   const ItemTextRef = useRef(null)
   const ItemPriceRef = useRef(null)
@@ -44,7 +49,7 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
   }
 
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded)
+    setIsExpanded(prevState => !prevState)
   }
 
   const priceFormatting = (event) => {
@@ -72,36 +77,63 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
     }
   },[item])
 
-  const handleMembersShown = (event) => {
+  const handleCounterMembersShown = (event) => {
     event.stopPropagation()
-    setIsMembersShown(prevState => !prevState)
-}
+    setIsCounterMembersShown(prevState => !prevState)
+  }
 
-useEffect(() => {
-    const handleClickOutside = (event) => {
-        if (membersItemRef.current && !membersItemRef.current.contains(event.target) && buttonMembersListRef.current && !buttonMembersListRef.current.contains(event.target)) {
-            setIsMembersShown(false);
-        }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
-}, [])
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+          if (membersCounterRef.current && !membersCounterRef.current.contains(event.target) && buttonCounterUpMembersListRef.current && !buttonCounterUpMembersListRef.current.contains(event.target) && buttonCounterDownMembersListRef.current && !buttonCounterDownMembersListRef.current.contains(event.target)) {
+            setIsCounterMembersShown(false);
+          }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+      }
+  }, [])
 
-useEffect(() => {
-    const handleClickOnMenu = (event) => {
-        if(membersItemRef.current && membersItemRef.current.contains(event.target)) {
-            setIsMembersShown(false)
-        }
-    }
-    document.addEventListener("click", handleClickOnMenu)
-    return () => {
-        document.removeEventListener("click", handleClickOnMenu)
-    }
-},[])
+  useEffect(() => {
+      const handleClickOnMenu = (event) => {
+          if(membersCounterRef.current && membersCounterRef.current.contains(event.target)) {
+            setIsCounterMembersShown(false)
+          }
+      }
+      document.addEventListener("click", handleClickOnMenu)
+      return () => {
+          document.removeEventListener("click", handleClickOnMenu)
+      }
+  },[])
 
-console.log(item.itemUserMember)
+  const handleItemUserMembersShown = (event) => {
+    event.stopPropagation()
+    setIsItemUserMembersShown(prevState => !prevState)
+  }
+
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+          if (membersItemRef.current && !membersItemRef.current.contains(event.target) && buttonItemMembersListRef.current && !buttonItemMembersListRef.current.contains(event.target)) {
+            setIsItemUserMembersShown(false);
+          }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+      }
+  }, [])
+
+  useEffect(() => {
+      const handleClickOnMenu = (event) => {
+          if(membersItemRef.current && membersItemRef.current.contains(event.target)) {
+            setIsItemUserMembersShown(false)
+          }
+      }
+      document.addEventListener("click", handleClickOnMenu)
+      return () => {
+          document.removeEventListener("click", handleClickOnMenu)
+      }
+  },[])
 
   return (
     <div className="item">
@@ -122,23 +154,29 @@ console.log(item.itemUserMember)
         <div className="fila-start" style={{margin:"3px 0px 0px 62px"}} ref={el => votesRef.current[id] = el}>
           <div className="fila-start-group">
               <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
-              <h5 onClick={handleMembersShown}>{item.counterUp.length}</h5>
+              <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
           </div>
           <div className="fila-start-group">
               <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
-              <h5 onClick={handleMembersShown}>{item.counterDown.length}</h5>
+              <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
           </div>
-          {(item.counterUp.length > 0 || item.counterDown.length > 0) && isMembersShown &&
-            <MembersItem
-              ref={membersItemRef}
+          {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
+            <MembersCounter
+              ref={membersCounterRef}
               item={item}
             />
           }        
         </div>
-        <div className="fila-start" style={{marginTop:"3px"}}>
+        <div className="fila-start" style={{marginTop:"3px"}} onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
           <div className="fila-start-group">
             <span className="material-symbols-outlined icon-small">group</span>
             <h5>{item.itemUserMember.length}</h5>
+            {isItemUserMembersShown &&
+              <MembersItem
+                ref={membersItemRef}
+                item={item}
+              />
+            }
           </div>
         </div>
       </div>

@@ -19,22 +19,76 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  // console.log({listas, params})
+  console.log({listas, params})
+
+  // const fetchLista = useCallback(async () => {
+  //   if (!params.id) return;
+
+  //   try {
+  //     const docRef = doc(db, "listas", params.id);
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       const listaData = docSnap.data();
+  //       setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
+  //       if (usuario && !listaData.userMember.includes(usuario.uid)) {
+  //         await updateDoc(docRef, { userMember: [...listaData.userMember, usuario.uid] });
+  //         await updateDoc(docRef, { listas.map(lista => 
+  //           lista.categories.map(category => 
+  //             category.items.map(item =>
+  //               item.itemUserMember: [...itemUserMember, usuario.uid]
+  //             )
+  //           )
+  //         )})
+  //       } else {
+  //         console.error("No hay tal documento!");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al cargar la lista:", error);
+  //   }
+  // }, [params.id, setListas, usuario]);
 
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
-
+  
     try {
       const docRef = doc(db, "listas", params.id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const listaData = docSnap.data();
-        setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
         if (usuario && !listaData.userMember.includes(usuario.uid)) {
-          await updateDoc(docRef, { userMember: [...listaData.userMember, usuario.uid] });
+          // Añadir el usuario a userMember de la lista
+          const updatedUserMember = [...listaData.userMember, {uid: usuario.uid, nombre: usuario.nombre, apellido: usuario.apellido}];
+          
+          // Actualizar itemUserMember en todos los items
+          const updatedCategories = listaData.categories.map(category => ({
+            ...category,
+            items: category.items.map(item => ({
+              ...item,
+              itemUserMember: [...item.itemUserMember, {uid: usuario.uid, nombre: usuario.nombre, apeliido: usuario.apellido}]
+            }))
+          }));
+          console.log(listaData.userMember)
+          console.log('updatedUserMember:', updatedUserMember);
+          console.log('updatedCategories:', updatedCategories);
+  
+          // Actualizar la lista en Firestore
+          await updateDoc(docRef, { 
+            userMember: updatedUserMember,
+            categories: updatedCategories
+          });
+  
+          // Actualizar el estado local
+          listaData.userMember = updatedUserMember;
+          listaData.categories = updatedCategories;
         }
+  
+        // Actualizar el estado de las listas
+        setListas(prevListas => prevListas.map(lista => 
+          lista.id === params.id ? listaData : lista
+        ));
       } else {
-        console.error("No hay tal documento!");
+        console.error("No existe tal documento!");
       }
     } catch (error) {
       console.error("Error al cargar la lista:", error);
@@ -46,7 +100,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }, [fetchLista]);
 
   const AddItem = (name, price, categoryId) => {
-    const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: [], categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
+    const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
     const updatedItems = [...selectedList.items, newItem];
     updateListaItems(params.id, updatedItems);
     

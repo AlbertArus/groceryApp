@@ -8,8 +8,8 @@ import { UsuarioProvider } from './UsuarioContext';
 const root = createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <UsuarioProvider>
-      <App />
-    </UsuarioProvider>
+      <UsuarioProvider>
+        <App />
+      </UsuarioProvider>
   </BrowserRouter>
 );
