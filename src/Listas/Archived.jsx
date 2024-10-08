@@ -50,13 +50,13 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
                             <div className="linkedPart" style={{flex: "1"}}>
                                 <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
                                     <div className="fila-between">
-                                        <h2>{lista.listaName}</h2>
+                                        <h3>{lista.listaName}</h3>
                                     </div>
-                                    <div className="fi">{`Items: ${getListaItemsLength(lista.id)}`}</div>
+                                    <div>{`Items: ${getListaItemsLength(lista.id)}`}</div>
                                     <div className="fila-start">
                                         <div className="fila-start-group">
                                             <span className="material-symbols-outlined icon-medium">group</span>
-                                            <h5>{lista.members} pers.</h5>
+                                            <h5>{lista.userMember.length} pers.</h5>
                                         </div>
                                         <div className="fila-start-group">
                                             <span className="material-symbols-outlined icon-medium">{""}</span>

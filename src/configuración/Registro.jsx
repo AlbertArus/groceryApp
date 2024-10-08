@@ -17,7 +17,7 @@ const Registro = ({setUsuario}) => {
     }
 
     const minLength = 6
-    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -35,15 +35,17 @@ const Registro = ({setUsuario}) => {
             correo: (correo.trim() === ""),
             correoInvalid: correoInvalid,
             contraseña: (contraseña.trim() === ""),
-            contraseñaInvalid: (contraseña.trim().length <= minLength)
+            contraseñaInvalid: (contraseña.trim().length < minLength)
         })
         
-        if(nombre.trim() && apellido.trim() && correo.trim() && contraseña.trim()) {
-            try {
-                let userCredential;
-                if(isRegistered) {
-                    userCredential = await signInWithEmailAndPassword (auth, correo, contraseña)
-                } else {
+        try {
+            let userCredential;
+            if(isRegistered) {
+                if(correo.trim() && contraseña.trim()) {
+                userCredential = await signInWithEmailAndPassword (auth, correo, contraseña)
+                }
+            } else {
+                if(nombre.trim() && apellido.trim() && correo.trim() && contraseña.trim()) {
                     userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña)
                     await updateProfile(userCredential.user, {
                         displayName: `${nombre} ${apellido}`
@@ -55,14 +57,14 @@ const Registro = ({setUsuario}) => {
                         apellido: apellido,
                         email: correo,
                         createdAt: new Date(),
-                      });
+                    });
                 }
-    
-                setUsuario(userCredential.user);
-                navigate("/")
-            } catch(error) {
-                console.error(isRegistered ? "Error al iniciar sesión:" : "Error al registrar el usuario:", error);
+
             }
+            setUsuario(userCredential.user);
+            navigate("/")
+        } catch(error) {
+            console.error(isRegistered ? "Error al iniciar sesión:" : "Error al registrar el usuario:", error);
         }
     }
 

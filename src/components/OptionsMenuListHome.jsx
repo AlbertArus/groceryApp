@@ -5,8 +5,8 @@ import { ShareButton } from "./ShareButton"
 const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista, listaArchivada, lista}, ref) => { 
   const handleShare = ShareButton({
     // url: `${window.location.hostname === "localhost" ? "http://localhost:3000" : "https://grocery-app-lake-theta.vercel.app/"}/list/${lista.id}`,
-    url: `${window.location.origin}/list/${lista.id}`,
-    text: lista.descriptionLista
+    url: listaArchivada ? `${window.location.origin}/list/${listaArchivada.id}` : `${window.location.origin}/list/${lista.id}`,
+    text: listaArchivada ? listaArchivada.descriptionLista : lista.descriptionLista
   });
 
   return (

@@ -535,3 +535,31 @@ button[type=submit] {
   border-radius: 30px;
   padding: 4px 8px;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(196, 195, 195, 0.5);
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+}
+
+.SharePopUP {
+  border-radius: 10px;
+  box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
+  background-color: white;
+  padding: 10px 25px;
+  z-index: 1000;
+  top: 200px;
+  position: fixed;
+}
+
+.SharePopUP button[type=submit] {
+  height: 30px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  border: 2.5px solid #9E9E9E;
+  margin: 15px 0px;
+}

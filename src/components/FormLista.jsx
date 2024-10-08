@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import Head from "./Head";
 
-const FormLista = ({ addLista, listas}) => {
+const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
   const [listaName, setListaName] = useState("");
   const [errors, setErrors] = useState({listaName: false, plan: false})
   const [plan, setPlan] = useState("");
@@ -21,6 +21,7 @@ const FormLista = ({ addLista, listas}) => {
       try {
         const nuevaLista = await addLista(listaName, plan, descriptionLista)
         navigate(`/list/${nuevaLista.id}`)
+        setSharePopupVisible(true)
       } catch (error) {
         console.error("Error al crear la lista:", error)
       }

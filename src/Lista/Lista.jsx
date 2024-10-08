@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import '../App.css'
 import { v4 as uuidv4 } from 'uuid'
 import toast from 'react-hot-toast'
@@ -9,8 +9,9 @@ import EStateLista from '../components/EStateLista'
 import { useParams } from 'react-router-dom'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
+import SharePopUp from '../components/SharePopUp'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
 
   let params = useParams();
   
@@ -67,9 +68,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               itemUserMember: [...item.itemUserMember, {uid: usuario.uid, nombre: usuario.nombre, apeliido: usuario.apellido}]
             }))
           }));
-          console.log(listaData.userMember)
-          console.log('updatedUserMember:', updatedUserMember);
-          console.log('updatedCategories:', updatedCategories);
+          // console.log(listaData.userMember)
+          // console.log('updatedUserMember:', updatedUserMember);
+          // console.log('updatedCategories:', updatedCategories);
   
           // Actualizar la lista en Firestore
           await updateDoc(docRef, { 
@@ -307,7 +308,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   const handleVotesVisible = () => {
     setVotesShown(prevState => !prevState)
-    console.log(votesShown)
   }
 
   useEffect(() => {
@@ -385,6 +385,11 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                 AddCategory={AddCategory}
               />
             </div>
+          }
+          {sharePopupVisible && 
+            <SharePopUp
+              setSharePopupVisible={setSharePopupVisible}
+            />
           }
         </>
       )}

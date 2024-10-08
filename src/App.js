@@ -20,6 +20,7 @@ function App() {
   const { usuario, setUsuario } = useUsuario();
   const [listas, setListas] = useState([])
   const [deletedLista, setDeletedLista] = useState([])
+  const [sharePopupVisible, setSharePopupVisible] = useState (false)
   // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   // console.log({deletedLista})
@@ -241,12 +242,15 @@ function App() {
                   handleArchive={handleArchive}
                   handleDuplicate={handleDuplicate}
                   usuario={usuario}
+                  sharePopupVisible={sharePopupVisible}
+                  setSharePopupVisible={setSharePopupVisible}
                 />}
               />
               <Route path="/newlist/" element={
                 <FormLista 
                   addLista={addLista}
                   listas={listas}
+                  setSharePopupVisible={setSharePopupVisible}
                 />}
               />
               <Route path="/archived/" element={
