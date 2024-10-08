@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesRef }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -38,6 +38,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const collapseCategory = () => {
     setIsCollapsed(prevCollapsed => !prevCollapsed)
   }
+  console.log(votesShown)
 
   useEffect(() => {
     if(toggleRef.current) {
@@ -94,7 +95,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
               initialPrice={item.price}
               handleCounterDown={() => handleCounterDown(item.id)}
               handleCounterUp={() => handleCounterUp(item.id)}  
-              votesRef={votesRef}
+              votesShown={votesShown}
             />
           ))}
           <NewItem 

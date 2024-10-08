@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import MembersCounter from "./MembersCounter"
 import MembersItem from "./MembersItem"
 
-const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesRef }) => {
+const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
@@ -150,13 +150,13 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
           <span className="material-symbols-outlined icon-medium hidden" onClick={handleDelete} ref={deleteRef}>delete</span>
         </div>
       </div>
-      <div className="itemFilaBajo fila-start" style={{position: "relative"}}>
-        <div className="fila-start" style={{margin:"3px 0px 0px 62px"}} ref={el => votesRef.current[id] = el}>
-          <div className="fila-start-group">
+      <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 62px"}}>
+        <div className="fila-start">
+          <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
               <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
               <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
           </div>
-          <div className="fila-start-group">
+          <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
               <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
               <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
           </div>
@@ -167,17 +167,15 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
             />
           }        
         </div>
-        <div className="fila-start" style={{marginTop:"3px"}} onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
-          <div className="fila-start-group">
-            <span className="material-symbols-outlined icon-small">group</span>
-            <h5>{item.itemUserMember.length}</h5>
-            {isItemUserMembersShown &&
-              <MembersItem
-                ref={membersItemRef}
-                item={item}
-              />
-            }
-          </div>
+        <div className="fila-start-group" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
+          <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
+          <h5>{item.itemUserMember.length}</h5>
+          {isItemUserMembersShown &&
+            <MembersItem
+              ref={membersItemRef}
+              item={item}
+            />
+          }
         </div>
       </div>
     </div>

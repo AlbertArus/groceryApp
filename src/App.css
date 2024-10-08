@@ -51,7 +51,7 @@ h6 {
 hr {
   border: 0.01px solid rgb(219, 216, 216);
   margin: 20px 0px;
-  width: 20rem;
+  /* width: 20rem; */
 }
 
 .app {
@@ -340,7 +340,6 @@ hr {
   font-size: 16px;
   color: black;
   padding: 5px 5px;
-  margin: 5px 0px;
   width: 100%;
 }
 
@@ -352,6 +351,7 @@ hr {
 .FormLista textarea {
   border: none;
   border-radius: 6px;
+  outline: none;
   resize: none;
   background-color: #ebeaea;
   flex: 1;
@@ -390,6 +390,18 @@ button[type=submit] {
   justify-content: flex-start;
 }
 
+.iconed-container {
+  margin: 5px 0px;
+  width: 100%;
+}
+
+.iconSuperpuesto {
+  position: absolute;
+  right: 15px;
+  color: rgb(139, 139, 139);
+  opacity: 1;
+}
+
 .buttonRegistro {
   border-radius: 5px;
   background-color: #f4f4f4;
@@ -398,8 +410,7 @@ button[type=submit] {
 }
 
 .login {
-  display: flex;
-  flex-direction: column;
+  margin-top: 20px;
 }
 
 .login form{
@@ -423,27 +434,6 @@ button[type=submit] {
   padding: 0;
   margin: 5px 0px;
   padding: 3px 6px;
-}
-
-.password-container {
-  position: relative;
-  display: inline-flex;
-  width: 100%
-}
-
-.password-container input {
-  width: 100%;
-  padding-right: 40px;
-  box-sizing: border-box;
-}
-
-.password-container .material-symbols-outlined {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #888
 }
 
 .redirect {
@@ -483,21 +473,12 @@ button[type=submit] {
   text-decoration: underline;
 }
 
-.contentPerfil {
+/* .contentPerfil {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.button_emptyState {
-  padding: 5px;
-  border: 1.5px solid #ED9E04;
-  border-radius: 5px;
-  background-color: #FBE7C1;
-  text-align: center;
-  cursor: pointer;
-}
+} */
 
 .emptyState {
   display: flex;
@@ -506,11 +487,22 @@ button[type=submit] {
   justify-content: center;
 }
 
+.button_emptyState {
+  margin-top: 12px;
+  padding: 5px;
+  border: 1.5px solid #ED9E04;
+  border-radius: 5px;
+  background-color: #FBE7C1;
+  text-align: center;
+  cursor: pointer;
+}
+
 .ToggleLista {
   border-radius: 5px;
   background-color: #f0f0f0;
   padding: 5px 8px;
   margin: 5px 0px 30px 0px;
+  width: max-content;
 }
 
 .toggle {
@@ -536,4 +528,10 @@ button[type=submit] {
   height: 20px;
   width: 1.5px;
   background-color: #a6a6a6;
+}
+
+.iconPlan {
+  border: 2px solid blue;
+  border-radius: 30px;
+  padding: 4px 8px;
 }

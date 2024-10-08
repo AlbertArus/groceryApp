@@ -16,10 +16,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   
   const [votesShown, setVotesShown] = useState(true)
   const [isEStateLista, setIsEStateLista] = useState(false)
-  const votesRef = useRef({})
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  console.log({listas, params})
+  // console.log({listas, params})
 
   // const fetchLista = useCallback(async () => {
   //   if (!params.id) return;
@@ -308,16 +307,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   const handleVotesVisible = () => {
     setVotesShown(prevState => !prevState)
+    console.log(votesShown)
   }
-
-  useEffect(() => {
-    selectedList?.items.forEach(item => {
-      const currentRef = votesRef.current[item.id]
-      if (currentRef) {
-        currentRef.style.display = votesShown ? "flex" : "none"
-      }
-    })
-  }, [votesShown, selectedList?.items])
 
   useEffect(() => {
     if (totalCategoriesLength === 0) {
@@ -385,8 +376,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             DeleteItem={DeleteItem}
             handleCounterDown={handleCounterDown}
             handleCounterUp={handleCounterUp}
-            votesRef={votesRef}
             isEStateLista={isEStateLista}
+            votesShown={votesShown}
           />
           {isEStateLista && 
             <div className="emptyState">

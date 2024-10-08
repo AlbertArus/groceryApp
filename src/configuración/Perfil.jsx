@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import firebaseApp from "../firebase-config.js";
 import { getAuth, signOut } from "firebase/auth";
 import ItemSettings from "../components/ItemSettings.jsx";
+import Head from "../components/Head.jsx";
 const auth = getAuth(firebaseApp);
 
 const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
@@ -18,15 +19,10 @@ const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
   }
 
   return (
-    <div className="perfil">
-        <div className="head">
-            <div className="perfilHeader fila-start app-margin">
-            <div className="headerArrow">
-                <span className="material-symbols-outlined icon-large" onClick={() => navigate("/")}>arrow_back</span>
-            </div>
-            <div className="perfilTitle">Mi perfil</div>
-            </div>
-        </div>
+    <div className="perfil app">
+        <Head
+            sectionName={"Mi perfil"}
+        />
         <div className="contentPerfil app-margin">
             <div className="introPerfil">
                 <div className="foto" style={{ margin: "15px 0px 7px 0px" }}>
@@ -35,6 +31,10 @@ const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
                 <h2 style={{ fontWeight: "600" }}>{usuario}</h2>
                 <h5>{correoUsuario}</h5>
             </div>
+            {/* <form>
+                <label htmlFor="nombre">Nombre comleto</label>
+                <input type="text" placeholder="Harvey Specter" id="nombre" onChange={(e) => setListaName(e.target.value)} value={listaName} required />
+            </form> */}
             <div className="personalData fila-between" style={{ marginTop: "10px" }}>
                 <div className="infoPersonalData">
                     <h6>Nombre</h6>

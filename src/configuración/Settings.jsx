@@ -1,19 +1,13 @@
-import { useNavigate } from "react-router-dom";
 import ItemSettings from "../components/ItemSettings";
+import Head from "../components/Head";
 
 const Settings = () => {
-    const navigate = useNavigate()
 
   return (
-    <div className="perfil">
-        <div className="head">
-            <div className="perfilHeader fila-start app-margin">
-                <div className="headerArrow">
-                    <span className="material-symbols-outlined icon-large" onClick={() => navigate("/")}>arrow_back</span>
-                </div>
-                <div className="perfilTitle">Ajustes</div>
-            </div>
-        </div>
+    <div className="perfil app">
+        <Head
+            sectionName={"Ajustes"}
+        />
         <div className="contentPerfil app-margin">
             <div className="introPerfil">
                 <h2 style={{ fontWeight: "600", margin: "15px 0px 40px 0px"}}>Ajustes</h2>

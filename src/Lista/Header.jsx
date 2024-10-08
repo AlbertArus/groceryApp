@@ -76,7 +76,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                 </div>
                 <div className="headerText" style={{flex: "1"}}>
                     <div className="fila-between">
-                        <h2 className="headerTitle">{lista.listaName || ''}</h2>
+                        <h3 className="headerTitle">{lista.listaName || ''}</h3>
                         <div className="fila-start" style={{position: "relative"}}>
                             <span className="material-symbols-outlined icon-large" onClick={handleShare}>share</span>
                             <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>

@@ -2,7 +2,7 @@ import React, {useRef} from "react"
 import Category from "../components/Category"
 import NewCategory from "../components/NewCategory"
 
-const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesRef, isEStateLista }) => {
+const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesShown, isEStateLista }) => {
   const ItemNameInputRefs = useRef({})
   
   return (
@@ -25,7 +25,7 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
             categories={categories}
             handleCounterDown={handleCounterDown}
             handleCounterUp={handleCounterUp}
-            votesRef={votesRef}
+            votesShown={votesShown}
           />
         ))}
       </div>
