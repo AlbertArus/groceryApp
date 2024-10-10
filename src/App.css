@@ -167,7 +167,7 @@ hr {
 }
 
 .ItemText {
-  margin-left: 15px;
+  margin-left: 1px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -246,7 +246,8 @@ hr {
   padding: 0;
 }
 
-.ItemText input[type=text] {
+.ItemText input[type=text],
+.titleCategory input[type=text] {
   width: 165px;
 }
 
