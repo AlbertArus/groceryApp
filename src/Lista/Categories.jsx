@@ -4,7 +4,7 @@ import NewCategory from "../components/NewCategory"
 
 const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesShown, isEStateLista }) => {
   const ItemNameInputRefs = useRef({})
-  
+
   return (
     <div className="app-margin categories">
       <div className="categoriesMargin">
@@ -32,7 +32,6 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
       {!isEStateLista && (
         <NewCategory
           AddCategory={AddCategory}
-          ItemNameInputRef={ItemNameInputRefs}
           isEStateLista={isEStateLista}
         />
       )}

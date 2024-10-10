@@ -38,7 +38,6 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const collapseCategory = () => {
     setIsCollapsed(prevCollapsed => !prevCollapsed)
   }
-  console.log(votesShown)
 
   useEffect(() => {
     if(toggleRef.current) {
@@ -62,14 +61,14 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
-          <div className="fila-start titleCategory" onKeyDown={handleKeyDown}>
-            <input type="text" placeholder="Nombra tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
+          <div className="titleCategory" onKeyDown={handleKeyDown}>
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
+            <input type="text" placeholder="Nombra tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
           </div>
           <h4 style={{fontWeight:"500"}}>{FormattedSumPrices}</h4>
         </div>
         <div className="fila-between">
-          <div className="fila-between firstPart">
+          <div className="fila-start firstPart">
             <h5>Items: {itemsLength}</h5>
             <span className="material-symbols-outlined icon-medium" ref={checkCategoryRef} style={{color:"green", marginLeft:"8px", display: categoryChecked ? "block" : "none"}}>task_alt</span>
           </div>

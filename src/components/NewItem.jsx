@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
 
   const [name, setName] = useState ("")
   const [price, setPrice] = useState ("")
+  useEffect(() => {
+    ItemNameInputRef.current.focus()
+  },[])
 
   const handleSubmit = (e) => {
     e.preventDefault();
