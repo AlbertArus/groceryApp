@@ -54,9 +54,9 @@ const NavBar = () => {
                 <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
                 </div>
                 <div className="iconsNavBar fila-start" style={{position: "relative", alignItems: "center"}}>
-                    <button className="buttonRegistro" onClick={() => navigate("/Registro")}>Registrarse</button>
-                    <span className="material-symbols-outlined">notifications</span>
-                    <span className="material-symbols-outlined" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
+                    <button className="buttonRegistro pointer" onClick={() => navigate("/Registro")}>Registrarse</button>
+                    <span className="material-symbols-outlined pointer">notifications</span>
+                    <span className="material-symbols-outlined pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 
                         <OptionsMenuNavBar
                             ref={optionsMenuNavBarRef}

@@ -112,8 +112,8 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                 </Link>
                                             </div>
                                             <div className="fila-start" style={{position: "relative"}}>
-                                                <span className="material-symbols-outlined" onClick={(event) => {event.preventDefault(); handleNotified(lista.id)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                                <span className="material-symbols-outlined"style={{marginLeft:"4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
+                                                <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                                                 {isOptionsMenuVisible && 
                                                     <OptionsMenuListHome
                                                         ref={optionsMenuListHomeRef}

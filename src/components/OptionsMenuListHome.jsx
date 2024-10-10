@@ -24,7 +24,7 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
         onClick={handleDuplicate}
       />
       <ItemMenu 
-        iconName={"archive"}
+        iconName={listaArchivada ? "unarchive" : "archive"}
         itemMenuName={listaArchivada ? "Desarchivar lista" : "Archivar lista"}
         onClick={handleArchive}
       />

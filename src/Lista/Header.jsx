@@ -78,8 +78,8 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                     <div className="fila-between">
                         <h3 className="headerTitle">{lista.listaName || ''}</h3>
                         <div className="fila-start" style={{position: "relative"}}>
-                            <span className="material-symbols-outlined icon-large" onClick={handleShare}>share</span>
-                            <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
+                            <span className="material-symbols-outlined icon-large pointer" onClick={handleShare}>share</span>
+                            <span className="material-symbols-outlined icon-large pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                             {isOptionsMenuVisible && 
                                 <OptionsMenu 
                                     ref={optionsMenuRef}
@@ -98,7 +98,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                         </div>
                     </div>
                     <div className="fila-start" style={{display: !isScrolled ? "flex" : "none"}}>
-                        <div className="fila-start-group" style={{position: "relative"}} onClick={handleMembersShown} ref={buttonMembersListRef}>
+                        <div className="fila-start-group pointer" style={{position: "relative"}} onClick={handleMembersShown} ref={buttonMembersListRef}>
                             <span className="material-symbols-outlined icon-medium">group</span>
                             <h5>{`${lista.userMember.length} pers.`}</h5>
                             {isMembersShown &&

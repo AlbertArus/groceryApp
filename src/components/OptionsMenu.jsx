@@ -29,7 +29,7 @@ const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, h
         style={{display: itemslength < 2 ? "none" : "flex"}}
         />
       <ItemMenu
-        iconName={"archive"}
+        iconName={lista.isArchived ? "unarchive" : "archive"}
         itemMenuName={`${lista.isArchived === true ? "Desarchivar lista" : "Archivar lista"}`}
         onClick={handleArchive}
       />

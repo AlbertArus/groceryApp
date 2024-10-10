@@ -7,7 +7,7 @@ const NewLista = () => {
         <>
             <div className="NewLista">
                 <button className="fila-start" style={{background:"none", border: "none", padding: "0"}}>
-                    <span className="material-symbols-outlined addingLista" style={{borderRadiusHover: "none"}} onClick={() => navigate("/newlist/")}>add</span>
+                    <span className="material-symbols-outlined addingLista pointer" style={{borderRadiusHover: "none"}} onClick={() => navigate("/newlist/")}>add</span>
                 </button>
             </div>
         </>

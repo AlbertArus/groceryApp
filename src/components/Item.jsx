@@ -147,11 +147,11 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
               <input type="number" placeholder="Modifica tu precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={priceFormatting} value={price}></input>
             </form>
           </div>
-          <span className="material-symbols-outlined icon-medium hidden" onClick={handleDelete} ref={deleteRef}>delete</span>
+          <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
         </div>
       </div>
       <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 62px"}}>
-        <div className="fila-start">
+        <div className="fila-start pointer">
           <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
               <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
               <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
@@ -167,7 +167,7 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
             />
           }        
         </div>
-        <div className="fila-start-group" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
+        <div className="fila-start-group pointer" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
           <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
           <h5>{item.itemUserMember.length}</h5>
           {isItemUserMembersShown &&
