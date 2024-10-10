@@ -167,7 +167,7 @@ hr {
 }
 
 .ItemText {
-  /* margin-left: 18px; */
+  margin-left: 15px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -242,8 +242,12 @@ hr {
   font-family: inherit;
   font-size: inherit;
   color: black;
-  flex: 1 auto;
+  /* flex: 1 auto; */
   padding: 0;
+}
+
+.ItemText input[type=text] {
+  width: 165px;
 }
 
 .ItemText input[type=number] {

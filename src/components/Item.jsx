@@ -150,7 +150,7 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
           <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
         </div>
       </div>
-      <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 62px"}}>
+      <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 55px"}}>
         <div className="fila-start pointer">
           <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
               <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
