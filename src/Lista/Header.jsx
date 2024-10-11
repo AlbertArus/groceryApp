@@ -4,7 +4,7 @@ import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 
-const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleDuplicate, handleCheckAll, handleUnCheckAll, usuario}) => {
+const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleDuplicate, handleCheckAll, handleUnCheckAll, usuario, preciosOcultos, handleOcultarPrecios }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
@@ -92,7 +92,8 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                                     handleCheckAll={handleCheckAll}
                                     handleUnCheckAll={handleUnCheckAll}
                                     handleDuplicate={handleDuplicate}
-
+                                    preciosOcultos={preciosOcultos}
+                                    handleOcultarPrecios={handleOcultarPrecios}
                                 />
                             }
                         </div>
@@ -116,7 +117,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                     </div>
                     <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
                         <h5 style={{marginRight: "8px"}}>Items: {items}</h5>
-                        <h5>Precio: {price}</h5>
+                        <h5 style={{display: preciosOcultos ? "none" : "flex"}}>Precio: {price}</h5>
                     </div>
                 </div>
             </div>

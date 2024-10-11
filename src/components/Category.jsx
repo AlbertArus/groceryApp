@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown, preciosOcultos }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -65,7 +65,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
             <input type="text" placeholder="Nombra tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
           </div>
-          <h4 style={{fontWeight:"500"}}>{FormattedSumPrices}</h4>
+          <h4 style={{fontWeight:"500", display: preciosOcultos ? "none" : "flex"}}>{FormattedSumPrices}</h4>
         </div>
         <div className="fila-between">
           <div className="fila-start firstPart">
@@ -95,12 +95,14 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
               handleCounterDown={() => handleCounterDown(item.id)}
               handleCounterUp={() => handleCounterUp(item.id)}  
               votesShown={votesShown}
+              preciosOcultos={preciosOcultos}
             />
           ))}
           <NewItem 
             AddItem={AddItem}
             categoryId={id}
             ItemNameInputRef={ItemNameInputRef}
+            preciosOcultos={preciosOcultos}
           />
         </>
       )}

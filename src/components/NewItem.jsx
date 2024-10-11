@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
+const NewItem = ({ AddItem, categoryId, ItemNameInputRef, preciosOcultos }) => {
 
   const [name, setName] = useState ("")
   const [price, setPrice] = useState ("")
@@ -10,10 +10,18 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(name.trim() && price.trim()) {
-      AddItem(name, price, categoryId);
-      setName("")
-      setPrice("")
+    if(!preciosOcultos) {
+      if(name.trim() && price.trim()) {
+        AddItem(name, price, categoryId);
+        setName("")
+        setPrice("")
+      }
+    } else {
+      if(name.trim() && price.trim() === "") {
+        AddItem(name, price, categoryId);
+        setName("")
+        setPrice("")
+      }
     }
     if(categoryId) {
       if(ItemNameInputRef.current) {
@@ -35,7 +43,7 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef }) => {
         <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
           <input type="text" placeholder="Nuevo Item" className="ItemName" ref={ItemNameInputRef} onChange={(e) => setName(e.target.value)} value={name}></input>
-          <input type="number" placeholder="Precio" className="ItemPrice" onChange={(e) => setPrice(e.target.value)} value={price}></input>
+          <input type="number" placeholder="Precio" className="ItemPrice" style={{display: preciosOcultos ? "none" : "flex"}} onChange={(e) => setPrice(e.target.value)} value={price}></input>
         </form>
       </div>
     </div>
