@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-const SubHeader = ({ items, categories, itemsAdquirido, price }) => {
+const SubHeader = ({ items, categories, itemsAdquirido, price, preciosOcultos }) => {
 
     const SubHeaderRef = useRef(null)
     const hideSubHeader = () => {
@@ -18,6 +18,8 @@ const SubHeader = ({ items, categories, itemsAdquirido, price }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories])
 
+    console.log(items)
+
     return (
         <div className="subHeaderLista app-margin" ref={SubHeaderRef}>
             <div className="fila-between">
@@ -25,7 +27,7 @@ const SubHeader = ({ items, categories, itemsAdquirido, price }) => {
                     <h3>Items: {items}</h3>
                     <h5>Adquirido: {itemsAdquirido}</h5>
                 </div>
-                <div className="columna-block">
+                <div className="columna-block" style={{display: preciosOcultos ? "none" : "block"}}>
                     <h5 style={{display:"flex", justifyContent:"flex-end"}}>Total</h5>
                     <h3>{price}</h3>
                 </div>

@@ -17,6 +17,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   
   const [votesShown, setVotesShown] = useState(true)
   const [isEStateLista, setIsEStateLista] = useState(false)
+  const [preciosOcultos, setPreciosOcultos] = useState(false)
 
   const selectedList = listas.find(lista => lista.id === params.id);
   // console.log({listas, params})
@@ -211,8 +212,22 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }
 
   // console.log({selectedList})
-  
-  const totalItemsLength = selectedList?.items.length
+
+//   const getListaItemsLength = (id) => {
+//     const lista = listas.find(lista => lista.id === id)
+//     return lista.categories.reduce((total, category) => {
+//         return total + category.items.length
+//     }, 0)
+// }
+
+  const getListaItemsLength = () => {
+    return selectedList.categories.reduce((total, category) => {
+      return total + category.items.length;
+    }, 0);
+  };
+
+  const totalItemsLength = getListaItemsLength()
+  // const totalItemsLength = selectedList?.items.length
   const totalCategoriesLength = selectedList?.categories.length
 
   const AddCategory = (categoryName) => {
@@ -353,6 +368,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, updatedCategories)
   }
 
+  const handleOcultarPrecios = () => {
+    setPreciosOcultos(prevState => !prevState)
+  }
+
   return (
     <div className="lista app">
       {selectedList && (
@@ -370,12 +389,15 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
             usuario={usuario}
+            preciosOcultos={preciosOcultos}
+            handleOcultarPrecios={handleOcultarPrecios}
           />
           <SubHeader 
             items={totalItemsLength}
             price={formattedTotalPrice}
             itemsAdquirido={ItemsChecked()}
             categories={selectedList.categories}
+            preciosOcultos={preciosOcultos}
           />
           <Categories
             items={selectedList.categories.flatMap(category => category.items)}
@@ -391,6 +413,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleCounterUp={handleCounterUp}
             isEStateLista={isEStateLista}
             votesShown={votesShown}
+            preciosOcultos={preciosOcultos}
           />
           {isEStateLista && 
             <div className="emptyState">

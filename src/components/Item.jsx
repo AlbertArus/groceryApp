@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import MembersCounter from "./MembersCounter"
 import MembersItem from "./MembersItem"
 
-const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown }) => {
+const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown, preciosOcultos }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
@@ -64,10 +64,10 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
   }
 
   useEffect(() => {
-    if(ItemPriceRef) {
+    if(!preciosOcultos && ItemPriceRef) {
       ItemPriceRef.current.price = price
     }
-  },[price])
+  },[preciosOcultos, price])
 
   useEffect(() => {
     if(item.isChecked) {
@@ -137,47 +137,94 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
 
   return (
     <div className="item">
-      <div className="fila-start">
-        <span className="material-symbols-outlined icon-large">drag_indicator</span>
-        <div className="fila-between">
-          <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
-          {/* <div className="fila-between"> */}
-            <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
-              <input type="text" placeholder="Modifica tu texto" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
-              <input type="number" placeholder="Modifica tu precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={priceFormatting} value={price}></input>
+      {!preciosOcultos ? (
+        <>
+          <div className="fila-start">
+            <span className="material-symbols-outlined icon-large">drag_indicator</span>
+            <div className="fila-between">
+              <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
+              {/* <div className="fila-between"> */}
+                <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
+                  <input type="text" placeholder="Modifica tu texto" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
+                  <input type="number" placeholder="Modifica tu precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
+                </div>
+              {/* </div> */}
+              <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
             </div>
-          {/* </div> */}
-          <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
-        </div>
-      </div>
-      <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 55px"}}>
-        <div className="fila-start pointer">
-          <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
-              <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
-              <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
           </div>
-          <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
-              <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
-              <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
+          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 55px"}}>
+            <div className="fila-start pointer">
+              <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+                  <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
+                  <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
+              </div>
+              <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+                  <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
+                  <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
+              </div>
+              {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
+                <MembersCounter
+                  style={{left: "0", width: "150px"}}
+                  ref={membersCounterRef}
+                  item={item}
+                />
+              }        
+            </div>
+            <div className="fila-start-group pointer" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
+              <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
+              <h5>{item.itemUserMember.length}</h5>
+              {isItemUserMembersShown &&
+                <MembersItem
+                  ref={membersItemRef}
+                  item={item}
+                />
+              }
+            </div>
           </div>
-          {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
-            <MembersCounter
-              ref={membersCounterRef}
-              item={item}
-            />
-          }        
-        </div>
-        <div className="fila-start-group pointer" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
-          <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
-          <h5>{item.itemUserMember.length}</h5>
-          {isItemUserMembersShown &&
-            <MembersItem
-              ref={membersItemRef}
-              item={item}
-            />
-          }
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          <div className="fila-start">
+            <span className="material-symbols-outlined icon-large">drag_indicator</span>
+            <div className="fila-between">
+              <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
+              <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
+                <input type="text" placeholder="Modifica tu texto" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
+              </div>
+              <div className="fila-start pointer" style={{position: "relative"}}>
+                <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+                    <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
+                    <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
+                </div>
+                <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+                    <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
+                    <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
+                </div>
+                {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
+                  <MembersCounter
+                    style={{right: "0", width: "150px"}}
+                    ref={membersCounterRef}
+                    item={item}
+                  />
+                }        
+              </div>
+              <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
+            </div>
+          </div>
+          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 55px"}}>
+            <div className="fila-start-group pointer" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
+              <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
+              <h5>{item.itemUserMember.length}</h5>
+              {isItemUserMembersShown &&
+                <MembersItem
+                  ref={membersItemRef}
+                  item={item}
+                />
+              }
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -2,11 +2,11 @@ import { forwardRef } from "react"
 import { useUsuario } from "../UsuarioContext"
 import ItemMenu from "./ItemMenu"
 
-const MembersCounter = forwardRef(({item}, ref) => {
+const MembersCounter = forwardRef(({item, style}, ref) => {
     const { usuario } = useUsuario();
 
     return (
-        <div className="optionsMenu" style={{left: "0", width: "150px"}} ref={ref}>
+        <div className="optionsMenu" style={style} ref={ref}>
             {item.counterUp.map(uid => 
                 <ItemMenu
                     key={uid}

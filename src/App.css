@@ -79,7 +79,7 @@ hr {
   padding-bottom: 8px;
   background-color: #ffeec9;
   position: sticky;
-  /* z-index: 1000; */
+  z-index: 1000;
   top: 0;
 }
 
@@ -167,7 +167,7 @@ hr {
 }
 
 .ItemText {
-  margin-left: 1px;
+  margin-left: 16px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -246,16 +246,19 @@ hr {
   padding: 0;
 }
 
-.ItemText input[type=text],
+.ItemText input[type=text] {
+  width: 190px;
+}
+
 .titleCategory input[type=text] {
-  width: 165px;
+  width: 220px;
 }
 
 .ItemText input[type=number] {
-  max-width: 50px;
+  max-width: 55px;
   box-sizing: border-box;
   flex: 1 0;
-  text-align: end;
+  /* text-align: end; */
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
