@@ -18,8 +18,6 @@ const SubHeader = ({ items, categories, itemsAdquirido, price, preciosOcultos })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categories])
 
-    console.log(items)
-
     return (
         <div className="subHeaderLista app-margin" ref={SubHeaderRef}>
             <div className="fila-between">

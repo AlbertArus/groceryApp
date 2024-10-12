@@ -221,7 +221,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 // }
 
   const getListaItemsLength = () => {
-    return selectedList.categories.reduce((total, category) => {
+    return selectedList?.categories.reduce((total, category) => {
       return total + category.items.length;
     }, 0);
   };

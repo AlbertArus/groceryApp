@@ -167,7 +167,7 @@ hr {
 }
 
 .ItemText {
-  margin-left: 16px;
+  margin-left: 15px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -247,7 +247,7 @@ hr {
 }
 
 .ItemText input[type=text] {
-  width: 190px;
+  width: 200px;
 }
 
 .titleCategory input[type=text] {
