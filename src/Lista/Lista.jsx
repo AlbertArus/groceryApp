@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
+import Search from './Search'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
 
@@ -18,6 +19,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [votesShown, setVotesShown] = useState(true)
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [preciosOcultos, setPreciosOcultos] = useState(false)
+  const [searchResult, setSearchResult] = useState("")
 
   const selectedList = listas.find(lista => lista.id === params.id);
   // console.log({listas, params})
@@ -392,6 +394,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             preciosOcultos={preciosOcultos}
             handleOcultarPrecios={handleOcultarPrecios}
           />
+          <Search
+            lista={selectedList}
+            setSearchResult={setSearchResult}            
+          />
           <SubHeader 
             items={totalItemsLength}
             price={formattedTotalPrice}
@@ -414,6 +420,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             isEStateLista={isEStateLista}
             votesShown={votesShown}
             preciosOcultos={preciosOcultos}
+            setSearchResult={setSearchResult}
+            searchResult={searchResult}
           />
           {isEStateLista && 
             <div className="emptyState">
