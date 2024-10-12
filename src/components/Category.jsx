@@ -61,9 +61,9 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
-          <div className="titleCategory" onKeyDown={handleKeyDown}>
+          <div className="titleCategory" style={{width: "100%"}} onKeyDown={handleKeyDown}>
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
-            <input type="text" placeholder="Nombra tu categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
+            <input type="text" placeholder="Nombra tu categoría" className="ItemName" style={{width: "100%"}} onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
           </div>
           <h4 style={{fontWeight:"500", display: preciosOcultos ? "none" : "flex"}}>{FormattedSumPrices}</h4>
         </div>

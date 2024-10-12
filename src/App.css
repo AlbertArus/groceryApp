@@ -61,7 +61,6 @@ hr {
   justify-content: flex-start;
   width: 100vw;
   height: 100vh;
-  border: 1px solid blue;
   margin: 0px;
 }
 
@@ -162,7 +161,6 @@ hr {
   height: 14px;
   border: 1px solid black;
   border-radius: 3px;
-  margin-top: 3px;
   cursor: pointer;
 }
 
@@ -172,7 +170,6 @@ hr {
   justify-content: space-between;
   align-items: flex-start;
   flex: 1 1 0%;
-  max-width: 100%;
 }
 
 .ItemName {
@@ -246,13 +243,13 @@ hr {
   padding: 0;
 }
 
-.ItemText input[type=text] {
+/* .ItemText input[type=text] {
   width: 165px;
 }
 
 .titleCategory input[type=text] {
   width: 220px;
-}
+} */
 
 .ItemText input[type=number] {
   max-width: 50px;
@@ -591,4 +588,8 @@ button[type=submit] {
   font-family: inherit;
   font-size: inherit;
   width: 100%;
+}
+
+.search-container span {
+  color: rgb(133, 133, 133);
 }

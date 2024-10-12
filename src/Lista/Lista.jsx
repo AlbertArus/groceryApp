@@ -394,10 +394,12 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             preciosOcultos={preciosOcultos}
             handleOcultarPrecios={handleOcultarPrecios}
           />
-          <Search
-            lista={selectedList}
-            setSearchResult={setSearchResult}            
-          />
+          {!isEStateLista &&
+            <Search
+              lista={selectedList}
+              setSearchResult={setSearchResult}            
+            />
+          }
           <SubHeader 
             items={totalItemsLength}
             price={formattedTotalPrice}

@@ -16,7 +16,7 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
             <Category
               key={category.id}
               id={category.id}
-              items={showAllItems ? (items.filter(item=> item.categoryId === category.id)) : (items.filter(item => item.categoryId === category.id && item.name.toLowerCase().includes(searchResult.toLowerCase())))}
+              items={showAllItems ? (items.filter(item=> item.categoryId === category.id)) : (items.filter(item => item.categoryId === category.id && item.name.toLowerCase().includes(searchResult.toLowerCase())))} // Si la categoría cumple, se muestran todos. Si no, de esa categoría (que está visible porque en filteredCategories ya valido también), muestro los que cumplen
               handleCheck={handleCheck}
               EditCategory={EditCategory}
               DeleteCategory={DeleteCategory}
