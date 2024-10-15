@@ -178,7 +178,7 @@ hr {
   white-space: nowrap;
   text-transform: capitalize;
   min-width: 0;
-  width: auto;
+  width: 100%;
 }
 
 .ItemName.expanded {
@@ -398,7 +398,7 @@ button[type=submit] {
 }
 
 .iconed-container {
-  margin: 5px 0px;
+  margin-top: 5px;
   width: 100%;
 }
 

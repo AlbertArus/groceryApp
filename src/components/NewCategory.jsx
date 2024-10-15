@@ -24,7 +24,7 @@ const NewCategory = ({AddCategory}) => {
       <div className="fila-between" style={{marginLeft:"3px"}}>
         <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
-          < input type="text" placeholder="Nueva categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName} />
+          < input type="text" placeholder="Nueva categoría" aria-label="Nombre de nueva categoría" className="ItemName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName} />
         </form>
       </div>
     </div>

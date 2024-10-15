@@ -145,8 +145,8 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
               <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
               {/* <div className="fila-between"> */}
                 <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
-                  <input type="text" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black', width:"100%" }} onChange={(e) => setName(e.target.value)} value={name}></input>
-                  <input type="number" placeholder="Precio" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
+                  <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
+                  <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
                 </div>
               {/* </div> */}
               <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
@@ -189,7 +189,7 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
             <div className="fila-between">
               <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
               <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
-                <input type="text" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black', width:"100%" }} onChange={(e) => setName(e.target.value)} value={name}></input>
+                <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
               </div>
               <div className="fila-start pointer" style={{position: "relative"}}>
                 <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>

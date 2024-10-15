@@ -17,13 +17,25 @@ import { useUsuario } from './UsuarioContext.jsx';
 
 function App() {
   
-  const { usuario, setUsuario } = useUsuario();
+  const {usuario, setUsuario} = useUsuario();
   const [listas, setListas] = useState([])
   const [deletedLista, setDeletedLista] = useState([])
   const [sharePopupVisible, setSharePopupVisible] = useState (false)
   // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   // console.log({deletedLista})
+
+  useEffect(() => {
+    if (process.env.REACT_APP_ENV === 'lighthouse') {
+      setUsuario({
+        uid: 'testUserId',
+        nombre: 'Test',
+        apellido: 'User',
+        email: 'test@example.com',
+      });
+    }
+  }, [setUsuario]);
+  
 
   const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
 
