@@ -1,7 +1,7 @@
 html, body, .root {
   margin: 0;
   top: 0;
-  font-family: "poppins", Arial, Helvetica, sans-serif;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
 }
 
 #root {
@@ -12,6 +12,51 @@ html, body, .root {
 * {
   box-sizing: border-box;
 }
+
+/* @font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Regular.woff2') format('woff2'),
+       url('/fonts/Poppins/Poppins-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Medium.woff2') format('woff2'),
+       url('/fonts/Poppins/Poppins-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-SemiBold.woff2') format('woff2'),
+       url('/fonts/Poppins/Poppins-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Bold.woff2') format('woff2'),
+       url('/fonts/Poppins/Poppins-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-ExtraBold.woff2') format('woff2'),
+       url('/fonts/Poppins/Poppins-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+} */
 
 h1 {
   font-size: 26px;
@@ -405,7 +450,8 @@ button[type=submit] {
 .iconSuperpuesto {
   position: absolute;
   right: 15px;
-  color: rgb(139, 139, 139);
+  /* color: rgb(139, 139, 139); */
+  color: 565656;
   opacity: 1;
 }
 
