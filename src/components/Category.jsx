@@ -14,6 +14,7 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   const handleAddingItem = (id) => {
+    setIsCollapsed(false)
     if (ItemNameInputRef.current) {
       ItemNameInputRef.current.focus()
     }

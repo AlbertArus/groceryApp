@@ -238,7 +238,7 @@ hr {
   /* margin-left: 22px; */
   white-space: nowrap;
   flex-shrink: 0;
-  overflow: hidden
+  /* overflow: hidden */
 }
 
 .hidden {
