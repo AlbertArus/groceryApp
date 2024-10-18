@@ -143,6 +143,15 @@ hr {
   position: relative;
 }
 
+.columna-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  flex: 1 1 0%;
+}
+
 .fila-between {
   display: flex;
   flex-direction: row;
@@ -192,6 +201,10 @@ hr {
   font-size: 36px;
 }
 
+.icon-xxxlarge {
+  font-size: 56px;
+}
+
 .votarButton {
   font-size: medium;
   border-radius: 5px;
@@ -207,6 +220,8 @@ hr {
   border: 1px solid black;
   border-radius: 3px;
   cursor: pointer;
+  border: 1px solid rgb(253, 192, 192);
+
 }
 
 .ItemText {
@@ -597,6 +612,18 @@ button[type=submit] {
   width: 100vw;
   height: 100vh;
   z-index: 999;
+}
+
+.popUP {
+  border-radius: 10px;
+  box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
+  padding: 10px 25px;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  text-align: center;
 }
 
 .SharePopUP {

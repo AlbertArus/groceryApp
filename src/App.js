@@ -10,6 +10,7 @@ import Archived from './Listas/Archived';
 import Registro from './configuración/Registro';
 import Perfil from './configuración/Perfil';
 import Settings from './configuración/Settings.jsx';
+import NewPassword from './configuración/NewPassword.jsx'
 
 import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase/firestore"
@@ -287,6 +288,11 @@ function App() {
                   correoUsuario={usuario.email}
                 />}
               />
+              <Route path="/password" element={
+                <NewPassword
+                  usuario={usuario}
+                />}
+              />              
             </>
           ) : (
             <Route path='*' element={<Registro />} />

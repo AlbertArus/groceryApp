@@ -9,7 +9,6 @@ const Registro = ({setUsuario}) => {
     const [isRegistered, setIsRegistered] = useState(false)
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [errors, setErrors] = useState({nombre: false, apellido: false, correo: false, correoInvalid: false, contraseña: false, contraseñaInvalid: false})
-
     const navigate = useNavigate()
 
     const handleIsRegistered = () => {
@@ -75,8 +74,8 @@ const Registro = ({setUsuario}) => {
   return (
     <div className="app">
         <div className="login app-margin">
-            <h3 className="loginTitle" style={{marginBottom: "15px"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h3>
-            <form className="loginForm" onSubmit={handleSubmit}>
+            <h3 style={{marginBottom: "15px"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h3>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre</label>
                 <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                 <h5 style={{display: !isRegistered && errors.nombre ? "block" : "none", color:"red"}}>Añade tu nombre</h5>

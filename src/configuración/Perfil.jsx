@@ -15,7 +15,7 @@ const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
   };
 
   const handleDeleteUser = () => {
-
+    
   }
 
   return (
@@ -32,7 +32,7 @@ const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
                 <h5>{correoUsuario}</h5>
             </div>
             {/* <form>
-                <label htmlFor="nombre">Nombre comleto</label>
+                <label htmlFor="nombre">Nombre completo</label>
                 <input type="text" placeholder="Harvey Specter" id="nombre" onChange={(e) => setListaName(e.target.value)} value={listaName} required />
             </form> */}
             <div className="personalData fila-between" style={{ marginTop: "10px" }}>
@@ -49,7 +49,7 @@ const Perfil = ({ usuario, correoUsuario, usuarioCompleto }) => {
                 <ItemSettings 
                     iconName={"password"}
                     itemSettingsName={"Cambiar contraseña"}
-                    // onClick={handleSignOut}
+                    onClick={() => navigate("/password")}
                 />
                 <ItemSettings 
                     iconName={"logout"}

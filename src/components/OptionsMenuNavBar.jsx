@@ -15,8 +15,8 @@ const OptionsMenuNavBar = forwardRef((props, ref) => {
         <ItemMenu 
             iconName={"campaign"}
             itemMenuName={"Enviar sugerencias"}
-            // onClick={handleVotesVisible}
-        />
+            onClick={() => window.open('https://tally.so/r/3xP8Ko', '_blank')}
+            />
         <ItemMenu
             iconName={"manage_accounts"}
             itemMenuName={"Mi perfil"}
