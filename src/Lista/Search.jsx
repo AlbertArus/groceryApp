@@ -8,13 +8,11 @@ const Search = ({setSearchResult}) => {
         const searchValue = searchValueRef.current?.value.trim()
         
         setSearchResult(searchValue)
-        console.log("search updated")
     }
 
     useEffect(() => {
         const handleSearchFocus = (event) => {
             if(searchValueRef.current && !searchValueRef.current.contains(event.target)) {
-                console.log("unfocus en search")
                 setFocused(false)
             }
         }

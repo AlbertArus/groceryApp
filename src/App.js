@@ -15,6 +15,7 @@ import NewPassword from './configuración/NewPassword.jsx'
 import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase/firestore"
 import { useUsuario } from './UsuarioContext.jsx';
+import DeleteUser from './configuración/DeleteUser.jsx';
 
 function App() {
   
@@ -292,7 +293,12 @@ function App() {
                 <NewPassword
                   usuario={usuario}
                 />}
-              />              
+              />
+              <Route path="/deleteuser" element={
+                <DeleteUser
+                  usuario={usuario}
+                />}
+              />     
             </>
           ) : (
             <Route path='*' element={<Registro />} />

@@ -614,29 +614,16 @@ button[type=submit] {
   z-index: 999;
 }
 
-.popUP {
+.popUp {
   border-radius: 10px;
   box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
-  padding: 10px 25px;
-  z-index: 1000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: fixed;
-  text-align: center;
-}
-
-.SharePopUP {
-  border-radius: 10px;
-  box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
-  background-color: white;
   padding: 10px 25px;
   z-index: 1000;
   top: 200px;
   position: fixed;
 }
 
-.SharePopUP button[type=submit] {
+.popUp button[type=submit] {
   height: 30px;
   border-radius: 5px;
   background-color: #f4f4f4;

@@ -12,7 +12,7 @@ const NewPassword = () => {
     // const [error, setError] = useState(false);
     const [errors, setErrors] = useState({})
     const [success, setSuccess] = useState(false);
-    const [popUpVisible, setPopUpVisible] = useState(false)
+    const [popUpVisible, setPopUpVisible] = useState(true)
     const navigate = useNavigate()
 
     const handlePasswordVisibility = () => {
@@ -32,34 +32,18 @@ const NewPassword = () => {
     
         if (user) {
             updatePassword(user, newPassword)
-                .then(() => {
-                    setSuccess(true)
-                    setPopUpVisible(true)
-                    setTimeout(() => {
-                        navigate("/profile")
-                    },2000)
-                })
-                .catch((error) => {
-                    setPopUpVisible(true)
-                })
+            .then(() => {
+                setSuccess(true)
+                setPopUpVisible(true)
+                setTimeout(() => {
+                    navigate("/profile")
+                },2000)
+            })
+            .catch((error) => {
+                setPopUpVisible(true)
+            })
         }
     }
-
-    // const validatePasswords = (e) => {
-    //     const minLength = 6
-
-    //     setErrors({
-    //         newPassword: newPassword.trim() === "",
-    //         confirmPassword: confirmPassword.trim() === "",
-    //         newPasswordContraseñaInvalid: (newPassword.trim().length < minLength),
-    //         confirmPasswordContraseñaInvalid: (confirmPassword.trim().length < minLength),
-    //     })
-        
-    //     if(newPassword !== confirmPassword) {
-    //         setError("Las contraseñas no coinciden")
-    //         return
-    //     }
-    // }
 
     const validatePasswords = () => {
         const minLength = 6;
@@ -114,10 +98,10 @@ const NewPassword = () => {
             </form>
             </div>
             {success && popUpVisible && (
-                <div>   
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
                     <div className="overlay"></div>
                     <div className="popUP app-margin" style={{backgroundColor: "rgb(142, 190, 142)"}}>
-                        <div style={{ margin: "15px 0px"}}>
+                        <div style={{ margin: "15px 0px", textAlign: "center"}}>
                         <span className="material-symbols-outlined icon-medium" style={{position: "absolute", right: "20px", cursor: "pointer"}} onClick={() => setPopUpVisible(false)}>close</span>
                         <span className="material-symbols-outlined icon-xxxlarge" style={{color: "rgb(78, 192, 78)"}}>check_circle</span>
                         <h4 style={{ fontWeight: "600", whiteSpace: "wrap" }}>¡Contraseña actualizada con éxito!</h4>
@@ -126,10 +110,10 @@ const NewPassword = () => {
                 </div>            
             )}
             {!success && popUpVisible && (
-                <div>   
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
                     <div className="overlay"></div>
-                    <div className="popUP app-margin" style={{backgroundColor: "rgb(248, 167, 167)"}}>
-                        <div style={{ margin: "15px 0px"}}>
+                    <div className="popUp app-margin" style={{backgroundColor: "rgb(248, 167, 167)"}}>
+                        <div style={{ margin: "15px 0px", textAlign: "center"}}>
                             <span className="material-symbols-outlined icon-medium" style={{position: "absolute", right: "20px", cursor: "pointer"}} onClick={() => setPopUpVisible(false)}>close</span>
                             <span className="material-symbols-outlined icon-xxxlarge" style={{color: "red", margin: "15px 0px"}}>error</span>
                             <h5 style={{ fontWeight: "600", whiteSpace: "wrap"}}>Algo ha fallado... Inténtalo más tarde</h5>
