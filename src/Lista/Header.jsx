@@ -58,7 +58,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 40)
+            setIsScrolled(window.scrollY > 90)
         }
 
         window.addEventListener("scroll", handleScroll)
