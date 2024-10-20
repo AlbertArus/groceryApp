@@ -2,7 +2,7 @@ import React, {useRef} from "react"
 import Category from "../components/Category"
 import NewCategory from "../components/NewCategory"
 
-const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesShown, isEStateLista, preciosOcultos, searchResult, setSearchResult, firstCategoryRef, handleCategoryAdded }) => {
+const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesShown, isEStateLista, preciosOcultos, searchResult, setSearchResult, firstCategoryRef }) => {
   const ItemNameInputRefs = useRef({})
 
   const filteredCategories = searchResult ? categories.filter(category => category.categoryName.toLowerCase().includes(searchResult.toLowerCase()) || items.some(item => item.categoryId === category.id && item.name.toLowerCase().includes(searchResult.toLowerCase()))) : categories

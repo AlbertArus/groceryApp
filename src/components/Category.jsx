@@ -13,6 +13,38 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
   const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
   const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
+  useEffect(() => {
+    if(categories.length === 1 && firstCategoryRef.current) {
+      firstCategoryRef.current.focus()
+    } else {
+      ItemNameInputRef.current.focus()
+    }
+  },[categoryName])
+
+  const handleCategoryKeyDown = (event) => {
+    if (event.key === "Enter" && ItemNameInputRef.current) {
+      ItemNameInputRef.current.focus()
+    }
+  }
+
+  useEffect(() => {
+    if(toggleRef.current) {
+      toggleRef.current.style.transform = isCollapsed ? "rotate(270deg)" : "rotate(0deg)";
+    }
+  }, [isCollapsed]);
+  
+  const currentCategory = categories.find(category => category.id === id)
+  const hasItems = currentCategory.items.length > 0
+  const categoryChecked = hasItems && (currentCategory.isChecked===true || currentCategory.items.every(item => item.isChecked))
+
+  useEffect(() => {
+      if(categoryChecked) {
+        setIsCollapsed(true)
+      } else {
+        setIsCollapsed(false)
+      }
+  },[currentCategory, categoryChecked])
+
   const handleAddingItem = (id) => {
     setIsCollapsed(false)
     if (ItemNameInputRef.current) {
@@ -40,37 +72,13 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
     setIsCollapsed(prevCollapsed => !prevCollapsed)
   }
 
-  useEffect(() => {
-    if(toggleRef.current) {
-      toggleRef.current.style.transform = isCollapsed ? "rotate(270deg)" : "rotate(0deg)";
-    }
-  }, [isCollapsed]);
-  
-  const currentCategory = categories.find(category => category.id === id)
-  const hasItems = currentCategory.items.length > 0
-  const categoryChecked = hasItems && (currentCategory.isChecked===true || currentCategory.items.every(item => item.isChecked))
-
-  useEffect(() => {
-      if(categoryChecked) {
-        setIsCollapsed(true)
-      } else {
-        setIsCollapsed(false)
-      }
-  },[currentCategory, categoryChecked])
-
-  useEffect(() => {
-    if(categoryName === "" && firstCategoryRef.current) {
-        firstCategoryRef.current.focus()
-      }
-  },[categoryName])
-
   return (
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
           <div className="titleCategory" style={{width: "100%"}} onKeyDown={handleKeyDown}>
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
-            <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
+            <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} onKeyDown={handleCategoryKeyDown} onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
           </div>
           <h4 style={{fontWeight:"500", display: preciosOcultos ? "none" : "flex"}}>{FormattedSumPrices}</h4>
         </div>

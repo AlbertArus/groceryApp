@@ -6,7 +6,6 @@ const Search = ({setSearchResult}) => {
 
     const handleSearch = (e) => {
         const searchValue = searchValueRef.current?.value.trim()
-        
         setSearchResult(searchValue)
     }
 

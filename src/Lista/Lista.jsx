@@ -239,13 +239,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, updatedCategories)
   }
 
-  const handleCategoryAdded = (categoryName) => {
-    AddCategory(categoryName)
-      if (categoryName === "" && firstCategoryRef.current) {
-        firstCategoryRef.current.focus()
-      }
-  }
-
   const EditCategory = (id, newCategoryName) => {
     const updatedCategories = selectedList.categories.map(category => {
       if (category.id === id) {
@@ -438,8 +431,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             <div className="emptyState">
               <EStateLista 
                 AddCategory={AddCategory}
-                firstCategoryRef={firstCategoryRef}
-                handleCategoryAdded={handleCategoryAdded}
               />
             </div>
           }
