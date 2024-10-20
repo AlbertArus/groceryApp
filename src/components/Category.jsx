@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown, preciosOcultos, searchResult, setSearchResult }) => {
+const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown, preciosOcultos, searchResult, setSearchResult, firstCategoryRef }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -58,13 +58,19 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
       }
   },[currentCategory, categoryChecked])
 
+  useEffect(() => {
+    if(categoryName === "" && firstCategoryRef.current) {
+        firstCategoryRef.current.focus()
+      }
+  },[categoryName])
+
   return (
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
           <div className="titleCategory" style={{width: "100%"}} onKeyDown={handleKeyDown}>
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
-            <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" className="ItemName" style={{width: "100%"}} onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
+            <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} onChange={(e) => setCategoryName(e.target.value)} value={categoryName}></input>
           </div>
           <h4 style={{fontWeight:"500", display: preciosOcultos ? "none" : "flex"}}>{FormattedSumPrices}</h4>
         </div>

@@ -4,6 +4,7 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef, preciosOcultos }) => {
 
   const [name, setName] = useState ("")
   const [price, setPrice] = useState ("")
+  
   useEffect(() => {
     ItemNameInputRef.current.focus()
   },[])

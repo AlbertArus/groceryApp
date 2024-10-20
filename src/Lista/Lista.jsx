@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import '../App.css'
 import { v4 as uuidv4 } from 'uuid'
 import toast from 'react-hot-toast'
@@ -20,6 +20,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [preciosOcultos, setPreciosOcultos] = useState(false)
   const [searchResult, setSearchResult] = useState("")
+  const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
   // console.log({listas, params})
@@ -225,8 +226,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const getListaItemsLength = () => {
     return selectedList?.categories.reduce((total, category) => {
       return total + category.items.length;
-    }, 0);
-  };
+    }, 0)
+  }
 
   const totalItemsLength = getListaItemsLength()
   // const totalItemsLength = selectedList?.items.length
@@ -238,6 +239,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, updatedCategories)
   }
 
+  const handleCategoryAdded = (categoryName) => {
+    AddCategory(categoryName)
+      if (categoryName === "" && firstCategoryRef.current) {
+        firstCategoryRef.current.focus()
+      }
+  }
+
   const EditCategory = (id, newCategoryName) => {
     const updatedCategories = selectedList.categories.map(category => {
       if (category.id === id) {
@@ -247,7 +255,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     });
   
     updateListaCategories(params.id, updatedCategories)
-  };
+  }
 
   const DeleteCategory = (id) => {
     const CategoryToDelete = selectedList.categories.find(category => category.id === id)
@@ -424,11 +432,14 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             preciosOcultos={preciosOcultos}
             setSearchResult={setSearchResult}
             searchResult={searchResult}
+            firstCategoryRef={firstCategoryRef}
           />
           {isEStateLista && 
             <div className="emptyState">
               <EStateLista 
                 AddCategory={AddCategory}
+                firstCategoryRef={firstCategoryRef}
+                handleCategoryAdded={handleCategoryAdded}
               />
             </div>
           }
