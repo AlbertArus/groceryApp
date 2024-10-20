@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import MembersCounter from "./MembersCounter"
 import MembersItem from "./MembersItem"
+import Checkbox from "@mui/material/Checkbox"
+import DragIndicator from "@mui/icons-material/DragIndicator";
 
 const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown, preciosOcultos }) => {
 
@@ -18,7 +20,6 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
   const deleteRef = useRef(null)
   const ItemTextRef = useRef(null)
   const ItemPriceRef = useRef(null)
-  
 
   const handleEdit = (e) => {
     if(name.trim() && price.trim()) {
@@ -140,19 +141,34 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
       {!preciosOcultos ? (
         <>
           <div className="fila-start">
-            <span className="material-symbols-outlined icon-large">drag_indicator</span>
+            <DragIndicator 
+              style={{padding: "0px"}}
+            />
             <div className="fila-between">
-              <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
-              {/* <div className="fila-between"> */}
-                <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
-                  <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
-                  <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
-                </div>
-              {/* </div> */}
+              <Checkbox 
+                checked={itemIsChecked}
+                onChange={onClick}
+                sx={{
+                  '&.Mui-checked': {
+                    color: "green", // Color del icono cuando está marcado
+                  },
+                  '&:not(.Mui-checked)': {
+                    color: "#9E9E9E", // Color del borde cuando no está marcado
+                  },
+                  '&.Mui-checked + .MuiTouchRipple-root': {
+                    backgroundColor: itemIsChecked ? 'green' : 'transparent', // Cambia el background según si está marcado o no
+                  },
+                  padding: "0px"
+                }}
+              />
+              <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
+                <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
+                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
+              </div>
               <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
             </div>
           </div>
-          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 55px"}}>
+          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
             <div className="fila-start pointer">
               <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
                   <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>

@@ -220,8 +220,6 @@ hr {
   border: 1px solid black;
   border-radius: 3px;
   cursor: pointer;
-  border: 1px solid rgb(253, 192, 192);
-
 }
 
 .ItemText {
@@ -287,7 +285,7 @@ hr {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 18px;
+  margin-left: 22px;
 }
 
 .ItemText input, 
