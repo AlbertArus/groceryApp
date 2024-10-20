@@ -9,6 +9,8 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
     text: listaArchivada ? listaArchivada.descriptionLista : lista.descriptionLista
   });
 
+  console.log("he sido clicado")
+
   return (
     <div className="optionsMenu" ref={ref}>
       <ItemMenu

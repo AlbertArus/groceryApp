@@ -8,11 +8,11 @@ import ToggleLista from "./ToggleLista";
 
 const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate, setListas }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
-    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const [filteredListas, setFilteredListas] = useState(listas)
     const archivadosRef = useRef(null)
     const optionsMenuListHomeRef = useRef(null)
-    const buttonMenuRef = useRef(null)
+    const buttonMenuRefs = useRef({})
 
     const listaslength = listas.length
     useEffect(() => {
@@ -23,15 +23,14 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
         }
       }, [listaslength]);
 
-    const handleMenuVisibility = (event) => {
+    const handleMenuVisibility = (event, id) => {
         event.stopPropagation()
         event.preventDefault()
-        setIsOptionsMenuVisible(prevState => !prevState)
-    }
+        setIsOptionsMenuVisible(prevId => (prevId === id ? null : id))    }
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if ( optionsMenuListHomeRef.current && !optionsMenuListHomeRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
+            if ( optionsMenuListHomeRef.current && !optionsMenuListHomeRef.current.contains(event.target) && buttonMenuRefs.current[isOptionsMenuVisible] && !buttonMenuRefs.current[isOptionsMenuVisible].contains(event.target)) {
                 setIsOptionsMenuVisible(false);
             }
         }
@@ -39,7 +38,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [isOptionsMenuVisible]);
 
     useEffect(() => {
         const handleClickOnMenu = (event) => {
@@ -113,16 +112,17 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                             </div>
                                             <div className="fila-start" style={{position: "relative"}}>
                                                 <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                                <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
-                                                {isOptionsMenuVisible && 
+                                                <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
+                                                {isOptionsMenuVisible === lista.id && ( 
                                                     <OptionsMenuListHome
+                                                        key={lista.id}
                                                         ref={optionsMenuListHomeRef}
                                                         handleDuplicate={() => handleDuplicate(lista.id)}
                                                         handleArchive={() => handleArchive(lista.id)}
                                                         deleteLista={deleteLista}
                                                         lista={lista}
                                                     />
-                                                }
+                                                )}
                                             </div>
                                         </div>
                                     </div>
