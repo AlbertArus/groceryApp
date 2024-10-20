@@ -26,12 +26,12 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
     const handleMenuVisibility = (event, id) => {
         event.stopPropagation()
         event.preventDefault()
-        setIsOptionsMenuVisible(prevId => (prevId === id ? null : id))    }
+        setIsOptionsMenuVisible(prevId => (prevId === id ? null : id))} // Si el abierto (previo) es el mismo que el id, ciérralo, sino ábrelo -> No aplica porque gestiono con handleClickOutside y OnMenu
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if ( optionsMenuListHomeRef.current && !optionsMenuListHomeRef.current.contains(event.target) && buttonMenuRefs.current[isOptionsMenuVisible] && !buttonMenuRefs.current[isOptionsMenuVisible].contains(event.target)) {
-                setIsOptionsMenuVisible(false);
+                setIsOptionsMenuVisible(null);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -43,7 +43,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
     useEffect(() => {
         const handleClickOnMenu = (event) => {
             if(optionsMenuListHomeRef.current && optionsMenuListHomeRef.current.contains(event.target)) {
-                setIsOptionsMenuVisible(false)
+                setIsOptionsMenuVisible(null)
             }
         }
         document.addEventListener("click", handleClickOnMenu);
