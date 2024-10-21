@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown, preciosOcultos, searchResult, setSearchResult, firstCategoryRef }) => {
+const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown, preciosOcultos, searchResult, setSearchResult, firstCategoryRef }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -112,8 +112,9 @@ const Category = ({ initialName, ItemNameInputRef, categories, id, EditCategory,
               votesShown={votesShown}
               preciosOcultos={preciosOcultos}
               setSearchResult={setSearchResult}
-              searchResult={searchResult}  
-            />
+              searchResult={searchResult}
+              UsuarioCompleto={UsuarioCompleto}
+              />
           ))}
           <NewItem 
             AddItem={AddItem}

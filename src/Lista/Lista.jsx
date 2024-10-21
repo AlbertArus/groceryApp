@@ -12,7 +12,7 @@ import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible, usuarioCompleto }) => {
 
   let params = useParams();
   
@@ -20,10 +20,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [preciosOcultos, setPreciosOcultos] = useState(false)
   const [searchResult, setSearchResult] = useState("")
+  const [listaData, setListaData] = useState(null)
   const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
-  // console.log({listas, params})
 
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
@@ -34,6 +34,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       
       if (docSnap.exists()) {
         const listaData = docSnap.data();
+        setListaData(listaData)
         
         // Actualiza la lista en el estado local
         setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
@@ -44,16 +45,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
           await updateDoc(docRef, { userMember: [...listaData.userMember, usuario.uid] });
           
           // Actualiza el campo 'itemUserMember' en los ítems anidados
-          const updatedItems = listaData.categories.map(category => 
-            category.items.map(item => ({
+          const updatedCategories = listaData.categories.map(category => ({
+            ...category,
+            items: category.items.map(item => ({
               ...item,
               itemUserMember: [...item.itemUserMember, usuario.uid]
             }))
-          );
+          }));
           
           // Actualiza Firestore con los ítems modificados
           await updateDoc(docRef, {
-            'categories.items': updatedItems
+            categories: updatedCategories
           });
         }
       } else {
@@ -63,7 +65,15 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       console.error("Error al cargar la lista:", error);
     }
   }, [params.id, setListas, usuario]);
-  
+
+  const UsuarioCompleto = async (uid) => {
+    const userDoc = await getDoc(doc(db, "usuarios", uid));
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return `${userData.nombre} ${userData.apellido}`;
+    }
+    return "Usuario desconocido"; // Fallback si el usuario no se encuentra
+  }
 
   // const fetchLista = useCallback(async () => {
   //   if (!params.id) return;
@@ -203,7 +213,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       const allItemsChecked = categoryItems.every(item => item.isChecked);
       return {...category, isChecked: allItemsChecked, items: categoryItems}
     })
-    // updateListaItems(params.id, updatedItems)
     updateListaCategories(params.id, updatedCategories)
   }
 
@@ -213,15 +222,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     },0)
     return totalCheckedItems
   }
-
-  // console.log({selectedList})
-
-//   const getListaItemsLength = (id) => {
-//     const lista = listas.find(lista => lista.id === id)
-//     return lista.categories.reduce((total, category) => {
-//         return total + category.items.length
-//     }, 0)
-// }
 
   const getListaItemsLength = () => {
     return selectedList?.categories.reduce((total, category) => {
@@ -426,7 +426,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             setSearchResult={setSearchResult}
             searchResult={searchResult}
             firstCategoryRef={firstCategoryRef}
-          />
+            UsuarioCompleto={UsuarioCompleto}
+            />
           {isEStateLista && 
             <div className="emptyState">
               <EStateLista 

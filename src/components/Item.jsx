@@ -4,7 +4,7 @@ import MembersItem from "./MembersItem"
 import Checkbox from "@mui/material/Checkbox"
 import DragIndicator from "@mui/icons-material/DragIndicator";
 
-const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown, preciosOcultos }) => {
+const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown, preciosOcultos }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
@@ -193,6 +193,7 @@ const Item = ({ item, id, initialName, initialPrice, onClick, EditItem, DeleteIt
                 <MembersItem
                   ref={membersItemRef}
                   item={item}
+                  UsuarioCompleto={UsuarioCompleto}
                 />
               }
             </div>

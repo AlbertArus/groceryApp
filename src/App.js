@@ -38,13 +38,12 @@ function App() {
     }
   }, [setUsuario]);
   
-
   const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
 
   const loadListasFromFirebase = async () => {
     if (!usuario || !usuario.uid) {
       console.warn("El usuario no está autenticado. Cargando usuario...");
-      return; // No continuar si el usuario no está autenticado
+      return
     }
     try {
       const querySnapshot = await getDocs(collection(db, "listas"));
