@@ -26,20 +26,7 @@ function App() {
   // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   // console.log({deletedLista})
-
-  useEffect(() => {
-    if (process.env.REACT_APP_ENV === 'lighthouse') {
-      setUsuario({
-        uid: 'testUserId',
-        nombre: 'Test',
-        apellido: 'User',
-        email: 'test@example.com',
-      });
-    }
-  }, [setUsuario]);
   
-  const usuarioCompleto = `${usuario?.nombre} ${usuario?.apellido}`
-
   const loadListasFromFirebase = async () => {
     if (!usuario || !usuario.uid) {
       console.warn("El usuario no está autenticado. Cargando usuario...");
@@ -275,16 +262,11 @@ function App() {
               />
               <Route path="/profile" element={
                 <Perfil
-                  usuario={usuario.nombre}
-                  usuarioCompleto={usuarioCompleto}
-                  correoUsuario={usuario.email}
+                  usuario={usuario}
                 />}
               />
               <Route path="/settings" element={
                 <Settings
-                  usuario={usuario.nombre}
-                  usuarioCompleto={usuarioCompleto}
-                  correoUsuario={usuario.email}
                 />}
               />
               <Route path="/password" element={
