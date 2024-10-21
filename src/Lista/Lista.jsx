@@ -11,6 +11,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
+import ToggleItems from './ToggleItems'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
 
@@ -21,6 +22,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [preciosOcultos, setPreciosOcultos] = useState(false)
   const [searchResult, setSearchResult] = useState("")
   const firstCategoryRef = useRef(null)
+  const [filteredListaForItems, setFilteredListaForItems] = useState(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
 
@@ -394,6 +396,11 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleOcultarPrecios={handleOcultarPrecios}
             UsuarioCompleto={UsuarioCompleto}
           />
+          <ToggleItems
+            lista={selectedList}
+            usuario={usuario}
+            setFilteredListaForItems={setFilteredListaForItems}
+          />
           {!isEStateLista &&
             <Search
               lista={selectedList}
@@ -426,6 +433,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             searchResult={searchResult}
             firstCategoryRef={firstCategoryRef}
             UsuarioCompleto={UsuarioCompleto}
+            filteredListaForItems={filteredListaForItems}
             />
           {isEStateLista && 
             <div className="emptyState">

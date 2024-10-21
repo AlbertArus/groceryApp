@@ -635,7 +635,7 @@ button[type=submit] {
   border-radius: 5px;
   background-color: #e0e0e06e;
   padding: 5px;
-  margin: 5px 0px;
+  margin: 12px 0px;
 }
 
 .search-container input{
@@ -650,4 +650,28 @@ button[type=submit] {
 
 .search-container span {
   color: rgb(133, 133, 133);
+}
+
+.ToggleItems {
+  margin-top: -8px;
+  /* padding: 10px 0px; */
+  background-color: #ffeec9;
+  position: sticky;
+  z-index: 900;
+  top: 55px;
+}
+
+.toggleDisplay {
+  display: flex;
+  justify-content: space-around ;
+}
+
+.toggleOptions {
+  text-align: center;
+  padding: 5px 0px;
+  width: 30%;
+}
+
+.toggleLateral {
+  border-bottom: 3px solid #ED9E04;
 }
