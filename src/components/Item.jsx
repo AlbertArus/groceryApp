@@ -161,7 +161,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                   padding: "0px"
                 }}
               />
-              <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
+              <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
                 <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
                 <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
               </div>
@@ -202,10 +202,27 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
       ) : (
         <>
           <div className="fila-start">
-            <span className="material-symbols-outlined icon-large">drag_indicator</span>
+          <DragIndicator 
+              style={{padding: "0px"}}
+            />
             <div className="fila-between">
-              <div className="ItemCheckbox" onClick={onClick} style={{backgroundColor: itemIsChecked ? "green" : "transparent"}}></div>
-              <div className="ItemText"  onClick={showDelete} ref={ItemTextRef}>
+            <Checkbox 
+                checked={itemIsChecked}
+                onChange={onClick}
+                sx={{
+                  '&.Mui-checked': {
+                    color: "green", // Color del icono cuando está marcado
+                  },
+                  '&:not(.Mui-checked)': {
+                    color: "#9E9E9E", // Color del borde cuando no está marcado
+                  },
+                  '&.Mui-checked + .MuiTouchRipple-root': {
+                    backgroundColor: itemIsChecked ? 'green' : 'transparent', // Cambia el background según si está marcado o no
+                  },
+                  padding: "0px"
+                }}
+              />
+              <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
                 <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
               </div>
               <div className="fila-start pointer" style={{position: "relative"}}>
@@ -228,7 +245,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
               <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
             </div>
           </div>
-          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 55px"}}>
+          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
             <div className="fila-start-group pointer" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
               <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
               <h5>{item.itemUserMember.length}</h5>

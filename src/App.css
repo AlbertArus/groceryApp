@@ -653,8 +653,7 @@ button[type=submit] {
 }
 
 .ToggleItems {
-  margin-top: -8px;
-  /* padding: 10px 0px; */
+  /* margin-top: -8px; */
   background-color: #ffeec9;
   position: sticky;
   z-index: 900;

@@ -68,7 +68,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
     },[])
 
   return (
-    <div className="head">
+    <div className="head" style={{marginBottom: "0px"}}>
         <div className="app-margin ">
             <div className="headerLista">
                 <div className="headerArrow">
