@@ -1,14 +1,25 @@
-import { forwardRef } from "react"
+import { forwardRef, useEffect, useState } from "react"
 import ItemMenu from "./ItemMenu"
-const MembersList = forwardRef(({lista, usuario}, ref) => {
+const MembersList = forwardRef(({lista, UsuarioCompleto}, ref) => {
+    const [nombreUserMember, setNombreUserMember] = useState([]);
+
+    useEffect(() => {
+        const listaUserMembers = async () => {
+            const userMembersName = await Promise.all(
+            lista.userMember.map(uid => UsuarioCompleto(uid))
+            );
+            setNombreUserMember(userMembersName)
+        }
+        listaUserMembers()
+    }, [UsuarioCompleto, lista])
    
     return (
         <div className="optionsMenu" style={{left: "0", width: "150px"}} ref={ref}>
-            {lista.userMember.map((member) => 
+            {lista.userMember.map((uid, index) => 
                 <ItemMenu
-                    key={member.uid}
+                    key={uid}
                     iconName={"account_circle"}
-                    itemMenuName={`${member.nombre} ${member.apellido}`}
+                    itemMenuName={nombreUserMember[index]}
                 />
             )}
         </div>

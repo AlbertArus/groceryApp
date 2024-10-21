@@ -253,7 +253,6 @@ function App() {
                   updateListaCategories={updateListaCategories}
                   updateListaItems={updateListaItems}
                   handleArchive={handleArchive}
-                  handleDuplicate={handleDuplicate}
                   usuario={usuario}
                   sharePopupVisible={sharePopupVisible}
                   setSharePopupVisible={setSharePopupVisible}

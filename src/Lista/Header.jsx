@@ -4,7 +4,7 @@ import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 
-const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleDuplicate, handleCheckAll, handleUnCheckAll, usuario, preciosOcultos, handleOcultarPrecios }) => {
+const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, preciosOcultos, handleOcultarPrecios, UsuarioCompleto }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
@@ -91,7 +91,6 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                                     lista={lista}
                                     handleCheckAll={handleCheckAll}
                                     handleUnCheckAll={handleUnCheckAll}
-                                    handleDuplicate={handleDuplicate}
                                     preciosOcultos={preciosOcultos}
                                     handleOcultarPrecios={handleOcultarPrecios}
                                 />
@@ -106,7 +105,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                                 <MembersList
                                     ref={membersListRef}
                                     lista={lista}
-                                    usuario={usuario}
+                                    UsuarioCompleto={UsuarioCompleto}
                                 />
                             }
                         </div>

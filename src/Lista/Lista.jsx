@@ -12,7 +12,7 @@ import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible, usuarioCompleto }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
 
   let params = useParams();
   
@@ -20,7 +20,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [preciosOcultos, setPreciosOcultos] = useState(false)
   const [searchResult, setSearchResult] = useState("")
-  const [listaData, setListaData] = useState(null)
   const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
@@ -34,7 +33,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       
       if (docSnap.exists()) {
         const listaData = docSnap.data();
-        setListaData(listaData)
         
         // Actualiza la lista en el estado local
         setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
@@ -394,6 +392,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             usuario={usuario}
             preciosOcultos={preciosOcultos}
             handleOcultarPrecios={handleOcultarPrecios}
+            UsuarioCompleto={UsuarioCompleto}
           />
           {!isEStateLista &&
             <Search

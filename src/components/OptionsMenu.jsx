@@ -1,7 +1,7 @@
 import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, handleArchive, handleDuplicate, itemslength, lista, handleCheckAll, handleUnCheckAll, preciosOcultos, handleOcultarPrecios }, ref) => {
+const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, handleArchive, itemslength, lista, handleCheckAll, handleUnCheckAll, preciosOcultos, handleOcultarPrecios }, ref) => {
 
   return (
     <div className="optionsMenu" ref={ref}>
