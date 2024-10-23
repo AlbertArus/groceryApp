@@ -12,7 +12,7 @@ const NewPassword = () => {
     // const [error, setError] = useState(false);
     const [errors, setErrors] = useState({})
     const [success, setSuccess] = useState(false);
-    const [popUpVisible, setPopUpVisible] = useState(true)
+    const [popUpVisible, setPopUpVisible] = useState(false)
     const navigate = useNavigate()
 
     const handlePasswordVisibility = () => {

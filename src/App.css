@@ -336,6 +336,7 @@ hr {
 
 .itemSettings {
   margin-top: 8px;
+  cursor: pointer;
 }
 
 .itemMenu:hover {
@@ -654,6 +655,7 @@ button[type=submit] {
   text-align: center;
   padding: 5px 0px;
   width: 30%;
+  cursor: pointer;
 }
 
 .toggleLateral {

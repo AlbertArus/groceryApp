@@ -21,8 +21,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [preciosOcultos, setPreciosOcultos] = useState(false)
   const [searchResult, setSearchResult] = useState("")
-  const firstCategoryRef = useRef(null)
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
+  const [isToggleShown, setIsToggleShown] = useState(false)
+  const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
 
@@ -124,7 +125,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   useEffect(() => {
     fetchLista();
-  }, [fetchLista]);
+  }, [fetchLista])
+
+  useEffect(() => {
+    const allItems = selectedList.categories.flatMap(category => category.items)
+    const anyItemMissingUser = allItems.some(item =>
+      !item.itemUserMember.includes(usuario.uid)
+    )  
+    if (anyItemMissingUser) {
+      setIsToggleShown(true)
+    }
+  },[selectedList, usuario.uid])
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
@@ -289,16 +300,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   }, [params.id, selectedList, updateListaCategories, updateListaItems, setListas])
 
-  // const categoriesSums = selectedList?.categories.map(category => {
-  //   const categoryItems = selectedList.items.filter(item => item.categoryId === category.id);
-  //   const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
-
-  //   return {...category, itemsCount: categoryItems.length, sumPrice: sumPrice};
-  // });
-
-  // const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
-  // const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-
   const categoriesSums = selectedList?.categories.map(category => {
     const sumPrice = category.items.reduce((acc, item) => acc + Number(item.price), 0)
 
@@ -405,11 +406,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleOcultarPrecios={handleOcultarPrecios}
             UsuarioCompleto={UsuarioCompleto}
           />
-          <ToggleItems
-            lista={selectedList}
-            usuario={usuario}
-            setFilteredListaForItems={setFilteredListaForItems}
-          />
+          {isToggleShown &&
+            <ToggleItems
+              lista={selectedList}
+              usuario={usuario}
+              setFilteredListaForItems={setFilteredListaForItems}
+            />
+          }
           {!isEStateLista &&
             <Search
               lista={selectedList}
