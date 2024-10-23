@@ -234,7 +234,6 @@ hr {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-transform: capitalize;
   min-width: 0;
   width: 100%;
 }
@@ -301,19 +300,10 @@ hr {
   padding: 0;
 }
 
-/* .ItemText input[type=text] {
-  width: 165px;
-}
-
-.titleCategory input[type=text] {
-  width: 220px;
-} */
-
 .ItemText input[type=number] {
   max-width: 50px;
   box-sizing: border-box;
   flex: 1 0;
-  /* text-align: end; */
 }
 
 .ItemText input[type="number"]::-webkit-inner-spin-button,
@@ -406,11 +396,6 @@ hr {
   color: black;
   padding: 5px 5px;
   width: 100%;
-}
-
-.FormLista input::first-letter,
-.FormLista select::first-letter {
-  text-transform: capitalize;
 }
 
 .FormLista textarea {

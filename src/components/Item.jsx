@@ -19,6 +19,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const buttonItemMembersListRef = useRef(null)
   const deleteRef = useRef(null)
   const ItemTextRef = useRef(null)
+  const ItemNameRef = useRef(null)
   const ItemPriceRef = useRef(null)
 
   const handleEdit = (e) => {
@@ -39,12 +40,15 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
     }
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e, input) => {
     if(e.key === "Enter") {
       e.preventDefault();
       handleEdit(e);
-      if(ItemTextRef.current) {
-        ItemTextRef.current.blur()
+      if(input === "ItemName" && ItemNameRef.current) {
+        ItemNameRef.current.blur()
+      }
+      if(input === "ItemPrice" && ItemPriceRef.current) {
+        ItemPriceRef.current.blur()
       }
     }
   }
@@ -65,7 +69,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   }
 
   useEffect(() => {
-    if(!preciosOcultos && ItemPriceRef) {
+    if(!preciosOcultos && ItemPriceRef.current) {
       ItemPriceRef.current.price = price
     }
   },[preciosOcultos, price])
@@ -150,20 +154,20 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                 onChange={onClick}
                 sx={{
                   '&.Mui-checked': {
-                    color: "green", // Color del icono cuando está marcado
+                    color: "green"
                   },
                   '&:not(.Mui-checked)': {
-                    color: "#9E9E9E", // Color del borde cuando no está marcado
+                    color: "#9E9E9E"
                   },
                   '&.Mui-checked + .MuiTouchRipple-root': {
-                    backgroundColor: itemIsChecked ? 'green' : 'transparent', // Cambia el background según si está marcado o no
+                    backgroundColor: itemIsChecked ? 'green' : 'transparent'
                   },
                   padding: "0px"
                 }}
               />
               <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
-                <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
-                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={handleKeyDown} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
+                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
+                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
               </div>
               <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
             </div>
@@ -223,7 +227,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                 }}
               />
               <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
-                <input type="text" aria-label="Nombre del item" onKeyDown={handleKeyDown} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value)} value={name}></input>
+                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
               </div>
               <div className="fila-start pointer" style={{position: "relative"}}>
                 <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>

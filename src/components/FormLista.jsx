@@ -31,7 +31,7 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
   const maxLength = 27
 
   const handleNewListaName = (event) => {
-    const newListaName = event.target.value
+    const newListaName = event.target.value.charAt(0).toUpperCase()+event.target.value.slice(1)
     if(newListaName.length <= maxLength) {
       setListaName(newListaName)
       setErrors(prevErrors => ({...prevErrors, listaName: false }))
