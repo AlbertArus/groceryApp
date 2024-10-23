@@ -289,11 +289,20 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   }, [params.id, selectedList, updateListaCategories, updateListaItems, setListas])
 
-  const categoriesSums = selectedList?.categories.map(category => {
-    const categoryItems = selectedList.items.filter(item => item.categoryId === category.id);
-    const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
+  // const categoriesSums = selectedList?.categories.map(category => {
+  //   const categoryItems = selectedList.items.filter(item => item.categoryId === category.id);
+  //   const sumPrice = categoryItems.reduce((acc, item) => acc + Number(item.price), 0)
 
-    return {...category, itemsCount: categoryItems.length, sumPrice: sumPrice};
+  //   return {...category, itemsCount: categoryItems.length, sumPrice: sumPrice};
+  // });
+
+  // const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
+  // const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+
+  const categoriesSums = selectedList?.categories.map(category => {
+    const sumPrice = category.items.reduce((acc, item) => acc + Number(item.price), 0)
+
+    return {...category, sumPrice: sumPrice};
   });
 
   const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
