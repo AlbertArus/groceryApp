@@ -5,18 +5,41 @@ import NewCategory from "../components/NewCategory"
 const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory, EditCategory, DeleteCategory, AddItem, EditItem, DeleteItem, handleCounterDown, handleCounterUp, votesShown, isEStateLista, preciosOcultos, searchResult, setSearchResult, firstCategoryRef, UsuarioCompleto, filteredListaForItems }) => {
   const ItemNameInputRefs = useRef({})
 
-  const filteredCategories = searchResult ? categories.filter(category => category.categoryName.toLowerCase().includes(searchResult.toLowerCase()) || items.some(item => item.categoryId === category.id && item.name.toLowerCase().includes(searchResult.toLowerCase()))) : categories
+  const filteredCategories = categories.filter((category) => {
+    const filteredItemsBySearch = items.filter((item) =>
+        item.categoryId === category.id &&
+        (category.categoryName.toLowerCase().includes(searchResult?.toLowerCase()) ||
+          item.name.toLowerCase().includes(searchResult?.toLowerCase()))
+    )
 
+    // Luego aplicamos el filtro por 'Mis items' si está habilitado
+    const filteredItems = filteredListaForItems
+      ? filteredItemsBySearch.filter((item) => // Aplicamos filtro de items sobre el filtro ya hecho por search
+          filteredListaForItems.some((filteredItem) => filteredItem.id === item.id)
+        )
+      : filteredItemsBySearch;
+
+    // Solo devolvemos la categoría si tiene ítems después de ambos filtrados
+    return filteredItems.length > 0;
+  })
+  
   return (
     <div className="app-margin categories">
       <div className="categoriesMargin">
-      {filteredCategories && filteredCategories.map(category => {
-          // Primero filtro por búsqueda y luego por "Mis items" pues pueden ser cumulativos
-          const showAllItems = category.categoryName.toLowerCase().includes(searchResult?.toLowerCase())
-          const filteredItemsBySearch = items.filter(item => item.categoryId === category.id && (showAllItems || item.name.toLowerCase().includes(searchResult.toLowerCase())))
+      {/* Solo entran las categorías que cumplan mínimo una condición (search o Mis items) y ahora definimos qué items mostrar */}
+      {filteredCategories.map((category) => {
+        const filteredItemsBySearch = items.filter(
+          (item) =>
+            item.categoryId === category.id &&
+            (category.categoryName.toLowerCase().includes(searchResult?.toLowerCase()) ||
+              item.name.toLowerCase().includes(searchResult?.toLowerCase()))
+        )
 
-          const filteredItems = filteredListaForItems ? filteredItemsBySearch.filter(item => filteredListaForItems.some(filteredItem => filteredItem.id === item.id)) : filteredItemsBySearch
-          
+        const filteredItems = filteredListaForItems
+          ? filteredItemsBySearch.filter((item) =>
+              filteredListaForItems.some((filteredItem) => filteredItem.id === item.id)
+            )
+          : filteredItemsBySearch
             return (
             <Category
               key={category.id}
