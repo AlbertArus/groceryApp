@@ -16,10 +16,8 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
   useEffect(() => {
     if(categories.length === 1 && firstCategoryRef.current) {
       firstCategoryRef.current.focus()
-    } else {
-      ItemNameInputRef.current.focus()
     }
-  },[categoryName])
+  },[categoryName, categories.length, ItemNameInputRef, firstCategoryRef])
 
   const handleCategoryKeyDown = (event) => {
     if (event.key === "Enter" && ItemNameInputRef.current) {
@@ -64,6 +62,11 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
       handleEdit(e);
     }
   }
+
+  const handleBlur = (e) => {
+      handleEdit(e);
+  }
+
   const handleDelete = () => {
     DeleteCategory(id);
   }
@@ -72,13 +75,16 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
     setIsCollapsed(prevCollapsed => !prevCollapsed)
   }
 
+  
+  
+
   return (
     <div className="categoryList">
       <div className="categoryListheader">
         <div className="fila-between">
-          <div className="titleCategory" style={{width: "100%"}} onKeyDown={handleKeyDown}>
+          <div className="titleCategory" style={{width: "100%"}} onKeyDown={handleKeyDown} >
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
-            <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} onKeyDown={handleCategoryKeyDown} onChange={(e) => setCategoryName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={categoryName}></input>
+            <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}}  onBlur={handleBlur} onKeyDown={handleCategoryKeyDown} onChange={(e) => setCategoryName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={categoryName}></input>
           </div>
           <h4 style={{fontWeight:"500", display: preciosOcultos ? "none" : "flex"}}>{FormattedSumPrices}</h4>
         </div>

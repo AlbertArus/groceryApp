@@ -52,7 +52,7 @@ function App() {
   },[usuario]);
 
   const addLista = async (listaName, plan, descriptionLista) => {
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);

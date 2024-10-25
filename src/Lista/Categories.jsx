@@ -6,40 +6,53 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
   const ItemNameInputRefs = useRef({})
 
   const filteredCategories = categories.filter((category) => {
-    const filteredItemsBySearch = items.filter((item) =>
-        item.categoryId === category.id &&
-        (category.categoryName.toLowerCase().includes(searchResult?.toLowerCase()) ||
-          item.name.toLowerCase().includes(searchResult?.toLowerCase()))
-    )
+    const categoryMatchesSearch =
+      category.categoryName.toLowerCase().includes(searchResult?.toLowerCase());
 
-    // Luego aplicamos el filtro por 'Mis items' si está habilitado
+    const filteredItemsBySearch = items.filter(
+      (item) =>
+        item.categoryId === category.id &&
+        (categoryMatchesSearch ||
+          item.name.toLowerCase().includes(searchResult?.toLowerCase()))
+    );
+
+    // Aplicamos filtro de 'Mis items' si está habilitado
     const filteredItems = filteredListaForItems
-      ? filteredItemsBySearch.filter((item) => // Aplicamos filtro de items sobre el filtro ya hecho por search
-          filteredListaForItems.some((filteredItem) => filteredItem.id === item.id)
+      ? filteredItemsBySearch.filter((item) =>
+          filteredListaForItems.some(
+            (filteredItem) => filteredItem.id === item.id
+          )
         )
       : filteredItemsBySearch;
 
-    // Solo devolvemos la categoría si tiene ítems después de ambos filtrados
-    return filteredItems.length > 0;
-  })
+    // Mostrar la categoría solo si hay ítems después del filtrado
+    return searchResult || filteredListaForItems
+      ? filteredItems.length > 0
+      : true; // Mostrar todas las categorías si no hay filtros activos
+  });
   
   return (
     <div className="app-margin categories">
       <div className="categoriesMargin">
       {/* Solo entran las categorías que cumplan mínimo una condición (search o Mis items) y ahora definimos qué items mostrar */}
       {filteredCategories.map((category) => {
-        const filteredItemsBySearch = items.filter(
-          (item) =>
-            item.categoryId === category.id &&
-            (category.categoryName.toLowerCase().includes(searchResult?.toLowerCase()) ||
-              item.name.toLowerCase().includes(searchResult?.toLowerCase()))
-        )
+          // Filtrar los items que deben mostrarse dentro de la categoría
+          const filteredItemsBySearch = items.filter(
+            (item) =>
+              item.categoryId === category.id &&
+              (category.categoryName
+                .toLowerCase()
+                .includes(searchResult?.toLowerCase()) ||
+                item.name.toLowerCase().includes(searchResult?.toLowerCase()))
+          );
 
-        const filteredItems = filteredListaForItems
-          ? filteredItemsBySearch.filter((item) =>
-              filteredListaForItems.some((filteredItem) => filteredItem.id === item.id)
-            )
-          : filteredItemsBySearch
+          const filteredItems = filteredListaForItems
+            ? filteredItemsBySearch.filter((item) =>
+                filteredListaForItems.some(
+                  (filteredItem) => filteredItem.id === item.id
+                )
+              )
+            : filteredItemsBySearch;
             return (
             <Category
               key={category.id}
@@ -64,8 +77,9 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
               firstCategoryRef={firstCategoryRef}
               UsuarioCompleto={UsuarioCompleto}
               />
-          )
-        })}
+            )
+      })}
+        
       </div>
       {!isEStateLista && (
         <NewCategory

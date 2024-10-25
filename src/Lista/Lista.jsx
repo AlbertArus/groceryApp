@@ -37,15 +37,12 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       if (docSnap.exists()) {
         const listaData = docSnap.data();
         
-        // Actualiza la lista en el estado local
         setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
         
-        // Si el usuario no está ya en la lista de userMember
         if (usuario && !listaData.userMember.includes(usuario.uid)) {
-          // Agrega el usuario a la lista en Firestore
-          await updateDoc(docRef, { userMember: [...listaData.userMember, usuario.uid] });
-          
-          // Actualiza el campo 'itemUserMember' en los ítems anidados
+          const updatedUserMember = [...listaData.userMember, usuario.uid];
+          await updateDoc(docRef, { userMember: updatedUserMember });
+
           const updatedCategories = listaData.categories.map(category => ({
             ...category,
             items: category.items.map(item => ({
@@ -54,10 +51,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             }))
           }));
           
-          // Actualiza Firestore con los ítems modificados
           await updateDoc(docRef, {
             categories: updatedCategories
           });
+
+          setListas(prevListas =>
+            prevListas.map(lista => 
+              lista.id === params.id 
+                ? { ...lista, userMember: updatedUserMember, categories: updatedCategories }
+                : lista
+            )
+          );
         }
       } else {
         console.error("No hay tal documento!");
@@ -76,71 +80,26 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return "Usuario desconocido"; // Fallback si el usuario no se encuentra
   }
 
-  // const fetchLista = useCallback(async () => {
-  //   if (!params.id) return;
-  
-  //   try {
-  //     const docRef = doc(db, "listas", params.id);
-  //     const docSnap = await getDoc(docRef);
-  //     if (docSnap.exists()) {
-  //       const listaData = docSnap.data();
-  //       if (usuario && !listaData.userMember.includes(usuario.uid)) {
-  //         // Añadir el usuario a userMember de la lista
-  //         const updatedUserMember = [...listaData.userMember, {uid: usuario.uid, nombre: usuario.nombre, apellido: usuario.apellido}];
-          
-  //         // Actualizar itemUserMember en todos los items
-  //         const updatedCategories = listaData.categories.map(category => ({
-  //           ...category,
-  //           items: category.items.map(item => ({
-  //             ...item,
-  //             itemUserMember: [...item.itemUserMember, {uid: usuario.uid, nombre: usuario.nombre, apeliido: usuario.apellido}]
-  //           }))
-  //         }));
-  //         // console.log(listaData.userMember)
-  //         // console.log('updatedUserMember:', updatedUserMember);
-  //         // console.log('updatedCategories:', updatedCategories);
-  
-  //         // Actualizar la lista en Firestore
-  //         await updateDoc(docRef, { 
-  //           userMember: updatedUserMember,
-  //           categories: updatedCategories
-  //         });
-  
-  //         // Actualizar el estado local
-  //         listaData.userMember = updatedUserMember;
-  //         listaData.categories = updatedCategories;
-  //       }
-  
-  //       // Actualizar el estado de las listas
-  //       setListas(prevListas => prevListas.map(lista => 
-  //         lista.id === params.id ? listaData : lista
-  //       ));
-  //     } else {
-  //       console.error("No existe tal documento!");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al cargar la lista:", error);
-  //   }
-  // }, [params.id, setListas, usuario]);
-
   useEffect(() => {
     fetchLista();
   }, [fetchLista])
 
   useEffect(() => {
-    const allItems = selectedList.categories.flatMap(category => category.items)
-    const anyItemMissingUser = allItems.some(item =>
-      !item.itemUserMember.includes(usuario.uid)
-    )  
-    if (anyItemMissingUser) {
-      setIsToggleShown(true)
+    if(selectedList) {
+      const allItems = selectedList.categories.flatMap(category => category.items)
+      const anyItemMissingUser = allItems.some(item =>
+        !item.itemUserMember.includes(usuario.uid)
+      )  
+      if (anyItemMissingUser) {
+        setIsToggleShown(true)
+      }
     }
   },[selectedList, usuario.uid])
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
-    const updatedItems = [...selectedList.items, newItem];
-    updateListaItems(params.id, updatedItems);
+    // const updatedItems = [...selectedList.items, newItem];
+    // updateListaItems(params.id, updatedItems);
     
     const updatedCategories = selectedList.categories.map(category => 
       category.id === categoryId 
@@ -149,25 +108,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     );
     updateListaCategories(params.id, updatedCategories);
   }
-
-  // const handleItemUserMember = (id) => {
-  //   const selectedCategories = selectedList.categories.map(category => {
-  //     const updatedItems = category.items.map(item => {
-  //         if (item.id === id) {
-  //           const loadItemUserMember = item.counterDown.includes(usuario.uid)
-  //           const userInCounterUp = item.counterUp.includes(usuario.uid)
-
-  //           const updateCounterDown = userInCounterDown ? item.counterUp.filter(uid => uid !== usuario.uid) : [...item.counterDown, usuario.uid]
-  //           const updateCounterUp = (!userInCounterDown && userInCounterUp) ? item.counterUp.filter(uid => uid !== usuario.uid) : item.counterUp
-  //           return {...item, counterUp: updateCounterUp, counterDown: updateCounterDown}
-  //         }
-  //         return item
-  //       })
-  //       updateListaItems(params.id, updatedItems)
-  //     return {...category, items: updatedItems}
-  //   })
-  //   updateListaCategories(params.id, selectedCategories)
-  // }
 
   const EditItem = (id, newName, newPrice) => {
     const updatedCategories = selectedList.categories.map(category => {
