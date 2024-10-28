@@ -55,14 +55,13 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
 
   const handleBlur = (e, input) => {
     if (name.trim() && price.trim()) {
-      handleEdit();
-    }
-    
-    if (input === "ItemName" && ItemNameRef.current) {
-      ItemNameRef.current.blur();
-    }
-    if (input === "ItemPrice" && ItemPriceRef.current) {
-      ItemPriceRef.current.blur();
+      handleEdit(e);
+      if (input === "ItemName" && ItemNameRef.current) {
+        ItemNameRef.current.blur();
+      }
+      if (input === "ItemPrice" && ItemPriceRef.current) {
+        ItemPriceRef.current.blur();
+      }
     }
   };
 
@@ -179,8 +178,8 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                 }}
               />
               <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
-                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} onBlur={(e) => handleBlur(e, "ItemName")} className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
-                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} onBlur={(e) => handleBlur(e, "ItemPrice")} className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
+                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} onBlur={(e) => handleBlur(e, "ItemName")} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
+                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} onBlur={(e) => handleBlur(e, "ItemPrice")} inputMode="decimal" enterKeyHint="done" className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
               </div>
               <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
             </div>
