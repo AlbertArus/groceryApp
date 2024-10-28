@@ -51,7 +51,11 @@ function App() {
   useEffect(() => {
     if(usuario && usuario.uid) {
       loadListasFromFirebase()
-    }
+    } else {
+      setTimeout(() => {
+        setIsLoading(false)
+    },450)
+  }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[usuario]);
 
