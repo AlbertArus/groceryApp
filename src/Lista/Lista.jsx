@@ -7,7 +7,7 @@ import SubHeader from './SubHeader'
 import Categories from './Categories'
 import EStateLista from '../components/EStateLista'
 import { useParams } from 'react-router-dom'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
@@ -70,6 +70,19 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       console.error("Error al cargar la lista:", error);
     }
   }, [params.id, setListas, usuario]);
+
+  useEffect(() => {
+    const docRef = doc(db, "listas", params.id);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const listaData = docSnap.data();
+        setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
+      }
+    });
+  
+    return () => unsubscribe(); // Cleanup on component unmount
+  }, [params.id, setListas]);
+  
 
   const UsuarioCompleto = async (uid) => {
     const userDoc = await getDoc(doc(db, "usuarios", uid));
