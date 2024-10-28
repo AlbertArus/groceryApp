@@ -16,6 +16,7 @@ import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase/firestore"
 import { useUsuario } from './UsuarioContext.jsx';
 import DeleteUser from './configuración/DeleteUser.jsx';
+import LoadingPage from './Listas/LoadingPage.jsx';
 
 function App() {
   
@@ -23,6 +24,7 @@ function App() {
   const [listas, setListas] = useState([])
   const [deletedLista, setDeletedLista] = useState([])
   const [sharePopupVisible, setSharePopupVisible] = useState (false)
+  const [isLoading, setIsLoading] = useState(true)
   // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   // console.log({deletedLista})
@@ -41,6 +43,8 @@ function App() {
       setListas(filteredListas);
     } catch (error) {
       console.error("Error al cargar las listas desde Firebase:", error);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -206,6 +210,9 @@ function App() {
 
   return (
     <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
       <div>
         <Toaster position="bottom-center" reverseOrder={false} />
         <Routes>
@@ -214,77 +221,78 @@ function App() {
             setUsuario={setUsuario}
           />}
         />
-          {usuario ? (
-            <>
-              <Route path="/" element={
-                <Home
-                  usuario={usuario}
-                  addLista={addLista}
-                  listas={listas.filter((lista) => !lista.isArchived)}
-                  setListas={setListas}
-                  deleteLista={deleteLista}
-                  updateListaCategories={updateListaCategories}
-                  updateListaItems={updateListaItems}
-                  handleArchive={handleArchive}
-                  AllArchived={AllArchived}
-                  goToArchived={goToArchived}
-                  handleNotified={handleNotified}
-                  handleDuplicate={handleDuplicate}
-                />}
-              />
-              <Route path="/list/:id" element={
-                <Lista
-                  listas={listas}
-                  setListas={setListas}
-                  deleteLista={deleteLista}
-                  updateListaCategories={updateListaCategories}
-                  updateListaItems={updateListaItems}
-                  handleArchive={handleArchive}
-                  usuario={usuario}
-                  sharePopupVisible={sharePopupVisible}
-                  setSharePopupVisible={setSharePopupVisible}
-                />}
-              />
-              <Route path="/newlist/" element={
-                <FormLista 
-                  addLista={addLista}
-                  listas={listas}
-                  setSharePopupVisible={setSharePopupVisible}
-                />}
-              />
-              <Route path="/archived/" element={
-                <Archived
-                  goToArchived={goToArchived}
-                  listas={listas.filter((lista) => lista.isArchived)}
-                  handleArchive={handleArchive}
-                  deleteLista={deleteLista}
-                />}
-              />
-              <Route path="/profile" element={
-                <Perfil
-                  usuario={usuario}
-                />}
-              />
-              <Route path="/settings" element={
-                <Settings
-                />}
-              />
-              <Route path="/password" element={
-                <NewPassword
-                  usuario={usuario}
-                />}
-              />
-              <Route path="/deleteuser" element={
-                <DeleteUser
-                  usuario={usuario}
-                />}
-              />     
-            </>
-          ) : (
-            <Route path='*' element={<Registro />} />
-          )}
+        {usuario ? (
+          <>
+            <Route path="/" element={
+              <Home
+                usuario={usuario}
+                addLista={addLista}
+                listas={listas.filter((lista) => !lista.isArchived)}
+                setListas={setListas}
+                deleteLista={deleteLista}
+                updateListaCategories={updateListaCategories}
+                updateListaItems={updateListaItems}
+                handleArchive={handleArchive}
+                AllArchived={AllArchived}
+                goToArchived={goToArchived}
+                handleNotified={handleNotified}
+                handleDuplicate={handleDuplicate}
+              />}
+            />
+            <Route path="/list/:id" element={
+              <Lista
+                listas={listas}
+                setListas={setListas}
+                deleteLista={deleteLista}
+                updateListaCategories={updateListaCategories}
+                updateListaItems={updateListaItems}
+                handleArchive={handleArchive}
+                usuario={usuario}
+                sharePopupVisible={sharePopupVisible}
+                setSharePopupVisible={setSharePopupVisible}
+              />}
+            />
+            <Route path="/newlist/" element={
+              <FormLista 
+                addLista={addLista}
+                listas={listas}
+                setSharePopupVisible={setSharePopupVisible}
+              />}
+            />
+            <Route path="/archived/" element={
+              <Archived
+                goToArchived={goToArchived}
+                listas={listas.filter((lista) => lista.isArchived)}
+                handleArchive={handleArchive}
+                deleteLista={deleteLista}
+              />}
+            />
+            <Route path="/profile" element={
+              <Perfil
+                usuario={usuario}
+              />}
+            />
+            <Route path="/settings" element={
+              <Settings
+              />}
+            />
+            <Route path="/password" element={
+              <NewPassword
+                usuario={usuario}
+              />}
+            />
+            <Route path="/deleteuser" element={
+              <DeleteUser
+                usuario={usuario}
+              />}
+            />     
+          </>
+        ) : (
+          <Route path='*' element={<Registro />} />
+        )}
         </Routes>
       </div>
+    )}
     </>
   )
 }
