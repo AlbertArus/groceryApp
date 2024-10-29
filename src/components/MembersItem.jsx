@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from "react"
-import ItemMenu from "./ItemMenu"
+import ItemMenuItem from "./ItemMenuItem";
 
-const MembersItem = forwardRef(({item, UsuarioCompleto}, ref) => {
+const MembersItem = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember}, ref) => {
     const [nombreItemUserMember, setNombreItemUserMember] = useState([]);
 
     useEffect(() => {
@@ -20,10 +20,11 @@ const MembersItem = forwardRef(({item, UsuarioCompleto}, ref) => {
     return (
         <div className="optionsMenu" style={{ left: "0", width: "150px" }} ref={ref}>
             {item.itemUserMember.map((uid, index) =>
-                <ItemMenu
+                <ItemMenuItem
                     key={uid}
                     iconName={"account_circle"}
                     itemMenuName={nombreItemUserMember[index]} // Uso index para validar que el nombre corresponde al uid vía posición en el array
+                    handleDeleteItemUserMember={() => handleDeleteItemUserMember(item.id, uid)}
                 />
             )}
         </div>

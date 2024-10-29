@@ -450,7 +450,7 @@ button[type=submit] {
   position: absolute;
   right: 15px;
   /* color: rgb(139, 139, 139); */
-  color: 565656;
+  color: #565656;
   opacity: 1;
 }
 

@@ -150,6 +150,7 @@ function App() {
     try {
       const listaRef = doc(db, "listas", listaId);
       await updateDoc(listaRef, { categories: updatedCategories });
+      console.log("Firebase updated successfully");
     } catch (error) {
       console.error("Error al actualizar las categorías en Firebase:", error);
     }

@@ -93,6 +93,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return "Usuario desconocido"; // Fallback si el usuario no se encuentra
   }
 
+  const handleDeleteItemUserMember = (id, uid) => {
+    const updatedCategories = selectedList.categories.map(category => (
+      {...category, items: category.items.map(item => 
+        item.id === id ? {...item, itemUserMember: item.itemUserMember.filter(memberId => memberId !== uid)} : item
+      ),
+    }))
+  
+    updateListaCategories(params.id, updatedCategories);
+  }
+  
+
   useEffect(() => {
     fetchLista();
   }, [fetchLista])
@@ -200,7 +211,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const AddCategory = (categoryName) => {
     const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], isChecked: false }
     const updatedCategories = [...selectedList.categories, newCategory]
-    updateListaCategories(params.id, updatedCategories)
+    updateListaCategories(selectedList.id, updatedCategories)
   }
 
   const EditCategory = (id, newCategoryName) => {
@@ -399,6 +410,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             firstCategoryRef={firstCategoryRef}
             UsuarioCompleto={UsuarioCompleto}
             filteredListaForItems={filteredListaForItems}
+            handleDeleteItemUserMember={handleDeleteItemUserMember}
             />
           {isEStateLista && 
             <div className="emptyState">
