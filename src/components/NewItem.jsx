@@ -46,7 +46,7 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef, preciosOcultos }) => {
       <div className="fila-between" style={{marginLeft:"3px"}}>
         <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" style={{marginLeft: "14px"}}>
-          <input type="text" placeholder="Nuevo Item" aria-label="Nombre de nuevo item" className="ItemName" onKeyDown={handleItemTextKeyDown} ref={ItemNameInputRef} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
+          <input type="text" placeholder="Nuevo Item" aria-label="Nombre de nuevo item" className="ItemName" onKeyDown={preciosOcultos ? handleKeyDown : handleItemTextKeyDown} ref={ItemNameInputRef} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
           <input type="number" placeholder="Precio" aria-label="Precio de nuevo item" className="ItemPrice" onKeyDown={handleKeyDown} ref={ItemPriceRef} style={{display: preciosOcultos ? "none" : "flex"}} onChange={(e) => setPrice(e.target.value)} value={price}></input>
         </form>
       </div>
