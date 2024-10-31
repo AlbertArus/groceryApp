@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
+// import Navbar from "../Listas/NavBar.jsx"
+import { Checkbox } from "@mui/material"
 const auth = getAuth(firebaseApp)
 
 const Registro = ({setUsuario}) => {
     const [isRegistered, setIsRegistered] = useState(false)
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-    const [errors, setErrors] = useState({nombre: false, apellido: false, correo: false, correoInvalid: false, contraseña: false, contraseñaInvalid: false})
+    const [termsChecked, setTermsChecked] = useState(false)
+    const [communicationsChecked, setCommunicationsChecked] = useState(false)
+    const [errors, setErrors] = useState({nombre: false, apellido: false, correo: false, correoInvalid: false, contraseña: false, contraseñaInvalid: false, terms: false})
     const navigate = useNavigate()
 
     const handleIsRegistered = () => {
@@ -17,7 +21,7 @@ const Registro = ({setUsuario}) => {
 
     const minLength = 6
     const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
+    
     const handleSubmit = async(e) => {
         e.preventDefault()
         
@@ -25,7 +29,6 @@ const Registro = ({setUsuario}) => {
         const apellido = e.target.apellido.value
         const correo = e.target.correo.value
         const contraseña = e.target.contraseña.value
-
         const correoInvalid = !regex.test(correo.trim());
         
         setErrors({
@@ -34,7 +37,8 @@ const Registro = ({setUsuario}) => {
             correo: (correo.trim() === ""),
             correoInvalid: correoInvalid,
             contraseña: (contraseña.trim() === ""),
-            contraseñaInvalid: (contraseña.trim().length < minLength)
+            contraseñaInvalid: (contraseña.trim().length < minLength),
+            termsUnchecked: !termsChecked
         })
         
         try {
@@ -44,7 +48,7 @@ const Registro = ({setUsuario}) => {
                 userCredential = await signInWithEmailAndPassword (auth, correo, contraseña)
                 }
             } else {
-                if(nombre.trim() && apellido.trim() && correo.trim() && contraseña.trim()) {
+                if(nombre.trim() && apellido.trim() && correo.trim() && contraseña.trim() && termsChecked) {
                     userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña)
                     await updateProfile(userCredential.user, {
                         displayName: `${nombre} ${apellido}`
@@ -55,6 +59,7 @@ const Registro = ({setUsuario}) => {
                         nombre: nombre,
                         apellido: apellido,
                         email: correo,
+                        comunicaciones: communicationsChecked,
                         createdAt: new Date(),
                     });
                 }
@@ -71,8 +76,23 @@ const Registro = ({setUsuario}) => {
         setIsPasswordVisible(prevState => !prevState)
     }
 
+    const handleTermsCheck = () => {
+        setTermsChecked(prevState => !prevState)
+    }
+
+    const handleCommunicationsCheck = (e) => {
+        setCommunicationsChecked(prevState => !prevState)
+    }
+
   return (
     <div className="app">
+        {/* <Navbar 
+            isRegistered={isRegistered}
+        /> */}
+        <div className="titleRegistro" style={{margin: "40px 0px 20px 0px"}}>
+            <img className="picRegistro" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
+            {/* <h3 style={{marginLeft: "6px"}}>GroceryApp</h3> */}
+        </div>        
         <div className="login app-margin">
             <h3 style={{marginBottom: "15px"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h3>
             <form onSubmit={handleSubmit}>
@@ -93,6 +113,41 @@ const Registro = ({setUsuario}) => {
                 </div>
                 <h5 style={{display: errors.contraseña ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
                 <h5 style={{display: errors.contraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
+                <div className="fila-start" style={{marginTop: "7px", display: isRegistered ? "none" : "flex"}}>
+                    <Checkbox 
+                        checked={termsChecked}
+                        onChange={() => {handleTermsCheck(); setErrors((prevErrors) => ({...prevErrors, termsUnchecked: false}))}}
+                        sx={{
+                        '&.Mui-checked': {
+                            color: "green",
+                        },
+                        '&:not(.Mui-checked)': {
+                            color: "#9E9E9E",
+                        },
+                        padding: "0px",
+                        marginLeft: "-3px"
+                    }}
+                    />
+                    <div style={{fontSize: "12px", marginLeft: "8px"}}>Acepto los <a href="https://albertarus.notion.site/T-rminos-y-condiciones-1205242bbfc7801daea9ffccbeab78f9?pvs=4">Términos</a> y <a href="https://albertarus.notion.site/Pol-tica-de-privacidad-1205242bbfc780498f42edf2652afae8">Política de privacidad</a></div>
+                </div>
+                <h5 style={{display: !isRegistered && errors.termsUnchecked ? "block" : "none", color:"red"}}>Debes aceptar los Términos y Polítca para registrarte</h5>
+                <div className="fila-start" style={{marginTop: "7px", display: isRegistered ? "none" : "flex"}} id="terms">
+                    <Checkbox 
+                        checked={communicationsChecked}
+                        onClick={() => handleCommunicationsCheck()}
+                        sx={{
+                        '&.Mui-checked': {
+                            color: "green",
+                        },
+                        '&:not(.Mui-checked)': {
+                            color: "#9E9E9E",
+                        },
+                        padding: "0px",
+                        marginLeft: "-3px"
+                    }}
+                    />
+                    <div style={{fontSize: "12px", marginLeft: "8px"}}>Acepto recibir comunicaciones comerciales</div>
+                </div>
                 <button type="submit">{isRegistered ? "Iniciar sesión" : "Registrarme"}</button>
             </form>
             <div className="redirect" onClick={handleIsRegistered}>{isRegistered ? "No tienes cuenta? Regístrate" : "Ya tienes cuenta? Inicia sesión"}</div>
