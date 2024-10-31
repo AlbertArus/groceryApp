@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
-const ToggleItems = ({lista, usuario, setFilteredListaForItems}) => {
-    const [isToggleSelected, setIsToggleSelected] = useState("Todos")
+const ToggleItems = ({lista, usuario, setFilteredListaForItems, preciosOcultos, isToggleSelected, setIsToggleSelected}) => {
+    // const [sinPrecios, setSinPrecios] = useState(false)
 
     const handleClick = (toggle) => {
         setIsToggleSelected(toggle)
@@ -9,7 +9,7 @@ const ToggleItems = ({lista, usuario, setFilteredListaForItems}) => {
 
     useEffect(() => {
         let filteredListaForItems
-        if(isToggleSelected === "Mis items") {
+        if(isToggleSelected === "Mis items" || isToggleSelected === "Mis gastos") {
             filteredListaForItems = lista.categories.flatMap(category => 
                 category.items.filter(item => item.itemUserMember.includes(usuario.uid))
             )
@@ -20,11 +20,25 @@ const ToggleItems = ({lista, usuario, setFilteredListaForItems}) => {
 
     },[isToggleSelected, usuario.uid, lista, setFilteredListaForItems])
 
+    // useEffect(() => {
+    //     const itemsLista = lista.categories.every(category => 
+    //         category.items.every(item =>
+    //             item.price === ""
+    //         )
+    //     )
+    //     if(preciosOcultos || itemsLista) {
+    //         setSinPrecios(true)
+    //     } else {
+    //         setSinPrecios(false)
+    //     }
+    // },[lista.categories, preciosOcultos])
+
     return (
         <div className="ToggleItems">
             <div className="app-margin toggleDisplay">
                 <div onClick={() => handleClick("Todos")} className={isToggleSelected === "Todos" ? "toggleOptions toggleLateral" : "toggleOptions"}>Todos</div>
                 <div onClick={() => handleClick("Mis items")} className={isToggleSelected === "Mis items" ? "toggleOptions toggleLateral" : "toggleOptions"}>Mis items</div>
+                {/* <div onClick={() => handleClick("Mis gastos")} className={isToggleSelected === "Mis gastos" ? "toggleOptions toggleLateral" : "toggleOptions"} style={{display: sinPrecios ? "none" : "block"}}>Mis gastos</div> */}
             </div>
         </div>
     )

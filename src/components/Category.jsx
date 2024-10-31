@@ -114,7 +114,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
               searchResult={searchResult}
               UsuarioCompleto={UsuarioCompleto}
               handleDeleteItemUserMember={handleDeleteItemUserMember}
-              />
+            />
           ))}
           <NewItem 
             AddItem={AddItem}

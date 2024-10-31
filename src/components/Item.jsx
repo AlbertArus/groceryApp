@@ -207,11 +207,11 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
       ) : (
         <>
           <div className="fila-start">
-          <DragIndicator 
-              style={{padding: "0px"}}
-            />
+            <DragIndicator 
+                style={{padding: "0px"}}
+              />
             <div className="fila-between">
-            <Checkbox 
+              <Checkbox 
                 checked={itemIsChecked}
                 onChange={onClick}
                 sx={{
@@ -259,6 +259,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                   ref={membersItemRef}
                   item={item}
                   UsuarioCompleto={UsuarioCompleto}
+                  handleDeleteItemUserMember={handleDeleteItemUserMember}
                 />
               }
             </div>

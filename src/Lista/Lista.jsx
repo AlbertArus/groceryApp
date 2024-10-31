@@ -12,6 +12,7 @@ import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
 import ToggleItems from './ToggleItems'
+// import Gastos from './Gastos'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
 
@@ -23,6 +24,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [searchResult, setSearchResult] = useState("")
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
   const [isToggleShown, setIsToggleShown] = useState(false)
+  const [isToggleSelected, setIsToggleSelected] = useState("Todos")
+  // const [isEditable, setIsEditable] = useState(false)
   const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
@@ -64,7 +67,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
           );
         }
       } else {
-        console.error("No hay tal documento!");
+        console.error("No tenemos el documento que buscas...");
       }
     } catch (error) {
       console.error("Error al cargar la lista:", error);
@@ -99,11 +102,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
         item.id === id ? {...item, itemUserMember: item.itemUserMember.filter(memberId => memberId !== uid)} : item
       ),
     }))
-  
     updateListaCategories(params.id, updatedCategories);
   }
   
-
   useEffect(() => {
     fetchLista();
   }, [fetchLista])
@@ -120,10 +121,18 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   },[selectedList, usuario.uid])
 
+  // useEffect(() => {
+  //   if(isToggleSelected === "Mis gastos") {
+  //     setIsEditable(true)
+  //   } else {
+  //     setIsEditable(false)
+  //   }
+  // },[isToggleSelected])
+
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
-    // const updatedItems = [...selectedList.items, newItem];
-    // updateListaItems(params.id, updatedItems);
+    const updatedItems = [...selectedList.items, newItem];
+    updateListaItems(params.id, updatedItems);
     
     const updatedCategories = selectedList.categories.map(category => 
       category.id === categoryId 
@@ -375,6 +384,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               lista={selectedList}
               usuario={usuario}
               setFilteredListaForItems={setFilteredListaForItems}
+              preciosOcultos={preciosOcultos}
+              isToggleSelected={isToggleSelected}
+              setIsToggleSelected={setIsToggleSelected}
             />
           }
           {!isEStateLista &&

@@ -221,7 +221,7 @@ function App() {
       <div>
         <Toaster position="bottom-center" reverseOrder={false} />
         <Routes>
-        <Route path="/Registro" element={
+        <Route path="/registro" element={
           <Registro 
             setUsuario={setUsuario}
           />}

@@ -215,8 +215,8 @@ hr {
 }
 
 .ItemCheckbox {
-  width: 15px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border: 1px solid black;
   border-radius: 3px;
   cursor: pointer;
@@ -676,4 +676,23 @@ button[type=submit] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.banner {
+  border: 2.5px solid rgb(180, 180, 180);
+  border-radius: 5px;
+  background-color: #e0dfdf8f;
+  margin: 8px 0px;
+  padding: 5px 8px;
+}
+
+.picRegistro {
+  width: 80px;
+  height: 80px;
+}
+
+.titleRegistro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
