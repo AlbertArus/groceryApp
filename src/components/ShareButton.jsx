@@ -1,5 +1,5 @@
 
-export const ShareButton = () => {
+export const ShareButton = ({url}) => {
   const shareData = {
     title: 'GroceryApp',
     text: '¡Mira este increíble proyecto!',

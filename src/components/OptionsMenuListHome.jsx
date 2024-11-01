@@ -4,12 +4,9 @@ import { ShareButton } from "./ShareButton"
 
 const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista, listaArchivada, lista}, ref) => { 
   const handleShare = ShareButton({
-    // url: `${window.location.hostname === "localhost" ? "http://localhost:3000" : "https://grocery-app-lake-theta.vercel.app/"}/list/${lista.id}`,
-    url: listaArchivada ? `${window.location.origin}/list/${listaArchivada.id}` : `${window.location.origin}/list/${lista.id}`,
+    url: listaArchivada ? `${window.location.origin}/list/${listaArchivada.id}` : `${window.location.origin}/list/${lista.id}`, //Ponemos listaArchivada porque si no desde "Archived no funciona el OptionsMenu porque no reconoce el /list/id al estar en /archived"
     text: listaArchivada ? listaArchivada.descriptionLista : lista.descriptionLista
   });
-
-  console.log("optionsId", lista.id)
 
   return (
     <div className="optionsMenu" ref={ref}>

@@ -1,7 +1,7 @@
 import { ShareButton } from "./ShareButton"
 
 const SharePopUp = ({setSharePopupVisible}) => {
-    const handleShare = ShareButton()
+  const handleShare = ShareButton({url: window.location.href});
 
   return (
     <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
