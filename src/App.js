@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Home from "./Listas/Home"
 import toast, { Toaster } from 'react-hot-toast'
@@ -27,6 +27,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
+  const location = useLocation();
   // console.log({deletedLista})
   
   const loadListasFromFirebase = async () => {
@@ -58,6 +59,13 @@ function App() {
   }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[usuario]);
+
+  useEffect(() => {
+    // Envía un pageview cada vez que cambie la ubicación (ruta)
+    window.gtag('config', 'G-DQMEE49WTB', {
+      page_path: location.pathname + location.search,
+    });
+  }, [location]);
 
   const addLista = async (listaName, plan, descriptionLista) => {
     const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
