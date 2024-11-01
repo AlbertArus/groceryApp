@@ -16,7 +16,7 @@ import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase/firestore"
 import { useUsuario } from './UsuarioContext.jsx';
 import DeleteUser from './configuración/DeleteUser.jsx';
-import LoadingPage from './Listas/LoadingPage.jsx';
+import LoadingPage from './components/LoadingPage.jsx';
 
 function App() {
   
@@ -25,6 +25,7 @@ function App() {
   const [deletedLista, setDeletedLista] = useState([])
   const [sharePopupVisible, setSharePopupVisible] = useState (false)
   const [isLoading, setIsLoading] = useState(true)
+  const [listasLoaded, setListasLoaded] = useState(false)
   // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   const location = useLocation();
@@ -42,6 +43,7 @@ function App() {
         lista.userCreator === usuario.uid || lista.userMember.includes(usuario.uid)
       )
       setListas(filteredListas);
+      setListasLoaded(true)
     } catch (error) {
       console.error("Error al cargar las listas desde Firebase:", error);
     } finally {
@@ -50,15 +52,22 @@ function App() {
   }
 
   useEffect(() => {
-    if(usuario && usuario.uid) {
-      loadListasFromFirebase()
+    // Espera hasta que la verificación de auth esté completa
+    if (usuario === undefined) return; // Todavía se está verificando el usuario
+  
+    if (usuario === null) {
+      setIsLoading(false);
+      navigate("/registro");
     } else {
-      setTimeout(() => {
-        setIsLoading(false)
-    },450)
-  }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[usuario]);
+      loadListasFromFirebase();
+    }
+  }, [usuario, navigate]);
+
+  useEffect(() => {
+    if(usuario && listasLoaded)  {
+      setIsLoading(false)
+    }
+  },[usuario, listasLoaded])
 
   useEffect(() => {
     // Envía un pageview cada vez que cambie la ubicación (ruta)
@@ -234,7 +243,7 @@ function App() {
             setUsuario={setUsuario}
           />}
         />
-        {usuario ? (
+        {usuario && listasLoaded ? (
           <>
             <Route path="/" element={
               <Home
