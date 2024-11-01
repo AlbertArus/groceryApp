@@ -13,7 +13,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
     const membersListRef = useRef(null)
     const buttonMembersListRef = useRef(null)
     const navigate = useNavigate()
-    const handleShare = ShareButton({url: window.location.href});
+    const handleShare = ShareButton({url: window.location.href, lista: lista});
 
     const handleMenuVisibility = (event) => {
         event.stopPropagation()

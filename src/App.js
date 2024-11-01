@@ -23,7 +23,7 @@ function App() {
   const {usuario, setUsuario} = useUsuario();
   const [listas, setListas] = useState([])
   const [deletedLista, setDeletedLista] = useState([])
-  const [sharePopupVisible, setSharePopupVisible] = useState (false)
+  const [sharePopupVisible, setSharePopupVisible] = useState ({visible: false, lista: null})
   const [isLoading, setIsLoading] = useState(true)
   const [listasLoaded, setListasLoaded] = useState(false)
   // const [usuario, setUsuario] = useState(null)

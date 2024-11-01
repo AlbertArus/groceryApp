@@ -1,9 +1,11 @@
+import { useUsuario } from '../UsuarioContext';
 
-export const ShareButton = ({url}) => {
+export const ShareButton = ({url, lista}) => {
+  const {usuario} = useUsuario()
   const shareData = {
     title: 'GroceryApp',
-    text: '¡Mira este increíble proyecto!',
-    url: window.location.href,
+    text: lista ? `${usuario.displayName} te ha invitado a colaborar en la lista ${lista.listaName}` : `${usuario.displayName} te ha invitado a colaborar en su lista`,
+    url: url,
   };
 
   const handleShare = async () => {
