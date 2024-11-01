@@ -29,7 +29,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
-
+  
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
   
@@ -84,8 +84,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     });
   
     return () => unsubscribe(); // Cleanup on component unmount
-  }, [params.id, setListas]);
-  
+  }, [params.id, setListas]);  
 
   const UsuarioCompleto = async (uid) => {
     const userDoc = await getDoc(doc(db, "usuarios", uid));
@@ -367,7 +366,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             votesShown={votesShown}
             deleteLista={() => deleteLista(params.id)}
             handleArchive={() => handleArchive(params.id)}
-            handleDuplicate={handleDuplicate}
             itemslength={totalItemsLength}
             lista={selectedList}
             items={totalItemsLength}

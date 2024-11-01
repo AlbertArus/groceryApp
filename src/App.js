@@ -53,15 +53,16 @@ function App() {
 
   useEffect(() => {
     // Espera hasta que la verificación de auth esté completa
-    if (usuario === undefined) return; // Todavía se está verificando el usuario
-  
+    if (usuario === undefined) {
+      return; // Todavía se está verificando el usuario
+    }
     if (usuario === null) {
       setIsLoading(false);
       navigate("/registro");
     } else {
       loadListasFromFirebase();
     }
-  }, [usuario, navigate]);
+  }, [usuario]);
 
   useEffect(() => {
     if(usuario && listasLoaded)  {
@@ -89,21 +90,31 @@ function App() {
 
   const deleteLista = async (id) => {
     const ListToDelete = listas.find(lista => lista.id === id);
-    setDeletedLista(prev => [...prev, ListToDelete]);  // Añadir la lista al array
-    setListas(listas.filter(lista => lista.id !== id));
+    if (!ListToDelete) {
+      console.warn("La lista a eliminar no se encontró en el estado");
+      return;
+    }
+  
+    // Actualizar el estado local para eliminar la lista
+    setListas(prevListas => prevListas.filter(lista => lista.id !== id));
+    setDeletedLista(prev => [...prev, ListToDelete]);
   
     let timeoutId;
     try {
+      // Actualizar Firebase para marcar como eliminada
       await updateDoc(doc(db, "listas", id), { deleted: true });
+  
+      // Navegar a Home después de actualizar Firebase
       navigate("/");
   
+      // Mostrar notificación con opción de deshacer
       toast((t) => (
         <span style={{ display: "flex", alignItems: "center" }}>
           <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
           {`Has eliminado "${ListToDelete.listaName}"`}
           <button onClick={() => { 
-              undoDelete(ListToDelete.id);  // Pasa el ID de la lista a restaurar
-              clearTimeout(timeoutId);
+              undoDelete(ListToDelete.id); 
+              clearTimeout(timeoutId); 
               toast.dismiss(t.id); 
             }} 
             style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
@@ -114,10 +125,11 @@ function App() {
         style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
       });
   
+      // Eliminar definitivamente de Firebase después de 3 segundos
       timeoutId = setTimeout(async () => {
         try {
           await deleteDoc(doc(db, "listas", id));
-          setDeletedLista(prev => prev.filter(lista => lista.id !== id));  // Eliminar del array después del tiempo
+          setDeletedLista(prev => prev.filter(lista => lista.id !== id));
         } catch (error) {
           console.error("Error al eliminar definitivamente la lista:", error);
         }
@@ -126,7 +138,7 @@ function App() {
       console.error("Error al marcar como eliminada la lista en Firebase:", error);
     }
   };
-
+  
   const undoDelete = useCallback((id) => {
     const listaToRestore = deletedLista.find(lista => lista.id === id);
     if (listaToRestore) {
@@ -206,7 +218,16 @@ function App() {
       console.error("Lista original no encontrada");
       return;
     }
-    const duplicateLista = { ...originalLista, id: uuidv4(), userCreator: usuario.uid, userMember: [], categories: originalLista.categories.map(category => ({...category, id: uuidv4(), items: category.items.map(item => ({...item, id: uuidv4()}))})), items: originalLista.items.map(item => ({...item, id: uuidv4()}))}
+    const duplicateListaId = uuidv4()
+    const categoryIdMap = new Map();
+    const duplicateCategories = originalLista.categories.map(category => {
+      const newCategoryId = uuidv4()
+      categoryIdMap.set(category.id, newCategoryId)
+      return {...category, id: newCategoryId, listaId: duplicateListaId, items: category.items.map(item => 
+        ({ ...item, id: uuidv4(), listaId: duplicateListaId, categoryId: newCategoryId}))
+      }
+    }); 
+    const duplicateLista = { ...originalLista, id: duplicateListaId, userCreator: usuario.uid, userMember: [usuario.uid], categories: duplicateCategories, items: originalLista.items.map(item => ({...item, listaId: duplicateListaId, id: uuidv4()}))}
 
     try {
       await setDoc(doc(db, "listas", duplicateLista.id), duplicateLista);
