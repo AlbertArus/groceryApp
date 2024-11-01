@@ -26,7 +26,8 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
     const handleMenuVisibility = (event, id) => {
         event.stopPropagation()
         event.preventDefault()
-        setIsOptionsMenuVisible(prevId => (prevId === id ? null : id))} // Si el abierto (previo) es el mismo que el id, ciérralo, sino ábrelo -> No aplica porque gestiono con handleClickOutside y OnMenu
+        setIsOptionsMenuVisible(prevId => (prevId === id ? null : id))
+    } // Si el abierto (previo) es el mismo que el id, ciérralo, sino ábrelo
 
     useEffect(() => {
         const handleClickOutside = (event) => {

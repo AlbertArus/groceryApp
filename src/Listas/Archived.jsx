@@ -4,27 +4,41 @@ import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import Head from "../components/Head"
 
 const Archived = ({ listas, handleArchive, deleteLista }) => {
-    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const optionsMenuListHomeRef = useRef(null)
-    const buttonMenuRef = useRef(null)
+    const buttonMenuRefs = useRef({})
+    
     const listaslength = listas.length
     
-    const handleMenuVisibility = (event) => {
+    const handleMenuVisibility = (event, id) => {
         event.stopPropagation()
-        setIsOptionsMenuVisible(prevState => !prevState)
+        setIsOptionsMenuVisible(prevId => (prevId === id ? null : id))
     }
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if ( optionsMenuListHomeRef.current && !optionsMenuListHomeRef.current.contains(event.target) && buttonMenuRef.current && !buttonMenuRef.current.contains(event.target)) {
-                setIsOptionsMenuVisible(false);
+            if ( optionsMenuListHomeRef.current && !optionsMenuListHomeRef.current.contains(event.target) && buttonMenuRefs.current[isOptionsMenuVisible] && !buttonMenuRefs.current[isOptionsMenuVisible].contains(event.target)) {
+                setIsOptionsMenuVisible(null);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [isOptionsMenuVisible]);
+
+    useEffect(() => {
+        const handleClickOnMenu = (event) => {
+            if(optionsMenuListHomeRef.current && optionsMenuListHomeRef.current.contains(event.target)) {
+                setIsOptionsMenuVisible(null)
+            }
+        }
+        document.addEventListener("click", handleClickOnMenu);
+    
+        return () => {
+            document.removeEventListener("click", handleClickOnMenu);
+        };
+    },[])
 
     const getListaItemsLength = (id) => {
         const lista = listas.find(lista => lista.id === id)
@@ -66,15 +80,16 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
                                 </Link>
                             </div>
                             <div className="fila-start" style={{position: "relative"}}>
-                                <span className="material-symbols-outlined"style={{marginLeft:"4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
-                                {isOptionsMenuVisible && 
+                                <span className="material-symbols-outlined"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
+                                {isOptionsMenuVisible === lista.id && (
                                     <OptionsMenuListHome
+                                        key={lista.id}
                                         ref={optionsMenuListHomeRef}
                                         handleArchive={() => handleArchive(lista.id)}
                                         deleteLista={deleteLista}
                                         listaArchivada={lista}
                                     />
-                                }
+                                )}
                             </div>
                         </div>
                     </div>
