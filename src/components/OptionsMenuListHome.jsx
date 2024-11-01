@@ -9,6 +9,8 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
     text: listaArchivada ? listaArchivada.descriptionLista : lista.descriptionLista
   });
 
+  console.log("optionsId", lista.id)
+
   return (
     <div className="optionsMenu" ref={ref}>
       <ItemMenu
@@ -31,7 +33,7 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
       <ItemMenu 
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
-        onClick={deleteLista}
+        onClick={() => deleteLista(lista.id)}
       />
     </div>
   )
