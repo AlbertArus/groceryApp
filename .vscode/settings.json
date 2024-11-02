@@ -6,5 +6,6 @@
     "cSpell.ignoreWords": [
         "Cerdanya",
         "uuidv"
-    ]
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

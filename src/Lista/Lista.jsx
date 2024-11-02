@@ -14,7 +14,7 @@ import Search from './Search'
 import ToggleItems from './ToggleItems'
 // import Gastos from './Gastos'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, handleDuplicate, usuario, sharePopupVisible, setSharePopupVisible }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible }) => {
 
   let params = useParams();
   

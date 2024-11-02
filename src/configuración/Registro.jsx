@@ -8,7 +8,7 @@ import { Checkbox } from "@mui/material"
 const auth = getAuth(firebaseApp)
 
 const Registro = ({setUsuario}) => {
-    const [isRegistered, setIsRegistered] = useState(false)
+    const [isRegistered, setIsRegistered] = useState(false) // Para separar página de Inicio de sesión de página de Registro
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [termsChecked, setTermsChecked] = useState(false)
     const [communicationsChecked, setCommunicationsChecked] = useState(false)
@@ -45,11 +45,11 @@ const Registro = ({setUsuario}) => {
             let userCredential;
             if(isRegistered) {
                 if(correo.trim() && contraseña.trim()) {
-                userCredential = await signInWithEmailAndPassword (auth, correo, contraseña)
+                    userCredential = await signInWithEmailAndPassword(auth, correo, contraseña);
                 }
             } else {
                 if(nombre.trim() && apellido.trim() && correo.trim() && contraseña.trim() && termsChecked) {
-                    userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña)
+                    userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña);
                     await updateProfile(userCredential.user, {
                         displayName: `${nombre} ${apellido}`
                     });
@@ -63,10 +63,8 @@ const Registro = ({setUsuario}) => {
                         createdAt: new Date(),
                     });
                 }
-
             }
-            setUsuario(userCredential.user);
-            navigate("/")
+            navigate("/");
         } catch(error) {
             console.error(isRegistered ? "Error al iniciar sesión:" : "Error al registrar el usuario:", error);
         }

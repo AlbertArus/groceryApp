@@ -23,13 +23,11 @@ function App() {
   const {usuario, setUsuario} = useUsuario();
   const [listas, setListas] = useState([])
   const [deletedLista, setDeletedLista] = useState([])
-  const [sharePopupVisible, setSharePopupVisible] = useState ({visible: false, lista: null})
+  const [sharePopupVisible, setSharePopupVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [listasLoaded, setListasLoaded] = useState(false)
-  // const [usuario, setUsuario] = useState(null)
   const navigate = useNavigate()
   const location = useLocation();
-  // console.log({deletedLista})
   
   const loadListasFromFirebase = async () => {
     if (!usuario || !usuario.uid) {

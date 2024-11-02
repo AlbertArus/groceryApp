@@ -537,6 +537,7 @@ button[type=submit] {
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  margin-top: 30px;
 }
 
 .button_emptyState {

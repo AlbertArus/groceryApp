@@ -2,11 +2,10 @@ import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 import { ShareButton } from "./ShareButton"
 
-const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista, listaArchivada, lista}, ref) => { 
-  const handleShare = ShareButton({
-    url: listaArchivada ? `${window.location.origin}/list/${listaArchivada.id}` : `${window.location.origin}/list/${lista.id}`, //Ponemos listaArchivada porque si no desde /archived no funciona el OptionsMenu porque no reconoce el /list/id al estar en /archived"
-    lista: listaArchivada ? listaArchivada : lista
-  });
+const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteLista, listaArchivada, lista}, ref) => {
+  const url= listaArchivada ? `${window.location.origin}/list/${listaArchivada.id}` : `${window.location.origin}/list/${lista.id}` //Ponemos listaArchivada porque si no desde /archived no funciona el OptionsMenu porque no reconoce el /list/id al estar en /archived"
+  const listaShared= listaArchivada ? listaArchivada : lista
+  const handleShare = ShareButton(url, listaShared)
 
   return (
     <div className="optionsMenu" ref={ref}>
