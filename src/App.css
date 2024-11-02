@@ -315,14 +315,13 @@ hr {
 .optionsMenu {
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-  width: 190px;
+  width: auto;
   height: auto;
   background-color: white;
   padding: 10px 5px;
   position: absolute;
   z-index: 1000;
   top: 100%;
-  right: 0;
 }
 
 .pointer {
@@ -330,8 +329,9 @@ hr {
 }
 
 .itemMenu {
-  margin: 4px 0px 4px 8px;
+  margin: 4px 4px 4px 8px;
   border-radius: 5px;
+  text-wrap: nowrap;
 }
 
 .itemSettings {

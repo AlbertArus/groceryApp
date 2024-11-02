@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from "react"
 import ItemMenuItem from "./ItemMenuItem";
 
-const MembersItem = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember}, ref) => {
+const MembersItem = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember, style}, ref) => {
     const [nombreItemUserMember, setNombreItemUserMember] = useState([]);
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const MembersItem = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMemb
     }, [item.itemUserMember, UsuarioCompleto]);
 
     return (
-        <div className="optionsMenu" style={{ left: "0", width: "150px" }} ref={ref}>
+        <div className="optionsMenu" ref={ref} style={style}>
             {item.itemUserMember.map((uid, index) =>
                 <ItemMenuItem
                     key={uid}

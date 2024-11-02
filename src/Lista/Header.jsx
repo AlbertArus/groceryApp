@@ -81,7 +81,8 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                             <span className="material-symbols-outlined icon-large pointer" onClick={handleShare}>share</span>
                             <span className="material-symbols-outlined icon-large pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                             {isOptionsMenuVisible && 
-                                <OptionsMenu 
+                                <OptionsMenu
+                                    style={{right:"0"}} 
                                     ref={optionsMenuRef}
                                     votesShown={votesShown}
                                     handleVotesVisible={handleVotesVisible}

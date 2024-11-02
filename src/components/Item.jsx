@@ -184,7 +184,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
               </div>
               {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
                 <MembersCounter
-                  style={{left: "0", width: "150px"}}
+                  style={{left: "0"}}
                   ref={membersCounterRef}
                   item={item}
                 />
@@ -195,6 +195,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
               <h5>{item.itemUserMember.length}</h5>
               {isItemUserMembersShown &&
                 <MembersItem
+                  style={{left: "0"}}
                   ref={membersItemRef}
                   item={item}
                   UsuarioCompleto={UsuarioCompleto}
@@ -241,7 +242,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                 </div>
                 {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
                   <MembersCounter
-                    style={{right: "0", width: "150px"}}
+                    style={{left: "0"}}
                     ref={membersCounterRef}
                     item={item}
                   />
@@ -256,6 +257,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
               <h5>{item.itemUserMember.length}</h5>
               {isItemUserMembersShown &&
                 <MembersItem
+                  style={{left: "0"}}
                   ref={membersItemRef}
                   item={item}
                   UsuarioCompleto={UsuarioCompleto}

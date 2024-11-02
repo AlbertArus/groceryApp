@@ -57,6 +57,7 @@ const NavBar = ({isRegistered}) => {
                     <span className="material-symbols-outlined pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 
                         <OptionsMenuNavBar
+                            style={{right:"0"}}
                             ref={optionsMenuNavBarRef}
                         />
                     }

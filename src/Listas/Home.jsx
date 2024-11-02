@@ -116,6 +116,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                 <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
                                                 {isOptionsMenuVisible === lista.id && ( 
                                                     <OptionsMenuListHome
+                                                        style={{right: "0"}}
                                                         key={lista.id}
                                                         ref={optionsMenuListHomeRef}
                                                         handleDuplicate={() => handleDuplicate(lista.id)}

@@ -2,11 +2,11 @@ import ItemMenu from "./ItemMenu"
 import { forwardRef } from "react"
 import { useNavigate } from "react-router-dom"
 
-const OptionsMenuNavBar = forwardRef((props, ref) => { 
+const OptionsMenuNavBar = forwardRef(({props, style}, ref) => { 
   const navigate = useNavigate()
 
   return (
-    <div className="optionsMenu" ref={ref}>
+    <div className="optionsMenu" ref={ref} style={style}>
         <ItemMenu
             iconName={"settings"}
             itemMenuName={"Configuración"}
