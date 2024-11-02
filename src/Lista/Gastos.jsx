@@ -1,6 +1,6 @@
 import Banner from "./Banner"
 
-const Gastos = ({lista, preciosOcultos, filteredListaForItems}) => {
+const Gastos = ({lista, filteredListaForItems}) => {
   return (
     <div>
         <Banner />

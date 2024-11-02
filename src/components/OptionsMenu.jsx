@@ -1,20 +1,20 @@
 import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 
-const OptionsMenu = forwardRef(({ votesShown, handleVotesVisible, deleteLista, handleArchive, itemslength, lista, handleCheckAll, handleUnCheckAll, preciosOcultos, handleOcultarPrecios, style }, ref) => {
+const OptionsMenu = forwardRef(({ handleVotesVisible, deleteLista, handleArchive, itemslength, lista, handleCheckAll, handleUnCheckAll, handleOcultarPrecios, style }, ref) => {
 
   return (
     <div className="optionsMenu" ref={ref} style={style}>
       <ItemMenu
-        iconName={`${votesShown ? "visibility_off" : "visibility"}`}
-        itemMenuName={`${votesShown ? "Ocultar votaciones" : "Mostrar votaciones"}`}
-        onClick={handleVotesVisible}
+        iconName={`${lista.showVotes ? "visibility_off" : "visibility"}`}
+        itemMenuName={`${lista.showVotes ? "Ocultar votaciones" : "Mostrar votaciones"}`}
+        onClick={() => handleVotesVisible(lista.id, lista.showVotes)}
         style={{display: itemslength < 2 ? "none" : "flex"}}
         />
       <ItemMenu
         iconName={"euro_symbol"}
-        itemMenuName={`${preciosOcultos ? "Mostrar precios" : "Ocultar precios"}`}
-        onClick={handleOcultarPrecios}
+        itemMenuName={`${lista.showPrices ? "Ocultar precios" : "Mostrar precios"}`}
+        onClick={() => handleOcultarPrecios(lista.id, lista.showPrices)}
         />
       <ItemMenu
         iconName={"check_box"}

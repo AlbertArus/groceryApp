@@ -14,13 +14,11 @@ import Search from './Search'
 import ToggleItems from './ToggleItems'
 // import Gastos from './Gastos'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible }) => {
 
   let params = useParams();
   
-  const [votesShown, setVotesShown] = useState(true)
   const [isEStateLista, setIsEStateLista] = useState(false)
-  const [preciosOcultos, setPreciosOcultos] = useState(false)
   const [searchResult, setSearchResult] = useState("")
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
   const [isToggleShown, setIsToggleShown] = useState(false)
@@ -80,6 +78,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       if (docSnap.exists()) {
         const listaData = docSnap.data();
         setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
+        // console.log(listas)
       }
     });
   
@@ -127,6 +126,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   //     setIsEditable(false)
   //   }
   // },[isToggleSelected])
+
+  // console.log(selectedList)
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
@@ -319,10 +320,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, selectedCategories)
   }
 
-  const handleVotesVisible = () => {
-    setVotesShown(prevState => !prevState)
-  }
-
   useEffect(() => {
     if (totalCategoriesLength === 0) {
       setIsEStateLista(true);
@@ -353,17 +350,12 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, updatedCategories)
   }
 
-  const handleOcultarPrecios = () => {
-    setPreciosOcultos(prevState => !prevState)
-  }
-
   return (
     <div className="lista app">
       {selectedList && (
         <>
           <Header
             handleVotesVisible={handleVotesVisible}
-            votesShown={votesShown}
             deleteLista={() => deleteLista(params.id)}
             handleArchive={() => handleArchive(params.id)}
             itemslength={totalItemsLength}
@@ -373,7 +365,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
             usuario={usuario}
-            preciosOcultos={preciosOcultos}
             handleOcultarPrecios={handleOcultarPrecios}
             UsuarioCompleto={UsuarioCompleto}
           />
@@ -382,7 +373,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               lista={selectedList}
               usuario={usuario}
               setFilteredListaForItems={setFilteredListaForItems}
-              preciosOcultos={preciosOcultos}
               isToggleSelected={isToggleSelected}
               setIsToggleSelected={setIsToggleSelected}
             />
@@ -398,7 +388,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             price={formattedTotalPrice}
             itemsAdquirido={ItemsChecked()}
             categories={selectedList.categories}
-            preciosOcultos={preciosOcultos}
+            lista={selectedList}
           />
           <Categories
             items={selectedList.categories.flatMap(category => category.items)}
@@ -413,8 +403,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleCounterDown={handleCounterDown}
             handleCounterUp={handleCounterUp}
             isEStateLista={isEStateLista}
-            votesShown={votesShown}
-            preciosOcultos={preciosOcultos}
+            lista={selectedList}
             setSearchResult={setSearchResult}
             searchResult={searchResult}
             firstCategoryRef={firstCategoryRef}

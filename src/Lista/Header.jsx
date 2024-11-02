@@ -4,7 +4,7 @@ import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 
-const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, preciosOcultos, handleOcultarPrecios, UsuarioCompleto }) => {
+const Header = ({ handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, handleOcultarPrecios, UsuarioCompleto }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
@@ -84,7 +84,6 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                                 <OptionsMenu
                                     style={{right:"0"}} 
                                     ref={optionsMenuRef}
-                                    votesShown={votesShown}
                                     handleVotesVisible={handleVotesVisible}
                                     deleteLista={deleteLista}
                                     handleArchive={handleArchive}
@@ -92,7 +91,6 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                                     lista={lista}
                                     handleCheckAll={handleCheckAll}
                                     handleUnCheckAll={handleUnCheckAll}
-                                    preciosOcultos={preciosOcultos}
                                     handleOcultarPrecios={handleOcultarPrecios}
                                 />
                             }
@@ -117,7 +115,7 @@ const Header = ({votesShown, handleVotesVisible, handleArchive, deleteLista, ite
                     </div>
                     <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
                         <h5 style={{marginRight: "8px"}}>Items: {items}</h5>
-                        <h5 style={{display: preciosOcultos ? "none" : "flex"}}>Precio: {price}</h5>
+                        <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
                     </div>
                 </div>
             </div>

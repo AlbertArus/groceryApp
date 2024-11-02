@@ -15,9 +15,8 @@ const Categories = ({
   DeleteItem,
   handleCounterDown,
   handleCounterUp,
-  votesShown,
   isEStateLista,
-  preciosOcultos,
+  lista,
   searchResult,
   setSearchResult,
   firstCategoryRef,
@@ -93,8 +92,7 @@ const Categories = ({
               categories={categories}
               handleCounterDown={handleCounterDown}
               handleCounterUp={handleCounterUp}
-              votesShown={votesShown}
-              preciosOcultos={preciosOcultos}
+              lista={lista}
               setSearchResult={setSearchResult}
               searchResult={searchResult}
               firstCategoryRef={firstCategoryRef}
@@ -105,7 +103,10 @@ const Categories = ({
         })}
       </div>
       {!isEStateLista && (
-        <NewCategory AddCategory={AddCategory} isEStateLista={isEStateLista} />
+        <NewCategory 
+          AddCategory={AddCategory}
+          isEStateLista={isEStateLista}
+        />
       )}
     </div>
   );

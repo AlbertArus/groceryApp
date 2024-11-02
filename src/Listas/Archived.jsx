@@ -83,6 +83,7 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
                                 <span className="material-symbols-outlined"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
                                 {isOptionsMenuVisible === lista.id && (
                                     <OptionsMenuListHome
+                                        style={{right: "0"}}
                                         key={lista.id}
                                         ref={optionsMenuListHomeRef}
                                         handleArchive={() => handleArchive(lista.id)}

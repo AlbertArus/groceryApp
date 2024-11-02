@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const ToggleItems = ({lista, usuario, setFilteredListaForItems, preciosOcultos, isToggleSelected, setIsToggleSelected}) => {
+const ToggleItems = ({lista, usuario, setFilteredListaForItems, isToggleSelected, setIsToggleSelected}) => {
     // const [sinPrecios, setSinPrecios] = useState(false)
 
     const handleClick = (toggle) => {
@@ -26,12 +26,12 @@ const ToggleItems = ({lista, usuario, setFilteredListaForItems, preciosOcultos, 
     //             item.price === ""
     //         )
     //     )
-    //     if(preciosOcultos || itemsLista) {
+    //     if(lista.showPrices || itemsLista) {
     //         setSinPrecios(true)
     //     } else {
     //         setSinPrecios(false)
     //     }
-    // },[lista.categories, preciosOcultos])
+    // },[lista.categories, lista.showPrices])
 
     return (
         <div className="ToggleItems">

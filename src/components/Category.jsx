@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, votesShown, preciosOcultos, searchResult, setSearchResult, firstCategoryRef, handleDeleteItemUserMember }) => {
+const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, lista, searchResult, setSearchResult, firstCategoryRef, handleDeleteItemUserMember }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -79,7 +79,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
             <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} inputMode="text" enterKeyHint="done" onKeyDown={handleCategoryKeyDown} onChange={(e) => setCategoryName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={categoryName}></input>
           </div>
-          <h4 style={{fontWeight:"500", display: preciosOcultos ? "none" : "flex"}}>{FormattedSumPrices}</h4>
+          <h4 style={{fontWeight:"500", display: lista.showPrices ? "flex" : "none"}}>{FormattedSumPrices}</h4>
         </div>
         <div className="fila-between">
           <div className="fila-start firstPart">
@@ -108,8 +108,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
               initialPrice={item.price}
               handleCounterDown={() => handleCounterDown(item.id)}
               handleCounterUp={() => handleCounterUp(item.id)}  
-              votesShown={votesShown}
-              preciosOcultos={preciosOcultos}
+              lista={lista}
               setSearchResult={setSearchResult}
               searchResult={searchResult}
               UsuarioCompleto={UsuarioCompleto}
@@ -120,8 +119,8 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
             AddItem={AddItem}
             categoryId={id}
             ItemNameInputRef={ItemNameInputRef}
-            preciosOcultos={preciosOcultos}
-          />
+            lista={lista}
+            />
         </>
       )}
     </div>

@@ -60,7 +60,8 @@ function App() {
     } else {
       loadListasFromFirebase();
     }
-  }, [usuario]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [usuario]);
 
   useEffect(() => {
     if(usuario && listasLoaded)  {
@@ -76,7 +77,7 @@ function App() {
   }, [location]);
 
   const addLista = async (listaName, plan, descriptionLista) => {
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false }
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false, showPrices: true, showVotes: true }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);
@@ -240,13 +241,36 @@ function App() {
     navigate("/")
   }
 
-  const handleNotified = (id, event) => {
+  const handleNotified = (id) => {
     setListas(prevListas => {
       const notified = prevListas.map(lista =>
       lista.id === id ? { ...lista, isNotified: !lista.isNotified } : lista
       )
       return notified
     })
+  }
+
+  const updateListaAttribute = async (listaId, attribute, newValue) => {
+    setListas((prevListas) =>
+      prevListas.map((lista) =>
+        lista.id === listaId ? { ...lista, [attribute]: newValue } : lista
+      )
+    );
+  
+    try {
+      const listaRef = doc(db, "listas", listaId);
+      await updateDoc(listaRef, { [attribute]: newValue });
+    } catch (error) {
+      console.error(`Error al actualizar ${attribute} en Firebase:`, error);
+    }
+  };
+
+  const handleOcultarPrecios = (id, showPrices) => {
+    updateListaAttribute(id, "showPrices", !showPrices)
+  }
+
+  const handleVotesVisible = (id, showVotes) => {
+    updateListaAttribute(id, "showVotes", !showVotes)
   }
 
   return (
@@ -288,6 +312,8 @@ function App() {
                 updateListaCategories={updateListaCategories}
                 updateListaItems={updateListaItems}
                 handleArchive={handleArchive}
+                handleOcultarPrecios={handleOcultarPrecios}
+                handleVotesVisible={handleVotesVisible}
                 usuario={usuario}
                 sharePopupVisible={sharePopupVisible}
                 setSharePopupVisible={setSharePopupVisible}

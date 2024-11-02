@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-const SubHeader = ({ items, categories, itemsAdquirido, price, preciosOcultos }) => {
+const SubHeader = ({ items, categories, itemsAdquirido, price, lista }) => {
 
     const SubHeaderRef = useRef(null)
     const hideSubHeader = () => {
@@ -25,7 +25,7 @@ const SubHeader = ({ items, categories, itemsAdquirido, price, preciosOcultos })
                     <h3>Items: {items}</h3>
                     <h5>Adquirido: {itemsAdquirido}</h5>
                 </div>
-                <div className="columna-block" style={{display: preciosOcultos ? "none" : "block"}}>
+                <div className="columna-block" style={{display: lista.showPrices ? "block" : "none"}}>
                     <h5 style={{display:"flex", justifyContent:"flex-end"}}>Total</h5>
                     <h3>{price}</h3>
                 </div>

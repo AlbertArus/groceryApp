@@ -4,7 +4,7 @@ import MembersItem from "./MembersItem"
 import Checkbox from "@mui/material/Checkbox"
 import DragIndicator from "@mui/icons-material/DragIndicator";
 
-const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, votesShown, preciosOcultos, handleDeleteItemUserMember }) => {
+const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
@@ -69,10 +69,10 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   }
 
   useEffect(() => {
-    if(!preciosOcultos && ItemPriceRef.current) {
+    if(lista.showPrices && ItemPriceRef.current) {
       ItemPriceRef.current.price = price
     }
-  },[preciosOcultos, price])
+  },[lista.showPrices, price])
 
   useEffect(() => {
     if(item.isChecked) {
@@ -142,7 +142,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
 
   return (
     <div className="item">
-      {!preciosOcultos ? (
+      {lista.showPrices ? (
         <>
           <div className="fila-start">
             <DragIndicator 
@@ -174,11 +174,11 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
           </div>
           <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
             <div className="fila-start pointer">
-              <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+              <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
                   <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
                   <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
               </div>
-              <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+              <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
                   <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
                   <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
               </div>
@@ -232,11 +232,11 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                 <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
               </div>
               <div className="fila-start pointer" style={{position: "relative"}}>
-                <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+                <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
                     <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
                     <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
                 </div>
-                <div className="fila-start-group" style={{display: votesShown ? "flex" : "none"}}>
+                <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
                     <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
                     <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
                 </div>
