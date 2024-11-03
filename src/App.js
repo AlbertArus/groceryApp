@@ -76,8 +76,8 @@ function App() {
     });
   }, [location]);
 
-  const addLista = async (listaName, plan, descriptionLista) => {
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified: false, showPrices: true, showVotes: true }
+  const addLista = async (listaName, plan, descriptionLista, showVotes, showPrices, isNotified) => {
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified, showPrices, showVotes }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);
@@ -150,7 +150,6 @@ function App() {
         });
     }
   }, [deletedLista]);
-  
   
   const updateListaItems = async (listaId, updatedItems) => {
     setListas(prevListas =>
@@ -250,7 +249,7 @@ function App() {
     })
   }
 
-  const updateListaAttribute = async (listaId, attribute, newValue) => {
+  const updateLista = async (listaId, attribute, newValue) => {
     setListas((prevListas) =>
       prevListas.map((lista) =>
         lista.id === listaId ? { ...lista, [attribute]: newValue } : lista
@@ -266,11 +265,11 @@ function App() {
   };
 
   const handleOcultarPrecios = (id, showPrices) => {
-    updateListaAttribute(id, "showPrices", !showPrices)
+    updateLista(id, "showPrices", !showPrices)
   }
 
   const handleVotesVisible = (id, showVotes) => {
-    updateListaAttribute(id, "showVotes", !showVotes)
+    updateLista(id, "showVotes", !showVotes)
   }
 
   return (
