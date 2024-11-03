@@ -130,7 +130,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   // console.log(selectedList)
 
   const AddItem = (name, price, categoryId) => {
-    const newItem = { id: uuidv4(), listaId: params.id, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
+    const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
     const updatedItems = [...selectedList.items, newItem];
     updateListaItems(params.id, updatedItems);
     
@@ -218,7 +218,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const totalCategoriesLength = selectedList?.categories.length
 
   const AddCategory = (categoryName) => {
-    const newCategory = { id: uuidv4(), listaId: params.id, categoryName, items: [], isChecked: false }
+    const newCategory = { id: uuidv4(), listaId: params.id, categoryCreator: usuario.uid, categoryName, items: [], isChecked: false }
     const updatedCategories = [...selectedList.categories, newCategory]
     updateListaCategories(selectedList.id, updatedCategories)
   }
