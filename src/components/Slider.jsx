@@ -1,43 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 
-const Slider = ({ children, onDelete, onCheck, onDrag, disabled }) => {
-  const [dragMode, setDragMode] = useState(false);
-  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+const Slider = ({ children, onDelete, onCheck, disabled }) => {
+  const [{ x }, api] = useSpring(() => ({ x: 0 }));
 
   const bind = useDrag(
-    ({ active, movement: [mx, my], direction: [dx, dy], cancel, event }) => {
+    ({ active, movement: [mx], cancel }) => {
       if (disabled) return;
 
-      // Si el desplazamiento es principalmente vertical, cancelar el gesto horizontal
-      if (Math.abs(my) > Math.abs(mx)) {
-        setDragMode(true);
-        if (!active) {
-          api.start({ y: 0 });
-        } else {
-          api.start({ y: my, immediate: true });
-        }
-        return;
-      }
-
-      // Si el desplazamiento es principalmente horizontal, manejar el slider
       if (!active) {
         if (mx < -60) {
           onDelete && onDelete();
         } else if (mx > 60) {
           onCheck && onCheck();
         }
-        api.start({ x: 0, y: 0 });
+        api.start({ x: 0 });
       } else {
         api.start({ x: Math.max(-150, Math.min(150, mx)), immediate: true });
       }
     },
-    { filterTaps: true, threshold: 15 } // Incrementar el threshold para evitar activaciones accidentales
+    { filterTaps: true, axis: 'x', threshold: 10 } // Solo permitir el movimiento horizontal
   );
 
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', touchAction: dragMode ? 'pan-y' : 'none' }}>
+    <div style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Fondo de color detrás del contenido */}
       <animated.div
         style={{
@@ -51,16 +38,16 @@ const Slider = ({ children, onDelete, onCheck, onDrag, disabled }) => {
         }}
       />
 
-      {/* Contenido deslizante o draggable */}
+      {/* Contenido deslizante */}
       <animated.div
         {...bind()}
         style={{
           x,
-          y,
           position: 'relative',
           zIndex: 1,
           background: 'white',
           borderRadius: '5px',
+          touchAction: 'pan-y',
         }}
       >
         {children}

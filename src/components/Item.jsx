@@ -156,7 +156,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
             <div className="fila-between">
               <Checkbox 
                 checked={itemIsChecked}
-                onChange={onClick}
+                onChange={(e) => {e.stopPropagation(); onClick()}}
                 sx={{
                   '&.Mui-checked': {
                     color: "green"
