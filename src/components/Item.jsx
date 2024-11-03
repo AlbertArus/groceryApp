@@ -168,7 +168,8 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                   '&.Mui-checked + .MuiTouchRipple-root': {
                     backgroundColor: itemIsChecked ? 'green' : 'transparent'
                   },
-                  padding: "0px"
+                  padding: "0px",
+                  cursor:"pointer"
                 }}
               />
               <div className="ItemText" ref={ItemTextRef}>
