@@ -155,35 +155,105 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   
     updateListaCategories(params.id, updatedCategories)
   }
+  console.log(selectedList)
+  // const DeleteItem = (id) => {
+  //   console.log("has llamado bien a eliminar", id)
+  //   const itemToDelete = selectedList.items.find(item => item.id === id)
+  //   const filteredItems = selectedList.items.filter(item => item.id !== id)
+  //   const categoryId = itemToDelete.categoryId
+  //   const categoryUpdated = selectedList.categories.find(category => category.id === categoryId)
+  //   const updatedCategoryItems = categoryUpdated.items.filter(item => item.id !== id)
+  //   updateListaItems(params.id, filteredItems)
+  //   updateListaCategories(params.id, selectedList.categories.map(category => {
+  //     if(category.id === categoryId) {
+  //       return {...category, items: updatedCategoryItems}
+  //     }
+  //     return category
+  //   }))
+  //   let newDeletedItem = { type: 'item', data: itemToDelete };
 
-  const DeleteItem = (id) => {
-    const itemToDelete = selectedList.items.find(item => item.id === id)
-    const filteredItems = selectedList.items.filter(item => item.id !== id)
-    const categoryId = itemToDelete.categoryId
-    const categoryUpdated = selectedList.categories.find(category => category.id === categoryId)
-    const updatedCategoryItems = categoryUpdated.items.filter(item => item.id !== id)
-    updateListaItems(params.id, filteredItems)
-    updateListaCategories(params.id, selectedList.categories.map(category => {
-      if(category.id === categoryId) {
-        return {...category, items: updatedCategoryItems}
+  //   toast((t) => (
+  //     <span style={{ display: "flex", alignItems: "center" }}>
+  //       <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+  //       {`Has eliminado "${itemToDelete.name}"`}
+  //       <button onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+  //         Deshacer
+  //       </button>
+  //     </span>
+  //   ), {
+  //     style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+  //   }
+  //   )
+  // }
+
+  const DeleteItem = (id) => {  
+    // Encuentra el item y su categoría
+    let itemToDelete;
+    let categoryId;
+    selectedList.categories.forEach(category => {
+      const item = category.items.find(item => item.id === id);
+      if (item) {
+        itemToDelete = item;
+        categoryId = category.id;
       }
-      return category
-    }))
+    });
+  
+    if (!itemToDelete || !categoryId) {
+      console.error("No se pudo encontrar el item o la categoría.");
+      return;
+    }
+  
+    // Filtra los items actualizados
+    const filteredItems = selectedList.categories.flatMap(category =>
+      category.items.filter(item => item.id !== id)
+    );
+  
+    // Encuentra y actualiza la categoría
+    const categoryUpdated = selectedList.categories.find(category => category.id === categoryId);
+    const updatedCategoryItems = categoryUpdated.items.filter(item => item.id !== id);
+  
+    updateListaItems(params.id, filteredItems);
+    updateListaCategories(params.id, selectedList.categories.map(category => {
+      if (category.id === categoryId) {
+        return { ...category, items: updatedCategoryItems };
+      }
+      return category;
+    }));
+  
     let newDeletedItem = { type: 'item', data: itemToDelete };
-
+    console.log("has llamado bien a eliminar", id);
+  
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
-        <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+        <span
+          className="material-symbols-outlined"
+          style={{ marginRight: "8px", color: "#9E9E9E" }}
+        >
+          warning
+        </span>
         {`Has eliminado "${itemToDelete.name}"`}
-        <button onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+        <button
+          onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id); }}
+          style={{
+            marginLeft: "10px",
+            padding: "0",
+            backgroundColor: "#FBE7C1",
+            border: "none",
+            fontFamily: "poppins",
+            fontSize: "16px",
+            fontWeight: "600",
+            cursor: "pointer"
+          }}
+        >
           Deshacer
         </button>
       </span>
     ), {
       style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
-    }
-    )
-  }
+    });
+  };
+  
+
 
   const handleCheck = (id) => {
     const updatedCategories = selectedList.categories.map(category => {

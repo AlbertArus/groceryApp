@@ -33,7 +33,7 @@ const Slider = ({ children, onDelete, onCheck, disabled }) => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: x.to(val => (val < 0 ? '#ff0000' : val > 0 ? '#08921b' : 'transparent')),
+          background: x.to(val => (val < 0 ? '#f5576c' : val > 0 ? '#08921a8f' : 'transparent')),
           zIndex: 0,
         }}
       />
