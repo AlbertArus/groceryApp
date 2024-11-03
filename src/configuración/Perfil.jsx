@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import firebaseApp from "../firebase-config.js";
 import { getAuth, signOut} from "firebase/auth";
@@ -23,24 +23,22 @@ const Perfil = ({ usuario }) => {
             <div className="contentPerfil app-margin">
                 <div className="introPerfil">
                     <div className="foto" style={{ margin: "15px 0px 7px 0px" }}>
-                        <span className="material-symbols-outlined icon-xlarge">account_circle</span>
+                        <span className="material-symbols-outlined icon-xxxlarge">account_circle</span>
                     </div>
                     <h2 style={{ fontWeight: "600" }}>{usuario.nombre}</h2>
                     <h5>{usuario.email}</h5>
                 </div>
-                {/* <form>
-                    <label htmlFor="nombre">Nombre completo</label>
-                    <input type="text" placeholder="Harvey Specter" id="nombre" onChange={(e) => setListaName(e.target.value)} value={listaName} required />
-                </form> */}
-                <div className="personalData fila-between" style={{ marginTop: "10px" }}>
-                    <div className="infoPersonalData">
-                        <h6>Nombre</h6>
-                        <h4>{usuario.displayName}</h4>
+                {/* <Link> */}
+                    <div className="personalData fila-between" style={{ marginTop: "10px" }}>
+                        <div className="infoPersonalData">
+                            <h6>Nombre</h6>
+                            <h4>{usuario.displayName}</h4>
+                        </div>
+                        <div className="arrowPersonalData">
+                            <span className="material-symbols-outlined">chevron_right</span>
+                        </div>
                     </div>
-                    <div className="arrowPersonalData">
-                        <span className="material-symbols-outlined">chevron_right</span>
-                    </div>
-                </div>
+                {/* </Link> */}
                 <hr />
                 <div className="linksPerfil">
                     <ItemSettings 

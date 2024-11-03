@@ -337,6 +337,7 @@ hr {
 .itemSettings {
   margin-top: 8px;
   cursor: pointer;
+  padding: 2px 2px 2px 0px;
 }
 
 .itemMenu:hover {
