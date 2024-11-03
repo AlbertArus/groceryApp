@@ -29,10 +29,6 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
     }
   }
 
-  // const handleDelete = () => {
-  //   DeleteItem();
-  // }
-
   // const showDelete = () => {
   //   if(deleteRef.current) {
   //     deleteRef.current.style.display = "block"
@@ -145,7 +141,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const handleInputBlur = () => setIsInputFocused(false);
   
   return (
-    <Slider onDelete={() => DeleteItem(id)} onCheck={onClick} disabled={isInputFocused}>
+    <Slider onDelete={DeleteItem} onCheck={onClick} disabled={isInputFocused}>
     <div className="item">
       {lista.showPrices ? (
         <>
