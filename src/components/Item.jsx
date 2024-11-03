@@ -3,6 +3,7 @@ import MembersCounter from "./MembersCounter"
 import MembersItem from "./MembersItem"
 import Checkbox from "@mui/material/Checkbox"
 import DragIndicator from "@mui/icons-material/DragIndicator";
+import Slider from "../components/Slider"
 
 const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
 
@@ -12,6 +13,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const [itemIsChecked, setItemIsChecked] = useState(false)
   const [isCounterMembersShown, setIsCounterMembersShown] = useState(false)
   const [isItemUserMembersShown, setIsItemUserMembersShown] = useState(false)
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const membersCounterRef = useRef(null)
   const membersItemRef = useRef(null)
   const buttonCounterUpMembersListRef = useRef(null)
@@ -32,13 +34,13 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
     DeleteItem();
   }
 
-  const showDelete = () => {
-    if(deleteRef.current) {
-      deleteRef.current.style.display = "block"
-    } else {
-      deleteRef.current.style.display = "none"
-    }
-  }
+  // const showDelete = () => {
+  //   if(deleteRef.current) {
+  //     deleteRef.current.style.display = "block"
+  //   } else {
+  //     deleteRef.current.style.display = "none"
+  //   }
+  // }
 
   const handleKeyDown = (e, input) => {
     if(e.key === "Enter") {
@@ -140,7 +142,11 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
       }
   },[])
 
+  const handleInputFocus = () => setIsInputFocused(true);
+  const handleInputBlur = () => setIsInputFocused(false);
+  
   return (
+    <Slider onDelete={handleDelete} onCheck={onClick} disabled={isInputFocused}>
     <div className="item">
       {lista.showPrices ? (
         <>
@@ -165,11 +171,11 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                   padding: "0px"
                 }}
               />
-              <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
-                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
-                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} inputMode="decimal" enterKeyHint="done" className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
+              <div className="ItemText" ref={ItemTextRef}>
+                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
+                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="decimal" enterKeyHint="done" className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={priceFormatting} value={price}></input>
               </div>
-              <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
+              {/* <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span> */}
             </div>
           </div>
           <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
@@ -228,8 +234,8 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                   padding: "0px"
                 }}
               />
-              <div className="ItemText" onClick={showDelete} ref={ItemTextRef}>
-                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
+              <div className="ItemText" ref={ItemTextRef}>
+                <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
               </div>
               <div className="fila-start pointer" style={{position: "relative"}}>
                 <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
@@ -248,7 +254,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                   />
                 }        
               </div>
-              <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span>
+              {/* <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span> */}
             </div>
           </div>
           <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
@@ -269,6 +275,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
         </>
       )}
     </div>
+    </Slider>
   )
 }
 
