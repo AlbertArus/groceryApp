@@ -7,39 +7,37 @@ const Slider = ({ children, onDelete, onCheck, onDrag, disabled }) => {
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
   const bind = useDrag(
-    ({ active, movement: [mx, my], direction: [dx, dy], cancel }) => {
+    ({ active, movement: [mx, my], direction: [dx, dy], cancel, event }) => {
       if (disabled) return;
 
-      if (!active) {
-        if (dragMode) {
-          // Lógica para drag and drop vertical
-          onDrag && onDrag(my);
+      // Si el desplazamiento es principalmente vertical, cancelar el gesto horizontal
+      if (Math.abs(my) > Math.abs(mx)) {
+        setDragMode(true);
+        if (!active) {
+          api.start({ y: 0 });
         } else {
-          // Lógica para slider horizontal
-          if (mx < -60) {
-            onDelete && onDelete();
-          } else if (mx > 60) {
-            onCheck && onCheck();
-          }
-          api.start({ x: 0, y: 0 });
-        }
-        setDragMode(false);
-      } else {
-        if (Math.abs(my) > Math.abs(mx)) {
-          // Si el movimiento vertical es mayor, activar dragMode
-          setDragMode(true);
           api.start({ y: my, immediate: true });
-        } else {
-          // Si el movimiento horizontal es mayor, mantener slider
-          api.start({ x: Math.max(-150, Math.min(150, mx)), immediate: true });
         }
+        return;
+      }
+
+      // Si el desplazamiento es principalmente horizontal, manejar el slider
+      if (!active) {
+        if (mx < -60) {
+          onDelete && onDelete();
+        } else if (mx > 60) {
+          onCheck && onCheck();
+        }
+        api.start({ x: 0, y: 0 });
+      } else {
+        api.start({ x: Math.max(-150, Math.min(150, mx)), immediate: true });
       }
     },
-    { filterTaps: true, axis: dragMode ? 'y' : 'x', threshold: 10 }
+    { filterTaps: true, threshold: 15 } // Incrementar el threshold para evitar activaciones accidentales
   );
 
   return (
-    <div style={{ position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', overflow: 'hidden', touchAction: dragMode ? 'pan-y' : 'none' }}>
       {/* Fondo de color detrás del contenido */}
       <animated.div
         style={{
@@ -59,7 +57,6 @@ const Slider = ({ children, onDelete, onCheck, onDrag, disabled }) => {
         style={{
           x,
           y,
-          touchAction: 'none',
           position: 'relative',
           zIndex: 1,
           background: 'white',

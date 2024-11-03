@@ -19,7 +19,6 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const buttonCounterUpMembersListRef = useRef(null)
   const buttonCounterDownMembersListRef = useRef(null)
   const buttonItemMembersListRef = useRef(null)
-  const deleteRef = useRef(null)
   const ItemTextRef = useRef(null)
   const ItemNameRef = useRef(null)
   const ItemPriceRef = useRef(null)
@@ -146,7 +145,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const handleInputBlur = () => setIsInputFocused(false);
   
   return (
-    <Slider onDelete={handleDelete} onCheck={onClick} disabled={isInputFocused}>
+    <Slider onDelete={DeleteItem} onCheck={onClick} disabled={isInputFocused}>
     <div className="item">
       {lista.showPrices ? (
         <>
