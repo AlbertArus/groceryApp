@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react"
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 const Search = ({setSearchResult}) => {
     const [focused, setFocused] = useState(false)
+    const [open, setOpen] = useState(false)
     const searchValueRef = useRef(null)
 
     const handleSearch = (e) => {
@@ -28,6 +30,10 @@ const Search = ({setSearchResult}) => {
         searchValueRef.current.focus()
     }
 
+    const toggleDrawer = (newOpen) => () => {
+        setOpen(newOpen);
+      };
+
     return (
         <div className="search fila-between app-margin" style={{flex:"none"}}>
             <div className="search-container fila-start" style={{width: "100%"}}>
@@ -36,8 +42,17 @@ const Search = ({setSearchResult}) => {
                 <span className="material-symbols-outlined" style={{marginLeft: "8px", display: focused ? "flex" : "none"}} onClick={handleDeleteSearch}>close</span>
             </div>
             <div className="search-container" style={{padding: "5px 5px 0px 5px", marginLeft:"10px"}}>
-                <span className="material-symbols-outlined">filter_list</span>
+                <span className="material-symbols-outlined" onClick={toggleDrawer(true)}>filter_list</span>
             </div>
+            <SwipeableDrawer anchor="bottom" open={open} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)} PaperProps={{style: {borderTopLeftRadius:"20px", borderTopRightRadius:"20px"}}}>
+                <div style={{ textAlign: "center" }}>
+                    <div style={{ width: "40px", height: "6px", backgroundColor: "#ccc", borderRadius: "2px", margin: "15px auto"}}></div>
+                    <p>Filtrar opciones aquí</p>
+                    <p>Filtrar opciones aquí</p>
+                    <p>Filtrar opciones aquí</p>
+                    <p>Filtrar opciones aquí</p>
+                </div>
+            </SwipeableDrawer>
         </div>
     )
 }
