@@ -31,7 +31,7 @@ const OptionsMenu = forwardRef(({ handleVotesVisible, deleteLista, handleArchive
       <ItemMenu
         iconName={lista.isArchived ? "unarchive" : "archive"}
         itemMenuName={`${lista.isArchived === true ? "Desarchivar lista" : "Archivar lista"}`}
-        onClick={handleArchive}
+        onClick={() => handleArchive(lista.id, lista.isArchived)}
       />
       <ItemMenu
         iconName={"delete"}

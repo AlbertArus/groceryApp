@@ -6,7 +6,7 @@ import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
 
-const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate, setListas }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const [filteredListas, setFilteredListas] = useState(listas)
@@ -112,7 +112,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                 </Link>
                                             </div>
                                             <div className="fila-start" style={{position: "relative"}}>
-                                                <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id, lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
                                                 <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
                                                 {isOptionsMenuVisible === lista.id && ( 
                                                     <OptionsMenuListHome
@@ -120,7 +120,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                         key={lista.id}
                                                         ref={optionsMenuListHomeRef}
                                                         handleDuplicate={() => handleDuplicate(lista.id)}
-                                                        handleArchive={() => handleArchive(lista.id)}
+                                                        handleArchive={() => handleArchive(lista.id, lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
                                                         deleteLista={deleteLista}
                                                         lista={lista}
                                                     />

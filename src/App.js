@@ -182,25 +182,6 @@ function App() {
       console.error("Error al actualizar las categorías en Firebase:", error);
     }
   };
-
-  const handleArchive = async (id) => {
-    const listaToUpdate = listas.find(lista => lista.id === id);
-    const newIsArchived = !listaToUpdate.isArchived;
-    setListas(prevListas =>
-      prevListas.map(lista =>
-        lista.id === id ? { ...lista, isArchived: newIsArchived } : lista
-      )
-    )
-  
-    try {
-      const listaRef = doc(db, "listas", id);
-      await updateDoc(listaRef, { isArchived: newIsArchived });
-    } catch (error) {
-      console.error("Error al archivar/desarchivar la lista en Firebase:", error);
-    }
-  
-    navigate("/");
-  }
   
   const archivedList = listas.filter(lista => lista.isArchived)
   const AllArchived = archivedList.length
@@ -240,15 +221,6 @@ function App() {
     navigate("/")
   }
 
-  const handleNotified = (id) => {
-    setListas(prevListas => {
-      const notified = prevListas.map(lista =>
-      lista.id === id ? { ...lista, isNotified: !lista.isNotified } : lista
-      )
-      return notified
-    })
-  }
-
   const updateLista = async (listaId, attribute, newValue) => {
     setListas((prevListas) =>
       prevListas.map((lista) =>
@@ -263,6 +235,15 @@ function App() {
       console.error(`Error al actualizar ${attribute} en Firebase:`, error);
     }
   };
+
+  const handleArchive = async (id, isArchived) => {
+    updateLista(id, "isArchived", !isArchived)
+    navigate("/");
+  }
+
+  const handleNotified = (id, isNotified) => {
+    updateLista(id, "isNotified", !isNotified)
+  }
 
   const handleOcultarPrecios = (id, showPrices) => {
     updateLista(id, "showPrices", !showPrices)
@@ -292,7 +273,6 @@ function App() {
                 usuario={usuario}
                 addLista={addLista}
                 listas={listas.filter((lista) => !lista.isArchived)}
-                setListas={setListas}
                 deleteLista={deleteLista}
                 updateListaCategories={updateListaCategories}
                 updateListaItems={updateListaItems}

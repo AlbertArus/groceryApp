@@ -86,7 +86,7 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
                                         style={{right: "0"}}
                                         key={lista.id}
                                         ref={optionsMenuListHomeRef}
-                                        handleArchive={() => handleArchive(lista.id)}
+                                        handleArchive={() => handleArchive(lista.id, lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Home que son distintas (archivadas y no)
                                         deleteLista={deleteLista}
                                         listaArchivada={lista}
                                     />
