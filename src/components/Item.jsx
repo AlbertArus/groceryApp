@@ -29,9 +29,9 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
     }
   }
 
-  const handleDelete = () => {
-    DeleteItem();
-  }
+  // const handleDelete = () => {
+  //   DeleteItem();
+  // }
 
   // const showDelete = () => {
   //   if(deleteRef.current) {
@@ -145,7 +145,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const handleInputBlur = () => setIsInputFocused(false);
   
   return (
-    <Slider onDelete={DeleteItem} onCheck={onClick} disabled={isInputFocused}>
+    <Slider onDelete={() => DeleteItem(id)} onCheck={onClick} disabled={isInputFocused}>
     <div className="item">
       {lista.showPrices ? (
         <>
@@ -156,7 +156,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
             <div className="fila-between">
               <Checkbox 
                 checked={itemIsChecked}
-                onChange={(e) => {e.stopPropagation(); onClick()}}
+                onChange={onClick}
                 sx={{
                   '&.Mui-checked': {
                     color: "green"

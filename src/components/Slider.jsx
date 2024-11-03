@@ -63,7 +63,7 @@ const Slider = ({ children, onDelete, onCheck, disabled }) => {
           fontSize: '24px',
           color: 'white',
           opacity: x.to(val => (val > 40 ? 1 : 0)),
-          zIndex: 2,
+          zIndex: 0,
         }}
       >
         <span className="material-symbols-outlined icon-xlarge">check</span>
@@ -78,7 +78,7 @@ const Slider = ({ children, onDelete, onCheck, disabled }) => {
           fontSize: '24px',
           color: 'black',
           opacity: x.to(val => (val < -40 ? 1 : 0)),
-          zIndex: 2,
+          zIndex: 0,
         }}
       >
         <span className="material-symbols-outlined icon-large">delete</span>
