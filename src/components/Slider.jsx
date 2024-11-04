@@ -33,7 +33,7 @@ const Slider = ({ children, onDelete, onCheck, disabled }) => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: x.to(val => (val < 0 ? '#f5576c' : val > 0 ? '#08921a8f' : 'transparent')),
+          background: x.to(val => (val < 0 ? '#F99AA6' : val > 0 ? '#9AEEA5' : 'transparent')),
           zIndex: 0,
         }}
       />
@@ -46,7 +46,6 @@ const Slider = ({ children, onDelete, onCheck, disabled }) => {
           position: 'relative',
           zIndex: 1,
           background: 'white',
-          borderRadius: '5px',
           touchAction: 'pan-y',
         }}
       >
@@ -61,7 +60,7 @@ const Slider = ({ children, onDelete, onCheck, disabled }) => {
           left: '10px',
           transform: 'translateY(-50%)',
           fontSize: '24px',
-          color: 'white',
+          color: 'black',
           opacity: x.to(val => (val > 40 ? 1 : 0)),
           zIndex: 0,
         }}

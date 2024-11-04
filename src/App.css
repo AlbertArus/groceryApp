@@ -770,3 +770,8 @@ button[type=submit] {
   height: 100%;
   justify-content: center;
 }
+
+.tabItemMenu {
+  text-wrap: nowrap;
+  padding: 10px 0px;
+}

@@ -4,6 +4,8 @@ import MembersItem from "./MembersItem"
 import Checkbox from "@mui/material/Checkbox"
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import Slider from "../components/Slider"
+import MenuTabs from "./MenuTabs";
+import ModalSheet from "./ModalSheet";
 
 const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
 
@@ -14,6 +16,8 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   const [isCounterMembersShown, setIsCounterMembersShown] = useState(false)
   const [isItemUserMembersShown, setIsItemUserMembersShown] = useState(false)
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [isActive, setIsActive] = useState("")
   const membersCounterRef = useRef(null)
   const membersItemRef = useRef(null)
   const buttonCounterUpMembersListRef = useRef(null)
@@ -188,6 +192,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
                 <MembersCounter
                   style={{left: "0"}}
                   ref={membersCounterRef}
+                  UsuarioCompleto={UsuarioCompleto}
                   item={item}
                 />
               }        
@@ -236,18 +241,26 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
               <div className="fila-start pointer" style={{position: "relative"}}>
                 <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
                     <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
-                    <h5 onClick={handleCounterMembersShown} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
+                    <h5 onClick={() => {setOpen(true); setIsActive("A favor")}} ref={buttonCounterUpMembersListRef}>{item.counterUp.length}</h5>
                 </div>
                 <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
                     <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
-                    <h5 onClick={handleCounterMembersShown} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
+                    <h5 onClick={() => {setOpen(true); setIsActive("En contra")}} ref={buttonCounterDownMembersListRef}>{item.counterDown.length}</h5>
                 </div>
-                {(item.counterUp.length > 0 || item.counterDown.length > 0) && isCounterMembersShown &&
-                  <MembersCounter
-                    style={{left: "0"}}
-                    ref={membersCounterRef}
-                    item={item}
-                  />
+                {(item.counterUp.length > 0 || item.counterDown.length > 0) &&
+                  <ModalSheet
+                    open={open}
+                    setOpen={setOpen}
+                  >
+                    <MenuTabs
+                      style={{left: "0"}}
+                      ref={membersCounterRef}
+                      UsuarioCompleto={UsuarioCompleto}
+                      item={item}
+                      isActive={isActive}
+                      setIsActive={setIsActive}
+                    />
+                  </ModalSheet>
                 }        
               </div>
               {/* <span className="material-symbols-outlined icon-medium hidden pointer" onClick={handleDelete} ref={deleteRef}>delete</span> */}
@@ -255,17 +268,22 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
           </div>
           <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
             <div className="fila-start-group pointer" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>
-              <span className="material-symbols-outlined icon-small" onClick={handleItemUserMembersShown} ref={buttonItemMembersListRef}>group</span>
+              <span className="material-symbols-outlined icon-small" onClick={() => {setOpen(true); setIsActive("Miembros")}} ref={buttonItemMembersListRef}>group</span>
               <h5>{item.itemUserMember.length}</h5>
-              {isItemUserMembersShown &&
-                <MembersItem
-                  style={{left: "0"}}
-                  ref={membersItemRef}
-                  item={item}
-                  UsuarioCompleto={UsuarioCompleto}
-                  handleDeleteItemUserMember={handleDeleteItemUserMember}
-                />
-              }
+                <ModalSheet
+                  open={open}
+                  setOpen={setOpen}
+                  >
+                  <MenuTabs
+                    style={{left: "0"}}
+                    ref={membersItemRef}
+                    item={item}
+                    UsuarioCompleto={UsuarioCompleto}
+                    handleDeleteItemUserMember={handleDeleteItemUserMember}
+                    isActive={isActive}
+                    setIsActive={setIsActive}
+                  />
+                </ModalSheet>
             </div>
           </div>
         </>
