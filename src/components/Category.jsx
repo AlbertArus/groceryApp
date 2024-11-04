@@ -73,7 +73,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
 
   return (
     <div className="categoryList">
-      <div className="categoryListheader">
+      <div className="categoryListheader app-margin">
         <div className="fila-between">
           <div className="titleCategory" style={{width: "100%"}} onKeyDown={handleKeyDown} >
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>

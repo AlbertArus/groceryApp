@@ -146,7 +146,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
   
   return (
     <Slider onDelete={DeleteItem} onCheck={onClick} disabled={isInputFocused}>
-    <div className="item">
+    <div className="item app-margin">
       {lista.showPrices ? (
         <>
           <div className="fila-start">

@@ -53,7 +53,7 @@ const Categories = ({
   });
 
   return (
-    <div className="app-margin categories">
+    <div className="categories">
       <div className="categoriesMargin">
         {filteredCategories.map((category) => {
           const categoryItems = items.filter((item) => item.categoryId === category.id);
