@@ -42,10 +42,10 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef, lista }) => {
   }
 
   return (
-    <div className="newItem">
-      <div className="fila-between" style={{marginLeft:"3px"}}>
+    <div className="newItem item app-margin">
+      <div className="fila-between" style={{marginLeft:"24px"}}>
         <span className="material-symbols-outlined addIcon">add</span>
-        <form className="ItemText" style={{marginLeft: "14px"}}>
+        <form className="ItemText">
           <input type="text" placeholder="Nuevo Item" aria-label="Nombre de nuevo item" className="ItemName" onKeyDown={lista.showPrices ? handleItemTextKeyDown : handleKeyDown} ref={ItemNameInputRef} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
           <input type="number" placeholder="Precio" aria-label="Precio de nuevo item" className="ItemPrice" onKeyDown={handleKeyDown} ref={ItemPriceRef} style={{display: lista.showPrices ? "flex" : "none"}} onChange={(e) => setPrice(e.target.value)} value={price}></input>
         </form>

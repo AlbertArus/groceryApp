@@ -284,7 +284,6 @@ hr {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 22px;
 }
 
 .ItemText input, 

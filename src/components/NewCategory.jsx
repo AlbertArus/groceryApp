@@ -20,7 +20,7 @@ const NewCategory = ({AddCategory}) => {
   }
 
   return (
-    <div className="newCategory">
+    <div className="newCategory app-margin">
       <div className="fila-between" style={{marginLeft:"3px"}}>
         <span className="material-symbols-outlined addIcon">add</span>
         <form className="ItemText" onKeyDown={handleKeyDown}>
