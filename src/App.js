@@ -17,6 +17,7 @@ import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase
 import { useUsuario } from './UsuarioContext.jsx';
 import DeleteUser from './configuración/DeleteUser.jsx';
 import LoadingPage from './components/LoadingPage.jsx';
+import Pagos from './Pagos/Pagos.jsx';
 
 function App() {
   
@@ -331,7 +332,11 @@ function App() {
               <DeleteUser
                 usuario={usuario}
               />}
-            />     
+            />
+            <Route path='/payments' element={
+              <Pagos 
+              />}
+            />
           </>
         ) : (
           <Route path='*' element={<Registro />} />
