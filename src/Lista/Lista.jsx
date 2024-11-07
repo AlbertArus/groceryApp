@@ -12,6 +12,8 @@ import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
 import ToggleItems from './ToggleItems'
+import ButtonFAB from '../components/ButtonFAB'
+import Pagos from '../Pagos/Pagos'
 // import Gastos from './Gastos'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible }) => {
@@ -463,6 +465,19 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               setSharePopupVisible={setSharePopupVisible}
             />
           }
+          <ButtonFAB
+            path={"payments"} 
+            icon={"chevron_right"}
+            label={"Pagos"}
+          >
+            <Pagos
+              lista={selectedList} 
+              itemsLength={totalItemsLength}
+              price={formattedTotalPrice}
+              itemsAdquirido={ItemsChecked()}
+  
+            />
+          </ButtonFAB>
         </>
       )}
     </div>

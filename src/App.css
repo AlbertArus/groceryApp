@@ -180,10 +180,10 @@ hr {
   margin-right: 2px;
 }
 
-.material-symbols-outlined:hover {
+/* .material-symbols-outlined:hover {
   background-color: #e0e0e0;
   border-radius: 40px;
-}
+} */
 
 .icon-small {
   font-size: 16px;
@@ -323,10 +323,6 @@ hr {
   top: 100%;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 .itemMenu {
   margin: 4px 4px 4px 8px;
   border-radius: 5px;
@@ -344,21 +340,11 @@ hr {
   padding-left: 3px;
 }
 
-.NewLista {
+.ButtonFAB {
   position: absolute;
   bottom: 60px;
   right: 70px;
-}
-
-.addingLista {
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  background-color: #f4f4f4;
-  padding: 10px;
-}
-
-.addingLista.material-symbols-outlined:hover {
-  border-radius: 10px;
+  z-index: 10;
 }
 
 .vistaListas {
@@ -524,13 +510,6 @@ button[type=submit] {
 .linksPerfil h5:hover {
   text-decoration: underline;
 }
-
-/* .contentPerfil {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
 
 .emptyState {
   display: flex;
@@ -704,6 +683,10 @@ button[type=submit] {
   --md-sys-color-on-primary: #ffffff;
   --md-sys-color-outline: #6f7979;
   --md-sys-color-surface-container-highest: #dde4e3;
+  /* Tabs */
+  --md-sys-color-surface: none;
+  --md-primary-tab-active-indicator-color: #ED9E04;
+  /* --md-primary-tab-container-shape: end end; */
 
   /* Component tokens */
   --md-switch-handle-shape: 20px;
