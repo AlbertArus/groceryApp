@@ -1,12 +1,27 @@
-import { forwardRef, useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import TabItemMenu from "./TabItemMenu";
 
-const MenuTabs = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember, style, isActive, setIsActive }, ref) => {
+const MenuTabs = ({item, UsuarioCompleto, handleDeleteItemUserMember, style, isActive, setIsActive }) => {
     const [nombreItemUserMember, setNombreItemUserMember] = useState([]);
     const [nombreCounterUp, setNombreCounterUp] = useState([]);
     const [nombreCounterDown, setNombreCounterDown] = useState([]);
     const tabValues = ["A favor", "En contra", "Miembros"];
-    const activeIndex = tabValues.indexOf(isActive);
+    const activeIndex = tabValues.indexOf(isActive);  
+    const [contentHeight, setContentHeight] = useState(0);
+    const counterUpRef = useRef(null);
+    const counterDownRef = useRef(null);
+    const itemUserMemberRef = useRef(null);
+
+    useEffect(() => {
+      // Actualiza la altura del contenido basado en isActive
+      if (isActive === "A favor" && counterUpRef.current) {
+        setContentHeight(counterUpRef.current.offsetHeight);
+      } else if (isActive === "En contra" && counterDownRef.current) {
+        setContentHeight(counterDownRef.current.offsetHeight);
+      } else if (isActive === "Miembros" && itemUserMemberRef.current) {
+        setContentHeight(itemUserMemberRef.current.offsetHeight);
+      }
+    }, [isActive]);
 
     useEffect(() => {
         const fetchItemUserMembers = async () => {
@@ -56,41 +71,42 @@ const MenuTabs = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember,
             tabsElement.activeTabIndex = activeIndex;
           }
         }
-      }, [isActive]);
+      }, [isActive]);      
 
   return (
     <div>
-        <div className="tabs">
-            <md-tabs style={{backgroundColor: "none"}}
+        <div className="tabs" style={{alignSelf: "flex-start"}}>
+            <md-tabs
+            style={{ margin: "0 15px", alignSelf: "flex-start"}}
+                
                 active-tab-index={activeIndex}
                 onClick={(e) => {
-                console.log('Click event:', e);
-                const tabElement = e.target.closest('md-primary-tab');
+                const tabElement = e.target.closest('md-primary-tab, md-secondary-tab');
                 if (tabElement) {
                 const tabs = Array.from(e.currentTarget.children);
                 const index = tabs.indexOf(tabElement);
-                console.log('Tab index:', index);
                 const tabValues = ["A favor", "En contra", "Miembros"];
                 setIsActive(tabValues[index]);
                 }
             }}>
-                <md-primary-tab inline-icon aria-label="A favor">
-                    <span className="material-symbols-outlined icon-large" style={{color: "blue"}}>thumb_up</span>
+                <md-secondary-tab inline-icon aria-label="A favor">
+                    <span className="material-symbols-outlined icon-medium" style={{color: "blue"}}>thumb_up</span>
                     {/* A favor */}
-                </md-primary-tab>
+                </md-secondary-tab>
                 <md-primary-tab inline-icon aria-label="En contra">
-                    <span className="material-symbols-outlined icon-large" style={{color: "red"}}>thumb_down</span>            
+                    <span className="material-symbols-outlined icon-medium" style={{color: "red"}}>thumb_down</span>            
                     {/* En contra */}
                 </md-primary-tab>
                 <md-primary-tab inline-icon aria-label="Miembros">
-                    <span className="material-symbols-outlined icon-large">group</span>
+                    <span className="material-symbols-outlined icon-medium" style={{color: "black"}}>group</span>
                     {/* Miembros */}
                 </md-primary-tab>
             </md-tabs>
         </div>
-        <div className="app-margin">
+        <div className="app-margin" style={{minHeight: "40px", marginBottom: contentHeight > 40 ? "20px" : "0px"}}>
         {isActive === "A favor" && (
           <>
+          <div ref={counterUpRef}>
             {item.counterUp.map((uid, index) => (
               <TabItemMenu
                 key={uid}
@@ -98,10 +114,12 @@ const MenuTabs = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember,
                 itemMenuName={nombreCounterUp[index]}
               />
             ))}
+          </div>
           </>
         )}
         {isActive === "En contra" && (
           <>
+          <div ref={counterDownRef}>
             {item.counterDown.map((uid, index) => (
               <TabItemMenu
                 key={uid}
@@ -109,10 +127,12 @@ const MenuTabs = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember,
                 itemMenuName={nombreCounterDown[index]}
               />
             ))}
+          </div>
           </>
         )}
         {isActive === "Miembros" && (
           <>
+          <div ref={itemUserMemberRef}>
             {item.itemUserMember.map((uid, index) => (
               <TabItemMenu
                 key={uid}
@@ -121,11 +141,12 @@ const MenuTabs = forwardRef(({item, UsuarioCompleto, handleDeleteItemUserMember,
                 handleDeleteItemUserMember={() => handleDeleteItemUserMember(item.id, uid)}
               />
             ))}
+          </div>
           </>
         )}        
         </div>
     </div>
   )
-})
+}
 
 export default MenuTabs
