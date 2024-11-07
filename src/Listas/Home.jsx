@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import NewLista from "./NewLista"
+import ButtonFAB from '../components/ButtonFAB'
 import NavBar from "./NavBar"
 import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
@@ -143,7 +143,10 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
             )}
             <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
             {!isEStateHome && 
-                <NewLista
+                <ButtonFAB
+                    path={"newlist"}
+                    icon={"add"}
+                    label={""}
                 />
             }
         </div>

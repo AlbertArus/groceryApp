@@ -6,6 +6,7 @@ const Settings = () => {
   return (
     <div className="perfil app">
         <Head
+            path={""}            
             sectionName={"Ajustes"}
         />
         <div className="contentPerfil app-margin">

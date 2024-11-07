@@ -46,7 +46,9 @@ const DeleteUser = () => {
 
   return (
     <div className="app">
-        <Head />
+        <Head 
+            path={"profile"}
+        />
         <div className="app-margin">
             <h3 style={{margin: "25px 0px", fontWeight: "600"}}>Eliminar usuario</h3>
             <h5 style={{marginBottom: "12px"}}>Recuerda que esta acción es irreversible. Perderás el acceso a tu cuenta, tus listas y tus datos.</h5>

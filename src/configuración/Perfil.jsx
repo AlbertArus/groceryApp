@@ -18,6 +18,7 @@ const Perfil = ({ usuario }) => {
     return (
         <div className="perfil app">
             <Head
+                path={""}            
                 sectionName={"Mi perfil"}
             />
             <div className="contentPerfil app-margin">

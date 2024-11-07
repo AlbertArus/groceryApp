@@ -49,6 +49,7 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
   return (
       <div className="FormLista app">
         <Head
+          path={""}          
           sectionName={"Nueva lista"}
         />
         <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>

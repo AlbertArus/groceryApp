@@ -50,6 +50,7 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
     return (
         <div className="Home app">
             <Head
+                path={""}
                 sectionName={"Archivo"}
             />
             <div className="app-margin">
