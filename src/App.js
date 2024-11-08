@@ -189,7 +189,7 @@ function App() {
 
   const goToArchived = (e) => {
     e.preventDefault()
-    navigate("/archived/")
+    navigate("/archived")
   }
 
   const duplicarLista = async (id) => {
@@ -299,14 +299,14 @@ function App() {
                 setSharePopupVisible={setSharePopupVisible}
               />}
             />
-            <Route path="/newlist/" element={
+            <Route path="/newlist" element={
               <FormLista 
                 addLista={addLista}
                 listas={listas}
                 setSharePopupVisible={setSharePopupVisible}
               />}
             />
-            <Route path="/archived/" element={
+            <Route path="/archived" element={
               <Archived
                 goToArchived={goToArchived}
                 listas={listas.filter((lista) => lista.isArchived)}

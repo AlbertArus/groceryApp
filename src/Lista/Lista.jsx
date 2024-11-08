@@ -5,18 +5,15 @@ import toast from 'react-hot-toast'
 import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
-import EStateLista from '../components/EStateLista'
 import { useParams } from 'react-router-dom'
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
-import ToggleItems from './ToggleItems'
+// import ToggleItems from './ToggleItems'
 import Pagos from '../Pagos/Pagos'
 import Toggle from "../ui-components/Toggle"
-// import ToggleAreas from './ToggleAreas'
-
-// import Gastos from './Gastos'
+import EmptyState from '../ui-components/EmptyState'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible }) => {
 
@@ -27,7 +24,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
   const [isToggleSelected, setIsToggleSelected] = useState("Lista")
   const [isToggleShown, setIsToggleShown] = useState(false)
-  // const [isEditable, setIsEditable] = useState(false)
   const firstCategoryRef = useRef(null)
 
   const selectedList = listas.find(lista => lista.id === params.id);
@@ -313,6 +309,11 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return {...category, sumPrice: sumPrice};
   });
 
+  const handleAddCategory = () => {
+    const defaultCategoryName = "";
+    AddCategory(defaultCategoryName); 
+  }
+
   const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
   const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
@@ -455,13 +456,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                 filteredListaForItems={filteredListaForItems}
                 handleDeleteItemUserMember={handleDeleteItemUserMember}
                 />
-              {isEStateLista && 
-                <div className="emptyState">
-                  <EStateLista 
-                    AddCategory={AddCategory}
+              {isEStateLista && (
+                <div className='app-margin'>
+                  <EmptyState
+                    img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                    alt={"Set of grocery bags full of items"}
+                    description={"Completa tu lista. Crea tu primera categoría y añade tantos items como quieras"}
+                    onClick={handleAddCategory}
+                    buttonCopy={"Añadir Categoría"}
                   />
                 </div>
-              }
+              )}
               {sharePopupVisible && 
                 <SharePopUp
                   setSharePopupVisible={setSharePopupVisible}
@@ -470,6 +475,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             </>
           ) : (
             <>
+            <Toggle 
+                option1={"Resumen"}
+                option2={"Pagos"}
+                form={"tabs"}
+                lista={selectedList}
+                usuario={usuario}
+            />
               <Pagos
                 lista={selectedList} 
                 itemsLength={totalItemsLength}

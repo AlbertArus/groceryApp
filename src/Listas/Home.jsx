@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import ButtonFAB from '../ui-components/ButtonFAB'
 import NavBar from "./NavBar"
-import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
+import EmptyState from "../ui-components/EmptyState";
 
 const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
@@ -13,6 +13,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
     const archivadosRef = useRef(null)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRefs = useRef({})
+    const navigate = useNavigate()
 
     const listaslength = listas.length
     useEffect(() => {
@@ -70,14 +71,17 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                     <h2 style={{fontWeight: "500"}}>{`Hola ${usuario.nombre}!`}</h2>
                     <h5>{listaslength === 1 ? "Tienes 1 lista activa" : `Tienes ${listaslength} listas activas`}</h5>
                 </div>
-            </div>
-            {isEStateHome && 
-                <div className="emptyState">
-                    <EStateHome 
-                        addLista={addLista}
+                {isEStateHome && (
+                    <EmptyState
+                    addLista={addLista}
+                    img={"_e409535c-8a88-419e-8a05-5437f5a91f35-removebg-preview"}
+                    alt={"Set of grocery bags full of items"}
+                    description={"Compra en grupo creando tu primera lista ahora"}
+                    onClick={() => navigate(`/${"newlist"}`)}
+                    buttonCopy={"Nueva lista"}
                     />
-                </div>
-            }
+                )}
+            </div>
             {!isEStateHome && (
                 <ToggleLista
                     usuario={usuario}

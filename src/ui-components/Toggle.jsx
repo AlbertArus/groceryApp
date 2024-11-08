@@ -14,20 +14,20 @@ const Toggle = ({form, option1, option2, option3, listas, lista, setFilteredList
         setIsToggleSelected(toggle)
     }
 
-    useEffect(() => {
-        if(form === "tabs") {
-            let filteredListaForItems
-            if(isToggleActive === `${option2}` || isToggleActive === `${option3}`) {
-                filteredListaForItems = lista.categories.flatMap(category => 
-                    category.items.filter(item => item.itemUserMember.includes(usuario?.uid))
-                )
-            } else {
-                filteredListaForItems = lista.categories.flatMap(category => category.items)
-            }
-            setFilteredListaForItems(filteredListaForItems)
-        }
+    // useEffect(() => {
+    //     if(form === "tabs") {
+    //         let filteredListaForItems
+    //         if(isToggleActive === `${option2}` || isToggleActive === `${option3}`) {
+    //             filteredListaForItems = lista.categories.flatMap(category => 
+    //                 category.items.filter(item => item.itemUserMember.includes(usuario?.uid))
+    //             )
+    //         } else {
+    //             filteredListaForItems = lista.categories.flatMap(category => category.items)
+    //         }
+    //         setFilteredListaForItems(filteredListaForItems)
+    //     }
 
-    },[isToggleActive, usuario.uid, lista, setFilteredListaForItems, option2, option3, form])
+    // },[isToggleActive, usuario.uid, lista, setFilteredListaForItems, option2, option3, form])
 
     // useEffect(() => {
     //     let filteredListas;
