@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react"
 import Checkbox from "@mui/material/Checkbox"
 import DragIndicator from "@mui/icons-material/DragIndicator";
-import Slider from "../components/Slider"
+import Slider from "../ui-components/Slider"
 import MenuTabs from "./MenuTabs";
-import ModalSheet from "./ModalSheet";
+import ModalSheet from "../ui-components/ModalSheet";
 
 const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
 

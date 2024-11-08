@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import ButtonFAB from '../components/ButtonFAB'
+import ButtonFAB from '../ui-components/ButtonFAB'
 import NavBar from "./NavBar"
 import EStateHome from "../components/EStateHome";
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
@@ -85,62 +85,64 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                     setFilteredListas={setFilteredListas}
                 />
             )}
-            {filteredListas && (
-                <>
-                    {filteredListas.length > 0 ? (
-                        <>
-                            {filteredListas.map(lista => (
-                                <div key={lista.id}>
-                                    <div className="vistaListas app-margin">
-                                        <div className="fila-between" style={{padding: "7px", alignItems: "flex-start"}}>
-                                            <div className="linkedPart" style={{flex: "1"}}>
-                                                <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
-                                                    <div className="fila-between">
-                                                        <h3>{lista.listaName}</h3>
-                                                    </div>
-                                                    <div>{`Items: ${getListaItemsLength(lista.id)}`}</div>
-                                                    <div className="fila-start">
-                                                        <div className="fila-start-group">
-                                                            <span className="material-symbols-outlined icon-medium">group</span>
-                                                            <h5>{`${lista.userMember.length} pers.`}</h5>
+            <div className="listasHome" style={{marginTop: "10px"}}>
+                {filteredListas && (
+                    <>
+                        {filteredListas.length > 0 ? (
+                            <>
+                                {filteredListas.map(lista => (
+                                    <div key={lista.id}>
+                                        <div className="vistaListas app-margin">
+                                            <div className="fila-between" style={{padding: "7px", alignItems: "flex-start"}}>
+                                                <div className="linkedPart" style={{flex: "1"}}>
+                                                    <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+                                                        <div className="fila-between">
+                                                            <h3>{lista.listaName}</h3>
                                                         </div>
-                                                        <div className="fila-start-group">
-                                                            <span className="material-symbols-outlined icon-medium">{""}</span>
-                                                            <h5>{lista.plan}</h5>
+                                                        <div>{`Items: ${getListaItemsLength(lista.id)}`}</div>
+                                                        <div className="fila-start">
+                                                            <div className="fila-start-group">
+                                                                <span className="material-symbols-outlined icon-medium">group</span>
+                                                                <h5>{`${lista.userMember.length} pers.`}</h5>
+                                                            </div>
+                                                            <div className="fila-start-group">
+                                                                <span className="material-symbols-outlined icon-medium">{""}</span>
+                                                                <h5>{lista.plan}</h5>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </Link>
-                                            </div>
-                                            <div className="fila-start" style={{position: "relative"}}>
-                                                <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id, lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                                <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
-                                                {isOptionsMenuVisible === lista.id && ( 
-                                                    <OptionsMenuListHome
-                                                        style={{right: "0"}}
-                                                        key={lista.id}
-                                                        ref={optionsMenuListHomeRef}
-                                                        handleDuplicate={() => handleDuplicate(lista.id)}
-                                                        handleArchive={() => handleArchive(lista.id, lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
-                                                        deleteLista={deleteLista}
-                                                        lista={lista}
-                                                    />
-                                                )}
+                                                    </Link>
+                                                </div>
+                                                <div className="fila-start" style={{position: "relative"}}>
+                                                    <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id, lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                    <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
+                                                    {isOptionsMenuVisible === lista.id && ( 
+                                                        <OptionsMenuListHome
+                                                            style={{right: "0"}}
+                                                            key={lista.id}
+                                                            ref={optionsMenuListHomeRef}
+                                                            handleDuplicate={() => handleDuplicate(lista.id)}
+                                                            handleArchive={() => handleArchive(lista.id, lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
+                                                            deleteLista={deleteLista}
+                                                            lista={lista}
+                                                        />
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </>
-                        ) : (
-                            <>
-                                {!isEStateHome && (
-                                    <div className="app-margin center">No tienes listas aquí </div>
-                                )}
+                                ))}
                             </>
-                        )
-                    }
-                </>
-            )}
+                            ) : (
+                                <>
+                                    {!isEStateHome && (
+                                        <div className="app-margin center">No tienes listas aquí </div>
+                                    )}
+                                </>
+                            )
+                        }
+                    </>
+                )}
+            </div>
             <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
             {!isEStateHome && 
                 <ButtonFAB

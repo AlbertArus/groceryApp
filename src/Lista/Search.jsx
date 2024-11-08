@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import ModalSheet from "../components/ModalSheet";
+import ModalSheet from "../ui-components/ModalSheet";
 
 const Search = ({setSearchResult}) => {
     const [focused, setFocused] = useState(false)

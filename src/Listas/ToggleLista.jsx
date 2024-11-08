@@ -21,12 +21,12 @@ const ToggleLista = ({listas, setFilteredListas, usuario}) => {
 
     return (
         <div className='app-margin center'>
-            <div className='ToggleLista fila-between' style={{flex:"none"}}>
-                <h5 onClick={() => handleClick("todas")} className={isToggleActive === "todas" ? 'toggleActive' : "toggle"}>Todas</h5>
-                {/* <div className="verticalLine"></div> */}
-                <h5 onClick={() => handleClick("mislistas")} className={isToggleActive === "mislistas" ? 'toggleActive' : "toggle"}>Mis listas</h5>
-                {/* <div className="verticalLine"></div> */}
-                <h5 onClick={() => handleClick("compartidas")} className={isToggleActive === "compartidas" ? 'toggleActive' : "toggle"}>Compartidas</h5>
+            <div className='ToggleLista fila-start' style={{flex:"none"}}>
+                <h5 onClick={() => handleClick("todas")} className={isToggleActive === "todas" ? 'toggleActive' : "toggleL"}>Todas</h5>
+                {/* <div className="divider"></div> */}
+                <h5 onClick={() => handleClick("mislistas")} className={isToggleActive === "mislistas" ? 'toggleActive' : "toggleL"}>Mis listas</h5>
+                {/* <div className="divider"></div> */}
+                <h5 onClick={() => handleClick("compartidas")} className={isToggleActive === "compartidas" ? 'toggleActive' : "toggleL"}>Compartidas</h5>
             </div>
         </div>
     )

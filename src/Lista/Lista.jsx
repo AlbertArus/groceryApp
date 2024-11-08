@@ -12,8 +12,10 @@ import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
 import ToggleItems from './ToggleItems'
-import ButtonFAB from '../components/ButtonFAB'
 import Pagos from '../Pagos/Pagos'
+import Toggle from "../ui-components/Toggle"
+// import ToggleAreas from './ToggleAreas'
+
 // import Gastos from './Gastos'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible }) => {
@@ -23,8 +25,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [searchResult, setSearchResult] = useState("")
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
+  const [isToggleSelected, setIsToggleSelected] = useState("Lista")
   const [isToggleShown, setIsToggleShown] = useState(false)
-  const [isToggleSelected, setIsToggleSelected] = useState("Todos")
   // const [isEditable, setIsEditable] = useState(false)
   const firstCategoryRef = useRef(null)
 
@@ -120,16 +122,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       }
     }
   },[selectedList, usuario.uid])
-
-  // useEffect(() => {
-  //   if(isToggleSelected === "Mis gastos") {
-  //     setIsEditable(true)
-  //   } else {
-  //     setIsEditable(false)
-  //   }
-  // },[isToggleSelected])
-
-  // console.log(selectedList)
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
@@ -410,74 +402,83 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             handleOcultarPrecios={handleOcultarPrecios}
             UsuarioCompleto={UsuarioCompleto}
           />
-          {isToggleShown &&
-            <ToggleItems
-              lista={selectedList}
-              usuario={usuario}
-              setFilteredListaForItems={setFilteredListaForItems}
-              isToggleSelected={isToggleSelected}
-              setIsToggleSelected={setIsToggleSelected}
-            />
-          }
-          {!isEStateLista &&
-            <Search
-              lista={selectedList}
-              setSearchResult={setSearchResult}            
-            />
-          }
-          <SubHeader 
-            items={totalItemsLength}
-            price={formattedTotalPrice}
-            itemsAdquirido={ItemsChecked()}
-            categories={selectedList.categories}
-            lista={selectedList}
+          <Toggle 
+            option1={"Lista"}
+            option2={"Pagos"}
+            form={"bars"}
+            isToggleSelected={isToggleSelected}
+            setIsToggleSelected={setIsToggleSelected}
           />
-          <Categories
-            items={selectedList.categories.flatMap(category => category.items)}
-            categories={selectedList.categories}
-            handleCheck={handleCheck}
-            AddCategory={AddCategory}
-            EditCategory={EditCategory}
-            DeleteCategory={DeleteCategory}
-            AddItem={AddItem}
-            EditItem={EditItem}
-            DeleteItem={DeleteItem}
-            handleCounterDown={handleCounterDown}
-            handleCounterUp={handleCounterUp}
-            isEStateLista={isEStateLista}
-            lista={selectedList}
-            setSearchResult={setSearchResult}
-            searchResult={searchResult}
-            firstCategoryRef={firstCategoryRef}
-            UsuarioCompleto={UsuarioCompleto}
-            filteredListaForItems={filteredListaForItems}
-            handleDeleteItemUserMember={handleDeleteItemUserMember}
-            />
-          {isEStateLista && 
-            <div className="emptyState">
-              <EStateLista 
-                AddCategory={AddCategory}
+          {isToggleSelected === "Lista" ? (
+            <>
+              {isToggleShown &&
+                <Toggle
+                  option1={"Todos"}
+                  option2={"Mis items"}
+                  form={"tabs"}
+                  lista={selectedList}
+                  setFilteredListaForItems={setFilteredListaForItems}
+                  usuario={usuario}
+                />
+              }
+              {!isEStateLista && !isToggleShown &&
+                <Search
+                  lista={selectedList}
+                  setSearchResult={setSearchResult}            
+                />
+              }
+              <SubHeader 
+                items={totalItemsLength}
+                price={formattedTotalPrice}
+                itemsAdquirido={ItemsChecked()}
+                categories={selectedList.categories}
+                lista={selectedList}
               />
-            </div>
-          }
-          {sharePopupVisible && 
-            <SharePopUp
-              setSharePopupVisible={setSharePopupVisible}
-            />
-          }
-          <ButtonFAB
-            path={"payments"} 
-            icon={"chevron_right"}
-            label={"Pagos"}
-          >
-            <Pagos
-              lista={selectedList} 
-              itemsLength={totalItemsLength}
-              price={formattedTotalPrice}
-              itemsAdquirido={ItemsChecked()}
-  
-            />
-          </ButtonFAB>
+              <Categories
+                items={selectedList.categories.flatMap(category => category.items)}
+                categories={selectedList.categories}
+                handleCheck={handleCheck}
+                AddCategory={AddCategory}
+                EditCategory={EditCategory}
+                DeleteCategory={DeleteCategory}
+                AddItem={AddItem}
+                EditItem={EditItem}
+                DeleteItem={DeleteItem}
+                handleCounterDown={handleCounterDown}
+                handleCounterUp={handleCounterUp}
+                isEStateLista={isEStateLista}
+                lista={selectedList}
+                setSearchResult={setSearchResult}
+                searchResult={searchResult}
+                firstCategoryRef={firstCategoryRef}
+                UsuarioCompleto={UsuarioCompleto}
+                filteredListaForItems={filteredListaForItems}
+                handleDeleteItemUserMember={handleDeleteItemUserMember}
+                />
+              {isEStateLista && 
+                <div className="emptyState">
+                  <EStateLista 
+                    AddCategory={AddCategory}
+                  />
+                </div>
+              }
+              {sharePopupVisible && 
+                <SharePopUp
+                  setSharePopupVisible={setSharePopupVisible}
+                />
+              }
+            </>
+          ) : (
+            <>
+              <Pagos
+                lista={selectedList} 
+                itemsLength={totalItemsLength}
+                price={formattedTotalPrice}
+                itemsAdquirido={ItemsChecked()}
+
+              />
+            </>
+          )}
         </>
       )}
     </div>

@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 
 const ToggleItems = ({lista, usuario, setFilteredListaForItems, isToggleSelected, setIsToggleSelected}) => {
-    // const [sinPrecios, setSinPrecios] = useState(false)
 
     const handleClick = (toggle) => {
         setIsToggleSelected(toggle)
@@ -20,24 +19,11 @@ const ToggleItems = ({lista, usuario, setFilteredListaForItems, isToggleSelected
 
     },[isToggleSelected, usuario.uid, lista, setFilteredListaForItems])
 
-    // useEffect(() => {
-    //     const itemsLista = lista.categories.every(category => 
-    //         category.items.every(item =>
-    //             item.price === ""
-    //         )
-    //     )
-    //     if(lista.showPrices || itemsLista) {
-    //         setSinPrecios(true)
-    //     } else {
-    //         setSinPrecios(false)
-    //     }
-    // },[lista.categories, lista.showPrices])
-
     return (
-        <div className="ToggleItems">
+        <div className="toggle">
             <div className="app-margin toggleDisplay">
-                <div onClick={() => handleClick("Todos")} className={isToggleSelected === "Todos" ? "toggleOptions toggleLateral" : "toggleOptions"}>Todos</div>
-                <div onClick={() => handleClick("Mis items")} className={isToggleSelected === "Mis items" ? "toggleOptions toggleLateral" : "toggleOptions"}>Mis items</div>
+                <div onClick={() => handleClick("Todos")} className={isToggleSelected === "Todos" ? "toggleOptions toggleBar" : "toggleOptions"}>Todos</div>
+                <div onClick={() => handleClick("Mis items")} className={isToggleSelected === "Mis items" ? "toggleOptions toggleBar" : "toggleOptions"}>Mis items</div>
                 {/* <div onClick={() => handleClick("Mis gastos")} className={isToggleSelected === "Mis gastos" ? "toggleOptions toggleLateral" : "toggleOptions"} style={{display: sinPrecios ? "none" : "block"}}>Mis gastos</div> */}
             </div>
         </div>
