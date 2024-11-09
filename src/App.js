@@ -223,15 +223,19 @@ function App() {
   }
 
   const updateLista = async (listaId, attribute, newValue) => {
+    console.log("updateLista on")
     setListas((prevListas) =>
       prevListas.map((lista) =>
         lista.id === listaId ? { ...lista, [attribute]: newValue } : lista
       )
     );
+    console.log("estado local actualizado")
   
     try {
       const listaRef = doc(db, "listas", listaId);
+      console.log("lista identificada")
       await updateDoc(listaRef, { [attribute]: newValue });
+      console.log("lista actualizada")
     } catch (error) {
       console.error(`Error al actualizar ${attribute} en Firebase:`, error);
     }
@@ -254,8 +258,9 @@ function App() {
     updateLista(id, "showVotes", !showVotes)
   }
 
-  const handleNewPayment = (id, showVotes) => {
-    updateLista(id, "showVotes", !showVotes)
+  const handleNewPayment = (id, updatedPayments) => {
+    console.log("newPayment on")
+    updateLista(id, "payments", updatedPayments)
   }
 
   const UsuarioCompleto = async (uid) => {

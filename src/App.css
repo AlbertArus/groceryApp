@@ -382,6 +382,7 @@ hr {
   font-size: 16px;
   color: black;
   padding: 5px 5px;
+  margin-top: 5px;
   width: 100%;
 }
 
@@ -428,7 +429,6 @@ button[type=submit] {
 }
 
 .iconed-container {
-  margin-top: 5px;
   width: 100%;
 }
 

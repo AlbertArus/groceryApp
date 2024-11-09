@@ -112,6 +112,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   },[selectedList, usuario.uid])
 
+  console.log(selectedList?.payments)
+
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
     const updatedItems = [...selectedList.items, newItem];
