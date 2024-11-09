@@ -15,7 +15,7 @@ import Pagos from '../Pagos/Pagos'
 import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible, UsuarioCompleto }) => {
 
   let params = useParams();
   
@@ -85,14 +85,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return () => unsubscribe(); // Cleanup on component unmount
   }, [params.id, setListas]);  
 
-  const UsuarioCompleto = async (uid) => {
-    const userDoc = await getDoc(doc(db, "usuarios", uid));
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      return `${userData.nombre} ${userData.apellido}`;
-    }
-    return "Usuario desconocido"; // Fallback si el usuario no se encuentra
-  }
+
 
   const handleDeleteItemUserMember = (id, uid) => {
     const updatedCategories = selectedList.categories.map(category => (
@@ -213,8 +206,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     });
   };
   
-
-
   const handleCheck = (id) => {
     const updatedCategories = selectedList.categories.map(category => {
       const updatedItems = category.items.map(item =>
@@ -476,19 +467,18 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
           ) : (
             <>
             <Toggle 
-                option1={"Resumen"}
-                option2={"Pagos"}
-                form={"tabs"}
-                lista={selectedList}
-                usuario={usuario}
+              option1={"Resumen"}
+              option2={"Pagos"}
+              form={"tabs"}
+              lista={selectedList}
+              usuario={usuario}
             />
-              <Pagos
-                lista={selectedList} 
-                itemsLength={totalItemsLength}
-                price={formattedTotalPrice}
-                itemsAdquirido={ItemsChecked()}
-
-              />
+            <Pagos
+              lista={selectedList} 
+              itemsLength={totalItemsLength}
+              price={formattedTotalPrice}
+              itemsAdquirido={ItemsChecked()}
+            />
             </>
           )}
         </>
