@@ -6,6 +6,7 @@ const Pagos = ({lista, itemsLength}) => {
   const [isEmptyStatePagos, setIsEmptyStatePagos] = useState(false)
   const navigate = useNavigate()
 
+  // const addPayment = []
 
   return (
     <div className="app-margin">
@@ -25,7 +26,7 @@ const Pagos = ({lista, itemsLength}) => {
       <div className="vistaGastos">
 
       </div>
-      <h5 className="buttonMain" style={{position: "sticky", bottom: "30px"}} onClick={() => (navigate("/payment"))}>Eliminar cuenta</h5>
+      <h5 className="buttonMain" style={{position: "sticky", bottom: "30px"}} onClick={() => (navigate(`/list/${lista.id}/payment`))}>Añadir pago</h5>
       </div>
   )
 }

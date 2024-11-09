@@ -11,13 +11,13 @@ import Registro from './configuración/Registro';
 import Perfil from './configuración/Perfil';
 import Settings from './configuración/Settings.jsx';
 import NewPassword from './configuración/NewPassword.jsx'
-
-import { db } from "./firebase-config.js"
-import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc } from "firebase/firestore"
-import { useUsuario } from './UsuarioContext.jsx';
 import DeleteUser from './configuración/DeleteUser.jsx';
 import LoadingPage from './components/LoadingPage.jsx';
-import Pagos from './Pagos/Pagos.jsx';
+import Payment from './Pagos/Payment.jsx';
+
+import { db } from "./firebase-config.js"
+import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
+import { useUsuario } from './UsuarioContext.jsx';
 
 function App() {
   
@@ -78,7 +78,7 @@ function App() {
   }, [location]);
 
   const addLista = async (listaName, plan, descriptionLista, showVotes, showPrices, isNotified) => {
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], isArchived: false, isNotified, showPrices, showVotes }
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], payments: [], isArchived: false, isNotified, showPrices, showVotes }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);
@@ -254,6 +254,19 @@ function App() {
     updateLista(id, "showVotes", !showVotes)
   }
 
+  const handleNewPayment = (id, showVotes) => {
+    updateLista(id, "showVotes", !showVotes)
+  }
+
+  const UsuarioCompleto = async (uid) => {
+    const userDoc = await getDoc(doc(db, "usuarios", uid));
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return `${userData.nombre} ${userData.apellido}`;
+    }
+    return "Usuario desconocido"; // Fallback si el usuario no se encuentra
+  }
+
   return (
     <>
       {isLoading ? (
@@ -297,6 +310,7 @@ function App() {
                 usuario={usuario}
                 sharePopupVisible={sharePopupVisible}
                 setSharePopupVisible={setSharePopupVisible}
+                UsuarioCompleto={UsuarioCompleto}
               />}
             />
             <Route path="/newlist" element={
@@ -333,8 +347,11 @@ function App() {
                 usuario={usuario}
               />}
             />
-            <Route path='/payments' element={
-              <Pagos 
+            <Route path='/list/:id/payment' element={
+              <Payment 
+                handleNewPayment={handleNewPayment}
+                listas={listas}
+                UsuarioCompleto={UsuarioCompleto}
               />}
             />
           </>
