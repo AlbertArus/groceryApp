@@ -354,6 +354,14 @@ hr {
   margin-bottom: 10px;
 }
 
+.vistaGastos {
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid #ffeec9;
+  margin-bottom: 10px;
+  padding: 6px;
+}
+
 .iconsNavBar {
   margin-left: 6px;
 }

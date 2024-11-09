@@ -13,11 +13,13 @@ import Settings from './configuración/Settings.jsx';
 import NewPassword from './configuración/NewPassword.jsx'
 import DeleteUser from './configuración/DeleteUser.jsx';
 import LoadingPage from './components/LoadingPage.jsx';
-import Payment from './Pagos/Payment.jsx';
 
 import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
 import { useUsuario } from './UsuarioContext.jsx';
+import NewPayment from './Pagos/NewPayment.jsx';
+import PaymentDetail from './Pagos/PaymentDetail.jsx';
+import Pagos from './Pagos/Pagos.jsx';
 
 function App() {
   
@@ -259,7 +261,6 @@ function App() {
   }
 
   const handleNewPayment = (id, updatedPayments) => {
-    console.log("newPayment on")
     updateLista(id, "payments", updatedPayments)
   }
 
@@ -352,13 +353,27 @@ function App() {
                 usuario={usuario}
               />}
             />
-            <Route path='/list/:id/payment' element={
-              <Payment 
+            <Route path='/list/:id/newpayment' element={
+              <NewPayment 
                 handleNewPayment={handleNewPayment}
                 listas={listas}
                 UsuarioCompleto={UsuarioCompleto}
               />}
             />
+            <Route path='/list/:id/payments' element={
+              <Pagos 
+                handleNewPayment={handleNewPayment}
+                listas={listas}
+                UsuarioCompleto={UsuarioCompleto}
+              />}
+            />            
+            <Route path='/list/:id/payments/:paymentId' element={
+              <PaymentDetail 
+                handleNewPayment={handleNewPayment}
+                listas={listas}
+                UsuarioCompleto={UsuarioCompleto}
+              />}
+            />            
           </>
         ) : (
           <Route path='*' element={<Registro />} />

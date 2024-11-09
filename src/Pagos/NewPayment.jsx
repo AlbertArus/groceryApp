@@ -5,14 +5,14 @@ import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox } from "@mui/material";
 
-const Payment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
+const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     const {usuario} = useUsuario()
     const {id} = useParams()
     const selectedList = listas.find(lista => lista.id === id)
     const [paymentName, setPaymentName] = useState("");
     const [errors, setErrors] = useState({paymentName: false, amount: false, members: false})
     const [amount, setAmount] = useState("");
-    const [members, setMembers] = useState(selectedList.userMember)
+    const [members, setMembers] = useState(selectedList?.userMember)
     const [payer, setPayer] = useState("");
     const [nombreUserMember, setNombreUserMember] = useState([]);
     const navigate = useNavigate()
@@ -37,9 +37,8 @@ const Payment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     
     console.log(selectedList)
     const AddPayment = (paymentName, amount, payer) => {
-        const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, payer, paymentName, amount, members }
+        const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members }
         const updatedPayments = [...selectedList.payments, newPayment]
-        // const updatedList = {...selectedList, payments: updatedPayments}
         handleNewPayment(id, updatedPayments)
     }
     
@@ -53,7 +52,6 @@ const Payment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
         setErrors({
             paymentName: (paymentName.trim() === ""),
             amount: (amount.trim() === ""),
-            // members: members.length === 0
         })
 
         if (paymentName.trim() && amount.trim()) {
@@ -71,10 +69,6 @@ const Payment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
         setErrors(prevErrors => ({...prevErrors, paymentName: false }))
         }
     }
-
-    // console.log(selectedList.payments)
-    // console.log(payer)
-    // console.log(members)
 
     const handleCheckboxChange = (uid) => {
         setMembers(prevMembers => 
@@ -161,4 +155,4 @@ const Payment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     );
 };
 
-export default Payment;
+export default NewPayment;
