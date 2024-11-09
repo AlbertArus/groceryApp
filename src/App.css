@@ -120,7 +120,7 @@ hr {
 
 .head {
   margin-bottom: 8px;
-  padding-bottom: 8px;
+  padding: 4px 0px;
   background-color: #ffeec9;
   position: sticky;
   z-index: 1000;
@@ -756,4 +756,8 @@ button[type=submit] {
 .tabItemMenu {
   text-wrap: nowrap;
   padding: 10px 0px;
+}
+
+.participantsList {
+  padding: 5px 0;
 }

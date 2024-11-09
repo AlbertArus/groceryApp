@@ -47,7 +47,7 @@ const NavBar = ({isRegistered}) => {
 
     return (
         <div className="NavBar head">
-            <div className="fila-between app-margin" style={{marginTop: "7px"}}>
+            <div className="fila-between app-margin" style={{padding: "4px 0px"}}>
                 <div className="titleNavBar fila-start-group">
                     <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
                     <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
