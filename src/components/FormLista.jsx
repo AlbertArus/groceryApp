@@ -62,7 +62,7 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
             </div>
             <h5 style={{display: errors.listaName ? "block" : "none", color:"red"}}>Añade un nombre a tu lista</h5>
             <label htmlFor="plan">Plan</label>
-            <select id="plan" onChange={(e) => {setPlan(e.target.value); setErrors(prevErrors => ({...prevErrors, listaName: false }))}} value={plan} style={{marginTop:"5px"}}>
+            <select id="plan" onChange={(e) => {setPlan(e.target.value); setErrors(prevErrors => ({...prevErrors, plan: false }))}} value={plan} style={{marginTop:"5px"}}>
               <option value="">Selecciona un plan</option>
               <option value="Viaje">Viaje</option>
               <option value="Casa compartida">Casa compartida</option>
