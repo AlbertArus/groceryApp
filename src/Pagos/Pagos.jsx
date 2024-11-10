@@ -13,6 +13,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista}) => {
     if (lista && !lista.payments) {
       updateLista(lista.id, "payments", [])
     }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lista]);
 
   useEffect(() => {

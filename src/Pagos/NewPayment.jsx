@@ -13,32 +13,43 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     const [paymentName, setPaymentName] = useState("");
     const [errors, setErrors] = useState({paymentName: false, amount: false, members: false})
     const [amount, setAmount] = useState("");
-    const [members, setMembers] = useState(selectedList?.userMember)
+    const [members, setMembers] = useState([])
     const [payer, setPayer] = useState("");
     const [nombreUserMember, setNombreUserMember] = useState([]);
     const navigate = useNavigate()
+    const maxLength = 27
     
     useEffect(() => {
-        if (selectedList && selectedList.userMember) {
+        if (selectedList && selectedList.userMember && usuario?.uid) {
             const listaUserMembers = async () => {
                 const userMembersName = await Promise.all(
                     selectedList.userMember.map(uid => UsuarioCompleto(uid))
-                );
-                setNombreUserMember(userMembersName);
-            };
-            listaUserMembers();
+                )
+                setNombreUserMember(userMembersName)
+
+                setMembers(selectedList.userMember.map(uid => ({ uid, amount: PriceMemberEven() })));
+
+                if (!payer) {
+                    setPayer(usuario.uid);
+                }
+            }
+            listaUserMembers()
         }
-    }, [UsuarioCompleto, selectedList]);
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [UsuarioCompleto, selectedList, usuario])
 
     useEffect(() => {
-        if (nombreUserMember.length > 0 && selectedList.userMember.length === 1) {
-            console.log("Asignando payer:", selectedList.userMember[0]); // Verifica el valor
-            setPayer(selectedList.userMember[0]);
+        if (amount && members.length > 0) {
+            const amountPerMember = parseFloat(amount) / members.length;
+            const updatedMembers = members.map(member => ({
+                ...member,
+                amount: amountPerMember
+            }));
+            setMembers(updatedMembers);
         }
-    }, [nombreUserMember, selectedList.userMember]);
-    
-    
-    console.log(selectedList)
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [amount]);
+        
     const AddPayment = (paymentName, amount, payer) => {
         const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members }
         const updatedPayments = [...selectedList.payments, newPayment]
@@ -59,11 +70,9 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
 
         if (paymentName.trim() && amount.trim()) {
             AddPayment(paymentName, amount, payer)
-            navigate(`/list/${id}`)
+            navigate(`/list/${id}?view=payments`)
         }
     }
-
-    const maxLength = 27
 
     const handleNewPaymentName = (event) => {
         const newPaymentName = event.target.value.charAt(0).toUpperCase()+event.target.value.slice(1)
@@ -74,13 +83,18 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     }
 
     const handleCheckboxChange = (uid) => {
-        setMembers(prevMembers => 
-            prevMembers.includes(uid) ? prevMembers.filter(memberUid => memberUid !== uid) : [...prevMembers, uid]
-        )
+        setMembers(prevMembers => {
+            const isMember = prevMembers.find(member => member.uid === uid)
+            if (isMember) {
+                return prevMembers.filter(member => member.uid !== uid)
+            } else {
+                return [...prevMembers, { uid, amount: 0 }]
+            }
+        })
     }
 
     const PriceMemberEven = () => {
-        return members.length > 0 ? amount/members.length : 0
+        return members.length > 0 ? amount / members.length : 0
     }
   
     return (
@@ -104,7 +118,7 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
                 {nombreUserMember.length > 0 && (
                     <>
                     <label htmlFor="payer">Quien ha pagado</label>
-                    <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer}>
+                    <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
                     {selectedList.userMember.map((uid, index) => {
                         return (
                             <option key={uid} value={uid}>{nombreUserMember[index]}</option>
@@ -128,7 +142,7 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
                         <div key={uid} className="participantsList fila-between">
                             <div className="fila-start">
                                 <Checkbox 
-                                checked={members.includes(uid)}
+                                checked={!!members.find(member => member.uid === uid)}
                                 onChange={() => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))}}
                                 sx={{
                                 '&.Mui-checked': {
@@ -146,7 +160,7 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
                                 />           
                                 <div className="participantsName" style={{marginLeft: "10px"}}>{nombreUserMember[index]}</div>
                             </div>
-                            <h4 className="priceMember" style={{color: amount.trim() === "" ? "grey" : "black"}}>{(members.includes(uid) ? PriceMemberEven() : 0).toFixed(2)}</h4>
+                            <h4 className="priceMember" style={{color: amount.trim() === "" ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)}</h4>
                         </div>
                     )})}
                 </div>
