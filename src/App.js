@@ -259,10 +259,6 @@ function App() {
     updateLista(id, "showVotes", !showVotes)
   }
 
-  const handleNewPayment = (id, updatedPayments) => {
-    updateLista(id, "payments", updatedPayments)
-  }
-
   const UsuarioCompleto = async (uid) => {
     const userDoc = await getDoc(doc(db, "usuarios", uid));
     if (userDoc.exists()) {
@@ -354,17 +350,17 @@ function App() {
               />}
             />
             <Route path='/list/:id/newpayment' element={
-              <NewPayment 
-                handleNewPayment={handleNewPayment}
+              <NewPayment
+                updateLista={updateLista}
                 listas={listas}
                 UsuarioCompleto={UsuarioCompleto}
               />}
             />           
             <Route path='/list/:id/:paymentId' element={
               <PaymentDetail 
-                handleNewPayment={handleNewPayment}
                 listas={listas}
                 UsuarioCompleto={UsuarioCompleto}
+                updateLista={updateLista}
               />}
             />            
           </>
