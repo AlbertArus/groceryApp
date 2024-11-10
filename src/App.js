@@ -316,6 +316,7 @@ function App() {
                 sharePopupVisible={sharePopupVisible}
                 setSharePopupVisible={setSharePopupVisible}
                 UsuarioCompleto={UsuarioCompleto}
+                updateLista={updateLista}
               />}
             />
             <Route path="/newlist" element={

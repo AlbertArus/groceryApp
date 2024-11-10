@@ -15,7 +15,7 @@ import Pagos from '../Pagos/Pagos'
 import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible, UsuarioCompleto }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, handleArchive, usuario, sharePopupVisible, setSharePopupVisible, handleOcultarPrecios, handleVotesVisible, UsuarioCompleto, updateLista }) => {
 
   let params = useParams();
   
@@ -493,6 +493,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               price={formattedTotalPrice}
               itemsAdquirido={ItemsChecked()}
               UsuarioCompleto={UsuarioCompleto}
+              updateLista={updateLista}
             />
             </>
           )}

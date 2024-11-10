@@ -3,26 +3,34 @@ import EmptyState from "../ui-components/EmptyState"
 import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
 
-const Pagos = ({lista, itemsLength, UsuarioCompleto}) => {
+const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista}) => {
   const {usuario} = useUsuario()
   const navigate = useNavigate()
   const [nombrePayer, setNombrePayer] = useState([]);
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
+    if (lista && !lista.payments) {
+      updateLista(lista.id, "payments", [])
+    }
+  }, [lista]);
+
+  useEffect(() => {
     if (lista && lista.payments) {
         const listaPaymentPayer = async () => {
-            const nombrePayer = await Promise.all(
-              lista.payments.map(payment => 
-                UsuarioCompleto(payment.payer)
-            ));
-            setNombrePayer(nombrePayer);
+          const nombrePayer = await Promise.all(
+            lista.payments.map(payment => 
+              UsuarioCompleto(payment.payer)
+          ));
+          setNombrePayer(nombrePayer);
         };
         listaPaymentPayer();
     }
   }, [UsuarioCompleto, lista]);
 
-  const totalGastoLista = lista.payments.reduce((total, payment) => {
+  console.log(lista.payments)
+
+  const totalGastoLista = lista?.payments?.reduce((total, payment) => {
     return total + Number(payment.amount)
   },0)
 
@@ -44,11 +52,11 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto}) => {
           img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
           alt={"Set of grocery bags full of items"}
           description={"Añade tus pagos y ajusta cuentas fácilmente"}
-          onClick={() => navigate(`/list/${lista.id}/newpayment`)}
+          onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
           buttonCopy={"Añadir pago"}
         />
       )}
-      {lista.payments.length !== 0 && (
+      {lista?.payments && lista.payments.length !== 0 && (
         <>
           <div style={{display: "flex", justifyContent: "space-around", marginBottom: "15px"}}>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -61,7 +69,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto}) => {
             </div>
           </div>
           <div >
-            {lista.payments.map((payment) => {
+            {lista.payments.map((payment, index) => {
               return (
                 <div key={payment.id}>
                   
@@ -69,7 +77,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto}) => {
                     <div className="vistaGastos fila-between">
                       <div className="columna-start">
                         <h4>{payment.paymentName}</h4>
-                        <h6>Pagado por <strong style={{fontWeight: "500"}}>{nombrePayer}</strong></h6>
+                        <h6>Pagado por <strong style={{fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
                       </div>
                       <h4>{payment.amount} €</h4>
                     </div>
