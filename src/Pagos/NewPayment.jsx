@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { v4 as uuidv4 } from 'uuid'
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
@@ -8,6 +8,7 @@ import { Checkbox } from "@mui/material";
 const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     const {usuario} = useUsuario()
     const {id} = useParams()
+    const [searchParams] = useSearchParams()
     const selectedList = listas.find(lista => lista.id === id)
     const [paymentName, setPaymentName] = useState("");
     const [errors, setErrors] = useState({paymentName: false, amount: false, members: false})
@@ -30,10 +31,12 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     }, [UsuarioCompleto, selectedList]);
 
     useEffect(() => {
-        if (nombreUserMember.length > 0) {
-            setPayer(nombreUserMember[0]);
+        if (nombreUserMember.length > 0 && selectedList.userMember.length === 1) {
+            console.log("Asignando payer:", selectedList.userMember[0]); // Verifica el valor
+            setPayer(selectedList.userMember[0]);
         }
-    }, [nombreUserMember]);
+    }, [nombreUserMember, selectedList.userMember]);
+    
     
     console.log(selectedList)
     const AddPayment = (paymentName, amount, payer) => {
@@ -83,7 +86,7 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     return (
         <div className="FormLista app">
             <Head
-                path={`list/${id}`}
+                path={`list/${id}?view=${searchParams.get("view")}`}
                 sectionName={"Nuevo pago"}
             />
             <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
@@ -104,7 +107,7 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
                     <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer}>
                     {selectedList.userMember.map((uid, index) => {
                         return (
-                            <option key={uid} value={nombreUserMember[index]}>{nombreUserMember[index]}</option>
+                            <option key={uid} value={uid}>{nombreUserMember[index]}</option>
                         )
                     })}
                     </select>

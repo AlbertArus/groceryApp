@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
@@ -22,10 +22,12 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isEStateLista, setIsEStateLista] = useState(false)
   const [searchResult, setSearchResult] = useState("")
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
-  const [isToggleSelected, setIsToggleSelected] = useState("Lista")
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isToggleSelected, setIsToggleSelected] = useState(() => {
+    return searchParams.get("view") === "payments" ? "Pagos" : "Lista";
+  });  
   const [isToggleShown, setIsToggleShown] = useState(false)
   const firstCategoryRef = useRef(null)
-
   const selectedList = listas.find(lista => lista.id === params.id);
   
   const fetchLista = useCallback(async () => {
@@ -85,8 +87,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return () => unsubscribe(); // Cleanup on component unmount
   }, [params.id, setListas]);  
 
-
-
   const handleDeleteItemUserMember = (id, uid) => {
     const updatedCategories = selectedList.categories.map(category => (
       {...category, items: category.items.map(item => 
@@ -111,6 +111,20 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       }
     }
   },[selectedList, usuario.uid])
+
+  useEffect(() => {
+    if (searchParams.get("view") === "payments") {
+      setIsToggleSelected("Pagos");
+    } else {
+      setIsToggleSelected("Lista");
+    }
+  }, [searchParams]);
+
+  const handleToggleChange = (selected) => {
+    setIsToggleSelected(selected);
+    // Actualiza el parámetro de la URL sin redirigir
+    setSearchParams({ view: selected === "Pagos" ? "payments" : "lista" });
+  };
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false };
@@ -399,7 +413,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             option2={"Pagos"}
             form={"bars"}
             isToggleSelected={isToggleSelected}
-            setIsToggleSelected={setIsToggleSelected}
+            setIsToggleSelected={handleToggleChange}
           />
           {isToggleSelected === "Lista" ? (
             <>
@@ -478,6 +492,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               itemsLength={totalItemsLength}
               price={formattedTotalPrice}
               itemsAdquirido={ItemsChecked()}
+              UsuarioCompleto={UsuarioCompleto}
             />
             </>
           )}

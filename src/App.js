@@ -19,7 +19,6 @@ import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc, getDoc } from "
 import { useUsuario } from './UsuarioContext.jsx';
 import NewPayment from './Pagos/NewPayment.jsx';
 import PaymentDetail from './Pagos/PaymentDetail.jsx';
-import Pagos from './Pagos/Pagos.jsx';
 
 function App() {
   
@@ -359,15 +358,8 @@ function App() {
                 listas={listas}
                 UsuarioCompleto={UsuarioCompleto}
               />}
-            />
-            <Route path='/list/:id/payments' element={
-              <Pagos 
-                handleNewPayment={handleNewPayment}
-                listas={listas}
-                UsuarioCompleto={UsuarioCompleto}
-              />}
-            />            
-            <Route path='/list/:id/payments/:paymentId' element={
+            />           
+            <Route path='/list/:id/:paymentId' element={
               <PaymentDetail 
                 handleNewPayment={handleNewPayment}
                 listas={listas}

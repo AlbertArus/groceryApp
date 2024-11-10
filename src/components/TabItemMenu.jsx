@@ -1,4 +1,4 @@
-const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemUserMember }) => {
+const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemUserMember, priceMember }) => {
 
     return (
         <div className="tabItemMenu fila-start pointer" onClick={onClick} style={style}>
@@ -13,6 +13,9 @@ const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemU
                     <span className="material-symbols-outlined icon-medium" onClick={handleDeleteItemUserMember}>
                         close
                     </span>
+                }
+                {priceMember && 
+                    <h4>{priceMember}</h4>
                 }
             </div>
         </div>

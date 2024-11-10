@@ -1,9 +1,9 @@
-import { useEffect } from "react"
+// import { useEffect } from "react"
 import { useState } from "react"
-import { useUsuario } from "../UsuarioContext"
+// import { useUsuario } from "../UsuarioContext"
 
 const Toggle = ({form, option1, option2, option3, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleSelected, setIsToggleSelected}) => {
-    const usuario = useUsuario
+    // const usuario = useUsuario
     const [isToggleActive, setIsToggleActive] = useState(option1)
 
     const handleClickActive = (toggle) => {
