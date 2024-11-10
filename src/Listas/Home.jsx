@@ -6,7 +6,7 @@ import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
 import EmptyState from "../ui-components/EmptyState";
 
-const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchived, AllArchived, handleNotified, handleDuplicate }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDuplicate, updateLista }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const [filteredListas, setFilteredListas] = useState(listas)
@@ -117,7 +117,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                     </Link>
                                                 </div>
                                                 <div className="fila-start" style={{position: "relative"}}>
-                                                    <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); handleNotified(lista.id, lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                    <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); updateLista(lista.id, "isNotified", !lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
                                                     <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
                                                     {isOptionsMenuVisible === lista.id && ( 
                                                         <OptionsMenuListHome
@@ -125,7 +125,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                                                             key={lista.id}
                                                             ref={optionsMenuListHomeRef}
                                                             handleDuplicate={() => handleDuplicate(lista.id)}
-                                                            handleArchive={() => handleArchive(lista.id, lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
+                                                            handleArchive={() => updateLista(lista.id, "isArchived", !lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
                                                             deleteLista={deleteLista}
                                                             lista={lista}
                                                         />
@@ -147,7 +147,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, goToArchi
                     </>
                 )}
             </div>
-            <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={goToArchived} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
+            <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={() => navigate("/archived")} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
             {!isEStateHome && 
                 <ButtonFAB
                     path={"newlist"}

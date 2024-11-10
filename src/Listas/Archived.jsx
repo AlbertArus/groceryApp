@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import Head from "../components/Head"
 
-const Archived = ({ listas, handleArchive, deleteLista }) => {
+const Archived = ({ listas, deleteLista, updateLista }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRefs = useRef({})
-    
+    const navigate = useNavigate()
+
     const listaslength = listas.length
     
     const handleMenuVisibility = (event, id) => {
@@ -87,7 +88,7 @@ const Archived = ({ listas, handleArchive, deleteLista }) => {
                                         style={{right: "0"}}
                                         key={lista.id}
                                         ref={optionsMenuListHomeRef}
-                                        handleArchive={() => handleArchive(lista.id, lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Home que son distintas (archivadas y no)
+                                        handleArchive={() => {updateLista(lista.id, "isArchived", !lista.isArchived); navigate("/")}} //Envío desde aquí porque dentro colisiona con lista.id de Home que son distintas (archivadas y no)
                                         deleteLista={deleteLista}
                                         listaArchivada={lista}
                                     />

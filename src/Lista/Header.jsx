@@ -4,7 +4,7 @@ import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 
-const Header = ({ handleVotesVisible, handleArchive, deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, handleOcultarPrecios, UsuarioCompleto }) => {
+const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
@@ -84,14 +84,12 @@ const Header = ({ handleVotesVisible, handleArchive, deleteLista, itemslength, l
                                 <OptionsMenu
                                     style={{right:"0"}} 
                                     ref={optionsMenuRef}
-                                    handleVotesVisible={handleVotesVisible}
                                     deleteLista={deleteLista}
-                                    handleArchive={handleArchive}
                                     itemslength={itemslength}
                                     lista={lista}
                                     handleCheckAll={handleCheckAll}
                                     handleUnCheckAll={handleUnCheckAll}
-                                    handleOcultarPrecios={handleOcultarPrecios}
+                                    updateLista={updateLista}
                                 />
                             }
                         </div>

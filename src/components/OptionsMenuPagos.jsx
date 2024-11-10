@@ -17,8 +17,7 @@ const OptionsMenuPagos = forwardRef(({ lista, payment, deletePayment, style }, r
       <ItemMenu
         iconName={"edit"}
         itemMenuName={"Editar gasto"}
-        // onClick={() => handleVotesVisible(lista.id, lista.showVotes)}
-        />
+      />
       <ItemMenu
         iconName={"share"}
         itemMenuName={"Compartir gasto"}

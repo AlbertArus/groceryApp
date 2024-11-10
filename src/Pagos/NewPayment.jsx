@@ -5,7 +5,7 @@ import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox } from "@mui/material";
 
-const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
+const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     const {usuario} = useUsuario()
     const {id} = useParams()
     const [searchParams] = useSearchParams()
@@ -53,13 +53,9 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
     const AddPayment = (paymentName, amount, payer) => {
         const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members }
         const updatedPayments = [...selectedList.payments, newPayment]
-        handleNewPayment(id, updatedPayments)
+        updateLista(selectedList.id, "payments", updatedPayments)
     }
     
-    // const EditPayment = (paymentName, amount, payer, members) => {
-
-    // }
-
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -160,7 +156,7 @@ const NewPayment = ({ listas, handleNewPayment, UsuarioCompleto}) => {
                                 />           
                                 <div className="participantsName" style={{marginLeft: "10px"}}>{nombreUserMember[index]}</div>
                             </div>
-                            <h4 className="priceMember" style={{color: amount.trim() === "" ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)}</h4>
+                            <h4 className="priceMember" style={{color: amount.trim() === "" ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
                         </div>
                     )})}
                 </div>

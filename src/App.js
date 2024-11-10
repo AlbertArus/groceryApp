@@ -188,11 +188,6 @@ function App() {
   const archivedList = listas.filter(lista => lista.isArchived)
   const AllArchived = archivedList.length
 
-  const goToArchived = (e) => {
-    e.preventDefault()
-    navigate("/archived")
-  }
-
   const duplicarLista = async (id) => {
     const originalLista = listas.find(lista => lista.id === id)
     if (!originalLista) {
@@ -242,23 +237,6 @@ function App() {
     }
   };
 
-  const handleArchive = async (id, isArchived) => {
-    updateLista(id, "isArchived", !isArchived)
-    navigate("/");
-  }
-
-  const handleNotified = (id, isNotified) => {
-    updateLista(id, "isNotified", !isNotified)
-  }
-
-  const handleOcultarPrecios = (id, showPrices) => {
-    updateLista(id, "showPrices", !showPrices)
-  }
-
-  const handleVotesVisible = (id, showVotes) => {
-    updateLista(id, "showVotes", !showVotes)
-  }
-
   const UsuarioCompleto = async (uid) => {
     const userDoc = await getDoc(doc(db, "usuarios", uid));
     if (userDoc.exists()) {
@@ -291,11 +269,9 @@ function App() {
                 deleteLista={deleteLista}
                 updateListaCategories={updateListaCategories}
                 updateListaItems={updateListaItems}
-                handleArchive={handleArchive}
                 AllArchived={AllArchived}
-                goToArchived={goToArchived}
-                handleNotified={handleNotified}
                 handleDuplicate={handleDuplicate}
+                updateLista={updateLista}
               />}
             />
             <Route path="/list/:id" element={
@@ -305,9 +281,6 @@ function App() {
                 deleteLista={deleteLista}
                 updateListaCategories={updateListaCategories}
                 updateListaItems={updateListaItems}
-                handleArchive={handleArchive}
-                handleOcultarPrecios={handleOcultarPrecios}
-                handleVotesVisible={handleVotesVisible}
                 usuario={usuario}
                 sharePopupVisible={sharePopupVisible}
                 setSharePopupVisible={setSharePopupVisible}
@@ -324,10 +297,9 @@ function App() {
             />
             <Route path="/archived" element={
               <Archived
-                goToArchived={goToArchived}
                 listas={listas.filter((lista) => lista.isArchived)}
-                handleArchive={handleArchive}
                 deleteLista={deleteLista}
+                updateLista={updateLista}
               />}
             />
             <Route path="/profile" element={
