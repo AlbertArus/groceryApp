@@ -8,19 +8,30 @@ const PaymentDetail = ({listas, UsuarioCompleto}) => {
   const {id, paymentId} = useParams()
   const [searchParams] = useSearchParams()
   // const {usuario} = useUsuario()
-  const selectedList = listas.find(lista => lista.id === id)
-  const payment = selectedList.payments.find(payment => payment.id === paymentId)
+  const lista = listas.find(lista => lista.id === id)
+  const payment = lista.payments.find(payment => payment.id === paymentId)
+  const [nombrePayer, setNombrePayer] = useState([]);
   const [nombrePaymentMember, setNombrePaymentMember] = useState([]);
 
   useEffect(() => {
     if (payment && payment.members) {
         const paymentMembers = async () => {
             const paymentMembersName = await Promise.all(
-                payment.members.map(uid => UsuarioCompleto(uid))
+                payment.members.map(member => UsuarioCompleto(member.uid))
             );
             setNombrePaymentMember(paymentMembersName);
         };
         paymentMembers();
+    }
+  }, [UsuarioCompleto, payment])
+
+  useEffect(() => {
+    if (payment && payment.payer) {
+        const listaPaymentPayer = async () => {
+            const nombrePayer = await UsuarioCompleto(payment.payer)
+            setNombrePayer(nombrePayer);
+        };
+        listaPaymentPayer();
     }
   }, [UsuarioCompleto, payment]);
 
@@ -34,35 +45,28 @@ const PaymentDetail = ({listas, UsuarioCompleto}) => {
       />
       <div className="app-margin">
       <h3 style={{display: "flex", justifyContent: "center"}}>{payment.paymentName}</h3>
-        {nombrePaymentMember.length > 0 && (
+        {nombrePayer.length > 0 && (
           <div style={{width: "100%"}}>
             <div style={{margin: "20px 0px 0px 0px"}}>Pagado por</div>
               <TabItemMenu
                 key={id}
                 iconName="account_circle"
-                itemMenuName={payment.payer}
+                itemMenuName={nombrePayer}
                 priceMember={payment.amount}
               />
             <div style={{margin: "20px 0px 0px 0px"}}>Participantes</div>
-            {payment.members.map((uid, index) => (
+            {payment.members.map((member, index) => (
               <TabItemMenu 
-                key={uid}
+                key={member.uid}
                 iconName="account_circle"
                 itemMenuName={nombrePaymentMember[index]}
-                priceMember={payment.amount}
+                priceMember={member.amount}
               />
             ))}
           </div>
         )}      
       </div>
     </div>
-                  // return (
-                  // <div key={uid} className="participantsList fila-between">
-                  //     <div className="fila-start">    
-                  //       <div className="participantsName" style={{marginLeft: "10px"}}>{nombreUserMember[index]}</div>
-                  //     </div>
-                  //     {/* <h4 className="priceMember">{(members.includes(uid) ? PriceMemberEven() : 0).toFixed(2)}</h4> */}
-                  // </div>
   )
 }
 
