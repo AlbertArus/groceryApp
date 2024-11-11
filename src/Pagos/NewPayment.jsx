@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox } from "@mui/material";
+import GastosLista from "./GastosLista";
 
 const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     const {usuario} = useUsuario()
@@ -123,11 +124,17 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                     </select>
                     </>
                 )}
-                <div>
+                <div style={{width: "100%"}}>
                     <div style={{margin: "20px 0px 5px 0px"}}>Qué has pagado</div>
-                    <div>
-
-                    </div>
+                    <md-chip-set>
+                        <md-filter-chip label="De esta lista"></md-filter-chip>
+                        <md-filter-chip label="Otro gasto"></md-filter-chip>
+                    </md-chip-set>
+                    <GastosLista 
+                        selectedList={selectedList}
+                        amount={amount}
+                        setAmount={setAmount}
+                    />
                 </div>
                 {nombreUserMember.length > 0 && (
                 <div style={{width: "100%"}}>
@@ -135,7 +142,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                     <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
                     {selectedList.userMember.map((uid, index) => {
                         return (
-                        <div key={uid} className="participantsList fila-between">
+                        <div key={uid} className="newpaymentLists fila-between">
                             <div className="fila-start">
                                 <Checkbox 
                                 checked={!!members.find(member => member.uid === uid)}

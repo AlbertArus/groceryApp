@@ -29,7 +29,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista}) => {
     }
   }, [UsuarioCompleto, lista]);
 
-  console.log(lista.payments)
+  // console.log(lista.payments)
 
   const totalGastoLista = lista?.payments?.reduce((total, payment) => {
     return total + Number(payment.amount)

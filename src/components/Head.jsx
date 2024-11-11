@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 const Head = ({sectionName, path, handleMenuVisibility, state, component: Component, lista, payment, deletePayment, style}) => {
     const navigate = useNavigate()
-    console.log(state)
 
   return (
     <div className="head">

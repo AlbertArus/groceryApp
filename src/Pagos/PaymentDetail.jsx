@@ -37,8 +37,6 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
     }
   }, [UsuarioCompleto, payment]);
 
-  console.log(payment)
-
   const handleMenuVisibility = () => {
     setIsOptionsMenuVisible(prevState => !prevState)
   }
