@@ -15,6 +15,8 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
   const [nombrePaymentMember, setNombrePaymentMember] = useState([]);
   const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
 
+  console.log(payment)
+
   useEffect(() => {
     if (payment && payment.members) {
         const paymentMembers = async () => {

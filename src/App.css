@@ -533,8 +533,15 @@ button[type=submit] {
   border: 1.5px solid #ED9E04;
   border-radius: 5px;
   background-color: #FBE7C1;
+  transition: background-color 0.3s ease;
   text-align: center;
   cursor: pointer;
+}
+
+.buttonMain.inactive {
+  background-color: #f0f0f0;
+  color: #000;
+  border: 1px solid #ddd;
 }
 
 .ToggleLista {

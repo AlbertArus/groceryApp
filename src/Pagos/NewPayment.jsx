@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { v4 as uuidv4 } from 'uuid'
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Chip } from "@mui/material";
 import GastosLista from "./GastosLista";
 
 const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
@@ -11,12 +11,14 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     const {id} = useParams()
     const [searchParams] = useSearchParams()
     const selectedList = listas.find(lista => lista.id === id)
-    const [paymentName, setPaymentName] = useState("");
+    const [paymentName, setPaymentName] = useState("")
     const [errors, setErrors] = useState({paymentName: false, amount: false, members: false})
-    const [amount, setAmount] = useState("");
+    const [amount, setAmount] = useState("")
     const [members, setMembers] = useState([])
-    const [payer, setPayer] = useState("");
-    const [nombreUserMember, setNombreUserMember] = useState([]);
+    const [payer, setPayer] = useState("")
+    const [nombreUserMember, setNombreUserMember] = useState([])
+    const [elementsPaid, setElementsPaid] = useState([])
+    const [selectedChip, setSelectedChip] = useState("De esta lista");
     const navigate = useNavigate()
     const maxLength = 27
     
@@ -52,7 +54,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     }, [amount]);
         
     const AddPayment = (paymentName, amount, payer) => {
-        const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members }
+        const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
         const updatedPayments = [...selectedList.payments, newPayment]
         updateLista(selectedList.id, "payments", updatedPayments)
     }
@@ -93,6 +95,10 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     const PriceMemberEven = () => {
         return members.length > 0 ? amount / members.length : 0
     }
+
+    const handleChipClick = (chipLabel) => {
+        setSelectedChip(chipLabel);
+    };
   
     return (
         <div className="FormLista app">
@@ -109,9 +115,6 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                 <div className="iconSuperpuesto" style={{paddingRight:"5px"}}>{paymentName.length}/{maxLength}</div>
                 </div>
                 <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
-                <label htmlFor="amount"> Importe </label>
-                <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
-                <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
                 {nombreUserMember.length > 0 && (
                     <>
                     <label htmlFor="payer">Quien ha pagado</label>
@@ -126,19 +129,59 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                 )}
                 <div style={{width: "100%"}}>
                     <div style={{margin: "20px 0px 5px 0px"}}>Qué has pagado</div>
-                    <md-chip-set>
-                        <md-filter-chip label="De esta lista"></md-filter-chip>
-                        <md-filter-chip label="Otro gasto"></md-filter-chip>
-                    </md-chip-set>
-                    <GastosLista 
-                        selectedList={selectedList}
-                        amount={amount}
-                        setAmount={setAmount}
+                    <Chip
+                        label="De esta lista"
+                        clickable
+                        onClick={() => handleChipClick("De esta lista")}
+                        sx={{
+                            marginRight: "5px",
+                            padding: "5px",
+                            borderRadius: "5px",
+                            border: selectedChip === "De esta lista" ? '2px solid #ED9E04' : 'none', // Tiene border y el otro no porque al ser la default, debe tenerlo desde que se carga
+                            backgroundColor: selectedChip === "De esta lista" ? '#ffeec9' : '#ffeec9',
+                            color: selectedChip === "De esta lista" ? '#000' : '#000',
+                            "&:hover": {
+                                border: selectedChip === "De esta lista" ? '1.5px solid #ED9E04' : 'none',
+                                backgroundColor: selectedChip === "De esta lista" ? '#FBE7C1' : '#FBE7C1',
+                            },
+                        }}
                     />
+                    <Chip
+                        label="Otro gasto"
+                        clickable
+                        onClick={() => handleChipClick("Otro gasto")}
+                        sx={{
+                            padding: "5px",
+                            borderRadius: "5px",
+                            backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
+                            color: selectedChip === "Otro gasto" ? '#000' : '#000',
+                            "&:hover": {
+                                border: selectedChip === "Otro gasto" ? '1.5px solid #ED9E04' : 'none',
+                                backgroundColor: selectedChip === "Otro gasto" ? '#FBE7C1' : '#f0f0f0',
+                            },
+                        }}
+                    />
+                    <div style={{marginTop: "10px"}}>
+                        {selectedChip === "De esta lista" ? (
+                            <GastosLista 
+                                selectedList={selectedList}
+                                amount={amount}
+                                setAmount={setAmount}
+                                elementsPaid={elementsPaid}
+                                setElementsPaid={setElementsPaid}
+                            />
+                        ) : (
+                        <>
+                            <label htmlFor="amount"> Importe </label>
+                            <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
+                            <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
+                        </>
+                        )}
+                    </div>
                 </div>
                 {nombreUserMember.length > 0 && (
                 <div style={{width: "100%"}}>
-                    <div style={{margin: "20px 0px 0px 0px"}}>Participantes en este gasto </div>
+                    <div style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </div>
                     <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
                     {selectedList.userMember.map((uid, index) => {
                         return (
