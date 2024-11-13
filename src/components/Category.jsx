@@ -2,16 +2,15 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, lista, searchResult, setSearchResult, firstCategoryRef, handleDeleteItemUserMember }) => {
+const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, lista, searchResult, setSearchResult, firstCategoryRef, handleDeleteItemUserMember, category }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
   const toggleRef = useRef(null)
   const checkCategoryRef = useRef(null)
 
-  const itemsLength = items.length
-  const sumPrices = items.reduce((accumulator, item) => accumulator + Number(item.price), 0)
-  const FormattedSumPrices = sumPrices.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+  const itemsLength = items.length  
+  const FormattedSumPrice = category?.sumPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   useEffect(() => {
     if(categories.length === 1 && firstCategoryRef.current) {
@@ -31,9 +30,8 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
     }
   }, [isCollapsed]);
   
-  const currentCategory = categories.find(category => category.id === id)
-  const hasItems = currentCategory.items.length > 0
-  const categoryChecked = hasItems && (currentCategory.isChecked===true || currentCategory.items.every(item => item.isChecked))
+  const hasItems = category.items.length > 0
+  const categoryChecked = hasItems && (category.isChecked===true || category.items.every(item => item.isChecked))
 
   useEffect(() => {
       if(categoryChecked) {
@@ -41,7 +39,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
       } else {
         setIsCollapsed(false)
       }
-  },[currentCategory, categoryChecked])
+  },[category, categoryChecked])
 
   const handleAddingItem = (id) => {
     setIsCollapsed(false)
@@ -79,7 +77,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
             <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} inputMode="text" enterKeyHint="done" onKeyDown={handleCategoryKeyDown} onChange={(e) => setCategoryName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={categoryName}></input>
           </div>
-          <h4 style={{fontWeight:"500", display: lista.showPrices ? "flex" : "none"}}>{FormattedSumPrices}</h4>
+          <h4 style={{fontWeight:"500", display: lista.showPrices ? "flex" : "none"}}>{FormattedSumPrice}</h4>
         </div>
         <div className="fila-between">
           <div className="fila-start firstPart">
@@ -97,10 +95,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
           {items && items.map(item => (
             <Item 
               key={item.id}
-              id={item.id}
-              categoryId={id}
               item={item}
-              isChecked={item.isChecked}
               onClick={() => handleCheck(item.id)}
               EditItem={EditItem}
               DeleteItem={() => DeleteItem(item.id)}

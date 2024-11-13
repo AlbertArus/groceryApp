@@ -19,6 +19,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     const [nombreUserMember, setNombreUserMember] = useState([])
     const [elementsPaid, setElementsPaid] = useState([])
     const [selectedChip, setSelectedChip] = useState("De esta lista");
+    const [finalValuePaid, setFinalValuePaid] = useState("")
     const navigate = useNavigate()
     const maxLength = 27
     
@@ -64,7 +65,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
 
         setErrors({
             paymentName: (paymentName.trim() === ""),
-            amount: (amount.trim() === ""),
+            amount: amount.trim() === ""
         })
 
         if (paymentName.trim() && amount.trim()) {
@@ -127,40 +128,50 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                     </select>
                     </>
                 )}
-                <div style={{width: "100%"}}>
-                    <div style={{margin: "20px 0px 5px 0px"}}>Qué has pagado</div>
-                    <Chip
-                        label="De esta lista"
-                        clickable
-                        onClick={() => handleChipClick("De esta lista")}
-                        sx={{
-                            marginRight: "5px",
-                            padding: "5px",
-                            borderRadius: "5px",
-                            border: selectedChip === "De esta lista" ? '2px solid #ED9E04' : 'none', // Tiene border y el otro no porque al ser la default, debe tenerlo desde que se carga
-                            backgroundColor: selectedChip === "De esta lista" ? '#ffeec9' : '#ffeec9',
-                            color: selectedChip === "De esta lista" ? '#000' : '#000',
-                            "&:hover": {
-                                border: selectedChip === "De esta lista" ? '1.5px solid #ED9E04' : 'none',
-                                backgroundColor: selectedChip === "De esta lista" ? '#FBE7C1' : '#FBE7C1',
-                            },
-                        }}
-                    />
-                    <Chip
-                        label="Otro gasto"
-                        clickable
-                        onClick={() => handleChipClick("Otro gasto")}
-                        sx={{
-                            padding: "5px",
-                            borderRadius: "5px",
-                            backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
-                            color: selectedChip === "Otro gasto" ? '#000' : '#000',
-                            "&:hover": {
-                                border: selectedChip === "Otro gasto" ? '1.5px solid #ED9E04' : 'none',
-                                backgroundColor: selectedChip === "Otro gasto" ? '#FBE7C1' : '#f0f0f0',
-                            },
-                        }}
-                    />
+                <div style={{width: "100%", marginTop: "20px"}}>
+                    <div className="fila-between">
+                        <div className="">
+                            <h5 style={{marginBottom: "5px"}}>Qué has pagado</h5>
+                            <Chip
+                                label="De esta lista"
+                                clickable
+                                onClick={() => handleChipClick("De esta lista")}
+                                sx={{
+                                    marginRight: "5px",
+                                    padding: "5px",
+                                    borderRadius: "5px",
+                                    border: selectedChip === "De esta lista" ? '2px solid #ED9E04' : 'none', // Tiene border y el otro no porque al ser la default, debe tenerlo desde que se carga
+                                    backgroundColor: selectedChip === "De esta lista" ? '#ffeec9' : '#ffeec9',
+                                    color: selectedChip === "De esta lista" ? '#000' : '#000',
+                                    "&:hover": {
+                                        border: selectedChip === "De esta lista" ? '1.5px solid #ED9E04' : 'none',
+                                        backgroundColor: selectedChip === "De esta lista" ? '#FBE7C1' : '#FBE7C1',
+                                    },
+                                }}
+                            />
+                            <Chip
+                                label="Otro gasto"
+                                clickable
+                                onClick={() => handleChipClick("Otro gasto")}
+                                sx={{
+                                    padding: "5px",
+                                    borderRadius: "5px",
+                                    backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
+                                    color: selectedChip === "Otro gasto" ? '#000' : '#000',
+                                    "&:hover": {
+                                        border: selectedChip === "Otro gasto" ? '1.5px solid #ED9E04' : 'none',
+                                        backgroundColor: selectedChip === "Otro gasto" ? '#FBE7C1' : '#f0f0f0',
+                                    },
+                                }}
+                            />
+                        </div>
+                        {selectedChip === "De esta lista" && (
+                            <div className="columna-between" style={{alignItems: "flex-end"}}>
+                                <h5>Importe</h5>
+                                <h3 style={{fontWeight: "400"}}>{finalValuePaid.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h3>
+                            </div>
+                        )}
+                    </div>
                     <div style={{marginTop: "10px"}}>
                         {selectedChip === "De esta lista" ? (
                             <GastosLista 
@@ -169,6 +180,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 setAmount={setAmount}
                                 elementsPaid={elementsPaid}
                                 setElementsPaid={setElementsPaid}
+                                setFinalValuePaid={setFinalValuePaid}
                             />
                         ) : (
                         <>
@@ -181,7 +193,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                 </div>
                 {nombreUserMember.length > 0 && (
                 <div style={{width: "100%"}}>
-                    <div style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </div>
+                    <h5 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h5>
                     <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
                     {selectedList.userMember.map((uid, index) => {
                         return (
@@ -206,7 +218,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 />           
                                 <div className="participantsName" style={{marginLeft: "10px"}}>{nombreUserMember[index]}</div>
                             </div>
-                            <h4 className="priceMember" style={{color: amount.trim() === "" ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
+                            <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
                         </div>
                     )})}
                 </div>

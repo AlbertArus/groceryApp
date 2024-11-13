@@ -5,7 +5,7 @@ import Slider from "../ui-components/Slider"
 import MenuTabs from "./MenuTabs";
 import ModalSheet from "../ui-components/ModalSheet";
 
-const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
+const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
 
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
@@ -20,7 +20,7 @@ const Item = ({ UsuarioCompleto, item, id, initialName, initialPrice, onClick, E
 
   const handleEdit = (e) => {
     if(name.trim() && price.trim()) {
-      EditItem(id, name, price);
+      EditItem(item.id, name, price);
     }
   }
 

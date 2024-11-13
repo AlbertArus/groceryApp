@@ -376,7 +376,7 @@ hr {
 .FormLista label {
   font-size: 14px;
   font-weight: 400;
-  margin-top: 10px;
+  margin: 10px 0px 5px 0px;
 }
 
 .FormLista input,
@@ -390,7 +390,6 @@ hr {
   font-size: 16px;
   color: black;
   padding: 5px 5px;
-  margin-top: 5px;
   width: 100%;
 }
 
@@ -405,7 +404,6 @@ hr {
   font-size: 16px;
   color: black;
   padding: 5px 5px;
-  margin: 5px 0px;
   width: 100%;
 }
 

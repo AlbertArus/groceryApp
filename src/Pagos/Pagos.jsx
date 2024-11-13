@@ -3,7 +3,7 @@ import EmptyState from "../ui-components/EmptyState"
 import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
 
-const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista}) => {
+const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
   const {usuario} = useUsuario()
   const navigate = useNavigate()
   const [nombrePayer, setNombrePayer] = useState([]);
@@ -48,6 +48,16 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista}) => {
         {/* <h2 style={{fontWeight: "500"}}>{`Resuemn de ${lista.listaName}`}</h2> */}
         {/* <h5>{itemsLength === 1 ? "Tienes 1 item" : `Tienes ${itemsLength} items`}</h5> */}
       </div>
+      <div style={{display: "flex", justifyContent: "space-around", marginBottom: "15px"}}>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <h6>Gasto total</h6>
+          <h4>{totalGastoLista} €</h4>
+        </div>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <h6>He pagado</h6>
+          <h4>{totalGastoListaUser(usuario.uid)} €</h4>
+        </div>
+      </div>
       {lista?.payments?.length === 0 && (
         <EmptyState 
           img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
@@ -59,16 +69,6 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista}) => {
       )}
       {lista?.payments && lista.payments.length !== 0 && (
         <>
-          <div style={{display: "flex", justifyContent: "space-around", marginBottom: "15px"}}>
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-              <h6>Gasto total</h6>
-              <h4>{totalGastoLista} €</h4>
-            </div>
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-              <h6>He pagado</h6>
-              <h4>{totalGastoListaUser(usuario.uid)} €</h4>
-            </div>
-          </div>
           <div >
             {lista.payments.map((payment, index) => {
               return (

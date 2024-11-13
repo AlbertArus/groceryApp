@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import '../App.css'
 import { v4 as uuidv4 } from 'uuid'
 import toast from 'react-hot-toast'
@@ -308,14 +308,31 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
   }, [params.id, selectedList, updateListaCategories, updateListaItems, setListas])
 
-  const categoriesSums = selectedList?.categories.map(category => {
-    const sumPrice = category.items.reduce((acc, item) => acc + Number(item.price), 0)
-    return {...category, sumPrice: sumPrice};
-  });
+  const categoryPrice = useMemo(() => { // Recuerdo qué contenía y solo cuando cambia ejecuto
+    return selectedList?.categories.map(category => {
+      const sumPrice = category.items.reduce((acc, item) => acc + Number(item.price), 0);
+      return { ...category, sumPrice: sumPrice };
+    });
+  }, [selectedList?.categories]);
 
-  const totalPrice = categoriesSums?.reduce((total, category) => total + category.sumPrice, 0)
-  const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-  
+  const listPrice = useMemo(() => {
+    if (!categoryPrice?.length) return null
+    const totalPrice = categoryPrice.reduce((total, category) => total + category.sumPrice, 0);
+    const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+    return formattedTotalPrice
+
+  }, [categoryPrice]);
+
+  useEffect(() => {
+    if (categoryPrice && JSON.stringify(selectedList.categories) !== JSON.stringify(categoryPrice)) { // Aplano contenido a un string para poder compararlo y solo actualizar si son distintos (puede haber update en dependencia y useMemo ejecuta, pero update de 0)
+      updateLista(selectedList.id, "categories", categoryPrice);
+    }
+    updateLista(selectedList.id, "listPrice", listPrice)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryPrice, selectedList?.id]);
+
+  console.log(selectedList)
+    
   const handleAddCategory = () => {
     const defaultCategoryName = "";
     AddCategory(defaultCategoryName); 
@@ -398,7 +415,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             itemslength={totalItemsLength}
             lista={selectedList}
             items={totalItemsLength}
-            price={formattedTotalPrice}
+            price={listPrice}
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
             usuario={usuario}
@@ -432,7 +449,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               }
               <SubHeader 
                 items={totalItemsLength}
-                price={formattedTotalPrice}
+                price={listPrice}
                 itemsAdquirido={ItemsChecked()}
                 categories={selectedList.categories}
                 lista={selectedList}
@@ -487,7 +504,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             <Pagos
               lista={selectedList} 
               itemsLength={totalItemsLength}
-              price={formattedTotalPrice}
+              price={listPrice}
               itemsAdquirido={ItemsChecked()}
               UsuarioCompleto={UsuarioCompleto}
               updateLista={updateLista}

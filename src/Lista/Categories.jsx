@@ -90,6 +90,7 @@ const Categories = ({
               }
               itemsCategory={itemsCategory}
               categories={categories}
+              category={category}
               handleCounterDown={handleCounterDown}
               handleCounterUp={handleCounterUp}
               lista={lista}

@@ -1,7 +1,7 @@
 import { Checkbox } from "@mui/material";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 
-const GastosLista = ({ selectedList, amount, setElementsPaid, elementsPaid }) => {
+const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, elementsPaid, setFinalValuePaid }) => {
     const [isCollapsed, setIsCollapsed] = useState(
         selectedList.categories.reduce((acc, category) => {
         acc[category.id] = true;
@@ -62,7 +62,24 @@ const GastosLista = ({ selectedList, amount, setElementsPaid, elementsPaid }) =>
             : [...elementsPaid, itemElement]
         );
         }
-    };
+    }
+
+    useEffect(() => {
+        // Calculate the total paid value based on selected categories and items
+        const totalPaid = elementsPaid.reduce((total, paidElement) => {
+            const category = selectedList.categories.find((category) => category.id === paidElement.category);
+            if (paidElement.item) {
+                const item = category.items.find((item) => item.id === paidElement.item);
+                return total + (item ? parseFloat(item.price) : 0);
+            } else {
+                return total + (category ? parseFloat(category.sumPrice) : 0);
+            }
+        }, 0);
+        setFinalValuePaid(totalPaid)
+        if(totalPaid > 0) {
+            setAmount(totalPaid) // Pongo el if porque si no se ejecuta siempre y el input de Otro gasto empieza con el mismo 0€ que tiene totalPaid 
+        }
+    }, [elementsPaid, selectedList, setFinalValuePaid]);
 
     return (
         <div>
@@ -89,8 +106,8 @@ const GastosLista = ({ selectedList, amount, setElementsPaid, elementsPaid }) =>
             />
             <div className="participantsName" style={{ marginLeft: "10px" }}>Toda la lista</div>
             </div>
-            <h4 className="priceMember" style={{ color: amount.trim() === "" ? "grey" : "black" }}>
-            {selectedList.listaName} €
+            <h4 className="priceMember">
+            {selectedList.listPrice}
             </h4>
         </div>
         {selectedList.categories.map((category) => {
@@ -131,8 +148,8 @@ const GastosLista = ({ selectedList, amount, setElementsPaid, elementsPaid }) =>
                     </span>
                     </div>
                 </div>
-                <h4 className="priceMember" style={{ color: amount.trim() === "" ? "grey" : "black" }}>
-                    {selectedList.listaName} €
+                <h4 className="priceMember">
+                    {category.sumPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                 </h4>
                 </div>
                 <div className="columna-start" style={{ marginLeft: "32px" }}>
@@ -166,8 +183,8 @@ const GastosLista = ({ selectedList, amount, setElementsPaid, elementsPaid }) =>
                                 {item.name}
                             </h5>
                             </div>
-                            <h5 className="priceMember" style={{ color: amount.trim() === "" ? "grey" : "black" }}>
-                            {item.price} €
+                            <h5 className="priceMember">
+                            {item.price}
                             </h5>
                         </div>
                         );
