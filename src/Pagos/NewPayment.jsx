@@ -65,10 +65,10 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
 
         setErrors({
             paymentName: (paymentName.trim() === ""),
-            amount: amount.trim() === ""
+            amount: (String(amount).trim() === "")
         })
 
-        if (paymentName.trim() && amount.trim()) {
+        if (paymentName.trim() && (String(amount).trim())) {
             AddPayment(paymentName, amount, payer)
             navigate(`/list/${id}?view=payments`)
         }
