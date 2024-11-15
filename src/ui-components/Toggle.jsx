@@ -1,19 +1,29 @@
 // import { useEffect } from "react"
-import { useState } from "react"
+// import { useState } from "react"
 // import { useUsuario } from "../UsuarioContext"
 
-const Toggle = ({form, option1, option2, option3, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleSelected, setIsToggleSelected}) => {
+const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams}) => {
     // const usuario = useUsuario
-    const [isToggleActive, setIsToggleActive] = useState(option1)
 
     const handleClickActive = (toggle) => {
         setIsToggleActive(toggle)
+        setSearchParams((prevParams) => {
+            const updatedParams = new URLSearchParams(prevParams)
+            updatedParams.set("view", updatedParams.get("view") || "lista")
+            updatedParams.set("area", toggle === "Pagos" ? "pagos" : toggle === "Mis items" ? "misitems" : "todos")
+            return updatedParams
+        })
     }
-
+    
     const handleClickSelected = (toggle) => {
         setIsToggleSelected(toggle)
+        setSearchParams((prevParams) => {
+            const updatedParams = new URLSearchParams(prevParams)
+            updatedParams.set("view", toggle === "Pagos" ? "payments" : "lista")
+            return updatedParams
+        })
     }
-
+    
     // useEffect(() => {
     //     if(form === "tabs") {
     //         let filteredListaForItems
@@ -23,7 +33,7 @@ const Toggle = ({form, option1, option2, option3, listas, lista, setFilteredList
     //             )
     //         } else {
     //             filteredListaForItems = lista.categories.flatMap(category => category.items)
-    //         }
+    //         }dos
     //         setFilteredListaForItems(filteredListaForItems)
     //     }
 
@@ -40,6 +50,19 @@ const Toggle = ({form, option1, option2, option3, listas, lista, setFilteredList
     //     }
     //     setFilteredListas(filteredListas)
     // }, [isToggleActive, listas, usuario.uid, setFilteredListas])
+
+        // useEffect(() => {
+        //     if (origin=== "pagos")
+        //     let filteredListas;
+        //     if (isToggleActive === "mislistas") {
+        //         filteredListas = listas.filter(lista => lista.userCreator === usuario.uid)
+        //     } else if (isToggleActive === "compartidas") {
+        //         filteredListas = listas.filter(lista => lista.userCreator !== usuario.uid && lista.userMember.includes(usuario.uid))
+        //     } else {
+        //         filteredListas = listas
+        //     }
+        //     setFilteredListas(filteredListas)
+        // }, [isToggleActive, listas, usuario.uid, setFilteredListas])
 
     return (
         <>

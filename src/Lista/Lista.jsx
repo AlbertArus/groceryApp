@@ -14,6 +14,7 @@ import Search from './Search'
 import Pagos from '../Pagos/Pagos'
 import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
+import PagoDeuda from '../Pagos/PagoDeuda'
 
 const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista }) => {
 
@@ -25,7 +26,14 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [searchParams, setSearchParams] = useSearchParams();
   const [isToggleSelected, setIsToggleSelected] = useState(() => {
     return searchParams.get("view") === "payments" ? "Pagos" : "Lista";
-  });  
+  })
+  const [isToggleActive, setIsToggleActive] = useState(() => {
+    if (searchParams.get("view") === "payments") {
+        return searchParams.get("area") === "pagos" ? "Pagos" : "Resumen"
+    } else {
+        return searchParams.get("area") === "misitems" ? "Mis items" : "Todos"
+    }
+  })
   const [isToggleShown, setIsToggleShown] = useState(false)
   const firstCategoryRef = useRef(null)
   const selectedList = listas.find(lista => lista.id === params.id);
@@ -113,18 +121,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   },[selectedList, usuario.uid])
 
   useEffect(() => {
-    if (searchParams.get("view") === "payments") {
-      setIsToggleSelected("Pagos");
-    } else {
-      setIsToggleSelected("Lista");
-    }
-  }, [searchParams]);
+    const view = searchParams.get("view")
+    const area = searchParams.get("area")
 
-  const handleToggleChange = (selected) => {
-    setIsToggleSelected(selected);
-    // Actualiza el parámetro de la URL sin redirigir
-    setSearchParams({ view: selected === "Pagos" ? "payments" : "lista" });
-  };
+    if (view === "payments") {
+        setIsToggleSelected("Pagos")
+        setIsToggleActive(area === "pagos" ? "Pagos" : "Resumen")
+    } else {
+        setIsToggleSelected("Lista")
+        setIsToggleActive(isToggleShown && area === "misitems" ? "Mis items" : "Todos")
+    }
+  }, [searchParams, isToggleShown])
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false, isPaid: false };
@@ -427,7 +434,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             option2={"Pagos"}
             form={"bars"}
             isToggleSelected={isToggleSelected}
-            setIsToggleSelected={handleToggleChange}
+            setIsToggleSelected={setIsToggleSelected}
+            setSearchParams={setSearchParams}
           />
           {isToggleSelected === "Lista" ? (
             <>
@@ -439,6 +447,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                   lista={selectedList}
                   setFilteredListaForItems={setFilteredListaForItems}
                   usuario={usuario}
+                  isToggleActive={isToggleActive}
+                  setIsToggleActive={setIsToggleActive}
+                  setSearchParams={setSearchParams}    
                 />
               }
               {!isEStateLista && !isToggleShown &&
@@ -498,17 +509,27 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               option1={"Resumen"}
               option2={"Pagos"}
               form={"tabs"}
+              origin={"Pagos"}
               lista={selectedList}
               usuario={usuario}
+              isToggleActive={isToggleActive}
+              setIsToggleActive={setIsToggleActive}
+              setSearchParams={setSearchParams}
             />
-            <Pagos
-              lista={selectedList} 
-              itemsLength={totalItemsLength}
-              price={listPrice}
-              itemsAdquirido={ItemsChecked()}
-              UsuarioCompleto={UsuarioCompleto}
-              updateLista={updateLista}
-            />
+            {isToggleActive === "Resumen" ? (
+              <Pagos
+                lista={selectedList} 
+                itemsLength={totalItemsLength}
+                price={listPrice}
+                itemsAdquirido={ItemsChecked()}
+                UsuarioCompleto={UsuarioCompleto}
+                updateLista={updateLista}
+              />
+              
+            ) : (
+              <PagoDeuda
+              />
+            )}
             </>
           )}
         </>

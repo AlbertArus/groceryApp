@@ -137,6 +137,8 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 clickable
                                 onClick={() => handleChipClick("De esta lista")}
                                 sx={{
+                                    fontFamily: "inherit",
+                                    fontSize: "14px",
                                     marginRight: "5px",
                                     padding: "5px",
                                     borderRadius: "5px",
@@ -154,6 +156,8 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 clickable
                                 onClick={() => handleChipClick("Otro gasto")}
                                 sx={{
+                                    fontFamily: "inherit",
+                                    fontSize: "14px",
                                     padding: "5px",
                                     borderRadius: "5px",
                                     backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
