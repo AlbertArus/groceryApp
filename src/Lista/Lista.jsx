@@ -10,7 +10,6 @@ import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
-// import ToggleItems from './ToggleItems'
 import Pagos from '../Pagos/Pagos'
 import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
@@ -338,7 +337,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryPrice, selectedList?.id]);
 
-  console.log(selectedList)
+  // console.log(selectedList)
     
   const handleAddCategory = () => {
     const defaultCategoryName = "";
@@ -525,7 +524,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
               />
-              
             ) : (
               <PagoDeuda
               />

@@ -61,7 +61,7 @@ const Archived = ({ listas, deleteLista, updateLista }) => {
             </div>
             {listas && listas.map(lista => lista.isArchived === true && (
                 <div key={lista.id}>
-                    <div className="vistaListas app-margin">
+                    <div className="vistaDatos app-margin">
                         <div className="fila-between" style={{padding: "7px", alignItems: "flex-start"}}>
                             <div className="linkedPart" style={{flex: "1"}}>
                                 <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>

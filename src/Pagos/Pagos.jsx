@@ -44,11 +44,11 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
 
   return (
     <div className="app-margin">
-      <div className="welcome" style={{ marginBottom: "12px" }}>
-        {/* <h2 style={{fontWeight: "500"}}>{`Resuemn de ${lista.listaName}`}</h2> */}
-        {/* <h5>{itemsLength === 1 ? "Tienes 1 item" : `Tienes ${itemsLength} items`}</h5> */}
-      </div>
-      <div style={{display: "flex", justifyContent: "space-around", marginBottom: "15px"}}>
+      {/* <div className="welcome" style={{ marginBottom: "12px" }}>
+        <h2 style={{fontWeight: "500"}}>{`Resuemn de ${lista.listaName}`}</h2>
+        <h5>{itemsLength === 1 ? "Tienes 1 item" : `Tienes ${itemsLength} items`}</h5>
+      </div> */}
+      <div style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
           <h6>Gasto total</h6>
           <h4>{totalGastoLista} €</h4>
@@ -75,7 +75,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
                 <div key={payment.id}>
                   
                   <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
-                    <div className="vistaGastos fila-between">
+                    <div className="vistaDatos fila-between">
                       <div className="columna-start">
                         <h4>{payment.paymentName}</h4>
                         <h6>Pagado por <strong style={{fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>

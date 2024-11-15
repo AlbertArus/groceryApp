@@ -1,4 +1,4 @@
-const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemUserMember, priceMember }) => {
+const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemUserMember, priceMember, img }) => {
 
     return (
         <div className="tabItemMenu fila-start pointer" onClick={onClick} style={style}>
@@ -7,6 +7,9 @@ const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemU
                     <span className="material-symbols-outlined icon-large" style={{ marginRight: "15px" }}>
                         {iconName}
                     </span>
+                    {img && (
+                        <img src="/Fotos GroceryApp/transferencia-de-dinero.png" alt="Hola" style={{width: "40px", marginRight: "15px"}}/>
+                    )}
                     <h4>{itemMenuName}</h4>
                 </div>
                 {handleDeleteItemUserMember &&
