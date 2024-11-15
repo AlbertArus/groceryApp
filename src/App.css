@@ -545,15 +545,14 @@ button[type=submit] {
 .ToggleLista {
   border-radius: 5px;
   background-color: #f0f0f0;
-  padding: 5px 8px;
+  padding: 3px;
   margin: 12px 0px;
   width: max-content;
 }
 
 .toggleL {
   border-radius: 5px;
-  padding: 3px 5px;
-  margin: 0px 2px;
+  padding: 3px 8px;
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
 }
@@ -562,8 +561,7 @@ button[type=submit] {
   border-radius: 5px;
   background-color: white;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
-  padding: 2px 3px;
-  margin: 0px 4px;
+  padding: 3px 8px;
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
 
@@ -641,7 +639,7 @@ button[type=submit] {
 
 .toggleDisplay {
   display: flex;
-  justify-content: space-around ;
+  justify-content: space-around;
 }
 
 .toggleOptions {
