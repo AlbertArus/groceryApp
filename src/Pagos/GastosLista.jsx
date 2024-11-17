@@ -82,7 +82,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
     }, [elementsPaid, selectedList, setFinalValuePaid]);
 
     return (
-        <div>
+        <div style={{marginTop: "10px"}}>
         <div className="newpaymentLists fila-between">
             <div className="fila-start">
             <Checkbox
@@ -184,7 +184,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                             </h5>
                             </div>
                             <h5 className="priceMember">
-                            {item.price}
+                            {item.price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                             </h5>
                         </div>
                         );

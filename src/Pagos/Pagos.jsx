@@ -51,11 +51,11 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
       <div style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
           <h6>Gasto total</h6>
-          <h4>{totalGastoLista} €</h4>
+          <h4>{totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
         </div>
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
           <h6>He pagado</h6>
-          <h4>{totalGastoListaUser(usuario.uid)} €</h4>
+          <h4>{totalGastoListaUser(usuario.uid).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
         </div>
       </div>
       {lista?.payments?.length === 0 && (
@@ -78,9 +78,9 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
                     <div className="vistaDatos fila-between">
                       <div className="columna-start">
                         <h4>{payment.paymentName}</h4>
-                        <h6>Pagado por <strong style={{fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
+                        <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "400"}}>{nombrePayer[index]}</strong></h6>
                       </div>
-                      <h4>{payment.amount} €</h4>
+                      <h4>{payment.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
                     </div>
                   </Link>
                 </div>

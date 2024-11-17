@@ -13,7 +13,7 @@ const PagoDeuda = () => {
     <div className="app-margin">
       <div className="vistaDatos" style={{padding: "0px", margin: "15px 0px"}}>
         <div className="fila-between" style={{padding: "6px"}}>
-          <h5 className="fila-start"><strong style={{fontWeight: "600", paddingRight: "7px"}}>Juan</strong>debe a <strong style={{fontWeight: "600", paddingLeft: "7px"}}>Maria</strong></h5>
+          <h5 className="fila-start"><strong style={{fontWeight: "600", paddingRight: "4px"}}>Juan</strong>debe a <strong style={{fontWeight: "600", paddingLeft: "4px"}}>Maria</strong></h5>
           <div>
             Precio €
           </div>
@@ -35,9 +35,9 @@ const PagoDeuda = () => {
       <div className="vistaDatos" style={{padding: "0px", margin: "15px 0px"}}>
         <div className="fila-between" style={{padding: "6px"}}>
           <div className="columna-start">
-            <h5><strong style={{fontWeight: "600", paddingRight: "7px"}}>Juan Valle-inclán</strong></h5>
+            <h5><strong style={{fontWeight: "600"}}>Juan Valle-inclán</strong></h5>
             <h6>debe a</h6>
-            <h5><strong style={{fontWeight: "600", paddingRight: "7px"}}>Marian Rojas</strong></h5>
+            <h5><strong style={{fontWeight: "600"}}>Marian Rojas</strong></h5>
           </div>
           <div>
             Precio €

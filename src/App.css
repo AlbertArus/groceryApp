@@ -134,15 +134,9 @@ hr {
   top: 0;
 }
 
-.headerLista {
+.columna-start {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.headerArrow {
-  margin: 4px 18px 0px 0px;
+  flex-direction: column;
 }
 
 .headerLista-firstLine-icons {
@@ -373,7 +367,8 @@ hr {
   align-items: center;
 }
 
-.FormLista label {
+.FormLista label, 
+.otherLabel {
   font-size: 14px;
   font-weight: 400;
   margin: 10px 0px 5px 0px;

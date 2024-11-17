@@ -128,9 +128,9 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                     </select>
                     </>
                 )}
-                <div style={{width: "100%", marginTop: "20px"}}>
+                <div style={{width: "100%", marginTop: "10px"}}>
                     <div className="fila-between">
-                        <div className="">
+                        <div>
                             <h5 style={{marginBottom: "5px"}}>Qué has pagado</h5>
                             <Chip
                                 label="De esta lista"
@@ -176,7 +176,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                             </div>
                         )}
                     </div>
-                    <div style={{marginTop: "10px"}}>
+                    <div>
                         {selectedChip === "De esta lista" ? (
                             <GastosLista 
                                 selectedList={selectedList}
@@ -187,11 +187,11 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 setFinalValuePaid={setFinalValuePaid}
                             />
                         ) : (
-                        <>
-                            <label htmlFor="amount"> Importe </label>
-                            <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
-                            <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
-                        </>
+                        <div style={{marginTop: "10px"}}>
+                          <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
+                          <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
+                          <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
+                        </div>
                         )}
                     </div>
                 </div>
