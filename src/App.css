@@ -65,36 +65,30 @@ h1 {
 }
 
 h2 {
-  font-size: 20px;
+  font-size: 18px;
   margin: 0px;
   font-weight: 600;
 }
 
 h3 {
-  font-size: 18px;  
-  margin: 0px;
-  font-weight: 500;
-}
-
-h4 {
-  font-size: 16px;
+  font-size: 16px;  
   margin: 0px;
   font-weight: 400;
 }
 
-h5 {
+h4 {
   font-size: 14px;
   margin: 0px;
   font-weight: 400;
 }
 
-h6 {
+h5 {
   font-size: 12px;
   margin: 0px;
   font-weight: 400;
 }
 
-.h7 {
+h6 {
   font-size: 10px;
   margin: 0px;
   font-weight: 400;
@@ -296,8 +290,8 @@ hr {
   font-family: inherit;
   font-size: inherit;
   color: black;
-  /* flex: 1 auto; */
   padding: 0;
+  font-size: 14px;
 }
 
 .ItemText input[type=number] {
@@ -354,10 +348,6 @@ hr {
   border: 2px solid #ffeec9;
   margin-bottom: 10px;
   padding: 6px;
-}
-
-.iconsNavBar {
-  margin-left: 6px;
 }
 
 .iconsNavBar span {
@@ -625,14 +615,13 @@ button[type=submit] {
 }
 
 .toggle {
-  /* margin-top: -8px; */
   background-color: #ffeec9;
   position: sticky;
   z-index: 900;
-  top: 55px;
+  top: 50px;
 }
 
-.toggleDisplay {
+.toggleBars {
   display: flex;
   justify-content: space-around;
 }
@@ -640,7 +629,7 @@ button[type=submit] {
 .toggleOptions {
   text-align: center;
   padding: 5px 0px;
-  width: 30%;
+  width: 20%;
   cursor: pointer;
 }
 

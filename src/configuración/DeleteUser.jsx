@@ -50,9 +50,9 @@ const DeleteUser = () => {
             path={"profile"}
         />
         <div className="app-margin">
-            <h3 style={{margin: "25px 0px", fontWeight: "600"}}>Eliminar usuario</h3>
-            <h5 style={{marginBottom: "12px"}}>Recuerda que esta acción es irreversible. Perderás el acceso a tu cuenta, tus listas y tus datos.</h5>
-            <h5>Las listas que hayas creado y compartido con otros usuarios que las tengan activas, no se eliminarán por lo que ellos pueden seguir consultándolas y usándolas</h5>
+            <h2 style={{margin: "25px 0px", fontWeight: "600"}}>Eliminar usuario</h2>
+            <h4 style={{marginBottom: "12px"}}>Recuerda que esta acción es irreversible. Perderás el acceso a tu cuenta, tus listas y tus datos.</h4>
+            <h4>Las listas que hayas creado y compartido con otros usuarios que las tengan activas, no se eliminarán por lo que ellos pueden seguir consultándolas y usándolas.</h4>
         </div>
         <button type="submit" style={{backgroundColor: "rgb(248, 167, 167)", position: "fixed", bottom: "30px", left: "50%", transform: "translateX(-50%)", width: "calc(100% - 30px)"}} onClick={() => setDeleteConfirmation(true)}>Eliminar cuenta</button>
         {deleteConfirmation && 
@@ -60,7 +60,7 @@ const DeleteUser = () => {
                 <div className="overlay"></div>
                 <div className="popUp app-margin" style={{backgroundColor: "white"}}>
                     <div className="fila-between" style={{ margin: "15px 0px"}}>
-                        <h4 style={{ fontWeight: "600" }}>Confirma tu contraseña</h4>
+                        <h5 style={{ fontWeight: "600" }}>Confirma tu contraseña</h5>
                         <span className="material-symbols-outlined icon-medium" onClick={() => setDeleteConfirmation(false)}>close</span>
                     </div>
                     <h5>Introduce tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente</h5>

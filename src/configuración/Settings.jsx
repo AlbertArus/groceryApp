@@ -11,7 +11,7 @@ const Settings = () => {
         />
         <div className="contentPerfil app-margin">
             <div className="introPerfil">
-                <h2 style={{ fontWeight: "600", margin: "15px 0px 40px 0px"}}>Ajustes</h2>
+                <h1 style={{ fontWeight: "600", margin: "15px 0px 40px 0px"}}>Ajustes</h1>
             </div>
             <div className="linksPerfil">
                 <h4>Personalización</h4>

@@ -73,7 +73,7 @@ const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll,
             <div className="columna-start">
                 <div className="fila-between" style={{width: "100%"}}>
                     <div className="fila-start">
-                        <span className="material-symbols-outlined icon-me" style={{marginRight: "18px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
+                        <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
                         <h3>{lista.listaName || ""}</h3>
                     </div>
                     <div className="fila-start" style={{position: "relative"}}>

@@ -68,7 +68,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
             />
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
-                    <h2 style={{fontWeight: "500"}}>{`Hola ${usuario.nombre}!`}</h2>
+                    <h1 style={{fontWeight: "500"}}>{`Hola ${usuario.nombre}!`}</h1>
                     <h5>{listaslength === 1 ? "Tienes 1 lista activa" : `Tienes ${listaslength} listas activas`}</h5>
                 </div>
                 {isEStateHome && (
@@ -103,7 +103,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                                                         <div className="fila-between">
                                                             <h3>{lista.listaName}</h3>
                                                         </div>
-                                                        <div>{`Items: ${getListaItemsLength(lista.id)}`}</div>
+                                                        <h5>{`Items: ${getListaItemsLength(lista.id)}`}</h5>
                                                         <div className="fila-start">
                                                             <div className="fila-start-group">
                                                                 <span className="material-symbols-outlined icon-small">group</span>
@@ -114,8 +114,8 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                                                     </Link>
                                                 </div>
                                                 <div className="fila-start" style={{position: "relative"}}>
-                                                    <span className="material-symbols-outlined pointer" onClick={(event) => {event.preventDefault(); updateLista(lista.id, "isNotified", !lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                                    <span className="material-symbols-outlined pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
+                                                    <span className="material-symbols-outlined icon-medium pointer" onClick={(event) => {event.preventDefault(); updateLista(lista.id, "isNotified", !lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                    <span className="material-symbols-outlined icon-medium pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
                                                     {isOptionsMenuVisible === lista.id && ( 
                                                         <OptionsMenuListHome
                                                             style={{right: "0"}}

@@ -68,10 +68,10 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
         <>
         {form === "bars" && (
             <div className="toggle">
-                <div className="app-margin toggleDisplay">
-                    <div onClick={() => handleClickSelected(option1)} className={isToggleSelected === `${option1}` ? "toggleOptions toggleBar" : "toggleOptions"}>{option1}</div>
-                    <div onClick={() => handleClickSelected(option2)} className={isToggleSelected === `${option2}` ? "toggleOptions toggleBar" : "toggleOptions"}>{option2}</div>
-                    <div onClick={() => handleClickSelected(option3)} className={isToggleSelected === `${option3}` ? "toggleOptions toggleBar" : "toggleOptions"} style={{display: option3 ? "block" : "none"}}>{option3}</div>
+                <div className="app-margin toggleBars">
+                    <h4 onClick={() => handleClickSelected(option1)} className={isToggleSelected === `${option1}` ? "toggleOptions toggleBar" : "toggleOptions"}>{option1}</h4>
+                    <h4 onClick={() => handleClickSelected(option2)} className={isToggleSelected === `${option2}` ? "toggleOptions toggleBar" : "toggleOptions"}>{option2}</h4>
+                    <h4 onClick={() => handleClickSelected(option3)} className={isToggleSelected === `${option3}` ? "toggleOptions toggleBar" : "toggleOptions"} style={{display: option3 ? "block" : "none"}}>{option3}</h4>
                 </div>
             </div>
         )}

@@ -108,7 +108,6 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                 sectionName={"Nuevo pago"}
             />
             <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-            {/* <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>Añade un nuevo pago</h3> */}
             <form style={{display: "flex"}} onSubmit={handleSubmit}>
                 <label htmlFor="nombre">Título</label>
                 <div className="iconed-container fila-between">
@@ -131,7 +130,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                 <div style={{width: "100%", marginTop: "10px"}}>
                     <div className="fila-between">
                         <div>
-                            <h5 style={{marginBottom: "5px"}}>Qué has pagado</h5>
+                            <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
                             <Chip
                                 label="De esta lista"
                                 clickable
@@ -171,7 +170,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                         </div>
                         {selectedChip === "De esta lista" && (
                             <div className="columna-between" style={{alignItems: "flex-end"}}>
-                                <h5>Importe</h5>
+                                <h4>Importe</h4>
                                 <h3 style={{fontWeight: "400"}}>{finalValuePaid.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h3>
                             </div>
                         )}
@@ -197,7 +196,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                 </div>
                 {nombreUserMember.length > 0 && (
                 <div style={{width: "100%"}}>
-                    <h5 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h5>
+                    <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
                     <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
                     {selectedList.userMember.map((uid, index) => {
                         return (

@@ -84,15 +84,11 @@ const Registro = ({setUsuario}) => {
 
   return (
     <div className="app">
-        {/* <Navbar 
-            isRegistered={isRegistered}
-        /> */}
         <div className="titleRegistro" style={{margin: "40px 0px 20px 0px"}}>
             <img className="picRegistro" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
-            {/* <h3 style={{marginLeft: "6px"}}>GroceryApp</h3> */}
         </div>        
         <div className="login app-margin">
-            <h3 style={{marginBottom: "15px"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h3>
+            <h2 style={{marginBottom: "25px", textAlign: "center"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre</label>
                 <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>

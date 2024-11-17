@@ -44,10 +44,6 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
 
   return (
     <div className="app-margin">
-      {/* <div className="welcome" style={{ marginBottom: "12px" }}>
-        <h2 style={{fontWeight: "500"}}>{`Resuemn de ${lista.listaName}`}</h2>
-        <h5>{itemsLength === 1 ? "Tienes 1 item" : `Tienes ${itemsLength} items`}</h5>
-      </div> */}
       <div style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
           <h6>Gasto total</h6>

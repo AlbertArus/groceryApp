@@ -68,17 +68,17 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
       >
       </Head>
       <div className="app-margin">
-      <h3 style={{display: "flex", justifyContent: "center"}}>{payment.paymentName}</h3>
+      <h2 style={{display: "flex", justifyContent: "center"}}>{payment.paymentName}</h2>
         {nombrePayer.length > 0 && (
           <div style={{width: "100%"}}>
-            <div style={{margin: "20px 0px 0px 0px"}}>Pagado por</div>
+            <h3 style={{margin: "20px 0px 0px 0px"}}>Pagado por</h3>
               <TabItemMenu
                 key={id}
                 iconName="account_circle"
                 itemMenuName={nombrePayer}
                 priceMember={`${payment.amount} €`}
               />
-            <div style={{margin: "20px 0px 0px 0px"}}>Participantes</div>
+            <h3 style={{margin: "20px 0px 0px 0px"}}>Participantes</h3>
             {payment.members.map((member, index) => (
               <TabItemMenu 
                 key={member.uid}

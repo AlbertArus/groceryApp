@@ -26,7 +26,7 @@ const Perfil = ({ usuario }) => {
                     <div className="foto" style={{ margin: "15px 0px 7px 0px" }}>
                         <span className="material-symbols-outlined icon-xxxlarge">account_circle</span>
                     </div>
-                    <h2 style={{ fontWeight: "600" }}>{usuario.nombre}</h2>
+                    <h1 style={{ fontWeight: "600" }}>{usuario.nombre}</h1>
                     <h5>{usuario.email}</h5>
                 </div>
                 {/* <Link> */}

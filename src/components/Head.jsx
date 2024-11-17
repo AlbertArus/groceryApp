@@ -5,18 +5,16 @@ const Head = ({sectionName, path, handleMenuVisibility, state, component: Compon
 
   return (
     <div className="head">
-      <div className="fila-between app-margin" style={{position: "relative"}}>
-        <div className="perfilHeader fila-start">
-          <div className="headerArrow">
-            <span className="material-symbols-outlined icon-large" onClick={() => navigate(`/${path}`)}>arrow_back</span>
-          </div>
-          <div className="perfilTitle">{sectionName}</div>
+        <div className="fila-between app-margin" style={{position: "relative", padding: "4px 0px"}}>
+            <div className="fila-start">
+                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => navigate(`/${path}`)}>arrow_back</span>
+                <h3>{sectionName}</h3>
+            </div>
+            {state !== undefined && (
+            <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
+            )}
+            {state && Component && <Component lista={lista} payment={payment} style={style} deletePayment={deletePayment}/> }
         </div>
-        {state !== undefined && (
-          <span className="material-symbols-outlined icon-large" onClick={handleMenuVisibility}>more_vert</span>
-        )}
-        {state && Component && <Component lista={lista} payment={payment} style={style} deletePayment={deletePayment}/> }
-      </div>
     </div>
   )
 }

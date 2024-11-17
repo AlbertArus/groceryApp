@@ -50,11 +50,11 @@ const NavBar = ({isRegistered}) => {
             <div className="fila-between app-margin" style={{padding: "4px 0px"}}>
                 <div className="titleNavBar fila-start-group">
                     <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
-                    <h3 style={{marginLeft: "6px"}}>GroceryApp</h3>
+                    <h style={{marginLeft: "6px"}}>GroceryApp</h>
                 </div>
-                <div className="iconsNavBar fila-start" style={{position: "relative", alignItems: "center", display: (location.pathname === "/registro" || isRegistered) ? "none" : "flex"}}>
-                    <span className="material-symbols-outlined pointer">notifications</span>
-                    <span className="material-symbols-outlined pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
+                <div className="fila-start" style={{position: "relative", alignItems: "center", display: (location.pathname === "/registro" || isRegistered) ? "none" : "flex"}}>
+                    <span className="material-symbols-outlined icon-medium pointer">notifications</span>
+                    <span className="material-symbols-outlined pointer" style={{marginLeft: "4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 
                         <OptionsMenuNavBar
                             style={{right:"0"}}
