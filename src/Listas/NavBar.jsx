@@ -50,7 +50,7 @@ const NavBar = ({isRegistered}) => {
             <div className="fila-between app-margin" style={{padding: "4px 0px"}}>
                 <div className="titleNavBar fila-start-group">
                     <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
-                    <h style={{marginLeft: "6px"}}>GroceryApp</h>
+                    <h4 style={{marginLeft: "6px"}}>GroceryApp</h4>
                 </div>
                 <div className="fila-start" style={{position: "relative", alignItems: "center", display: (location.pathname === "/registro" || isRegistered) ? "none" : "flex"}}>
                     <span className="material-symbols-outlined icon-medium pointer">notifications</span>

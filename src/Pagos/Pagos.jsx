@@ -74,7 +74,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
                     <div className="vistaDatos fila-between">
                       <div className="columna-start">
                         <h4>{payment.paymentName}</h4>
-                        <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "400"}}>{nombrePayer[index]}</strong></h6>
+                        <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
                       </div>
                       <h4>{payment.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
                     </div>

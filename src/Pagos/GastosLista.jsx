@@ -104,7 +104,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                 cursor: "pointer",
                 }}
             />
-            <div className="participantsName" style={{ marginLeft: "10px" }}>Toda la lista</div>
+            <h4 style={{ marginLeft: "10px" }}>Toda la lista</h4>
             </div>
             <h4 className="priceMember">
             {selectedList.listPrice}
@@ -136,7 +136,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                     }}
                     />
                     <div className="fila-start">
-                    <h4 className="participantsName" style={{ marginLeft: "10px" }}>
+                    <h4 style={{ marginLeft: "10px" }}>
                         {category.categoryName}
                     </h4>
                     <span
@@ -179,7 +179,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                 cursor: "pointer",
                                 }}
                             />
-                            <h5 className="participantsName" style={{ marginLeft: "10px" }}>
+                            <h5 style={{ marginLeft: "10px" }}>
                                 {item.name}
                             </h5>
                             </div>
