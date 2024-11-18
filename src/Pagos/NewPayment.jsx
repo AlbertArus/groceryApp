@@ -53,11 +53,23 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
         }
           // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount]);
+
+    console.log(elementsPaid)
         
     const AddPayment = (paymentName, amount, payer) => {
         const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
         const updatedPayments = [...selectedList.payments, newPayment]
+        const selectItemsPaid = elementsPaid.map(paid => paid.item);
+        const getItemsPaid = selectedList.categories.map(category => ({
+            ...category,
+            items: category.items.map(item =>
+                selectItemsPaid.includes(item.id) 
+                    ? { ...item, isPaid: true, payer } 
+                    : item
+            )
+        }))
         updateLista(selectedList.id, "payments", updatedPayments)
+        updateLista(selectedList.id, "categories", getItemsPaid)
     }
     
     const handleSubmit = async (e) => {
@@ -137,7 +149,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 onClick={() => handleChipClick("De esta lista")}
                                 sx={{
                                     fontFamily: "inherit",
-                                    fontSize: "14px",
+                                    fontSize: "12px",
                                     marginRight: "5px",
                                     padding: "5px",
                                     borderRadius: "5px",
@@ -156,7 +168,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 onClick={() => handleChipClick("Otro gasto")}
                                 sx={{
                                     fontFamily: "inherit",
-                                    fontSize: "14px",
+                                    fontSize: "12px",
                                     padding: "5px",
                                     borderRadius: "5px",
                                     backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
@@ -171,7 +183,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                         {selectedChip === "De esta lista" && (
                             <div className="columna-between" style={{alignItems: "flex-end"}}>
                                 <h4>Importe</h4>
-                                <h3 style={{fontWeight: "400"}}>{finalValuePaid.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h3>
+                                <h3 style={{fontWeight: "400"}}>{finalValuePaid}</h3>
                             </div>
                         )}
                     </div>
@@ -219,7 +231,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                                 cursor:"pointer"
                                 }}
                                 />           
-                                <div className="participantsName" style={{marginLeft: "10px"}}>{nombreUserMember[index]}</div>
+                                <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
                             </div>
                             <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
                         </div>
