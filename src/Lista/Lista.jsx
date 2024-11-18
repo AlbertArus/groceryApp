@@ -133,7 +133,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }, [searchParams, isToggleShown])
 
   const AddItem = (name, price, categoryId) => {
-    const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false, isPaid: false };
+    const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false, isPaid: false, payer: "" };
     const updatedItems = [...selectedList.items, newItem];
     updateListaItems(params.id, updatedItems);
     
@@ -526,6 +526,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               />
             ) : (
               <PagoDeuda
+              lista={selectedList} 
+              UsuarioCompleto={UsuarioCompleto}
+              updateLista={updateLista}
               />
             )}
             </>
