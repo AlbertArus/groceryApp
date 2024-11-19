@@ -46,7 +46,11 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
     <div className="app-margin">
       <div style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-          <h6>Gasto total</h6>
+          <h6>Gastos en lista</h6>
+          <h4>{lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+        </div>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <h6>Total pagado</h6>
           <h4>{totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
         </div>
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -73,7 +77,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
                   <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
                     <div className="vistaDatos fila-between">
                       <div className="columna-start">
-                        <h4>{payment.paymentName}</h4>
+                        <h4 style={{marginBottom: "4px"}}>{payment.paymentName}</h4>
                         <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
                       </div>
                       <h4>{payment.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>

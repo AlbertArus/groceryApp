@@ -52,9 +52,8 @@ function App() {
   }
 
   useEffect(() => {
-    // Espera hasta que la verificación de auth esté completa
     if (usuario === undefined) {
-      return; // Todavía se está verificando el usuario
+      return
     }
     if (usuario === null) {
       setIsLoading(false);
@@ -72,14 +71,14 @@ function App() {
   },[usuario, listasLoaded])
 
   useEffect(() => {
-    // Envía un pageview cada vez que cambie la ubicación (ruta)
+    // Google Analytics: Envía un pageview cada vez que cambie la ubicación (ruta)
     window.gtag('config', 'G-DQMEE49WTB', {
       page_path: location.pathname + location.search,
     });
   }, [location]);
 
   const addLista = async (listaName, plan, descriptionLista, showVotes, showPrices, isNotified) => {
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], payments: [], isArchived: false, isNotified, showPrices, showVotes, isPaid: false }
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid], createdAt: new Date(), plan, descriptionLista, categories: [], items: [], payments: [], isArchived: false, isNotified, showPrices, showVotes, isPaid: false, listPrice: "" }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);
@@ -169,7 +168,6 @@ function App() {
   };
 
   const updateListaCategories = async (listaId, updatedCategories) => {
-    // console.log("Categorías:", updatedCategories);
     setListas(prevListas =>
       prevListas.map(lista =>
         lista.id === listaId ? { ...lista, categories: updatedCategories } : lista
@@ -179,7 +177,6 @@ function App() {
     try {
       const listaRef = doc(db, "listas", listaId);
       await updateDoc(listaRef, { categories: updatedCategories });
-      // console.log("Firebase updated successfully");
     } catch (error) {
       console.error("Error al actualizar las categorías en Firebase:", error);
     }
@@ -219,17 +216,14 @@ function App() {
   }
 
   const updateLista = async (listaId, attribute, newValue) => {
-    console.log("updateLista on")
     setListas((prevListas) =>
       prevListas.map((lista) =>
         lista.id === listaId ? { ...lista, [attribute]: newValue } : lista
       )
     );
-    console.log("estado local actualizado")
   
     try {
       const listaRef = doc(db, "listas", listaId);
-      console.log("lista identificada")
       await updateDoc(listaRef, { [attribute]: newValue });
       console.log("lista actualizada")
     } catch (error) {
@@ -243,7 +237,7 @@ function App() {
       const userData = userDoc.data();
       return `${userData.nombre} ${userData.apellido}`;
     }
-    return "Usuario desconocido"; // Fallback si el usuario no se encuentra
+    return "Usuario desconocido";
   }
 
   return (
