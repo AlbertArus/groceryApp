@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import ModalSheet from "../ui-components/ModalSheet";
 import TabItemMenu from "../components/TabItemMenu";
 import { useUsuario } from "../UsuarioContext";
+import EmptyState from "../ui-components/EmptyState"
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
     const { usuario } = useUsuario();
@@ -13,6 +15,8 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
     const [transfers, setTransfers] = useState([]);
     const [isCollapsed, setIsCollapsed] = useState(false)
     const collapserRef = useRef(null)
+    const navigate = useNavigate()
+    const searchParams = useSearchParams()
 
     useEffect(() => {
         if (lista && lista.userMember && usuario?.uid) {
@@ -141,7 +145,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                 </div>
                 );
             })}
-            {lista.userMember.length !== 1 && (
+            {lista.userMember.length !== 1 && transfers.length > 0 && (
             <div>
                 <div className="fila-start" style={{margin: "25px 0px 15px 0px"}}>
                     <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
@@ -162,6 +166,15 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                     </>
                 }
             </div>
+            )}
+            {transfers.length === 0 && (
+                <EmptyState
+                    img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                    alt={"Set of grocery bags full of items"}
+                    description={"No hay balance a compensar. Registra tus pagos y equilibra balances entre el grupo"}
+                    onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                    buttonCopy={"Añadir pago"}
+                />
             )}
         </div>
     );
