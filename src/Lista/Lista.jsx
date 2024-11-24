@@ -36,6 +36,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isToggleShown, setIsToggleShown] = useState(false)
   const firstCategoryRef = useRef(null)
   const selectedList = listas.find(lista => lista.id === params.id);
+  const [isScrolled, setIsScrolled] = useState(false)
   
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
@@ -130,6 +131,17 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
         setIsToggleActive(isToggleShown && area === "misitems" ? "Mis items" : "Todos")
     }
   }, [searchParams, isToggleShown])
+
+  useEffect(() => {
+    const handleScroll = () => {
+        setIsScrolled(window.scrollY > 90)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+        window.removeEventListener("scroll", handleScroll)
+    }
+    },[])
 
   const AddItem = (name, price, categoryId) => {
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false, isPaid: false, payer: "" };
@@ -411,6 +423,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, updatedCategories)
   }
 
+  const totalGastoLista = selectedList?.payments?.reduce((total, payment) => {
+    return total + Number(payment.amount)
+  },0)
+
   return (
     <div className="lista app">
       {selectedList && (
@@ -426,6 +442,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             usuario={usuario}
             UsuarioCompleto={UsuarioCompleto}
             updateLista={updateLista}
+            totalGastoLista={totalGastoLista}
+            isScrolled={isScrolled}
+            setIsScrolled={setIsScrolled}
           />
           <Toggle 
             option1={"Lista"}
@@ -434,6 +453,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             isToggleSelected={isToggleSelected}
             setIsToggleSelected={setIsToggleSelected}
             setSearchParams={setSearchParams}
+            isScrolled={isScrolled}
+            setIsScrolled={setIsScrolled}
           />
           {isToggleSelected === "Lista" ? (
             <>
@@ -520,6 +541,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                 itemsAdquirido={ItemsChecked()}
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
+                totalGastoLista={totalGastoLista}
               />
             ) : (
               <PagoDeuda

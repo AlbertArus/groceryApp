@@ -4,7 +4,7 @@ import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
 import ButtonArea from "../ui-components/ButtonArea"
 
-const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
+const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoLista, price}) => {
   const {usuario} = useUsuario()
   const navigate = useNavigate()
   const [nombrePayer, setNombrePayer] = useState([]);
@@ -31,10 +31,6 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
   }, [UsuarioCompleto, lista]);
 
   // console.log(lista.payments)
-
-  const totalGastoLista = lista?.payments?.reduce((total, payment) => {
-    return total + Number(payment.amount)
-  },0)
 
   const totalGastoListaUser = () => {
     const gastosUser = lista.payments.filter(payment => payment.payer === usuario.uid)

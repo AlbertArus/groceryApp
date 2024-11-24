@@ -2,7 +2,7 @@
 // import { useState } from "react"
 // import { useUsuario } from "../UsuarioContext"
 
-const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams}) => {
+const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
     // const usuario = useUsuario
 
     const handleClickActive = (toggle) => {
@@ -67,7 +67,7 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
     return (
         <>
         {form === "bars" && (
-            <div className="toggle">
+            <div className="toggle" style={{top: isScrolled ? "55px" : "40px"}}>
                 <div className="app-margin toggleBars">
                     <h4 onClick={() => handleClickSelected(option1)} className={isToggleSelected === `${option1}` ? "toggleOptions toggleBar" : "toggleOptions"}>{option1}</h4>
                     <h4 onClick={() => handleClickSelected(option2)} className={isToggleSelected === `${option2}` ? "toggleOptions toggleBar" : "toggleOptions"}>{option2}</h4>

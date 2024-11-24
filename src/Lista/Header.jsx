@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 
-const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista }) => {
+const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
-    const [isScrolled, setIsScrolled] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
     const optionsMenuRef = useRef(null)
     const buttonMenuRef = useRef(null)
@@ -14,6 +13,7 @@ const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll,
     const buttonMembersListRef = useRef(null)
     const navigate = useNavigate()
     const handleShare = ShareButton(window.location.href, lista);
+    const [searchParams] = useSearchParams()
 
     const handleMenuVisibility = (event) => {
         event.stopPropagation()
@@ -70,33 +70,28 @@ const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll,
   return (
     <div className="head" style={{marginBottom: "-1px"}}>
         <div className="app-margin">
-            {/* <div className="columna-start" style={{padding: "4px 0px"}}>
-                <div className="fila-between" style={{width: "100%"}}>
-                    <div className="fila-start">
-                        <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
-                        <h3>{lista.listaName || ""}</h3>
-                    </div>
-                    <div className="fila-start" style={{position: "relative"}}>
-                        <span className="material-symbols-outlined icon-medium pointer" onClick={handleShare}>share</span>
-                        <span className="material-symbols-outlined icon-large pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
-                        {isOptionsMenuVisible && 
-                            <OptionsMenu
-                                style={{right:"0"}} 
-                                ref={optionsMenuRef}
-                                deleteLista={deleteLista}
-                                itemslength={itemslength}
-                                lista={lista}
-                                handleCheckAll={handleCheckAll}
-                                handleUnCheckAll={handleUnCheckAll}
-                                updateLista={updateLista}
-                            />
-                        }
-                    </div>
+            <div className="fila-between" style={{width: "100%", padding: "4px 0px", alignItems: "flex-start"}}>
+                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
+                <div className="columna-start" style={{alignItems: "center"}}>
+                    <h2 style={{fontWeight: "500"}}>{lista.listaName || ""}</h2>
+                    {searchParams.get("view") === "lista" && (
+                        <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
+                            <h5 style={{marginRight: "8px"}}>Items: {items}</h5>
+                            <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
+                        </div>
+                    )}
+                    {searchParams.get("view") === "payments" && (
+                        <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
+                            <h5 style={{marginRight: "8px"}}>Lista: {lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
+                            <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Pagado: {totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
+                        </div>
+                    )}
                 </div>
-                <div className="fila-start" style={{display: !isScrolled ? "flex" : "none", marginLeft: "42px"}}>
+                <div className="fila-start" style={{position: "relative"}}>
                     <div className="fila-start-group pointer" style={{position: "relative"}} onClick={handleMembersShown} ref={buttonMembersListRef}>
-                        <span className="material-symbols-outlined icon-small">group</span>
-                        <h5>{`${lista.userMember.length} pers.`}</h5>
+                        <span className="material-symbols-outlined icon-medium">group</span>
+                        <h4>{lista.userMember.length}</h4>
+                        {/* <h5>{`${lista.userMember.length} pers.`}</h5> */}
                         {isMembersShown &&
                             <MembersList
                                 ref={membersListRef}
@@ -105,37 +100,6 @@ const Header = ({ deleteLista, itemslength, lista, items, price, handleCheckAll,
                             />
                         }
                     </div>
-                    <h5>{lista.plan}</h5>
-                </div>
-                <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none", marginLeft: "42px"}}>
-                    <h5 style={{marginRight: "8px"}}>Items: {items}</h5>
-                    <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
-                </div>
-            </div> */}
-            <div className="fila-between" style={{width: "100%", padding: "4px 0px", alignItems: "flex-start"}}>
-                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
-                <div className="columna-start" style={{alignItems: "center"}}>
-                    <h2 style={{fontWeight: "500"}}>{lista.listaName || ""}</h2>
-                    <div className="fila-start" style={{display: !isScrolled ? "flex" : "none"}}>
-                        <div className="fila-start-group pointer" style={{position: "relative"}} onClick={handleMembersShown} ref={buttonMembersListRef}>
-                            <span className="material-symbols-outlined icon-small">group</span>
-                            <h5>{`${lista.userMember.length} pers.`}</h5>
-                            {isMembersShown &&
-                                <MembersList
-                                    ref={membersListRef}
-                                    lista={lista}
-                                    UsuarioCompleto={UsuarioCompleto}
-                                />
-                                }
-                        </div>
-                        <h5>{lista.plan}</h5>
-                    </div>
-                    <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
-                        <h5 style={{marginRight: "8px"}}>Items: {items}</h5>
-                        <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
-                    </div>
-                </div>
-                <div className="fila-start" style={{position: "relative"}}>
                     <span className="material-symbols-outlined icon-medium pointer" onClick={handleShare}>share</span>
                     <span className="material-symbols-outlined icon-large pointer" onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 
