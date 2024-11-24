@@ -113,40 +113,42 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
     }
 
     return (
-        <div className="app-margin">
+        <div className="">
             {transfers.map((transfer, index) => {
                 const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
                 const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
                 return (
-                    <div key={index} className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
-                        <div className="fila-between" style={{ padding: "6px" }}>
-                            <div className="columna-start">
-                                <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
-                                <h5>debe a</h5>
-                                <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
+                    <div className="app-margin">
+                        <div key={index} className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
+                            <div className="fila-between" style={{ padding: "6px" }}>
+                                <div className="columna-start">
+                                    <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
+                                    <h5>debe a</h5>
+                                    <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
+                                </div>
+                                <h4 className="priceMember">
+                                    {transfer.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                </h4>
                             </div>
-                            <h4 className="priceMember">
-                                {transfer.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                            </h4>
+                            <div className="barraPago">
+                                <h6 onClick={() => {setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
+                                <ModalSheet
+                                    open={open}
+                                    setOpen={setOpen}
+                                >
+                                    <TabItemMenu
+                                    itemMenuName={"Confirmar transferencia"}
+                                    img={"img"}
+                                    // onClick={handleDebtPaid}
+                                    />
+                                </ModalSheet>
+                            </div>                    
                         </div>
-                        <div className="barraPago">
-                <h6 onClick={() => {setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
-                <ModalSheet
-                    open={open}
-                    setOpen={setOpen}
-                >
-                    <TabItemMenu
-                    itemMenuName={"Confirmar transferencia"}
-                    img={"img"}
-                    // onClick={handleDebtPaid}
-                    />
-                </ModalSheet>
-                </div>                    
-                </div>
+                    </div>
                 );
             })}
             {lista.userMember.length !== 1 && transfers.length > 0 && (
-            <div>
+            <div className="app-margin">
                 <div className="fila-start" style={{margin: "25px 0px 15px 0px"}}>
                     <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
                     <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>

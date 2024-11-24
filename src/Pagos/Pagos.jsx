@@ -2,7 +2,6 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import EmptyState from "../ui-components/EmptyState"
 import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
-import Button from "../ui-components/Button"
 import ButtonArea from "../ui-components/ButtonArea"
 
 const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
@@ -49,7 +48,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, price}) => {
     buttonCopy={"Añadir pago"}
     onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
     >
-        <div className="">
+        <div>
             <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Gastos en lista</h6>

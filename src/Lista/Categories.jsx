@@ -54,7 +54,6 @@ const Categories = ({
 
   return (
     <div className="categories">
-      <div className="categoriesMargin">
         {filteredCategories.map((category) => {
           const categoryItems = items.filter((item) => item.categoryId === category.id);
 
@@ -102,13 +101,12 @@ const Categories = ({
             />
           );
         })}
-      </div>
-      {!isEStateLista && (
-        <NewCategory 
-          AddCategory={AddCategory}
-          isEStateLista={isEStateLista}
-        />
-      )}
+        {!isEStateLista && (
+            <NewCategory 
+            AddCategory={AddCategory}
+            isEStateLista={isEStateLista}
+            />
+        )}
     </div>
   );
 };

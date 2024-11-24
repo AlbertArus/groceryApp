@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 
-const ButtonArea = ({ buttonCopy, onClick, children }) => {
+const ButtonArea = ({ buttonCopy, onClick, style, children }) => {
     const wrapperRef = useRef(null);
     const contentRef = useRef(null);
     const [isScrollable, setIsScrollable] = useState(false);
@@ -34,6 +34,7 @@ const ButtonArea = ({ buttonCopy, onClick, children }) => {
                 <Button
                     buttonCopy={buttonCopy}
                     onClick={onClick}
+                    style={style}
                 />
             </div>
         </div>

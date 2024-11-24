@@ -3,6 +3,7 @@ import { getAuth, updatePassword } from "firebase/auth";
 import { useState } from "react";
 import firebaseApp from "../firebase-config.js"
 import Head from "../components/Head";
+import ButtonArea from "../ui-components/ButtonArea.jsx";
 const auth = getAuth(firebaseApp)
 
 const NewPassword = () => {
@@ -74,56 +75,61 @@ const NewPassword = () => {
     };
     
   return (
-    <div className="app">
-        <Head 
-            path={"profile"}        
-        />
-        <div className="app-margin login">
-        <h2 style={{marginBottom: "25px"}}>Modifica tu contraseña</h2>
-            <form className="loginForm" onSubmit={handleChangePassword}>
-                <label htmlFor="newContraseña">Nueva contraseña</label>
-                <div className="iconed-container fila-between">
-                    <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" value={newPassword} onChange={(e) => {setNewPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, newPassword: false, newPasswordContraseñaInvalid: false}))}}/>
-                    <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
-                </div>
-                <h5 style={{display: errors.newPassword ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
-                <h5 style={{display: errors.newPasswordContraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
-                <label htmlFor="confirmContraseña">Confirmar contraseña</label>
-                <div className="iconed-container fila-between">
-                    <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="confirmContraseña" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, confirmPassword: false, confirmPasswordContraseñaInvalid: false}))}}/>
-                    <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
-                </div>
-                <h5 style={{display: errors.confirmPassword ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
-                <h5 style={{display: errors.confirmPasswordContraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
-                <h5 style={{display: errors.unalignPasswords ? "block" : "none", color:"red"}}>Las contraseñas no coinciden</h5>
-                <button type="submit">Cambiar contraseña</button>
-            </form>
-            </div>
-            {success && popUpVisible && (
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
-                    <div className="overlay"></div>
-                    <div className="popUP app-margin" style={{backgroundColor: "rgb(142, 190, 142)"}}>
-                        <div style={{ margin: "15px 0px", textAlign: "center"}}>
-                        <span className="material-symbols-outlined icon-medium" style={{position: "absolute", right: "20px", cursor: "pointer"}} onClick={() => setPopUpVisible(false)}>close</span>
-                        <span className="material-symbols-outlined icon-xxxlarge" style={{color: "rgb(78, 192, 78)"}}>check_circle</span>
-                        <h4 style={{ fontWeight: "600", whiteSpace: "wrap" }}>¡Contraseña actualizada con éxito!</h4>
-                        </div>
+    <ButtonArea 
+        buttonCopy={"Cambiar contraseña"}
+        onClick={handleChangePassword}        
+    >
+        <div className="app">
+            <Head 
+                path={"profile"}        
+            />
+            <div className="app-margin login">
+            <h2 style={{marginBottom: "25px"}}>Modifica tu contraseña</h2>
+                <form className="loginForm" onSubmit={handleChangePassword}>
+                    <label htmlFor="newContraseña">Nueva contraseña</label>
+                    <div className="iconed-container fila-between">
+                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" value={newPassword} onChange={(e) => {setNewPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, newPassword: false, newPasswordContraseñaInvalid: false}))}}/>
+                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
-                </div>            
-            )}
-            {!success && popUpVisible && (
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
-                    <div className="overlay"></div>
-                    <div className="popUp app-margin" style={{backgroundColor: "rgb(248, 167, 167)"}}>
-                        <div style={{ margin: "15px 0px", textAlign: "center"}}>
+                    <h5 style={{display: errors.newPassword ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
+                    <h5 style={{display: errors.newPasswordContraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
+                    <label htmlFor="confirmContraseña">Confirmar contraseña</label>
+                    <div className="iconed-container fila-between">
+                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="confirmContraseña" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, confirmPassword: false, confirmPasswordContraseñaInvalid: false}))}}/>
+                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
+                    </div>
+                    <h5 style={{display: errors.confirmPassword ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
+                    <h5 style={{display: errors.confirmPasswordContraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
+                    <h5 style={{display: errors.unalignPasswords ? "block" : "none", color:"red"}}>Las contraseñas no coinciden</h5>
+                    {/* <button type="submit">Cambiar contraseña</button> */}
+                </form>
+                </div>
+                {success && popUpVisible && (
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
+                        <div className="overlay"></div>
+                        <div className="popUP app-margin" style={{backgroundColor: "rgb(142, 190, 142)"}}>
+                            <div style={{ margin: "15px 0px", textAlign: "center"}}>
                             <span className="material-symbols-outlined icon-medium" style={{position: "absolute", right: "20px", cursor: "pointer"}} onClick={() => setPopUpVisible(false)}>close</span>
-                            <span className="material-symbols-outlined icon-xxxlarge" style={{color: "red", margin: "15px 0px"}}>error</span>
-                            <h5 style={{ fontWeight: "600", whiteSpace: "wrap"}}>Algo ha fallado... Inténtalo más tarde</h5>
+                            <span className="material-symbols-outlined icon-xxxlarge" style={{color: "rgb(78, 192, 78)"}}>check_circle</span>
+                            <h4 style={{ fontWeight: "600", whiteSpace: "wrap" }}>¡Contraseña actualizada con éxito!</h4>
+                            </div>
                         </div>
-                    </div>
-                </div>   
-            )}
-    </div>
+                    </div>            
+                )}
+                {!success && popUpVisible && (
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
+                        <div className="overlay"></div>
+                        <div className="popUp app-margin" style={{backgroundColor: "rgb(248, 167, 167)"}}>
+                            <div style={{ margin: "15px 0px", textAlign: "center"}}>
+                                <span className="material-symbols-outlined icon-medium" style={{position: "absolute", right: "20px", cursor: "pointer"}} onClick={() => setPopUpVisible(false)}>close</span>
+                                <span className="material-symbols-outlined icon-xxxlarge" style={{color: "red", margin: "15px 0px"}}>error</span>
+                                <h5 style={{ fontWeight: "600", whiteSpace: "wrap"}}>Algo ha fallado... Inténtalo más tarde</h5>
+                            </div>
+                        </div>
+                    </div>   
+                )}
+        </div>
+    </ButtonArea>
   )
 }
 

@@ -87,7 +87,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
       if (docSnap.exists()) {
         const listaData = docSnap.data();
         setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
-        // console.log(listas)
       }
     });
   
@@ -486,15 +485,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                 handleDeleteItemUserMember={handleDeleteItemUserMember}
                 />
               {isEStateLista && (
-                <div className='app-margin'>
-                  <EmptyState
+                    <EmptyState
                     img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
                     alt={"Set of grocery bags full of items"}
                     description={"Completa tu lista. Crea tu primera categoría y añade tantos items como quieras"}
                     onClick={handleAddCategory}
                     buttonCopy={"Añadir Categoría"}
-                  />
-                </div>
+                    />
               )}
               {sharePopupVisible && 
                 <SharePopUp

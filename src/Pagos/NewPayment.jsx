@@ -5,6 +5,7 @@ import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox, Chip } from "@mui/material";
 import GastosLista from "./GastosLista";
+import ButtonArea from "../ui-components/ButtonArea";
 
 const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     const {usuario} = useUsuario()
@@ -114,134 +115,139 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
     };
   
     return (
-        <div className="FormLista app">
-            <Head
-                path={`list/${id}?view=${searchParams.get("view")}`}
-                sectionName={"Nuevo pago"}
-            />
-            <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-            <form style={{display: "flex"}} onSubmit={handleSubmit}>
-                <label htmlFor="nombre">Título</label>
-                <div className="iconed-container fila-between">
-                <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
-                <div className="iconSuperpuesto" style={{paddingRight:"5px"}}>{paymentName.length}/{maxLength}</div>
-                </div>
-                <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
-                {nombreUserMember.length > 0 && (
-                    <>
-                    <label htmlFor="payer">Quien ha pagado</label>
-                    <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
-                    {selectedList.userMember.map((uid, index) => {
-                        return (
-                            <option key={uid} value={uid}>{nombreUserMember[index]}</option>
-                        )
-                    })}
-                    </select>
-                    </>
-                )}
-                <div style={{width: "100%", marginTop: "10px"}}>
-                    <div className="fila-between">
-                        <div>
-                            <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
-                            <Chip
-                                label="De esta lista"
-                                clickable
-                                onClick={() => handleChipClick("De esta lista")}
-                                sx={{
-                                    fontFamily: "inherit",
-                                    fontSize: "12px",
-                                    marginRight: "5px",
-                                    padding: "5px",
-                                    borderRadius: "5px",
-                                    border: selectedChip === "De esta lista" ? '2px solid #ED9E04' : 'none', // Tiene border y el otro no porque al ser la default, debe tenerlo desde que se carga
-                                    backgroundColor: selectedChip === "De esta lista" ? '#ffeec9' : '#ffeec9',
-                                    color: selectedChip === "De esta lista" ? '#000' : '#000',
-                                    "&:hover": {
-                                        border: selectedChip === "De esta lista" ? '1.5px solid #ED9E04' : 'none',
-                                        backgroundColor: selectedChip === "De esta lista" ? '#FBE7C1' : '#FBE7C1',
-                                    },
-                                }}
-                            />
-                            <Chip
-                                label="Otro gasto"
-                                clickable
-                                onClick={() => handleChipClick("Otro gasto")}
-                                sx={{
-                                    fontFamily: "inherit",
-                                    fontSize: "12px",
-                                    padding: "5px",
-                                    borderRadius: "5px",
-                                    backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
-                                    color: selectedChip === "Otro gasto" ? '#000' : '#000',
-                                    "&:hover": {
-                                        border: selectedChip === "Otro gasto" ? '1.5px solid #ED9E04' : 'none',
-                                        backgroundColor: selectedChip === "Otro gasto" ? '#FBE7C1' : '#f0f0f0',
-                                    },
-                                }}
-                            />
+        <ButtonArea 
+            onClick={handleSubmit}
+            buttonCopy={"Añadir pago"}
+        >
+            <div className="FormLista app">
+                <Head
+                    path={`list/${id}?view=${searchParams.get("view")}`}
+                    sectionName={"Nuevo pago"}
+                />
+                <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
+                    <form style={{display: "flex"}} onSubmit={handleSubmit}>
+                        <label htmlFor="nombre">Título</label>
+                        <div className="iconed-container fila-between">
+                        <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
+                        <div className="iconSuperpuesto" style={{paddingRight:"5px"}}>{paymentName.length}/{maxLength}</div>
                         </div>
-                        {selectedChip === "De esta lista" && (
-                            <div className="columna-between" style={{alignItems: "flex-end"}}>
-                                <h4>Importe</h4>
-                                <h3 style={{fontWeight: "400"}}>{finalValuePaid}</h3>
-                            </div>
+                        <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
+                        {nombreUserMember.length > 0 && (
+                            <>
+                            <label htmlFor="payer">Quien ha pagado</label>
+                            <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
+                            {selectedList.userMember.map((uid, index) => {
+                                return (
+                                    <option key={uid} value={uid}>{nombreUserMember[index]}</option>
+                                )
+                            })}
+                            </select>
+                            </>
                         )}
-                    </div>
-                    <div>
-                        {selectedChip === "De esta lista" ? (
-                            <GastosLista 
-                                selectedList={selectedList}
-                                amount={amount}
-                                setAmount={setAmount}
-                                elementsPaid={elementsPaid}
-                                setElementsPaid={setElementsPaid}
-                                setFinalValuePaid={setFinalValuePaid}
-                            />
-                        ) : (
-                        <div style={{marginTop: "10px"}}>
-                          <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
-                          <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
-                          <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
+                        <div style={{width: "100%", marginTop: "10px"}}>
+                            <div className="fila-between">
+                                <div>
+                                    <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
+                                    <Chip
+                                        label="De esta lista"
+                                        clickable
+                                        onClick={() => handleChipClick("De esta lista")}
+                                        sx={{
+                                            fontFamily: "inherit",
+                                            fontSize: "12px",
+                                            marginRight: "5px",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                            border: selectedChip === "De esta lista" ? '2px solid #ED9E04' : 'none', // Tiene border y el otro no porque al ser la default, debe tenerlo desde que se carga
+                                            backgroundColor: selectedChip === "De esta lista" ? '#ffeec9' : '#ffeec9',
+                                            color: selectedChip === "De esta lista" ? '#000' : '#000',
+                                            "&:hover": {
+                                                border: selectedChip === "De esta lista" ? '1.5px solid #ED9E04' : 'none',
+                                                backgroundColor: selectedChip === "De esta lista" ? '#FBE7C1' : '#FBE7C1',
+                                            },
+                                        }}
+                                    />
+                                    <Chip
+                                        label="Otro gasto"
+                                        clickable
+                                        onClick={() => handleChipClick("Otro gasto")}
+                                        sx={{
+                                            fontFamily: "inherit",
+                                            fontSize: "12px",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                            backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
+                                            color: selectedChip === "Otro gasto" ? '#000' : '#000',
+                                            "&:hover": {
+                                                border: selectedChip === "Otro gasto" ? '1.5px solid #ED9E04' : 'none',
+                                                backgroundColor: selectedChip === "Otro gasto" ? '#FBE7C1' : '#f0f0f0',
+                                            },
+                                        }}
+                                    />
+                                </div>
+                                {selectedChip === "De esta lista" && (
+                                    <div className="columna-between" style={{alignItems: "flex-end"}}>
+                                        <h4>Importe</h4>
+                                        <h3 style={{fontWeight: "400"}}>{finalValuePaid}</h3>
+                                    </div>
+                                )}
+                            </div>
+                            <div>
+                                {selectedChip === "De esta lista" ? (
+                                    <GastosLista 
+                                        selectedList={selectedList}
+                                        amount={amount}
+                                        setAmount={setAmount}
+                                        elementsPaid={elementsPaid}
+                                        setElementsPaid={setElementsPaid}
+                                        setFinalValuePaid={setFinalValuePaid}
+                                    />
+                                ) : (
+                                <div style={{marginTop: "10px"}}>
+                                <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
+                                <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
+                                <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
+                                </div>
+                                )}
+                            </div>
+                        </div>
+                        {nombreUserMember.length > 0 && (
+                        <div style={{width: "100%"}}>
+                            <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
+                            <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
+                            {selectedList.userMember.map((uid, index) => {
+                                return (
+                                <div key={uid} className="newpaymentLists fila-between">
+                                    <div className="fila-start">
+                                        <Checkbox 
+                                        checked={!!members.find(member => member.uid === uid)}
+                                        onChange={() => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))}}
+                                        sx={{
+                                        '&.Mui-checked': {
+                                            color: "green"
+                                        },
+                                        '&:not(.Mui-checked)': {
+                                            color: "#9E9E9E"
+                                        },
+                                        '&.Mui-checked + .MuiTouchRipple-root': {
+                                            backgroundColor: members.includes(uid) ? 'green' : 'transparent'
+                                        },
+                                        padding: "0px",
+                                        cursor:"pointer"
+                                        }}
+                                        />           
+                                        <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
+                                    </div>
+                                    <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
+                                </div>
+                            )})}
                         </div>
                         )}
-                    </div>
+                        {/* <button className="buttonMain" type="submit">Añadir pago</button> */}
+                    </form>
                 </div>
-                {nombreUserMember.length > 0 && (
-                <div style={{width: "100%"}}>
-                    <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
-                    <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
-                    {selectedList.userMember.map((uid, index) => {
-                        return (
-                        <div key={uid} className="newpaymentLists fila-between">
-                            <div className="fila-start">
-                                <Checkbox 
-                                checked={!!members.find(member => member.uid === uid)}
-                                onChange={() => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))}}
-                                sx={{
-                                '&.Mui-checked': {
-                                    color: "green"
-                                },
-                                '&:not(.Mui-checked)': {
-                                    color: "#9E9E9E"
-                                },
-                                '&.Mui-checked + .MuiTouchRipple-root': {
-                                    backgroundColor: members.includes(uid) ? 'green' : 'transparent'
-                                },
-                                padding: "0px",
-                                cursor:"pointer"
-                                }}
-                                />           
-                                <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
-                            </div>
-                            <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
-                        </div>
-                    )})}
-                </div>
-                )}
-                <button className="buttonMain" type="submit">Añadir pago</button>
-            </form>
             </div>
-        </div>
+        </ButtonArea>
     );
 };
 
