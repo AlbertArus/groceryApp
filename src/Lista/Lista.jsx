@@ -427,6 +427,11 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return total + Number(payment.amount)
   },0)
 
+  const FilteredListPrice = filteredListaForItems?.reduce((total, item) => {
+    return (total + Number(item.price))
+  },0) ?? 0
+  const FormattedFilteredListPrice = FilteredListPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+
   return (
     <div className="lista app">
       {selectedList && (
@@ -436,7 +441,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             itemslength={totalItemsLength}
             lista={selectedList}
             items={totalItemsLength}
-            price={listPrice}
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
             usuario={usuario}
@@ -445,6 +449,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             totalGastoLista={totalGastoLista}
             isScrolled={isScrolled}
             setIsScrolled={setIsScrolled}
+            price={FormattedFilteredListPrice}
+            filteredListaForItems={filteredListaForItems}
           />
           <Toggle 
             option1={"Lista"}
@@ -479,10 +485,11 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               }
               <SubHeader 
                 items={totalItemsLength}
-                price={listPrice}
                 itemsAdquirido={ItemsChecked()}
                 categories={selectedList.categories}
                 lista={selectedList}
+                price={FormattedFilteredListPrice}
+                filteredListaForItems={filteredListaForItems}
               />
               <Categories
                 items={selectedList.categories.flatMap(category => category.items)}

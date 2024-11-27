@@ -1,9 +1,10 @@
-// import { useEffect } from "react"
-// import { useState } from "react"
-// import { useUsuario } from "../UsuarioContext"
+import { useEffect } from "react"
+import { useUsuario } from "../UsuarioContext"
+import { useSearchParams } from "react-router-dom"
 
 const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
-    // const usuario = useUsuario
+    const {usuario} = useUsuario()
+    const [searchParams] = useSearchParams()
 
     const handleClickActive = (toggle) => {
         setIsToggleActive(toggle)
@@ -23,21 +24,20 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
             return updatedParams
         })
     }
-    
-    // useEffect(() => {
-    //     if(form === "tabs") {
-    //         let filteredListaForItems
-    //         if(isToggleActive === `${option2}` || isToggleActive === `${option3}`) {
-    //             filteredListaForItems = lista.categories.flatMap(category => 
-    //                 category.items.filter(item => item.itemUserMember.includes(usuario?.uid))
-    //             )
-    //         } else {
-    //             filteredListaForItems = lista.categories.flatMap(category => category.items)
-    //         }dos
-    //         setFilteredListaForItems(filteredListaForItems)
-    //     }
+    useEffect(() => {
+        if(form === "tabs" && searchParams.get("view")==="lista") {
+            let filteredListaForItems
+            if(isToggleActive === `${option2}` || isToggleActive === `${option3}`) {
+                filteredListaForItems = lista.categories.flatMap(category => 
+                    category.items.filter(item => item.itemUserMember.includes(usuario?.uid))
+                )
+            } else {
+                filteredListaForItems = lista.categories.flatMap(category => category.items)
+            }
+            setFilteredListaForItems(filteredListaForItems)
+        }
 
-    // },[isToggleActive, usuario.uid, lista, setFilteredListaForItems, option2, option3, form])
+    },[isToggleActive, usuario.uid, lista, setFilteredListaForItems, option2, option3, form, searchParams])
 
     // useEffect(() => {
     //     let filteredListas;

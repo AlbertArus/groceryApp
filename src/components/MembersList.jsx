@@ -14,7 +14,7 @@ const MembersList = forwardRef(({lista, UsuarioCompleto}, ref) => {
     }, [UsuarioCompleto, lista])
    
     return (
-        <div className="optionsMenu" style={{left: "0"}} ref={ref}>
+        <div className="optionsMenu" style={{right: "0"}} ref={ref}>
             {lista.userMember.map((uid, index) => 
                 <ItemMenu
                     key={uid}

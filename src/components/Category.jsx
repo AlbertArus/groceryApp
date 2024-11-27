@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Item from "./Item"
 import NewItem from "./NewItem"
 
-const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, lista, searchResult, setSearchResult, firstCategoryRef, handleDeleteItemUserMember, category }) => {
+const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, id, EditCategory, DeleteCategory, items, AddItem, EditItem, DeleteItem, handleCheck, handleCounterDown, handleCounterUp, lista, searchResult, setSearchResult, firstCategoryRef, handleDeleteItemUserMember, category, filteredListaForItems }) => {
 
   const [categoryName, setCategoryName] = useState(initialName);
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -10,7 +10,10 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
   const checkCategoryRef = useRef(null)
 
   const itemsLength = items.length  
-  const FormattedSumPrice = category?.sumPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+  const SumPriceFiltered = items.reduce((total, item) => {
+    return (total + Number(item.price))
+  },0)
+  const FormattedSumPriceFiltered = SumPriceFiltered.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
 
   useEffect(() => {
     if(categories.length === 1 && firstCategoryRef.current) {
@@ -77,7 +80,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
             <span className="material-symbols-outlined icon-large pointer" ref={toggleRef} onClick={collapseCategory} >keyboard_arrow_down</span>
             <input type="text" placeholder="Nombra tu categoría" aria-label="Nombre de la categoría" ref={firstCategoryRef} className="ItemName" style={{width: "100%"}} inputMode="text" enterKeyHint="done" onKeyDown={handleCategoryKeyDown} onChange={(e) => setCategoryName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={categoryName}></input>
           </div>
-          <h4 style={{fontWeight:"500", display: lista.showPrices ? "flex" : "none"}}>{FormattedSumPrice}</h4>
+          <h4 style={{fontWeight:"500", display: lista.showPrices ? "flex" : "none"}}>{FormattedSumPriceFiltered}</h4>
         </div>
         <div className="fila-between">
           <div className="fila-start firstPart">
