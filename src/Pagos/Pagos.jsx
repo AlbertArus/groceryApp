@@ -33,7 +33,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
   // console.log(lista.payments)
 
   const totalGastoListaUser = () => {
-    const gastosUser = lista.payments.filter(payment => payment.payer === usuario.uid)
+    const gastosUser = lista.payments?.filter(payment => payment.payer === usuario.uid)
     return gastosUser.reduce((total, payment) => {
       return total + Number(payment.amount)
     },0)
@@ -48,7 +48,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
             <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Gastos en lista</h6>
-                <h4>{lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                <h4>{(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
                 </div>
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Total pagado</h6>

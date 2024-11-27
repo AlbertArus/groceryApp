@@ -83,7 +83,7 @@ const Header = ({ deleteLista, itemslength, lista, items, handleCheckAll, handle
                     )}
                     {searchParams.get("view") === "payments" && (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
-                            <h5 style={{marginRight: "8px"}}>Lista: {lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
+                            <h5 style={{marginRight: "8px"}}>Lista: {(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
                             <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Pagado: {totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
                         </div>
                     )}
