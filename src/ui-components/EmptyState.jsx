@@ -1,11 +1,12 @@
 import ButtonArea from "./ButtonArea"
 
-const EmptyState = ({img, alt, description, onClick, buttonCopy}) => {
+const EmptyState = ({img, alt, description, onClick, buttonCopy, style}) => {
 
   return (
     <ButtonArea
         buttonCopy={buttonCopy}
         onClick={onClick}
+        style={style}
     >
         <div className="emptyState app-margin">
             <img src={`/Fotos GroceryApp/${img}.png`} alt={alt} style={{width:"100%", objectFit: "contain", maxHeight: "300px"}}></img>

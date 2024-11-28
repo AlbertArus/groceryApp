@@ -113,7 +113,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
     }
 
     return (
-        <div className="">
+        <div className="" style={{height: "100%"}}>
             {transfers.map((transfer, index) => {
                 const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
                 const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
@@ -148,26 +148,26 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                 );
             })}
             {lista.userMember.length !== 1 && transfers.length > 0 && (
-            <div className="app-margin">
-                <div className="fila-start" style={{margin: "25px 0px 15px 0px"}}>
-                    <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
-                    <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
-                </div>
-                {!isCollapsed &&
-                    <>
-                        {userAmountList.map((user, index) => {
-                            return (
-                                <div key={user.uid} className="newpaymentLists fila-between">
-                                    <div className="fila-start">
-                                        <h4>{nombreUserMember[index]}</h4>
+                <div className="app-margin">
+                    <div className="fila-start" style={{margin: "25px 0px 15px 0px"}}>
+                        <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
+                        <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
+                    </div>
+                    {!isCollapsed &&
+                        <>
+                            {userAmountList.map((user, index) => {
+                                return (
+                                    <div key={user.uid} className="newpaymentLists fila-between">
+                                        <div className="fila-start">
+                                            <h4>{nombreUserMember[index]}</h4>
+                                        </div>
+                                        <h4 className="priceMember" style={{color: user.amount >= 0 ? "green" : "red"}}>{user.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
                                     </div>
-                                    <h4 className="priceMember" style={{color: user.amount >= 0 ? "green" : "red"}}>{user.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
-                                </div>
-                            )
-                        })}
-                    </>
-                }
-            </div>
+                                )
+                            })}
+                        </>
+                    }
+                </div>
             )}
             {transfers.length === 0 && (
                 <EmptyState
@@ -176,6 +176,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                     description={"No hay balance a compensar. Registra tus pagos y equilibra balances entre el grupo"}
                     onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
                     buttonCopy={"Añadir pago"}
+                    // style={{display: "none"}}
                 />
             )}
         </div>
