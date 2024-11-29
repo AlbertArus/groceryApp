@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid'
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox, Chip } from "@mui/material";
 import GastosLista from "./GastosLista";
 import ButtonArea from "../ui-components/ButtonArea";
 
-const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
+const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, setPayer, members, setMembers, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
     const {usuario} = useUsuario()
     const {id} = useParams()
     const [searchParams] = useSearchParams()
     const selectedList = listas.find(lista => lista.id === id)
-    const [paymentName, setPaymentName] = useState("")
     const [errors, setErrors] = useState({paymentName: false, amount: false, members: false})
-    const [amount, setAmount] = useState("")
-    const [members, setMembers] = useState([])
-    const [payer, setPayer] = useState("")
     const [nombreUserMember, setNombreUserMember] = useState([])
-    const [elementsPaid, setElementsPaid] = useState([])
     const [selectedChip, setSelectedChip] = useState("De esta lista");
     const [finalValuePaid, setFinalValuePaid] = useState("")
     const navigate = useNavigate()
     const maxLength = 27
+
+    console.log(elementsPaid)
     
     useEffect(() => {
         if (selectedList && selectedList.userMember && usuario?.uid) {
@@ -41,7 +38,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
             listaUserMembers()
         }
           // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [UsuarioCompleto, selectedList, usuario])
+    }, [UsuarioCompleto, selectedList, usuario, payer])
 
     useEffect(() => {
         if (amount && members.length > 0) {
@@ -53,25 +50,23 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
             setMembers(updatedMembers);
         }
           // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [amount]);
-
-    console.log(elementsPaid)
+    }, [amount, members.length]);
         
-    const AddPayment = (paymentName, amount, payer) => {
-        const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
-        const updatedPayments = [...selectedList.payments, newPayment]
-        const selectItemsPaid = elementsPaid.map(paid => paid.item);
-        const getItemsPaid = selectedList.categories.map(category => ({
-            ...category,
-            items: category.items.map(item =>
-                selectItemsPaid.includes(item.id) 
-                    ? { ...item, isPaid: true, payer } 
-                    : item
-            )
-        }))
-        updateLista(selectedList.id, "payments", updatedPayments)
-        updateLista(selectedList.id, "categories", getItemsPaid)
-    }
+    // const AddPayment = (paymentName, amount, payer) => {
+    //     const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
+    //     const updatedPayments = [...selectedList.payments, newPayment]
+    //     const selectItemsPaid = elementsPaid.map(paid => paid.item);
+    //     const getItemsPaid = selectedList.categories.map(category => ({
+    //         ...category,
+    //         items: category.items.map(item =>
+    //             selectItemsPaid.includes(item.id) 
+    //                 ? { ...item, isPaid: true, payer } 
+    //                 : item
+    //         )
+    //     }))
+    //     updateLista(selectedList.id, "payments", updatedPayments)
+    //     updateLista(selectedList.id, "categories", getItemsPaid)
+    // }
     
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -82,7 +77,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
         })
 
         if (paymentName.trim() && (String(amount).trim())) {
-            AddPayment(paymentName, amount, payer)
+            AddPayment(selectedList, selectedList.id, paymentName, amount, payer)
             navigate(`/list/${id}?view=payments`)
         }
     }
@@ -106,9 +101,9 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
         })
     }
 
-    const PriceMemberEven = () => {
-        return members.length > 0 ? amount / members.length : 0
-    }
+    const PriceMemberEven = useCallback(() => {
+        return members.length > 0 ? parseFloat(amount) / members.length : 0
+    }, [amount, members.length])
 
     const handleChipClick = (chipLabel) => {
         setSelectedChip(chipLabel);
@@ -125,7 +120,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto}) => {
                     sectionName={"Nuevo pago"}
                 />
                 <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-                    <form style={{display: "flex"}} onSubmit={handleSubmit}>
+                    <form style={{display: "flex"}} onSubmit={() => handleSubmit}>
                         <label htmlFor="nombre">Título</label>
                         <div className="iconed-container fila-between">
                         <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>

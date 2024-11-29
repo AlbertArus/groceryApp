@@ -16,7 +16,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
     const [isCollapsed, setIsCollapsed] = useState(false)
     const collapserRef = useRef(null)
     const navigate = useNavigate()
-    const searchParams = useSearchParams()
+    const [searchParams] = useSearchParams()
 
     useEffect(() => {
         if (lista && lista.userMember && usuario?.uid) {
@@ -97,15 +97,15 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
         }
     }, [positiveMembers, negativeMembers]);
 
-    // const handleDebtPaid = (transfer) => {
-    //     const fromUser = transfer.from
-    //     const toUser = transfer.to
-    //     const amount = transfer.amount
-    //     const paymentName = "Reembolso"
-    //     setMembers(toUser)
+    const handleDebtPaid = (transfer) => {
+        const payer = transfer.from
+        const toUser = transfer.to
+        const amount = transfer.amount
+        const paymentName = "Reembolso"
+        setMembers(toUser)
     
-    //     AddPayment(paymentName, amount, fromUser)
-    // }
+        AddPayment(lista, lista.id, paymentName, amount, payer)
+    }
 
     const collapseList = () => {
         setIsCollapsed(prevState => !prevState)
@@ -118,8 +118,8 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                 const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
                 const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
                 return (
-                    <div className="app-margin">
-                        <div key={index} className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
+                    <div key={`${transfer.from}-${transfer.to}`} className="app-margin">
+                        <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
                             <div className="fila-between" style={{ padding: "6px" }}>
                                 <div className="columna-start">
                                     <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
@@ -139,7 +139,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                                     <TabItemMenu
                                     itemMenuName={"Confirmar transferencia"}
                                     img={"img"}
-                                    // onClick={handleDebtPaid}
+                                    onClick={() => handleDebtPaid(transfer)}
                                     />
                                 </ModalSheet>
                             </div>                    
@@ -176,7 +176,6 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                     description={"No hay balance a compensar. Registra tus pagos y equilibra balances entre el grupo"}
                     onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
                     buttonCopy={"Añadir pago"}
-                    // style={{display: "none"}}
                 />
             )}
         </div>

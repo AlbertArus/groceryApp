@@ -28,6 +28,12 @@ function App() {
   const [sharePopupVisible, setSharePopupVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [listasLoaded, setListasLoaded] = useState(false)
+  const [paymentName, setPaymentName] = useState("")
+  const [amount, setAmount] = useState("")
+  const [members, setMembers] = useState([])
+  const [payer, setPayer] = useState("")
+  const [elementsPaid, setElementsPaid] = useState([])
+
   const navigate = useNavigate()
   const location = useLocation();
   
@@ -231,14 +237,33 @@ function App() {
     }
   };
 
-  const UsuarioCompleto = async (uid) => {
+  const UsuarioCompleto = useCallback(async (uid) => {
     const userDoc = await getDoc(doc(db, "usuarios", uid));
     if (userDoc.exists()) {
       const userData = userDoc.data();
       return `${userData.nombre} ${userData.apellido}`;
     }
     return "Usuario desconocido";
-  }
+  },[])
+
+    const AddPayment = (lista, listaId, paymentName, amount, payer) => {
+
+        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
+        const updatedPayments = [...lista.payments, newPayment]
+        updateLista(listaId, "payments", updatedPayments)
+        if(elementsPaid.length !== 0) {
+            const selectItemsPaid = elementsPaid.map(paid => paid.item);
+            const getItemsPaid = lista.categories.map(category => ({
+                ...category,
+                items: category.items.map(item =>
+                    selectItemsPaid.includes(item.id) 
+                        ? { ...item, isPaid: true, payer } 
+                        : item
+                )
+            }))
+            updateLista(listaId, "categories", getItemsPaid)
+        }
+    }
 
   return (
     <>
@@ -280,6 +305,8 @@ function App() {
                 setSharePopupVisible={setSharePopupVisible}
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
+                AddPayment={AddPayment}
+                setMembers={setMembers}
               />}
             />
             <Route path="/newlist" element={
@@ -320,6 +347,17 @@ function App() {
                 updateLista={updateLista}
                 listas={listas}
                 UsuarioCompleto={UsuarioCompleto}
+                AddPayment={AddPayment}
+                paymentName={paymentName}
+                setPaymentName={setPaymentName}
+                payer={payer}
+                setPayer={setPayer}
+                amount={amount}
+                setAmount={setAmount}
+                members={members}
+                setMembers={setMembers}
+                elementsPaid={elementsPaid}
+                setElementsPaid={setElementsPaid}
               />}
             />           
             <Route path='/list/:id/:paymentId' element={

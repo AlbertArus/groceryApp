@@ -15,7 +15,7 @@ import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
 import PagoDeuda from '../Pagos/PagoDeuda'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, setMembers }) => {
 
   let params = useParams();
   
@@ -134,7 +134,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   useEffect(() => {
     const handleScroll = () => {
-        setIsScrolled(window.scrollY > 30)
+        setIsScrolled(window.scrollY > 40)
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -558,7 +558,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               <PagoDeuda
               lista={selectedList} 
               UsuarioCompleto={UsuarioCompleto}
-              updateLista={updateLista}
+              setMembers={setMembers}
+              AddPayment={AddPayment}
               />
             )}
             </>
