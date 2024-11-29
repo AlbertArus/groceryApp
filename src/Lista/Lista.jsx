@@ -134,7 +134,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
 
   useEffect(() => {
     const handleScroll = () => {
-        setIsScrolled(window.scrollY > 90)
+        setIsScrolled(window.scrollY > 30)
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -474,7 +474,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                   usuario={usuario}
                   isToggleActive={isToggleActive}
                   setIsToggleActive={setIsToggleActive}
-                  setSearchParams={setSearchParams}    
+                  setSearchParams={setSearchParams}
+                  isScrolled={isScrolled}
+                  setIsScrolled={setIsScrolled}        
                 />
               }
               {!isEStateLista && !isToggleShown &&
@@ -539,6 +541,8 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               isToggleActive={isToggleActive}
               setIsToggleActive={setIsToggleActive}
               setSearchParams={setSearchParams}
+              isScrolled={isScrolled}
+              setIsScrolled={setIsScrolled}  
             />
             {isToggleActive === "Resumen" ? (
               <Pagos
