@@ -5,6 +5,7 @@ import NavBar from "./NavBar"
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
 import EmptyState from "../ui-components/EmptyState";
+import ButtonArea from "../ui-components/ButtonArea";
 
 const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDuplicate, updateLista }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
@@ -66,6 +67,10 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
         <div className="Home app">
             <NavBar
             />
+            <ButtonArea
+                onClick={() => navigate(`/${"newlist"}`)}
+                buttonCopy={"Nueva lista"}
+            >
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
                     <h1 style={{fontWeight: "500"}}>{`Hola ${usuario.nombre}!`}</h1>
@@ -79,6 +84,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                     description={"Compra en grupo creando tu primera lista ahora"}
                     onClick={() => navigate(`/${"newlist"}`)}
                     buttonCopy={"Nueva lista"}
+                    style={{display: "none"}}
                     />
                 )}
             </div>
@@ -159,6 +165,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                     label={""}
                 />
             }
+            </ButtonArea>
         </div>
     )
 }

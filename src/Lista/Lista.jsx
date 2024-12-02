@@ -341,10 +341,10 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   }, [categoryPrice]);
 
   useEffect(() => {
-    if (categoryPrice && JSON.stringify(selectedList.categories) !== JSON.stringify(categoryPrice)) { // Aplano contenido a un string para poder compararlo y solo actualizar si son distintos (puede haber update en dependencia y useMemo ejecuta, pero update de 0)
+    if (selectedList && categoryPrice && JSON.stringify(selectedList.categories) !== JSON.stringify(categoryPrice)) { // Aplano contenido a un string para poder compararlo y solo actualizar si son distintos (puede haber update en dependencia y useMemo ejecuta, pero update de 0)
       updateLista(selectedList.id, "categories", categoryPrice);
     }
-    updateLista(selectedList.id, "listPrice", listPrice)
+    updateLista(selectedList?.id, "listPrice", listPrice)
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryPrice, selectedList?.id]);
 

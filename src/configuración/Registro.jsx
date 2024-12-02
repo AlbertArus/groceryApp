@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
@@ -9,12 +9,17 @@ import ButtonArea from "../ui-components/ButtonArea.jsx"
 const auth = getAuth(firebaseApp)
 
 const Registro = ({setUsuario}) => {
-    const [isRegistered, setIsRegistered] = useState(false) // Para separar página de Inicio de sesión de página de Registro
+    const [isRegistered, setIsRegistered] = useState(false) // Para separar página de Inicio de sesión de página de Registroontraseña: ""
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [termsChecked, setTermsChecked] = useState(false)
     const [communicationsChecked, setCommunicationsChecked] = useState(false)
     const [errors, setErrors] = useState({nombre: false, apellido: false, correo: false, correoInvalid: false, contraseña: false, contraseñaInvalid: false, terms: false})
     const navigate = useNavigate()
+    const nombreRef = useRef();
+    const apellidoRef = useRef();
+    const correoRef = useRef();
+    const contraseñaRef = useRef();
+    const submitButtonRef = useRef(null);
 
     const handleIsRegistered = () => {
         setIsRegistered(prevState => !prevState)
@@ -26,12 +31,11 @@ const Registro = ({setUsuario}) => {
     const handleSubmit = async(e) => {
         e.preventDefault()
         
-        const nombre = e.target.nombre.value
-        const apellido = e.target.apellido.value
-        const correo = e.target.correo.value
-        const contraseña = e.target.contraseña.value
-        const correoInvalid = !regex.test(correo.trim());
-        
+        const nombre = nombreRef.current.value;
+        const apellido = apellidoRef.current.value;
+        const correo = correoRef.current.value;
+        const contraseña = contraseñaRef.current.value;
+        const correoInvalid = !regex.test(correo.trim());        
         setErrors({
             nombre: (nombre.trim() === ""),
             apellido: (apellido.trim() === ""),
@@ -96,18 +100,18 @@ const Registro = ({setUsuario}) => {
                 <h2 style={{marginBottom: "25px", textAlign: "center"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h2>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre</label>
-                    <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
+                    <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <h5 style={{display: !isRegistered && errors.nombre ? "block" : "none", color:"red"}}>Añade tu nombre</h5>
                     <label htmlFor="apellido" style={{display: isRegistered ? "none" : "block"}}>Apellido</label>
-                    <input type="text" autoComplete="family-name" placeholder="Quintana" id="apellido" onChange={(e) => setErrors((prevErrors) => ({...prevErrors, apellido: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
+                    <input type="text" autoComplete="family-name" placeholder="Quintana" id="apellido" ref={apellidoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, apellido: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <h5 style={{display: !isRegistered && errors.apellido ? "block" : "none", color:"red"}}>Añade tu apellido</h5>
                     <label htmlFor="correo">Correo electrónico</label>
-                    <input type="email" autoComplete="email" placeholder="profesor@gmail.com" inputMode="email" id="correo" onChange={(e) => setErrors((prevErrors) => ({...prevErrors, correo: false}))} style={{textTransform: "lowercase"}} autoCapitalize="off"/>
+                    <input type="email" autoComplete="email" placeholder="profesor@gmail.com" inputMode="email" id="correo" ref={correoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, correo: false}))} style={{textTransform: "lowercase"}} autoCapitalize="off"/>
                     <h5 style={{display: errors.correo ? "block" : "none", color:"red"}}>Añade un correo electrónico</h5>
                     <h5 style={{display: errors.correoInvalid ? "block" : "none", color:"red"}}>Tu dirección de correo electrónico no es correcta</h5>
                     <label htmlFor="contraseña">Contraseña</label>
                     <div className="iconed-container fila-between ">
-                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="contraseña" onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
+                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
                     <h5 style={{display: errors.contraseña ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
@@ -147,7 +151,7 @@ const Registro = ({setUsuario}) => {
                         />
                         <div style={{fontSize: "12px", marginLeft: "8px"}}>Acepto recibir comunicaciones comerciales</div>
                     </div>
-                    {/* <button type="submit">{isRegistered ? "Iniciar sesión" : "Registrarme"}</button> */}
+                    {/* <button className="buttonMain" type="submit">{isRegistered ? "Iniciar sesión" : "Registrarme"}</button> */}
                 </form>
                 <div className="redirect" onClick={handleIsRegistered}>{isRegistered ? "No tienes cuenta? Regístrate" : "Ya tienes cuenta? Inicia sesión"}</div>
             </div>
