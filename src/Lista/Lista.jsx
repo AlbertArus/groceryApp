@@ -427,10 +427,32 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     return total + Number(payment.amount)
   },0)
 
-  const FilteredListPrice = filteredListaForItems?.reduce((total, item) => {
-    return (total + Number(item.price))
-  },0) ?? 0
-  const FormattedFilteredListPrice = FilteredListPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+    // const FilteredListPrice = filteredListaForItems?.reduce((total, item) => {
+    //     return (total + Number(item.price))
+    // },0) ?? 0
+
+    // const FormattedFilteredListPrice = () => {
+    //     if(filteredListaForItems !== null) {
+    //         return FilteredListPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+    //     } else {
+    //         return selectedList.listPrice
+    //     }
+    // }
+
+    const FormattedFilteredListPrice = () => {
+        const totalPrice = Array.isArray(filteredListaForItems) && filteredListaForItems.length > 0
+            ? filteredListaForItems.reduce((total, item) => {
+                const price = parseFloat(item?.price) || 0; // Asegurarse de que el precio sea un número válido
+                return total + price;
+            }, 0)
+            : parseFloat(selectedList?.listPrice) || 0; // Asegurarse de que listPrice también sea un número válido
+    
+        return totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+    };
+    
+    
+    console.log(FormattedFilteredListPrice)
+
 
   return (
     <div className="lista app">
@@ -449,7 +471,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             totalGastoLista={totalGastoLista}
             isScrolled={isScrolled}
             setIsScrolled={setIsScrolled}
-            price={FormattedFilteredListPrice}
+            price={FormattedFilteredListPrice()}
             filteredListaForItems={filteredListaForItems}
           />
           <Toggle 
@@ -490,7 +512,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
                 itemsAdquirido={ItemsChecked()}
                 categories={selectedList.categories}
                 lista={selectedList}
-                price={FormattedFilteredListPrice}
+                price={FormattedFilteredListPrice()}
                 filteredListaForItems={filteredListaForItems}
               />
               <Categories

@@ -67,105 +67,100 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
         <div className="Home app">
             <NavBar
             />
-            <ButtonArea
-                onClick={() => navigate(`/${"newlist"}`)}
-                buttonCopy={"Nueva lista"}
-            >
             <div className="app-margin">
                 <div className="welcome" style={{ marginBottom: "12px" }}>
                     <h1 style={{fontWeight: "500"}}>{`Hola ${usuario.nombre}!`}</h1>
                     <h5>{listaslength === 1 ? "Tienes 1 lista activa" : `Tienes ${listaslength} listas activas`}</h5>
                 </div>
-                {isEStateHome && (
-                    <EmptyState
+            </div>
+            {isEStateHome && (
+                <EmptyState
                     addLista={addLista}
                     img={"_e409535c-8a88-419e-8a05-5437f5a91f35-removebg-preview"}
                     alt={"Set of grocery bags full of items"}
                     description={"Compra en grupo creando tu primera lista ahora"}
                     onClick={() => navigate(`/${"newlist"}`)}
                     buttonCopy={"Nueva lista"}
-                    style={{display: "none"}}
-                    />
-                )}
-            </div>
+                    // style={{display: "none"}}
+                />
+            )}
             {!isEStateHome && (
+                <>
                 <ToggleLista
                     usuario={usuario}
                     listas={listas}
                     setFilteredListas={setFilteredListas}
                 />
-            )}
-            <div className="listasHome" style={{marginTop: "10px"}}>
-                {filteredListas && (
-                    <>
-                        {filteredListas.length > 0 ? (
-                            <>
-                                {filteredListas.map(lista => (
-                                    <div key={lista.id}>
-                                        <div className="vistaDatos app-margin">
-                                            <div className="fila-between" style={{alignItems: "flex-start"}}>
-                                                <div className="linkedPart" style={{flex: "1"}}>
-                                                    <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
-                                                        <div className="fila-between">
-                                                            <h3 style={{fontWeight: "500", marginBottom: "4px"}}>{lista.listaName}</h3>
-                                                        </div>
-                                                        {/* <h5>{`Items: ${getListaItemsLength(lista.id)}`}</h5>
-                                                        <div className="fila-start">
-                                                            <div className="fila-start-group">
-                                                                <span className="material-symbols-outlined icon-small">group</span>
-                                                                <h5>{`${lista.userMember.length} pers.`}</h5>
+                <div className="listasHome" style={{marginTop: "10px"}}>
+                    {filteredListas && (
+                        <>
+                            {filteredListas.length > 0 ? (
+                                <>
+                                    {filteredListas.map(lista => (
+                                        <div key={lista.id}>
+                                            <div className="vistaDatos app-margin">
+                                                <div className="fila-between" style={{alignItems: "flex-start"}}>
+                                                    <div className="linkedPart" style={{flex: "1"}}>
+                                                        <Link to={`/list/${lista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+                                                            <div className="fila-between">
+                                                                <h3 style={{fontWeight: "500", marginBottom: "4px"}}>{lista.listaName}</h3>
                                                             </div>
-                                                            <h5>{lista.plan}</h5>
-                                                        </div> */}
-                                                        <div className="fila-start">
-                                                            <div className="fila-start-group">
-                                                                <span className="material-symbols-outlined icon-small">group</span>
-                                                                <h5>{`${lista.userMember.length} pers.`}</h5>
+                                                            {/* <h5>{`Items: ${getListaItemsLength(lista.id)}`}</h5>
+                                                            <div className="fila-start">
+                                                                <div className="fila-start-group">
+                                                                    <span className="material-symbols-outlined icon-small">group</span>
+                                                                    <h5>{`${lista.userMember.length} pers.`}</h5>
+                                                                </div>
+                                                                <h5>{lista.plan}</h5>
+                                                            </div> */}
+                                                            <div className="fila-start">
+                                                                <div className="fila-start-group">
+                                                                    <span className="material-symbols-outlined icon-small">group</span>
+                                                                    <h5>{`${lista.userMember.length} pers.`}</h5>
+                                                                </div>
+                                                                <h5>{`Items: ${getListaItemsLength(lista.id)}`}</h5>
                                                             </div>
-                                                            <h5>{`Items: ${getListaItemsLength(lista.id)}`}</h5>
-                                                        </div>
-                                                    </Link>
-                                                </div>
-                                                <div className="fila-start" style={{position: "relative"}}>
-                                                    <span className="material-symbols-outlined icon-medium pointer" onClick={(event) => {event.preventDefault(); updateLista(lista.id, "isNotified", !lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
-                                                    <span className="material-symbols-outlined icon-medium pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
-                                                    {isOptionsMenuVisible === lista.id && ( 
-                                                        <OptionsMenuListHome
-                                                            style={{right: "0"}}
-                                                            key={lista.id}
-                                                            ref={optionsMenuListHomeRef}
-                                                            handleDuplicate={() => handleDuplicate(lista.id)}
-                                                            handleArchive={() => updateLista(lista.id, "isArchived", !lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
-                                                            deleteLista={deleteLista}
-                                                            lista={lista}
-                                                        />
-                                                    )}
+                                                        </Link>
+                                                    </div>
+                                                    <div className="fila-start" style={{position: "relative"}}>
+                                                        <span className="material-symbols-outlined icon-medium pointer" onClick={(event) => {event.preventDefault(); updateLista(lista.id, "isNotified", !lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                        <span className="material-symbols-outlined icon-medium pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
+                                                        {isOptionsMenuVisible === lista.id && ( 
+                                                            <OptionsMenuListHome
+                                                                style={{right: "0"}}
+                                                                key={lista.id}
+                                                                ref={optionsMenuListHomeRef}
+                                                                handleDuplicate={() => handleDuplicate(lista.id)}
+                                                                handleArchive={() => updateLista(lista.id, "isArchived", !lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
+                                                                deleteLista={deleteLista}
+                                                                lista={lista}
+                                                            />
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </>
-                            ) : (
-                                <>
-                                    {!isEStateHome && (
-                                        <div className="app-margin center">No tienes listas aquí </div>
-                                    )}
+                                    ))}
                                 </>
-                            )
-                        }
-                    </>
-                )}
-            </div>
-            <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={() => navigate("/archived")} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
-            {!isEStateHome && 
+                                ) : (
+                                    <>
+                                        {!isEStateHome && (
+                                            <div className="app-margin center">No tienes listas aquí </div>
+                                        )}
+                                    </>
+                                )
+                            }
+                        </>
+                    )}
+                </div>
+                <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={() => navigate("/archived")} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
                 <ButtonFAB
                     path={"newlist"}
                     icon={"add"}
                     label={""}
                 />
-            }
-            </ButtonArea>
+                </>
+            )}
         </div>
     )
 }

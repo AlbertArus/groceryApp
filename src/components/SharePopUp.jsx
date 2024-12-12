@@ -12,7 +12,7 @@ const SharePopUp = ({ setSharePopupVisible }) => {
           <span className="material-symbols-outlined icon-medium" onClick={() => setSharePopupVisible(false)}>close</span>
         </div>
         <h5>Comparte esta lista con los tuyos y empieza a colaborar. ¡Comprar en grupo nunca ha sido más fácil!</h5>
-        <button type="submit" onClick={() => {handleShare(); setSharePopupVisible(false)}}>Compartir lista</button>
+        <button className="buttonMain" style={{width: "100%", marginBottom: "10px"}} onClick={() => {handleShare(); setSharePopupVisible(false)}}>Compartir lista</button>
       </div>
     </div>
   )
