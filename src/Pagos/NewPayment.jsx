@@ -65,6 +65,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, memb
             navigate(`/list/${id}?view=payments`)
             setAmount("")
             setPaymentName("")
+            setElementsPaid([])
         }
     }
 
@@ -92,7 +93,10 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, memb
     }, [amount, members.length])
 
     const handleChipClick = (chipLabel) => {
-        setSelectedChip(chipLabel);
+        if(chipLabel === "Otro gasto") {
+            setAmount("")
+        }
+        setSelectedChip(chipLabel)
     }
 
     console.log(amount)
