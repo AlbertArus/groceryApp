@@ -30,26 +30,31 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
         }
     }, [UsuarioCompleto, lista, usuario]);
 
+    console.log(lista.payments)
+
     const amountUserMember = () => {
         return lista.userMember.map(uid => {
+            console.log(uid)
             const usuarioPayer = lista.payments.reduce((total, payment) => {
-                return payment.payer === uid ? total + (payment.amount || 0) : total;
-            }, 0);
+                return payment.payer === uid ? total + (Number(payment.amount || 0)) : total
 
-            const usuarioItemsPaid = lista.categories.reduce((totalCategory, category) => {
-                if (!category.items) return totalCategory;
-                return totalCategory + category.items.reduce((totalItems, item) => {
-                    if (item.isPaid && item.itemUserMember.includes(uid)) {
-                        const priceShare = Number(item.price) / (item.itemUserMember.length || 1);
-                        return totalItems + priceShare;
-                    }
-                    return totalItems;
+            }, 0);
+            console.log("pagado", usuarioPayer)
+
+
+            const usuarioToPay = lista.payments.reduce((total, payment) => {
+                const amountForThisPayment = payment.members.reduce((memberPay, member) => {
+                  return member.uid === uid ? memberPay + Number(member.amount || 0) : memberPay;
                 }, 0);
-            }, 0);
+                return total + amountForThisPayment;
+              }, 0);
+            console.log("a pagar", usuarioToPay)
 
-            return { uid, amount: usuarioPayer - usuarioItemsPaid };
-        });
-    };
+            return { uid, amount: usuarioPayer - usuarioToPay }
+        })
+    }
+
+    console.log(amountUserMember())
 
     useEffect(() => {
         if (lista) {
@@ -105,6 +110,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
         setMembers(toUser)
     
         AddPayment(lista, lista.id, paymentName, amount, payer)
+        setOpen(false)
     }
 
     const collapseList = () => {
