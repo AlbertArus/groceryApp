@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
-import { Checkbox, Chip } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import GastosLista from "./GastosLista";
 import ButtonArea from "../ui-components/ButtonArea";
-import CurrencyInput from "../components/CurrencyInput";
-import { FormatCurrency } from "../components/FormatCurrency";
+// import CurrencyInput from "../components/CurrencyInput";
+// import { FormatCurrency } from "../components/FormatCurrency";
 import CustomChip from "../ui-components/CustomChip";
 
 const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, members, setMembers, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
