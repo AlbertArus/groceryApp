@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-// import { v4 as uuidv4 } from 'uuid'
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox, Chip } from "@mui/material";
 import GastosLista from "./GastosLista";
 import ButtonArea from "../ui-components/ButtonArea";
+import CurrencyInput from "../components/CurrencyInput";
+import { FormatCurrency } from "../components/FormatCurrency";
+import CustomChip from "../ui-components/CustomChip";
 
-const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, setPayer, members, setMembers, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
+const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, members, setMembers, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
     const {usuario} = useUsuario()
     const {id} = useParams()
     const [searchParams] = useSearchParams()
@@ -18,8 +20,6 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
     const [finalValuePaid, setFinalValuePaid] = useState("")
     const navigate = useNavigate()
     const maxLength = 27
-
-    console.log(elementsPaid)
     
     useEffect(() => {
         if (selectedList && selectedList.userMember && usuario?.uid) {
@@ -43,7 +43,7 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
     useEffect(() => {
         if (amount && members.length > 0) {
             const amountPerMember = parseFloat(amount) / members.length;
-            const updatedMembers = members.map(member => ({
+            const updatedMembers = members?.map(member => ({
                 ...member,
                 amount: amountPerMember
             }));
@@ -51,22 +51,6 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
         }
           // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount, members.length]);
-        
-    // const AddPayment = (paymentName, amount, payer) => {
-    //     const newPayment = { id: uuidv4(), listaId: id, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
-    //     const updatedPayments = [...selectedList.payments, newPayment]
-    //     const selectItemsPaid = elementsPaid.map(paid => paid.item);
-    //     const getItemsPaid = selectedList.categories.map(category => ({
-    //         ...category,
-    //         items: category.items.map(item =>
-    //             selectItemsPaid.includes(item.id) 
-    //                 ? { ...item, isPaid: true, payer } 
-    //                 : item
-    //         )
-    //     }))
-    //     updateLista(selectedList.id, "payments", updatedPayments)
-    //     updateLista(selectedList.id, "categories", getItemsPaid)
-    // }
     
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -79,6 +63,8 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
         if (paymentName.trim() && (String(amount).trim())) {
             AddPayment(selectedList, selectedList.id, paymentName, amount, payer)
             navigate(`/list/${id}?view=payments`)
+            setAmount("")
+            setPaymentName("")
         }
     }
 
@@ -107,7 +93,9 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
 
     const handleChipClick = (chipLabel) => {
         setSelectedChip(chipLabel);
-    };
+    }
+
+    console.log(amount)
   
     return (
         <ButtonArea 
@@ -143,41 +131,15 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
                             <div className="fila-between">
                                 <div>
                                     <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
-                                    <Chip
+                                    <CustomChip
                                         label="De esta lista"
-                                        clickable
+                                        isSelected={selectedChip === "De esta lista"}
                                         onClick={() => handleChipClick("De esta lista")}
-                                        sx={{
-                                            fontFamily: "inherit",
-                                            fontSize: "12px",
-                                            marginRight: "5px",
-                                            padding: "5px",
-                                            borderRadius: "5px",
-                                            border: selectedChip === "De esta lista" ? '2px solid #ED9E04' : 'none', // Tiene border y el otro no porque al ser la default, debe tenerlo desde que se carga
-                                            backgroundColor: selectedChip === "De esta lista" ? '#ffeec9' : '#ffeec9',
-                                            color: selectedChip === "De esta lista" ? '#000' : '#000',
-                                            "&:hover": {
-                                                border: selectedChip === "De esta lista" ? '1.5px solid #ED9E04' : 'none',
-                                                backgroundColor: selectedChip === "De esta lista" ? '#FBE7C1' : '#FBE7C1',
-                                            },
-                                        }}
                                     />
-                                    <Chip
+                                    <CustomChip
                                         label="Otro gasto"
-                                        clickable
+                                        isSelected={selectedChip === "Otro gasto"}
                                         onClick={() => handleChipClick("Otro gasto")}
-                                        sx={{
-                                            fontFamily: "inherit",
-                                            fontSize: "12px",
-                                            padding: "5px",
-                                            borderRadius: "5px",
-                                            backgroundColor: selectedChip === "Otro gasto" ? '#ffeec9' : '#ffeec9',
-                                            color: selectedChip === "Otro gasto" ? '#000' : '#000',
-                                            "&:hover": {
-                                                border: selectedChip === "Otro gasto" ? '1.5px solid #ED9E04' : 'none',
-                                                backgroundColor: selectedChip === "Otro gasto" ? '#FBE7C1' : '#f0f0f0',
-                                            },
-                                        }}
                                     />
                                 </div>
                                 {selectedChip === "De esta lista" && (
@@ -199,9 +161,17 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
                                     />
                                 ) : (
                                 <div style={{marginTop: "10px"}}>
-                                <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
-                                <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
-                                <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
+                                    <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
+                                    {/* <CurrencyInput 
+                                        value={amount}
+                                        // onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}}
+                                        onChange={(newAmount) => {setAmount(newAmount); setErrors(prevErrors => ({...prevErrors, amount: false }))}}
+                                        locale="es-ES"
+                                        currency="EUR"
+                                        editable={true}
+                                    /> */}
+                                    <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
+                                    <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
                                 </div>
                                 )}
                             </div>
@@ -233,7 +203,20 @@ const NewPayment = ({ listas, updateLista, UsuarioCompleto, AddPayment, payer, s
                                         />           
                                         <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
                                     </div>
-                                    <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>
+                                    <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>                                  
+                                    {/* <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? 
+                                        <CurrencyInput
+                                            value={PriceMemberEven()}
+                                            locale="es-ES"
+                                            currency="EUR"
+                                            editable={false}
+                                        />
+                                        : (
+                                        <>
+                                        {FormatCurrency(0, "es-ES", "EUR")}
+                                        </>
+                                        ))}
+                                    </h4> */}
                                 </div>
                             )})}
                         </div>
