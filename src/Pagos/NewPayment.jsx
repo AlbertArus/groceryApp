@@ -41,15 +41,13 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, memb
     }, [UsuarioCompleto, selectedList, usuario, payer])
 
     useEffect(() => {
-        if (amount && members.length > 0) {
-            const amountPerMember = parseFloat(amount) / members.length;
-            const updatedMembers = members?.map(member => ({
-                ...member,
-                amount: amountPerMember
-            }));
-            setMembers(updatedMembers);
-        }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
+        const amountPerMember = parseFloat(amount) / members.length;
+        const updatedMembers = members?.map(member => ({
+            ...member,
+            amount: amountPerMember
+        }));
+        setMembers(updatedMembers);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount, members.length]);
     
     const handleSubmit = async (e) => {
