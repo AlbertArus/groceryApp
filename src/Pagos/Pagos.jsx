@@ -3,6 +3,7 @@ import EmptyState from "../ui-components/EmptyState"
 import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
 import ButtonArea from "../ui-components/ButtonArea"
+// import CurrencyInput from "../components/CurrencyInput"
 
 const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoLista, price}) => {
   const {usuario} = useUsuario()
@@ -49,6 +50,14 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Gastos en lista</h6>
                 <h4>{(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                {/* <h4>
+                    <CurrencyInput
+                        value={lista.listPrice}
+                        locale="es-ES"
+                        currency="EUR"
+                        editable={false}
+                    />
+                </h4> */}
                 </div>
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Total pagado</h6>
