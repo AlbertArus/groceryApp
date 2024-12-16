@@ -423,9 +423,13 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateListaCategories(params.id, updatedCategories)
   }
 
-  const totalGastoLista = selectedList?.payments?.reduce((total, payment) => {
-    return total + Number(payment.amount)
-  },0)
+    const totalGastoLista = selectedList?.payments?.reduce((total, payment) => {
+        // Filtrar pagos que no sean "Reembolso"
+        if (payment.paymentName !== "Reembolso") {
+            return total + Number(payment.amount);
+        }
+        return total; // No acumules si no pasa el filtro
+    }, 0);
 
     // const FilteredListPrice = filteredListaForItems?.reduce((total, item) => {
     //     return (total + Number(item.price))
