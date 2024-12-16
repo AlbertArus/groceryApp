@@ -15,7 +15,7 @@ import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
 import PagoDeuda from '../Pagos/PagoDeuda'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, setMembers }) => {
+const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment }) => {
 
   let params = useParams();
   
@@ -448,11 +448,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
             : parseFloat(selectedList?.listPrice) || 0; // Asegurarse de que listPrice también sea un número válido
     
         return totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
-    };
-    
-    
-    console.log(FormattedFilteredListPrice)
-
+    }
 
   return (
     <div className="lista app">
@@ -580,7 +576,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
               <PagoDeuda
               lista={selectedList} 
               UsuarioCompleto={UsuarioCompleto}
-              setMembers={setMembers}
               AddPayment={AddPayment}
               />
             )}

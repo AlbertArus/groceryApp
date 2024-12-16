@@ -9,7 +9,7 @@ import ButtonArea from "../ui-components/ButtonArea";
 // import { FormatCurrency } from "../components/FormatCurrency";
 import CustomChip from "../ui-components/CustomChip";
 
-const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, members, setMembers, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
+const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
     const {usuario} = useUsuario()
     const {id} = useParams()
     const [searchParams] = useSearchParams()
@@ -18,6 +18,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, memb
     const [nombreUserMember, setNombreUserMember] = useState([])
     const [selectedChip, setSelectedChip] = useState("De esta lista");
     const [finalValuePaid, setFinalValuePaid] = useState("")
+    const [members, setMembers] = useState([])
     const navigate = useNavigate()
     const maxLength = 27
     
@@ -59,7 +60,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, memb
         })
 
         if (paymentName.trim() && (String(amount).trim())) {
-            AddPayment(selectedList, selectedList.id, paymentName, amount, payer)
+            AddPayment(selectedList, selectedList.id, paymentName, amount, payer, members)
             navigate(`/list/${id}?view=payments`)
             setAmount("")
             setPaymentName("")

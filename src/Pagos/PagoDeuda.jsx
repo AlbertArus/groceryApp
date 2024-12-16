@@ -5,9 +5,10 @@ import { useUsuario } from "../UsuarioContext";
 import EmptyState from "../ui-components/EmptyState"
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
+const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     const { usuario } = useUsuario();
     const [open, setOpen] = useState(false);
+    const [pendingAmounts, setPendingAmounts] = useState([]);
     const [nombreUserMember, setNombreUserMember] = useState([]);
     const [userAmountList, setUserAmountList] = useState([]);
     const [positiveMembers, setPositiveMembers] = useState([]);
@@ -30,17 +31,16 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
         }
     }, [UsuarioCompleto, lista, usuario]);
 
-    console.log(lista.payments)
+    // console.log(lista.payments)
 
     const amountUserMember = () => {
         return lista.userMember.map(uid => {
-            console.log(uid)
+            // console.log(uid)
             const usuarioPayer = lista.payments.reduce((total, payment) => {
                 return payment.payer === uid ? total + (Number(payment.amount || 0)) : total
 
             }, 0);
-            console.log("pagado", usuarioPayer)
-
+            // console.log("pagado", usuarioPayer)
 
             const usuarioToPay = lista.payments.reduce((total, payment) => {
                 const amountForThisPayment = payment.members.reduce((memberPay, member) => {
@@ -48,18 +48,19 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                 }, 0);
                 return total + amountForThisPayment;
               }, 0);
-            console.log("a pagar", usuarioToPay)
+            // console.log("a pagar", usuarioToPay)
 
             return { uid, amount: usuarioPayer - usuarioToPay }
         })
     }
 
-    console.log(amountUserMember())
+    // console.log(amountUserMember())
 
     useEffect(() => {
         if (lista) {
             const amounts = amountUserMember();
             setUserAmountList(amounts);
+            setPendingAmounts(amounts); // Copia inicial de los saldos
             const positives = amounts.filter(user => user.amount > 0);
             const negatives = amounts.filter(user => user.amount < 0);
             setPositiveMembers(positives);
@@ -67,52 +68,74 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lista]);
+    
 
     useEffect(() => {
         const calculateTransfers = () => {
             const transfersList = [];
-            let pos = [...positiveMembers];
-            let neg = [...negativeMembers];
-
+            let pos = positiveMembers.map((p) => ({ ...p })); // Copiar para evitar mutaciones
+            let neg = negativeMembers.map((n) => ({ ...n })); // Copiar para evitar mutaciones
+    
             while (pos.length && neg.length) {
                 const positive = pos[0];
                 const negative = neg[0];
                 const transferAmount = Math.min(positive.amount, Math.abs(negative.amount));
-
+    
                 transfersList.push({
                     from: negative.uid,
                     to: positive.uid,
-                    amount: transferAmount
+                    amount: transferAmount,
                 });
-
+    
                 // Actualiza los saldos
                 positive.amount -= transferAmount;
                 negative.amount += transferAmount;
-
+    
                 // Elimina usuarios con saldo cero
                 if (positive.amount === 0) pos.shift();
                 if (negative.amount === 0) neg.shift();
             }
-
+    
             setTransfers(transfersList);
         };
-
+    
         if (positiveMembers.length && negativeMembers.length) {
             calculateTransfers();
         }
     }, [positiveMembers, negativeMembers]);
 
     const handleDebtPaid = (transfer) => {
-        const payer = transfer.from
-        const toUser = transfer.to
-        const amount = transfer.amount
-        const paymentName = "Reembolso"
-        setMembers(toUser)
-    
-        AddPayment(lista, lista.id, paymentName, amount, payer)
-        setOpen(false)
-    }
+        const { from, to, amount } = transfer;
+        const paymentName = "Reembolso";
+        console.log(transfer)
+        const members = [{ uid: to, amount }]
 
+        // Actualizar `pendingAmounts`
+        setPendingAmounts((prev) =>
+            prev.map((user) => {
+                if (user.uid === from) {
+                    return { ...user, amount: user.amount + amount };
+                }
+                if (user.uid === to) {
+                    return { ...user, amount: user.amount - amount };
+                }
+                return user;
+            })
+        );
+    
+        // Actualizar `transfers`, eliminando transferencias completadas
+        setTransfers((prevTransfers) =>
+            prevTransfers.filter(
+                (transfer) => !(transfer.from === from && transfer.to === to && transfer.amount === amount)
+            )
+        );
+        // Registrar el pago
+        AddPayment(lista, lista.id, paymentName, amount, from, members);
+        console.log(members)
+        console.log(lista.payments)
+        setOpen(false);
+    }    
+    
     const collapseList = () => {
         setIsCollapsed(prevState => !prevState)
         collapserRef.current.style.transform = !isCollapsed ? "rotate(-90deg)" : "rotate(0deg)";
@@ -137,14 +160,14 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                                 </h4>
                             </div>
                             <div className="barraPago">
-                                <h6 onClick={() => {setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
+                                <h6 onClick={() => setOpen(true)} style={{color: "grey"}}>Gestionar pago</h6>
                                 <ModalSheet
                                     open={open}
                                     setOpen={setOpen}
                                 >
                                     <TabItemMenu
                                     itemMenuName={"Confirmar transferencia"}
-                                    img={"img"}
+                                    img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
                                     onClick={() => handleDebtPaid(transfer)}
                                     />
                                 </ModalSheet>
@@ -161,13 +184,13 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, setMembers }) => {
                     </div>
                     {!isCollapsed &&
                         <>
-                            {userAmountList.map((user, index) => {
+                            {pendingAmounts.map((user, index) => {
                                 return (
                                     <div key={user.uid} className="newpaymentLists fila-between">
                                         <div className="fila-start">
                                             <h4>{nombreUserMember[index]}</h4>
                                         </div>
-                                        <h4 className="priceMember" style={{color: user.amount >= 0 ? "green" : "red"}}>{user.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                                        <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}>{user.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
                                     </div>
                                 )
                             })}

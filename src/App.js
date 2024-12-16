@@ -30,7 +30,6 @@ function App() {
   const [listasLoaded, setListasLoaded] = useState(false)
   const [paymentName, setPaymentName] = useState("")
   const [amount, setAmount] = useState("")
-  const [members, setMembers] = useState([])
   const [payer, setPayer] = useState("")
   const [elementsPaid, setElementsPaid] = useState([])
 
@@ -246,7 +245,7 @@ function App() {
     return "Usuario desconocido";
   },[])
 
-    const AddPayment = (lista, listaId, paymentName, amount, payer) => {
+    const AddPayment = (lista, listaId, paymentName, amount, payer, members) => {
 
         const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date(), payer, paymentName, amount, members, elementsPaid }
         const updatedPayments = [...lista.payments, newPayment]
@@ -306,7 +305,6 @@ function App() {
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
                 AddPayment={AddPayment}
-                setMembers={setMembers}
               />}
             />
             <Route path="/newlist" element={
@@ -354,8 +352,6 @@ function App() {
                 setPayer={setPayer}
                 amount={amount}
                 setAmount={setAmount}
-                members={members}
-                setMembers={setMembers}
                 elementsPaid={elementsPaid}
                 setElementsPaid={setElementsPaid}
               />}
