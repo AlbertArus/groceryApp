@@ -8,7 +8,7 @@ const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemU
                         {iconName}
                     </span>
                     {img && (
-                        <img src="/Fotos GroceryApp/transferencia-de-dinero.png" alt="Hola" style={{width: "40px", marginRight: "15px"}}/>
+                        <img src={img} alt="Hola" style={{width: "40px", marginRight: "15px"}}/>
                     )}
                     <h4>{itemMenuName}</h4>
                 </div>

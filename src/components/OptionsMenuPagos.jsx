@@ -5,8 +5,8 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 
 const OptionsMenuPagos = forwardRef(({ lista, payment, deletePayment, style }, ref) => {
   const [searchParams] = useSearchParams()
-  console.log(lista.id)
-  console.log(payment.id)
+//   console.log("lista id", lista.id)
+//   console.log("pago id", payment.id)
   const url = `${window.location.origin}/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`
   const listaShared = lista
   const handleShare = ShareButton(url, listaShared)

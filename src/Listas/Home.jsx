@@ -145,7 +145,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                                 ) : (
                                     <>
                                         {!isEStateHome && (
-                                            <div className="app-margin center">No tienes listas aquí </div>
+                                            <h5 className="app-margin center">No tienes listas aquí </h5>
                                         )}
                                     </>
                                 )
