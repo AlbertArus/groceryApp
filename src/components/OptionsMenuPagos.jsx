@@ -17,6 +17,7 @@ const OptionsMenuPagos = forwardRef(({ lista, payment, deletePayment, style }, r
       <ItemMenu
         iconName={"edit"}
         itemMenuName={"Editar gasto"}
+        onClick={() => navigate(`/list/${lista.id}/newpayment/${payment.id}?view=${searchParams.get("view")}`)}
       />
       <ItemMenu
         iconName={"share"}

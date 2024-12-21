@@ -9,10 +9,11 @@ import ButtonArea from "../ui-components/ButtonArea";
 // import { FormatCurrency } from "../components/FormatCurrency";
 import CustomChip from "../ui-components/CustomChip";
 
-const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid}) => {
+const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid, editPayment}) => {
     const {usuario} = useUsuario()
-    const {id} = useParams()
+    const {id, paymentId} = useParams()
     const [searchParams] = useSearchParams()
+    // const paymentId = searchParams.get("paymentId")
     const selectedList = listas.find(lista => lista.id === id)
     const [errors, setErrors] = useState({paymentName: false, amount: false, members: false})
     const [nombreUserMember, setNombreUserMember] = useState([])
@@ -21,6 +22,29 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     const [members, setMembers] = useState([])
     const navigate = useNavigate()
     const maxLength = 27
+    const paymentEditing = selectedList.payments.find(payment => payment.id === paymentId)
+
+    useEffect(() => {
+        if(paymentId) {
+            setPaymentName(paymentEditing.paymentName)
+            setAmount(paymentEditing.amount)
+            setMembers(paymentEditing.members)
+            setPayer(paymentEditing.payer)
+            setElementsPaid(paymentEditing.elementsPaid)
+        } else {
+            setPaymentName("")
+            setAmount("")
+            setPayer(usuario?.uid || "")
+            setElementsPaid([])
+            // No añado miembros porque lo necesito en la dependencia para que coja los de paymentId pero si está abajo y no hay paymentId, se actualiza, y luego en el siguiente useEffect con !paymentId vuelve a actualizarse y este volvería a ejecutarse
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[paymentId, usuario, members])
+
+    console.log("hola")
+    console.log(amount)
+    console.log(elementsPaid)
+
     
     useEffect(() => {
         if (selectedList && selectedList.userMember && usuario?.uid) {
@@ -30,7 +54,9 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 )
                 setNombreUserMember(userMembersName)
 
-                setMembers(selectedList.userMember.map(uid => ({ uid, amount: PriceMemberEven() })));
+                if(!paymentId) {
+                    setMembers(selectedList.userMember.map(uid => ({ uid, amount: PriceMemberEven() })));
+                }
 
                 if (!payer) {
                     setPayer(usuario.uid);
@@ -47,6 +73,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
             ...member,
             amount: amountPerMember
         }));
+
         setMembers(updatedMembers);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount, members.length]);
@@ -60,13 +87,21 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         })
 
         if (paymentName.trim() && (String(amount).trim())) {
-            AddPayment(selectedList, selectedList.id, paymentName, amount, payer, members)
+            if(!paymentId) {
+                AddPayment(selectedList, selectedList.id, paymentName, amount, payer, members)
+            } else {
+                editPayment(selectedList, selectedList.id, paymentId, paymentName, amount, payer, members)
+            }
             navigate(`/list/${id}?view=payments`)
             setAmount("")
             setPaymentName("")
             setElementsPaid([])
         }
     }
+
+    console.log("hola")
+    console.log(amount)
+    console.log(elementsPaid)
 
     const handleNewPaymentName = (event) => {
         const newPaymentName = event.target.value.charAt(0).toUpperCase()+event.target.value.slice(1)
@@ -97,18 +132,16 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         }
         setSelectedChip(chipLabel)
     }
-
-    console.log(amount)
   
     return (
         <ButtonArea 
             onClick={handleSubmit}
-            buttonCopy={"Añadir pago"}
+            buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
         >
             <div className="FormLista app">
                 <Head
                     path={`list/${id}?view=${searchParams.get("view")}`}
-                    sectionName={"Nuevo pago"}
+                    sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
                 />
                 <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
                     <form style={{display: "flex"}} onSubmit={() => handleSubmit}>

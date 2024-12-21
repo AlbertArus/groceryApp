@@ -91,9 +91,9 @@ function App() {
       setListas(prevListas => [...prevListas, newLista]);
       return newLista // Lo añado para que FormLista reciba newLista asíncronamente y sepa dónde redirigirlo
     } catch (error) {
-      console.error("Error al guardar la lista en Firebase:", error);
+        console.error("Error al guardar la lista en Firebase:", error);
     }
-Analytics.track("Lista agregada", { listaName: "Nueva Lista" });
+    Analytics.track("Lista agregada", { listaName: "Nueva Lista" });
   }
 
   const deleteLista = async (id) => {
@@ -267,6 +267,29 @@ Analytics.track("Lista agregada", { listaName: "Nueva Lista" });
         }
     }
 
+    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members) => {
+        const editedPayment = lista.payments.find(payment => payment.id === paymentId)
+        console.log(editedPayment)
+        const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date() }
+        console.log(newDataPayment)
+        const updatedPayments = lista.payments.map(payment => 
+            payment.id === paymentId ? newDataPayment : payment
+        )
+        updateLista(listaId, "payments", updatedPayments)
+        // if(elementsPaid.length !== 0) {
+        //     const selectItemsPaid = elementsPaid.map(paid => paid.item);
+        //     const getItemsPaid = lista.categories.map(category => ({
+        //         ...category,
+        //         items: category.items.map(item =>
+        //             selectItemsPaid.includes(item.id) 
+        //                 ? { ...item, isPaid: true, payer } 
+        //                 : item
+        //         )
+        //     }))
+        //     updateLista(listaId, "categories", getItemsPaid)
+        // }
+    }
+
   return (
     <>
     <Analytics id="G-DQMEE49WTB" />
@@ -345,7 +368,7 @@ Analytics.track("Lista agregada", { listaName: "Nueva Lista" });
                 usuario={usuario}
               />}
             />
-            <Route path='/list/:id/newpayment' element={
+            <Route path='/list/:id/newpayment/:paymentId?' element={
               <NewPayment
                 updateLista={updateLista}
                 listas={listas}
@@ -359,10 +382,11 @@ Analytics.track("Lista agregada", { listaName: "Nueva Lista" });
                 setAmount={setAmount}
                 elementsPaid={elementsPaid}
                 setElementsPaid={setElementsPaid}
+                editPayment={editPayment}
               />}
             />           
             <Route path='/list/:id/:paymentId' element={
-              <PaymentDetail 
+              <PaymentDetail
                 listas={listas}
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
