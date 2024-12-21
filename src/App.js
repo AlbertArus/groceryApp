@@ -13,6 +13,8 @@ import Settings from './configuración/Settings.jsx';
 import NewPassword from './configuración/NewPassword.jsx'
 import DeleteUser from './configuración/DeleteUser.jsx';
 import LoadingPage from './components/LoadingPage.jsx';
+import { Analytics } from "@vercel/analytics/react"
+
 
 import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
@@ -91,6 +93,7 @@ function App() {
     } catch (error) {
       console.error("Error al guardar la lista en Firebase:", error);
     }
+Analytics.track("Lista agregada", { listaName: "Nueva Lista" });
   }
 
   const deleteLista = async (id) => {
@@ -266,6 +269,8 @@ function App() {
 
   return (
     <>
+    <Analytics id="G-DQMEE49WTB" />
+    <Analytics />
       {isLoading ? (
         <LoadingPage />
       ) : (
