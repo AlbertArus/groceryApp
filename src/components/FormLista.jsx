@@ -3,35 +3,60 @@ import { useNavigate } from "react-router-dom"
 import Head from "./Head";
 import '@material/web/switch/switch.js';
 import ButtonArea from "../ui-components/ButtonArea";
+import NewMembers from "./MembersNew.jsx";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase-config.js";
+import { v4 as uuidv4 } from 'uuid'
 
 const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
-  const [listaName, setListaName] = useState("");
-  const [errors, setErrors] = useState({listaName: false, plan: false})
-  const [plan, setPlan] = useState("");
-  const [descriptionLista, setDescriptionLista] = useState("");
-  const [showVotes, setShowVotes] = useState(true)
-  const [showPrices, setShowPrices] = useState(true)
-  const [isNotified, setIsNotified] = useState(true)
-  const navigate = useNavigate()
+    const [listaName, setListaName] = useState("");
+    const [errors, setErrors] = useState({listaName: false, plan: false})
+    const [plan, setPlan] = useState("");
+    const [descriptionLista, setDescriptionLista] = useState("");
+    const [showVotes, setShowVotes] = useState(true)
+    const [showPrices, setShowPrices] = useState(true)
+    const [isNotified, setIsNotified] = useState(true)
+    const [membersToAdd, setMembersToAdd] = useState([""])
+    const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    setErrors({
-      listaName: (listaName.trim() === ""),
-      plan: (plan.trim() === "")
-    })
-
-    if (listaName.trim() && plan.trim()) {
-      try {
-        const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified)
-        navigate(`/list/${nuevaLista.id}`)
-        setSharePopupVisible(true)
-      } catch (error) {
-        console.error("Error al crear la lista:", error)
-      }
+    const createUsers = async() => {
+        try{
+            const membersUID = []
+            membersToAdd.forEach(async(member) => {
+            const uid = uuidv4()
+            membersUID.push(uid)
+            const newMember = doc(db, "usuarios", uid);
+            const data = {
+                uid,
+                nombre: member,
+                createdAt: new Date(),
+            }
+            await setDoc(newMember, data);
+        })
+        return membersUID
+        } catch (error) {
+            console.error(error)
+        }
     }
-  }
+
+    const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    setErrors({
+        listaName: (listaName.trim() === ""),
+        plan: (plan.trim() === "")
+    })
+        const membersUID = await createUsers()
+        if (listaName.trim() && plan.trim()) {
+        try {
+            const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID)
+            navigate(`/list/${nuevaLista.id}`)
+            setSharePopupVisible(true)
+        } catch (error) {
+            console.error("Error al crear la lista:", error)
+        }
+        }
+    }
 
   const maxLength = 27
 
@@ -96,19 +121,13 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
                         style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={showVotes} 
                         ></md-switch>              
                     </div>
-                    {/* <h5>Elige qué quieres ver en tu lista</h5> */}
-                    {/* <md-chip-set style={{}}>
-                        <md-filter-chip label="Precios" hasIcon hasSelectedIcon selected>
-                        <span slot="icon" className="material-symbols-outlined">content_copy</span>
-                        <span slot="selected-icon" className="material-symbols-outlined">content_copy</span>
-                        </md-filter-chip>
-                        <md-filter-chip label="Votos" selected></md-filter-chip>
-                        <md-filter-chip label="Notificaciones"selected></md-filter-chip>
-                    </md-chip-set> */}
                     <h6>* Podrás modificar tu preferencia más tarde</h6>
                     </div>
-                    {/* <button type="submit">Crear lista</button> */}
                 </form>
+                <NewMembers 
+                    membersToAdd={membersToAdd}
+                    setMembersToAdd={setMembersToAdd}
+                />
             </div>
         </div>
     </ButtonArea>

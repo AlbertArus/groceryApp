@@ -38,6 +38,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const selectedList = listas.find(lista => lista.id === params.id);
   const [isScrolled, setIsScrolled] = useState(false)
   
+  console.log(selectedList)
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
   
@@ -346,7 +347,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     }
     updateLista(selectedList?.id, "listPrice", listPrice)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryPrice, selectedList?.id]);
+  }, [categoryPrice, selectedList?.categories]);
 
   // console.log(selectedList)
     

@@ -38,7 +38,6 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
 
     const handleCheckboxChange = (id, type, itemId) => {
         if (type === "list") {
-            // Toggle toda la lista
             setElementsPaid(
                 allElementsSelected 
                 ? [] 
@@ -50,7 +49,6 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                 )
             );
         } else if (type === "category") {
-            // Toggle una categoría específica
             const selectedCategory = selectedList.categories.find((category) => category.id === id);
             const categoryElements = selectedCategory.items.map((item) => ({ 
                 category: selectedCategory.id, 
@@ -65,7 +63,6 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                 : [...elementsPaid.filter((paidElement) => paidElement.category !== id), ...categoryElements]
             );
         } else if (type === "item") {
-            // Toggle un item específico
             const itemElement = { category: id, item: itemId };
             const isItemSelected = selectedElements[id]?.has(itemId);
 
@@ -79,7 +76,6 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
         }
     }
 
-    // Actualizar collapsed state basado en elementos seleccionados
     useEffect(() => {
         setIsCollapsed(prev => {
             const newCollapsed = { ...prev };
@@ -92,7 +88,6 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
         });
     }, [selectedElements]);
 
-    // Calcular el valor total y actualizar estados
     useEffect(() => {
         const totalPaid = elementsPaid.reduce((total, paidElement) => {
             const category = selectedList.categories.find((category) => category.id === paidElement.category);
