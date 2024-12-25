@@ -73,17 +73,17 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
   }
   
   return (
-    <ButtonArea 
-        onClick={handleSubmit}
-        buttonCopy={"Crear lista"}
-    >
-        <div className="FormLista app">
-            <Head
-            path={""}          
-            sectionName={"Nueva lista"}
-            />
+    <div className="FormLista app">
+        <Head
+        path={""}          
+        sectionName={"Nueva lista"}
+        />
+        <ButtonArea 
+            onClick={handleSubmit}
+            buttonCopy={"Crear lista"}
+        >
             <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-            <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>Configura tu nueva lista</h3>
+                <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>Configura tu nueva lista</h3>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="nombre">Nombre</label>
                     <div className="iconed-container fila-between">
@@ -124,13 +124,15 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
                     <h6>* Podrás modificar tu preferencia más tarde</h6>
                     </div>
                 </form>
-                <NewMembers 
-                    membersToAdd={membersToAdd}
-                    setMembersToAdd={setMembersToAdd}
-                />
+                <div style={{marginTop: "10px"}}>
+                    <NewMembers
+                        membersToAdd={membersToAdd}
+                        setMembersToAdd={setMembersToAdd}
+                    />
+                </div>
             </div>
-        </div>
-    </ButtonArea>
+        </ButtonArea>
+    </div>
   );
 };
 

@@ -19,9 +19,9 @@ const NewMembers = ({ membersToAdd, setMembersToAdd }) => {
     
     return (
         <form>
-            <div>Añadir miembros</div>
+            <label>Añadir miembros</label>
             {membersToAdd.map((member, index) =>
-                <input type="text" key={index} value={member} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                <input type="text" className="FormLista" placeholder="Juan Alameda" style={{marginBottom: "5px", backgroundColor: "transparent", borderBottom: "1px solid grey", borderRadius: "0px"}} key={index} value={member} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
             )}
         </form>
     )
