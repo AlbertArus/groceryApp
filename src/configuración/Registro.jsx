@@ -3,23 +3,21 @@ import { useNavigate } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
-// import Navbar from "../Listas/NavBar.jsx"
 import { Checkbox } from "@mui/material"
 import ButtonArea from "../ui-components/ButtonArea.jsx"
 const auth = getAuth(firebaseApp)
 
 const Registro = ({setUsuario}) => {
-    const [isRegistered, setIsRegistered] = useState(false) // Para separar página de Inicio de sesión de página de Registroontraseña: ""
+    const [isRegistered, setIsRegistered] = useState(false) // Para separar página de Inicio de sesión de página de Registro
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [termsChecked, setTermsChecked] = useState(false)
     const [communicationsChecked, setCommunicationsChecked] = useState(false)
-    const [errors, setErrors] = useState({nombre: false, apellido: false, correo: false, correoInvalid: false, contraseña: false, contraseñaInvalid: false, terms: false})
+    const [errors, setErrors] = useState({nombre: false, correo: false, correoInvalid: false, contraseña: false, contraseñaInvalid: false, terms: false})
     const navigate = useNavigate()
     const nombreRef = useRef();
     const apellidoRef = useRef();
     const correoRef = useRef();
     const contraseñaRef = useRef();
-    const submitButtonRef = useRef(null);
 
     const handleIsRegistered = () => {
         setIsRegistered(prevState => !prevState)
@@ -38,7 +36,6 @@ const Registro = ({setUsuario}) => {
         const correoInvalid = !regex.test(correo.trim());        
         setErrors({
             nombre: (nombre.trim() === ""),
-            apellido: (apellido.trim() === ""),
             correo: (correo.trim() === ""),
             correoInvalid: correoInvalid,
             contraseña: (contraseña.trim() === ""),
@@ -53,7 +50,7 @@ const Registro = ({setUsuario}) => {
                     userCredential = await signInWithEmailAndPassword(auth, correo, contraseña);
                 }
             } else {
-                if(nombre.trim() && apellido.trim() && correo.trim() && contraseña.trim() && termsChecked) {
+                if(nombre.trim() && correo.trim() && contraseña.trim() && termsChecked) {
                     userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña);
                     await updateProfile(userCredential.user, {
                         displayName: `${nombre} ${apellido}`
@@ -63,6 +60,7 @@ const Registro = ({setUsuario}) => {
                         uid: userCredential.user.uid,
                         nombre: nombre,
                         apellido: apellido,
+                        displayName: `${nombre} ${apellido}`,
                         email: correo,
                         comunicaciones: communicationsChecked,
                         createdAt: new Date(),
@@ -99,17 +97,16 @@ const Registro = ({setUsuario}) => {
             <div className="login app-margin">
                 <h2 style={{marginBottom: "25px", textAlign: "center"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h2>
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre</label>
+                    <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre *</label>
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <h5 style={{display: !isRegistered && errors.nombre ? "block" : "none", color:"red"}}>Añade tu nombre</h5>
                     <label htmlFor="apellido" style={{display: isRegistered ? "none" : "block"}}>Apellido</label>
                     <input type="text" autoComplete="family-name" placeholder="Quintana" id="apellido" ref={apellidoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, apellido: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
-                    <h5 style={{display: !isRegistered && errors.apellido ? "block" : "none", color:"red"}}>Añade tu apellido</h5>
-                    <label htmlFor="correo">Correo electrónico</label>
+                    <label htmlFor="correo">Correo electrónico *</label>
                     <input type="email" autoComplete="email" placeholder="profesor@gmail.com" inputMode="email" id="correo" ref={correoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, correo: false}))} style={{textTransform: "lowercase"}} autoCapitalize="off"/>
                     <h5 style={{display: errors.correo ? "block" : "none", color:"red"}}>Añade un correo electrónico</h5>
                     <h5 style={{display: errors.correoInvalid ? "block" : "none", color:"red"}}>Tu dirección de correo electrónico no es correcta</h5>
-                    <label htmlFor="contraseña">Contraseña</label>
+                    <label htmlFor="contraseña">Contraseña *</label>
                     <div className="iconed-container fila-between ">
                         <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
@@ -151,7 +148,6 @@ const Registro = ({setUsuario}) => {
                         />
                         <div style={{fontSize: "12px", marginLeft: "8px"}}>Acepto recibir comunicaciones comerciales</div>
                     </div>
-                    {/* <button className="buttonMain" type="submit">{isRegistered ? "Iniciar sesión" : "Registrarme"}</button> */}
                 </form>
                 <div className="redirect" onClick={handleIsRegistered}>{isRegistered ? "No tienes cuenta? Regístrate" : "Ya tienes cuenta? Inicia sesión"}</div>
             </div>

@@ -240,7 +240,7 @@ function App() {
     const userDoc = await getDoc(doc(db, "usuarios", uid));
     if (userDoc.exists()) {
       const userData = userDoc.data();
-      return `${userData.nombre} ${userData.apellido}`;
+      return `${userData.displayName}`;
     }
     return "Usuario desconocido";
   },[])

@@ -29,6 +29,7 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
             const data = {
                 uid,
                 nombre: member,
+                displayName: member,
                 createdAt: new Date(),
             }
             await setDoc(newMember, data);
