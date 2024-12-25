@@ -23,17 +23,19 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
         try{
             const membersUID = []
             membersToAdd.forEach(async(member) => {
-            const uid = uuidv4()
-            membersUID.push(uid)
-            const newMember = doc(db, "usuarios", uid);
-            const data = {
-                uid,
-                nombre: member,
-                displayName: member,
-                createdAt: new Date(),
-            }
-            await setDoc(newMember, data);
-        })
+                if(member !== "" ) {
+                    const uid = uuidv4()
+                    membersUID.push(uid)
+                    const newMember = doc(db, "usuarios", uid);
+                    const data = {
+                        uid,
+                        nombre: member,
+                        displayName: member,
+                        createdAt: new Date(),
+                    }
+                    await setDoc(newMember, data);
+                }
+            })
         return membersUID
         } catch (error) {
             console.error(error)
