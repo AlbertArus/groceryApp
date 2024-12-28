@@ -44,10 +44,12 @@ function App() {
     try {
       const querySnapshot = await getDocs(collection(db, "listas"));
       const loadedListas = querySnapshot.docs.map(doc => doc.data());
-      const filteredListas = loadedListas.filter(lista => 
-        lista.userCreator === usuario.uid || lista.userMember.includes(usuario.uid)
-      )
-      setListas(filteredListas);
+    //   const filteredListas = loadedListas.filter(lista => 
+    //     lista.userCreator === usuario.uid || lista.userMember.includes(usuario.uid)
+    //   )
+      console.log("App, reviso si está en lista para filtrar las que puede ver")
+    //   setListas(filteredListas);
+      setListas(loadedListas)
       setListasLoaded(true)
     } catch (error) {
       console.error("Error al cargar las listas desde Firebase:", error);

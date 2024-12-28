@@ -6,7 +6,7 @@ const SharePopUp = ({ setSharePopupVisible }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <div className="overlay" onClick={() => setSharePopupVisible(false)}></div>
-      <div className="popUp app-margin" style={{ backgroundColor: "white" }}>
+      <div className="popUp" style={{ backgroundColor: "white" }}>
         <div className="fila-between" style={{ margin: "15px 0px" }}>
           <h4 style={{ fontWeight: "600" }}>¡Nueva lista creada!</h4>
           <span className="material-symbols-outlined icon-medium" onClick={() => setSharePopupVisible(false)}>close</span>

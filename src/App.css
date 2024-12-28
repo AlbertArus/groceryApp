@@ -607,10 +607,14 @@ hr {
 .popUp {
   border-radius: 10px;
   box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
-  padding: 10px 25px;
+  padding: 20px 25px;
   z-index: 1000;
-  top: 200px;
-  position: fixed;
+  /* top: 200px; */
+  width: 90vw;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 .popUp button[type=submit] {

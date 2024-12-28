@@ -6,7 +6,7 @@ import Header from './Header'
 import SubHeader from './SubHeader'
 import Categories from './Categories'
 import { useParams, useSearchParams } from 'react-router-dom'
-import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import SharePopUp from '../components/SharePopUp'
 import Search from './Search'
@@ -14,8 +14,9 @@ import Pagos from '../Pagos/Pagos'
 import Toggle from "../ui-components/Toggle"
 import EmptyState from '../ui-components/EmptyState'
 import PagoDeuda from '../Pagos/PagoDeuda'
+import IdentifyUser from '../components/IdentifyUser'
 
-const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment }) => {
+const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment }) => {
 
   let params = useParams();
   
@@ -23,6 +24,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [searchResult, setSearchResult] = useState("")
   const [filteredListaForItems, setFilteredListaForItems] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showIdentifyList, setShowIdentifyList] = useState(false);
   const [isToggleSelected, setIsToggleSelected] = useState(() => {
     return searchParams.get("view") === "payments" ? "Pagos" : "Lista";
   })
@@ -39,6 +41,7 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   const [isScrolled, setIsScrolled] = useState(false)
   
   console.log(selectedList)
+//   console.log(listas)
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
   
@@ -52,28 +55,33 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
         setListas(prevListas => prevListas.map(lista => (lista.id === params.id ? listaData : lista)));
         
         if (usuario && !listaData.userMember.includes(usuario.uid)) {
-          const updatedUserMember = [...listaData.userMember, usuario.uid];
-          await updateDoc(docRef, { userMember: updatedUserMember });
+            setShowIdentifyList(true)
+        //     console.log("Lista, el usuario no está en la lista, voy a añadirlo")
 
-          const updatedCategories = listaData.categories.map(category => ({
-            ...category,
-            items: category.items.map(item => ({
-              ...item,
-              itemUserMember: [...item.itemUserMember, usuario.uid]
-            }))
-          }));
+        //   const updatedUserMember = [...listaData.userMember, usuario.uid];
+        //   await updateDoc(docRef, { userMember: updatedUserMember });
+
+        //   const updatedCategories = listaData.categories.map(category => ({
+        //     ...category,
+        //     items: category.items.map(item => ({
+        //       ...item,
+        //       itemUserMember: [...item.itemUserMember, usuario.uid]
+        //     }))
+        //   }));
           
-          await updateDoc(docRef, {
-            categories: updatedCategories
-          });
+        //   await updateDoc(docRef, {
+        //     categories: updatedCategories
+        //   });
 
-          setListas(prevListas =>
-            prevListas.map(lista => 
-              lista.id === params.id 
-                ? { ...lista, userMember: updatedUserMember, categories: updatedCategories }
-                : lista
-            )
-          );
+        //   setListas(prevListas =>
+        //     prevListas.map(lista => 
+        //       lista.id === params.id 
+        //         ? { ...lista, userMember: updatedUserMember, categories: updatedCategories }
+        //         : lista
+        //     )
+        //   );
+        //   console.log("Lista, ya he añadido la lista con el usuario")
+
         }
       } else {
         console.error("No tenemos el documento que buscas...");
@@ -111,9 +119,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   useEffect(() => {
     if(selectedList) {
       const allItems = selectedList.categories.flatMap(category => category.items)
-      const anyItemMissingUser = allItems.some(item =>
-        !item.itemUserMember.includes(usuario.uid)
-      )  
+      const anyItemMissingUser = allItems.some(item => {
+        return !item.itemUserMember.includes(usuario.uid)
+    })  
       if (anyItemMissingUser) {
         setIsToggleShown(true)
       }
@@ -348,8 +356,6 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     updateLista(selectedList?.id, "listPrice", listPrice)
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryPrice, selectedList?.categories]);
-
-  // console.log(selectedList)
     
   const handleAddCategory = () => {
     const defaultCategoryName = "";
@@ -405,6 +411,9 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
   if(listas.length === 0) {
     return <div>Cargando listas...</div>
   }
+  if(!selectedList) {
+    return <div>Cargando tu lista...</div>
+  }
 
   const handleCheckAll = () => {
     const updatedCategories = selectedList.categories.map(category => {
@@ -459,6 +468,16 @@ const Lista = ({ deleteLista, id, listas, setListas, updateListaItems, updateLis
     <div className="lista app">
       {selectedList && (
         <>
+        {showIdentifyList && (
+            <IdentifyUser
+                listas={listas}
+                setListas={setListas}
+                usuario={usuario}
+                UsuarioCompleto={UsuarioCompleto}
+                updateLista={updateLista}
+                setShowIdentifyList={setShowIdentifyList}
+            />
+        )}
           <Header
             deleteLista={() => deleteLista(params.id)}
             itemslength={totalItemsLength}
