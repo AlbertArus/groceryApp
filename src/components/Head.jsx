@@ -7,7 +7,7 @@ const Head = ({sectionName, path, handleMenuVisibility, state, component: Compon
     <div className="head">
         <div className="fila-between app-margin" style={{position: "relative", padding: "4px 0px"}}>
             <div className="fila-start">
-                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => navigate(`/${path}`)}>arrow_back</span>
+                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px", marginLeft: "-3.5px"}} onClick={() => navigate(`/${path}`)}>arrow_back</span>
                 <h3>{sectionName}</h3>
             </div>
             {state !== undefined && (

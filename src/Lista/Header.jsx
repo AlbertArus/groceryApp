@@ -72,7 +72,7 @@ const Header = ({ deleteLista, itemslength, lista, items, handleCheckAll, handle
     <div className="head" style={{marginBottom: "-1px"}}>
         <div className="app-margin">
             <div className="fila-between" style={{width: "100%", padding: "4px 0px", alignItems: "flex-start"}}>
-                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
+                <span className="material-symbols-outlined icon-large" style={{marginRight: "18px", marginLeft: "-3.5px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
                 <div className="columna-start" style={{alignItems: "center"}}>
                     <h2 style={{fontWeight: "500"}}>{lista.listaName || ""}</h2>
                     {searchParams.get("view") === "lista" && (
