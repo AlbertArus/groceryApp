@@ -4,7 +4,7 @@ const SharePopUp = ({ setSharePopupVisible }) => {
   const handleShare = ShareButton(window.location.href, null)
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div className="modal-container no-scroll" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <div className="overlay" onClick={() => setSharePopupVisible(false)}></div>
       <div className="popUp" style={{ backgroundColor: "white" }}>
         <div className="fila-between" style={{ margin: "15px 0px" }}>

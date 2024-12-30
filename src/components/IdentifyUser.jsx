@@ -138,26 +138,27 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
     }
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div className="overlay" onClick={() => "close"}></div>
-        <div className="popUp" style={{ backgroundColor: "white" }}>
-            <div className="fila-between" style={{ margin: "15px 0px" }}>
-                <h3 style={{ fontWeight: "600" }}>Identifícate</h3>
-            </div>
-            <div>
-                {filteredMembers.map((member, index) => {
-                    return (
-                        <div key={member.uid} className="vistaDatos">
-                            <h4 onClick={() => updateMembers(member)}>{nombreUserMember[index]}</h4>
-                        </div>
-                    )
-                })}
-                <div className="vistaDatos fila-start">
-                    <span className="material-symbols-outlined icon-medium" style={{marginRight: "8px", color: "grey"}}>person_add</span>
-                    <h4 style={{ color: "grey" }} onClick={() => updateMembers(usuario.uid)}>Soy un miembro nuevo</h4>
+        <div className="modal-container no-scroll" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div className="overlay" onClick={() => "close"}></div>
+            <div className="popUp" style={{ backgroundColor: "white" }}>
+                <div className="columna-start" style={{ margin: "15px 0px" }}>
+                    <h3 style={{ fontWeight: "600", marginBottom: "5px" }}>Identifícate</h3>
+                    <h5>Estos son los miembros no registrados</h5>
+                </div>
+                <div>
+                    {filteredMembers.map((member, index) => {
+                        return (
+                            <div key={member.uid} className="vistaDatos">
+                                <h4 onClick={() => updateMembers(member)}>{nombreUserMember[index]}</h4>
+                            </div>
+                        )
+                    })}
+                    <div className="vistaDatos fila-start">
+                        <span className="material-symbols-outlined icon-medium" style={{marginRight: "8px", color: "grey"}}>person_add</span>
+                        <h4 style={{ color: "grey" }} onClick={() => updateMembers(usuario.uid)}>Soy un miembro nuevo</h4>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     )
 }

@@ -124,7 +124,7 @@ hr {
   padding: 4px 0px;
   background-color: #ffeec9;
   position: sticky;
-  z-index: 1000;
+  z-index: 100;
   top: 0;
 }
 
@@ -594,6 +594,18 @@ hr {
   padding: 4px 8px;
 }
 
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -611,10 +623,12 @@ hr {
   z-index: 1000;
   /* top: 200px; */
   width: 90vw;
-  top: 50%;
+  /* top: 50%;
   left: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+  margin: auto;
+  max-width: 500px;
+  position: relative;
 }
 
 .popUp button[type=submit] {
@@ -624,6 +638,11 @@ hr {
   border: 2.5px solid #9E9E9E;
   margin: 15px 0px;
 }
+
+.no-scroll {
+    overflow: hidden;
+    height: 100%;
+  }
 
 .search-container {
   /* border: 1.5px solid grey; */
