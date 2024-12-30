@@ -124,7 +124,7 @@ hr {
   padding: 4px 0px;
   background-color: #ffeec9;
   position: sticky;
-  z-index: 100;
+  z-index: 900;
   top: 0;
 }
 
@@ -575,7 +575,7 @@ hr {
 
 .toggleListaSpace {
     position: sticky;
-    z-index: 900;
+    z-index: 800;
     background-color: white;
 }
 
@@ -635,7 +635,6 @@ hr {
   background-color: rgba(196, 195, 195, 0.5);
   width: 100vw;
   height: 100vh;
-  z-index: 999;
 }
 
 .popUp {
@@ -692,7 +691,7 @@ hr {
 .toggle {
   background-color: #ffeec9;
   position: sticky;
-  z-index: 900;
+  z-index: 800;
   top: 60px;
 }
 
