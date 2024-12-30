@@ -104,27 +104,27 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
                     <h5 style={{display: errors.plan ? "block" : "none", color:"red"}}>Selecciona el tema de tu lista</h5>
                     <label htmlFor="descripcion"> Descripción (opcional) </label>
                     <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
-                    <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-                    <div className="fila-between">
-                        {/* <h4>Mostrar votos</h4> */}
-                        <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
-                        <md-switch
-                        style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
-                        ></md-switch>
-                    </div>
-                    <div className="fila-between">
-                        <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
-                        <md-switch
-                        style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showVotes}
-                        ></md-switch>              
-                    </div>
-                    <div className="fila-between">
-                        <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
-                        <md-switch
-                        style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={showVotes} 
-                        ></md-switch>              
-                    </div>
-                    <h6>* Podrás modificar tu preferencia más tarde</h6>
+                    <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
+                        <div className="fila-between">
+                            {/* <h4>Mostrar votos</h4> */}
+                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
+                            <md-switch
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
+                            ></md-switch>
+                        </div>
+                        <div className="fila-between">
+                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
+                            <md-switch
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showVotes}
+                            ></md-switch>              
+                        </div>
+                        <div className="fila-between">
+                            <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
+                            <md-switch
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={showVotes} 
+                            ></md-switch>              
+                        </div>
+                        <h6>* Podrás modificar tu preferencia más tarde</h6>
                     </div>
                 </form>
                 <div style={{marginTop: "10px"}}>
