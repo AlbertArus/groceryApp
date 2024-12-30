@@ -91,7 +91,7 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
                     <label htmlFor="nombre">Nombre</label>
                     <div className="iconed-container fila-between">
                     <input type="text" placeholder="Finde en la costa" id="nombre" onChange={(e) => handleNewListaName(e)} value={listaName}/>
-                    <div className="iconSuperpuesto" style={{paddingRight:"5px"}}>{listaName.length}/{maxLength}</div>
+                    <div className="iconSuperpuesto">{listaName.length}/{maxLength}</div>
                     </div>
                     <h5 style={{display: errors.listaName ? "block" : "none", color:"red"}}>Añade un nombre a tu lista</h5>
                     <label htmlFor="plan">Plan</label>

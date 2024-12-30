@@ -19,9 +19,12 @@ const NewMembers = ({ membersToAdd, setMembersToAdd }) => {
     
     return (
         <form>
-            <label>Añadir miembros</label>
+            <label>Añade a los miembros del plan</label>
             {membersToAdd.map((member, index) =>
-                <input type="text" className="FormLista" placeholder="Juan Alameda" style={{marginBottom: "5px", backgroundColor: "transparent", borderBottom: "1px solid grey", borderRadius: "0px"}} key={index} value={member} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                <div className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
+                    <input type="text" className="FormLista" placeholder="Juan Alameda" key={index} value={member} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                    <span className="material-symbols-outlined icon-medium iconSuperpuesto">close</span>
+                </div>
             )}
         </form>
     )

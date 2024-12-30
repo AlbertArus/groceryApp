@@ -419,16 +419,38 @@ hr {
   justify-content: flex-start;
 }
 
-.iconed-container {
+.iconed-container{
   width: 100%;
+  border-radius: 6px;
+  background-color: #ebeaea;
+}
+
+.iconed-container > input{
+    width: 100%;
+    border-radius: 6px;
+    background-color: #ebeaea;
+  }
+
+.iconed-container-underlineInput {
+    width: 100%;
+    border-bottom: 1px solid grey;
+    background-color: transparent;
+}
+
+.iconed-container-underlineInput > input {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
 }
 
 .iconSuperpuesto {
-  position: absolute;
-  right: 15px;
+  position: relative;
+  /* right: 15px; */
   /* color: rgb(139, 139, 139); */
   color: #565656;
   opacity: 1;
+  padding-right: 5px;
 }
 
 .buttonRegistro {
