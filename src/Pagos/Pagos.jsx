@@ -31,8 +31,6 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
     }
   }, [UsuarioCompleto, lista]);
 
-  // console.log(lista.payments)
-
   const totalGastoListaUser = () => {
     const gastosUser = lista.payments?.filter(payment => payment.payer === usuario.uid)
     return gastosUser.reduce((total, payment) => {

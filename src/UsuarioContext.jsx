@@ -12,29 +12,6 @@ export const UsuarioProvider = ({ children }) => {
   // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (usuario) => {
-  //     if (usuario) {
-  //       setUsuario(usuario);
-  //       // Cargar la información del usuario desde Firestore
-  //       const docRef = doc(db, "usuarios", usuario.uid);
-  //       const docSnap = await getDoc(docRef);
-  //       if (docSnap.exists()) {
-  //           const userData = docSnap.data();
-  //           // Aquí puedes almacenar los datos en el estado si lo deseas
-  //           setUsuario({ ...usuario, ...userData });
-  //           // loadListasFromFirebase();
-  //           } else {
-  //           console.log("No hay tal documento!");
-  //       }
-  //     } else {
-  //       setUsuario(null);
-  //     }
-  //   });
-  //   return () => unsubscribe();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       try {
@@ -69,7 +46,3 @@ export const UsuarioProvider = ({ children }) => {
     </UsuarioContext.Provider>
   );
 };
-
-// export const useUsuario = () => {
-//   return useContext(UsuarioContext);
-// };

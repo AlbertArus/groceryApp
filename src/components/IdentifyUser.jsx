@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { db } from "../firebase-config"
 
-const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto, setShowIdentifyList }) => {
+const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto, showIdentifyList, setShowIdentifyList }) => {
     const { id } = useParams()
     const lista = listas.find(lista => lista.id === id)
     const [nombreUserMember, setNombreUserMember] = useState([]);
@@ -51,7 +51,6 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
     }
 
     const replaceMember = async (uid) => {
-        console.log(uid, usuario.uid)
         if(!uid) {
             console.error("no hay usuarios");
             return;
@@ -93,8 +92,6 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
             })
             return { ...payment, payer: updatePaymentPayer, members: updatePaymentMembers}
         })
-        console.log(updatePayments)
-
         setListas(prevListas => prevListas.map(lista => 
             lista.id === id 
             ? { ...lista, userMember: updateUserMember, categories: updatedCategories, payments: updatePayments }
@@ -106,7 +103,6 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
             await updateLista(id, "userMember", updateUserMember );
             await updateLista(id, "categories", updatedCategories );
             await updateLista(id, "payments", updatePayments );
-            console.log("Lista completamente actualizada");
         } catch (error) {
             console.error("Error al actualizar la lista:", error);
         }
@@ -115,7 +111,6 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
         try {
             const userDocRef = doc(db, "usuarios", uid);
             await deleteDoc(userDocRef);
-            console.log("Usuario eliminado correctamente de Firestore");
         } catch (error) {
             console.error("Error al eliminar el usuario de Firestore:", error);
         }
@@ -141,8 +136,6 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
         )
         );
     }
-
-      console.log("acabo la lógica", filteredMembers)
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>

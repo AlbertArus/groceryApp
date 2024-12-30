@@ -31,16 +31,12 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
         }
     }, [UsuarioCompleto, lista, usuario]);
 
-    // console.log(lista.payments)
-
     const amountUserMember = () => {
         return lista.userMember.map(uid => {
-            // console.log(uid)
             const usuarioPayer = lista.payments.reduce((total, payment) => {
                 return payment.payer === uid ? total + (Number(payment.amount || 0)) : total
 
             }, 0);
-            // console.log("pagado", usuarioPayer)
 
             const usuarioToPay = lista.payments.reduce((total, payment) => {
                 const amountForThisPayment = payment.members.reduce((memberPay, member) => {
@@ -48,13 +44,10 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
                 }, 0);
                 return total + amountForThisPayment;
               }, 0);
-            // console.log("a pagar", usuarioToPay)
 
             return { uid, amount: usuarioPayer - usuarioToPay }
         })
     }
-
-    // console.log(amountUserMember())
 
     useEffect(() => {
         if (lista) {
@@ -107,7 +100,6 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     const handleDebtPaid = (transfer) => {
         const { from, to, amount } = transfer;
         const paymentName = "Reembolso";
-        console.log(transfer)
         const members = [{ uid: to, amount }]
 
         // Actualizar `pendingAmounts`
@@ -131,8 +123,6 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
         );
         // Registrar el pago
         AddPayment(lista, lista.id, paymentName, amount, from, members);
-        console.log(members)
-        console.log(lista.payments)
         setOpen(false);
     }    
     

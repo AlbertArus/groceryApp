@@ -19,8 +19,6 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
     return finalFilteredItems.length > 0 || categoryNameMatchesSearch
   })
 
-//   console.log(filteredListaForItems)
-
   return (
     <div className="categories">
       {filteredCategories.map((category) => {

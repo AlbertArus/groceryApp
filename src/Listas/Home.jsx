@@ -104,14 +104,6 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                                                             <div className="fila-between">
                                                                 <h3 style={{fontWeight: "500", marginBottom: "4px"}}>{lista.listaName}</h3>
                                                             </div>
-                                                            {/* <h5>{`Items: ${getListaItemsLength(lista.id)}`}</h5>
-                                                            <div className="fila-start">
-                                                                <div className="fila-start-group">
-                                                                    <span className="material-symbols-outlined icon-small">group</span>
-                                                                    <h5>{`${lista.userMember.length} pers.`}</h5>
-                                                                </div>
-                                                                <h5>{lista.plan}</h5>
-                                                            </div> */}
                                                             <div className="fila-start">
                                                                 <div className="fila-start-group">
                                                                     <span className="material-symbols-outlined icon-small">group</span>
