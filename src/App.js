@@ -32,6 +32,7 @@ function App() {
   const [amount, setAmount] = useState("")
   const [payer, setPayer] = useState("")
   const [elementsPaid, setElementsPaid] = useState([])
+  const [showIdentifyList, setShowIdentifyList] = useState(false);
 
   const navigate = useNavigate()
   const location = useLocation();
@@ -44,12 +45,10 @@ function App() {
     try {
       const querySnapshot = await getDocs(collection(db, "listas"));
       const loadedListas = querySnapshot.docs.map(doc => doc.data());
-    //   const filteredListas = loadedListas.filter(lista => 
-    //     lista.userCreator === usuario.uid || lista.userMember.includes(usuario.uid)
-    //   )
-      console.log("App, reviso si está en lista para filtrar las que puede ver")
-    //   setListas(filteredListas);
-      setListas(loadedListas)
+      const filteredListas = loadedListas.filter(lista => 
+        lista.userCreator === usuario.uid || lista.userMember.includes(usuario.uid) || showIdentifyList
+      )
+      setListas(filteredListas)
       setListasLoaded(true)
     } catch (error) {
       console.error("Error al cargar las listas desde Firebase:", error);
@@ -58,24 +57,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if (usuario === undefined) {
-      return
-    }
-    if (usuario === null) {
-      setIsLoading(false);
-      navigate("/registro");
-    } else {
-      loadListasFromFirebase();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [usuario]);
-
-  useEffect(() => {
-    if(usuario && listasLoaded)  {
-      setIsLoading(false)
-    }
-  },[usuario, listasLoaded])
+    useEffect(() => {
+        if (usuario === undefined) {
+            return
+        }
+        if (usuario === null) {
+            setIsLoading(false);
+            navigate("/registro");
+        } else if(usuario) {
+            loadListasFromFirebase();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [usuario, listasLoaded, showIdentifyList]);
 
   useEffect(() => {
     // Google Analytics: Envía un pageview cada vez que cambie la ubicación (ruta)
@@ -268,25 +261,11 @@ function App() {
 
     const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members) => {
         const editedPayment = lista.payments.find(payment => payment.id === paymentId)
-        console.log(editedPayment)
         const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date() }
-        console.log(newDataPayment)
         const updatedPayments = lista.payments.map(payment => 
             payment.id === paymentId ? newDataPayment : payment
         )
         updateLista(listaId, "payments", updatedPayments)
-        // if(elementsPaid.length !== 0) {
-        //     const selectItemsPaid = elementsPaid.map(paid => paid.item);
-        //     const getItemsPaid = lista.categories.map(category => ({
-        //         ...category,
-        //         items: category.items.map(item =>
-        //             selectItemsPaid.includes(item.id) 
-        //                 ? { ...item, isPaid: true, payer } 
-        //                 : item
-        //         )
-        //     }))
-        //     updateLista(listaId, "categories", getItemsPaid)
-        // }
     }
 
   return (
@@ -330,6 +309,8 @@ function App() {
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
                 AddPayment={AddPayment}
+                showIdentifyList={showIdentifyList}
+                setShowIdentifyList={setShowIdentifyList}
               />}
             />
             <Route path="/newlist" element={
