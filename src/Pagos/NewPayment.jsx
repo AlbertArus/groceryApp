@@ -137,18 +137,73 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         });
         setErrors(prevErrors => ({ ...prevErrors, members: false }));
     };
-
-    const PriceMemberEven = useCallback(() => {
-        return members.length > 0 ? parseFloat(amount) / members.length : 0;
-    }, [amount, members.length]);
-
+    
     const handleChipClick = (chipLabel) => {
         if(chipLabel === "Otro gasto") {
             setAmount("")
         }
         setSelectedChip(chipLabel)
     }
-  
+
+    const calculatePrice = (uid) => {
+        const memberExists = members.find(member => member.uid === uid)
+        if(!memberExists) {
+            return 0;
+        }
+        
+        return selectedChip === "Otro gasto" ? PriceMemberEven() : customPriceMember(uid)
+    }
+    
+    const PriceMemberEven = useCallback(() => {
+        return members.length > 0 ? parseFloat(amount) / members.length : 0;
+    }, [amount, members.length]);
+
+    // const customPriceMember = () => {
+
+    //     const elementsItems = elementsPaid.map(element => element.item)
+
+    //     const objectElementsItems = selectedList.categories.flatMap(category =>
+    //         category.items.filter(item =>
+    //             elementsItems.some(itemElement => itemElement === item.id) 
+    //         ))
+    //     const userMemberItems = selectedList.userMember.map(member => {
+    //         const isMemberItem = objectElementsItems.filter(item =>
+    //             item.itemUserMember.includes(member)
+    //         )
+    //         return {member, items: isMemberItem}
+    //     })
+    //     const userMemberAmount = userMemberItems.map(memberItem => {
+    //         const totalAmount = memberItem.items.reduce((total, item) => {
+    //             return total + (item.price / item.itemUserMember.length)
+    //         },0)
+    //         return {...memberItem, totalAmount}
+    //     })
+    //     return userMemberAmount
+    // }
+
+    // const result = customPriceMember()
+    // console.log(result)
+
+    const customPriceMember = (uid) => { // Misma función pero no calcula todos los members con array, sino devuelve por uid enviado
+        const elementsItems = elementsPaid.map(element => element.item)
+
+        const objectElementsItems = selectedList.categories.flatMap(category =>
+            category.items.filter(item =>
+                elementsItems.some(itemElement => itemElement === item.id) 
+            )
+        )
+
+        const isMemberItem = objectElementsItems.filter(item =>
+            item.itemUserMember.includes(uid)
+        )
+
+        const totalAmount = isMemberItem.reduce((total, item) => {
+            return total + (item.price / item.itemUserMember.length)
+        },0)
+
+        return totalAmount
+    }
+
     return (
         <ButtonArea 
             onClick={handleSubmit}
@@ -164,7 +219,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                         <label htmlFor="nombre">Título</label>
                         <div className="iconed-container fila-between">
                         <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
-                        <div className="iconSuperpuesto" style={{paddingRight:"5px"}}>{paymentName.length}/{maxLength}</div>
+                        <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
                         </div>
                         <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
                         {nombreUserMember.length > 0 && (
@@ -229,51 +284,51 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                             </div>
                         </div>
                         {nombreUserMember.length > 0 && (
-                        <div style={{width: "100%"}}>
-                            <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
-                            <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
-                            {selectedList.userMember.map((uid, index) => {
-                                return (
-                                <div key={uid} className="newpaymentLists fila-between">
-                                    <div className="fila-start">
-                                        <Checkbox 
-                                        checked={!!members.find(member => member.uid === uid)}
-                                        onChange={() => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))}}
-                                        sx={{
-                                        '&.Mui-checked': {
-                                            color: "green"
-                                        },
-                                        '&:not(.Mui-checked)': {
-                                            color: "#9E9E9E"
-                                        },
-                                        '&.Mui-checked + .MuiTouchRipple-root': {
-                                            backgroundColor: members.includes(uid) ? 'green' : 'transparent'
-                                        },
-                                        padding: "0px",
-                                        cursor:"pointer"
-                                        }}
-                                        />           
-                                        <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
-                                    </div>
-                                    <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? PriceMemberEven() : 0).toFixed(2)} €</h4>                                  
-                                    {/* <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? 
-                                        <CurrencyInput
-                                            value={PriceMemberEven()}
-                                            locale="es-ES"
-                                            currency="EUR"
-                                            editable={false}
-                                        />
-                                        : (
-                                        <>
-                                        {FormatCurrency(0, "es-ES", "EUR")}
-                                        </>
-                                        ))}
-                                    </h4> */}
-                                </div>
-                            )})}
-                        </div>
+                            <div style={{width: "100%"}}>
+                                <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
+                                <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
+                                {selectedList.userMember.map((uid, index) => {
+                                    return (
+                                        <div key={uid} className="newpaymentLists fila-between">
+                                            <div className="fila-start">
+                                                <Checkbox 
+                                                checked={!!members.find(member => member.uid === uid)}
+                                                onChange={ selectedChip === "Otro gasto" ? () => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))} : () => {}}
+                                                sx={{
+                                                '&.Mui-checked': {
+                                                    color: selectedChip === "Otro gasto" ? "green" : "grey"
+                                                },
+                                                '&:not(.Mui-checked)': {
+                                                    color: selectedChip === "Otro gasto" ? "#9E9E9E" : "grey"
+                                                },
+                                                '&.Mui-checked + .MuiTouchRipple-root': {
+                                                    backgroundColor: selectedChip === "Otro gasto" ? members.includes(uid) ? 'green' : 'transparent' : "grey"
+                                                },
+                                                padding: "0px",
+                                                cursor: selectedChip === "Otro gasto" ? "pointer" : "none"
+                                                }}
+                                                />           
+                                                <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
+                                            </div>
+                                            <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{calculatePrice(uid).toFixed(2)} €</h4>                                  
+                                            {/* <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? 
+                                                <CurrencyInput
+                                                    value={PriceMemberEven()}
+                                                    locale="es-ES"
+                                                    currency="EUR"
+                                                    editable={false}
+                                                />
+                                                : (
+                                                <>
+                                                {FormatCurrency(0, "es-ES", "EUR")}
+                                                </>
+                                                ))}
+                                            </h4> */}
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         )}
-                        {/* <button className="buttonMain" type="submit">Añadir pago</button> */}
                     </form>
                 </div>
             </div>
