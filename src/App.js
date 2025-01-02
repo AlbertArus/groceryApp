@@ -188,10 +188,11 @@ function App() {
   const duplicarLista = async (id) => {
     const originalLista = listas.find(lista => lista.id === id)
     if (!originalLista) {
-      console.error("Lista original no encontrada");
+      console.error("Lista original no encontrada"); // Cuando intenta duplicar una lista borrada que aun se veía por tenerla abierta pero no actualizada
       return;
     }
     const duplicateListaId = uuidv4()
+    const duplicateUserMember = originalLista.userMember
     const categoryIdMap = new Map();
     const duplicateCategories = originalLista.categories.map(category => {
       const newCategoryId = uuidv4()
@@ -199,8 +200,8 @@ function App() {
       return {...category, id: newCategoryId, listaId: duplicateListaId, items: category.items.map(item => 
         ({ ...item, id: uuidv4(), listaId: duplicateListaId, categoryId: newCategoryId}))
       }
-    }); 
-    const duplicateLista = { ...originalLista, id: duplicateListaId, userCreator: usuario.uid, userMember: [usuario.uid], categories: duplicateCategories, items: originalLista.items.map(item => ({...item, listaId: duplicateListaId, id: uuidv4()}))}
+    });
+    const duplicateLista = { ...originalLista, id: duplicateListaId, userCreator: usuario.uid, userMember: duplicateUserMember, categories: duplicateCategories, items: originalLista.items.map(item => ({...item, listaId: duplicateListaId, id: uuidv4()}))}
 
     try {
       await setDoc(doc(db, "listas", duplicateLista.id), duplicateLista);
