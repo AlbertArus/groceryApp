@@ -61,6 +61,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     } catch (error) {
       console.error("Error al cargar la lista:", error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id, setListas, usuario]);
 
   useEffect(() => {
@@ -432,7 +433,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 const price = parseFloat(item?.price) || 0; // Asegurarse de que el precio sea un número válido
                 return total + price;
             }, 0)
-            : parseFloat(selectedList?.listPrice) || 0; // Asegurarse de que listPrice también sea un número válido
+            : (selectedList?.listPrice) || 0; // Asegurarse de que listPrice también sea un número válido
     
         return totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
     }
@@ -456,7 +457,6 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
             deleteLista={() => deleteLista(params.id)}
             itemslength={totalItemsLength}
             lista={selectedList}
-            items={totalItemsLength}
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
             usuario={usuario}
@@ -502,7 +502,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 />
               }
               <SubHeader 
-                items={totalItemsLength}
+                itemslength={totalItemsLength}
                 itemsAdquirido={ItemsChecked()}
                 categories={selectedList.categories}
                 lista={selectedList}

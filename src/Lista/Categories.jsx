@@ -52,7 +52,6 @@ const Categories = ({ items, itemsCategory, handleCheck, categories, AddCategory
             firstCategoryRef={firstCategoryRef}
             UsuarioCompleto={UsuarioCompleto}
             handleDeleteItemUserMember={handleDeleteItemUserMember}
-            filteredListaForItems={filteredListaForItems}
           />
         )
       })}

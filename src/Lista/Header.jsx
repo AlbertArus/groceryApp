@@ -4,7 +4,7 @@ import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 
-const Header = ({ deleteLista, itemslength, lista, items, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems }) => {
+const Header = ({ deleteLista, itemslength, lista, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
     const optionsMenuRef = useRef(null)
@@ -83,7 +83,7 @@ const Header = ({ deleteLista, itemslength, lista, items, handleCheckAll, handle
                         </div>
                     ) : (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
-                            <h5 style={{marginRight: "8px"}}>Items: {filteredListaForItems ? filteredListaForItems.length : items}</h5>
+                            <h5 style={{marginRight: "8px"}}>Items: {filteredListaForItems ? filteredListaForItems.length : itemslength}</h5>
                             <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
                         </div>
                     )}
