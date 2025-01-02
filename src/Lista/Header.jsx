@@ -58,33 +58,33 @@ const Header = ({ deleteLista, itemslength, lista, items, handleCheckAll, handle
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 90)
+            const scrolled = window.scrollY > 90 
+            setIsScrolled(scrolled)
         }
 
         window.addEventListener("scroll", handleScroll)
         return () => {
             window.removeEventListener("scroll", handleScroll)
         }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[isScrolled])
 
   return (
-    <div className="head" style={{marginBottom: "-1px"}}>
+    <div className="head" style={{marginBottom: "0px"}}>
         <div className="app-margin">
             <div className="fila-between" style={{width: "100%", padding: "4px 0px", alignItems: "flex-start"}}>
                 <span className="material-symbols-outlined icon-large" style={{marginRight: "18px", marginLeft: "-3.5px"}} onClick={() => {!lista.isArchived ? navigate("/") : navigate("/archived")}}>arrow_back</span>
                 <div className="columna-start" style={{alignItems: "center"}}>
                     <h2 style={{fontWeight: "500"}}>{lista.listaName || ""}</h2>
-                    {searchParams.get("view") === "lista" && (
-                        <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
-                            <h5 style={{marginRight: "8px"}}>Items: {filteredListaForItems ? filteredListaForItems.length : items}</h5>
-                            <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
-                        </div>
-                    )}
-                    {searchParams.get("view") === "payments" && (
+                    {searchParams.get("view") === "payments" ? (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
                             <h5 style={{marginRight: "8px"}}>Lista: {(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
                             <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Pagado: {totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
+                        </div>
+                    ) : (
+                        <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
+                            <h5 style={{marginRight: "8px"}}>Items: {filteredListaForItems ? filteredListaForItems.length : items}</h5>
+                            <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
                         </div>
                     )}
                 </div>
