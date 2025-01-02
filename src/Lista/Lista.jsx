@@ -95,9 +95,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
       const anyItemMissingUser = allItems.some(item => {
         return !item.itemUserMember.includes(usuario.uid)
     })  
-      if (anyItemMissingUser) {
-        setIsToggleShown(true)
-      }
+    setIsToggleShown(anyItemMissingUser)
     }
   },[selectedList, usuario.uid])
 
