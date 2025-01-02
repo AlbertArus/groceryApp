@@ -29,7 +29,7 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
       <ItemMenu 
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
-        onClick={() => deleteLista(lista.id)}
+        onClick={() => deleteLista(listaArchivada ? listaArchivada.id : lista.id)}
       />
     </div>
   )
