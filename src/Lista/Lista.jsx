@@ -128,11 +128,14 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     const updatedItems = [...selectedList.items, newItem];
     updateListaItems(params.id, updatedItems);
     
-    const updatedCategories = selectedList.categories.map(category => 
-      category.id === categoryId 
-        ? { ...category, items: [...category.items, newItem] }
-        : category
-    );
+    const updatedCategories = selectedList.categories.map(category => {
+        if(category.id === categoryId) {
+            const newItems = [...category.items, newItem]
+            const allItemsChecked = newItems.every(item => item.isChecked);
+            return { ...category, items: newItems, isChecked: allItemsChecked };
+        }
+        return category;
+    });
     updateListaCategories(params.id, updatedCategories);
   }
 
@@ -185,7 +188,6 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     }));
   
     let newDeletedItem = { type: 'item', data: itemToDelete };
-    console.log("has llamado bien a eliminar", id);
   
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>

@@ -32,17 +32,13 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
       toggleRef.current.style.transform = isCollapsed ? "rotate(270deg)" : "rotate(0deg)";
     }
   }, [isCollapsed]);
-  
-  const hasItems = category.items.length > 0
-  const categoryChecked = hasItems && (category.isChecked===true || category.items.every(item => item.isChecked))
 
-  useEffect(() => {
-      if(categoryChecked) {
-        setIsCollapsed(true)
-      } else {
-        setIsCollapsed(false)
-      }
-  },[category, categoryChecked])
+  const hasItems = category.items.length > 0
+  const categoryChecked = hasItems && (category.isChecked === true || category.items.every(item => item.isChecked))
+
+    useEffect(() => {
+        setIsCollapsed(categoryChecked)
+    },[category, categoryChecked])
 
   const handleAddingItem = (id) => {
     setIsCollapsed(false)
