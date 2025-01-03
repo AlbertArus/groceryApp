@@ -87,15 +87,15 @@ const NewPassword = () => {
             <h2 style={{marginBottom: "25px"}}>Modifica tu contraseña</h2>
                 <form className="loginForm" onSubmit={handleChangePassword}>
                     <label htmlFor="newContraseña">Nueva contraseña</label>
-                    <div className="iconed-container fila-between">
-                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" value={newPassword} onChange={(e) => {setNewPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, newPassword: false, newPasswordContraseñaInvalid: false}))}}/>
+                    <div className="iconed-container fila-between" style={{backgroundColor: "transparent", border: "1px solid #9E9E9E", margin: "5px 0px"}}>
+                        <input type={!isPasswordVisible ? "password" : "text"} style={{border: "none", margin: "0px"}} placeholder="*******" aria-placeholder= "password" id="newContraseña" value={newPassword} onChange={(e) => {setNewPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, newPassword: false, newPasswordContraseñaInvalid: false}))}}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
                     <h5 style={{display: errors.newPassword ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
                     <h5 style={{display: errors.newPasswordContraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
                     <label htmlFor="confirmContraseña">Confirmar contraseña</label>
-                    <div className="iconed-container fila-between">
-                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="confirmContraseña" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, confirmPassword: false, confirmPasswordContraseñaInvalid: false}))}}/>
+                    <div className="iconed-container fila-between" style={{backgroundColor: "transparent", border: "1px solid #9E9E9E", margin: "5px 0px"}}>
+                        <input type={!isPasswordVisible ? "password" : "text"} style={{border: "none", margin: "0px"}} placeholder="*******" aria-placeholder= "password" id="confirmContraseña" value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); setErrors((prevErrors) => ({...prevErrors, confirmPassword: false, confirmPasswordContraseñaInvalid: false}))}}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
                     <h5 style={{display: errors.confirmPassword ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>

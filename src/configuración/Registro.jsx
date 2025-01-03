@@ -110,8 +110,8 @@ const Registro = ({setUsuario}) => {
                     <h5 style={{display: errors.correo ? "block" : "none", color:"red"}}>Añade un correo electrónico</h5>
                     <h5 style={{display: errors.correoInvalid ? "block" : "none", color:"red"}}>Tu dirección de correo electrónico no es correcta</h5>
                     <label htmlFor="contraseña">Contraseña *</label>
-                    <div className="iconed-container fila-between ">
-                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
+                    <div className="iconed-container fila-between" style={{backgroundColor: "transparent", border: "1px solid #9E9E9E", margin: "5px 0px"}}>
+                        <input type={!isPasswordVisible ? "password" : "text"} style={{border: "none", margin: "0px"}} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
                     <h5 style={{display: errors.contraseña ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
