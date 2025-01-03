@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import ModalSheet from "../ui-components/ModalSheet";
+import TabItemMenu from "../components/TabItemMenu";
 
 const Search = ({setSearchResult}) => {
     const [focused, setFocused] = useState(false)
@@ -43,7 +44,11 @@ const Search = ({setSearchResult}) => {
             <ModalSheet 
                 open={open}
                 setOpen={setOpen}
-            />
+            >
+                <TabItemMenu 
+                    itemMenuName={"No hay filtros disponibles"}
+                />
+            </ModalSheet>
         </div>
     )
 }
