@@ -42,6 +42,9 @@ const Registro = ({setUsuario}) => {
             contraseñaInvalid: (contraseña.trim().length < minLength),
             termsUnchecked: !termsChecked
         })
+
+        const capitalizedNombre = nombre.charAt(0).toUpperCase()+nombre.slice(1).toLowerCase();
+        const capitalizedApeliido = apellido.charAt(0).toUpperCase()+apellido.slice(1); // No añado toLowerCase por si es compuesto etc y necesita otra
         
         try {
             let userCredential;
@@ -58,9 +61,9 @@ const Registro = ({setUsuario}) => {
     
                     await setDoc(doc(db, "usuarios", userCredential.user.uid), {
                         uid: userCredential.user.uid,
-                        nombre: nombre,
-                        apellido: apellido,
-                        displayName: `${nombre} ${apellido}`,
+                        nombre: capitalizedNombre,
+                        apellido: capitalizedApeliido,
+                        displayName: `${capitalizedNombre} ${capitalizedApeliido}`,
                         email: correo,
                         comunicaciones: communicationsChecked,
                         createdAt: new Date(),
