@@ -100,7 +100,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
             const data = {
                 uid,
                 displayName,
-                createdAt: new Date(),
+                createdAt: new Date().toISOString(),
             }
             console.log(uid)
             await setDoc(newMember, data);

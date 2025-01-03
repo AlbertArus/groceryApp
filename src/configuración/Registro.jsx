@@ -66,7 +66,7 @@ const Registro = ({setUsuario}) => {
                         displayName: `${capitalizedNombre} ${capitalizedApeliido}`,
                         email: correo,
                         comunicaciones: communicationsChecked,
-                        createdAt: new Date(),
+                        createdAt: new Date().toISOString(),
                     });
                 }
             }
