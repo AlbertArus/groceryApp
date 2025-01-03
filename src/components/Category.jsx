@@ -42,9 +42,11 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
 
   const handleAddingItem = (id) => {
     setIsCollapsed(false)
-    if (ItemNameInputRef.current) {
-      ItemNameInputRef.current.focus()
-    }
+    setTimeout(() => {
+        if (ItemNameInputRef.current) {
+          ItemNameInputRef.current.focus(); // Temporizador para dar tiempo a que el DOM monte el componente New Item y entonces poder hacer focus
+        }
+      }, 0);
   }
   
   const handleEdit = (e) => {
