@@ -345,6 +345,10 @@ function App() {
             <Route path="/deleteuser" element={
               <DeleteUser
                 usuario={usuario}
+                UsuarioCompleto={UsuarioCompleto}
+                listas={listas}
+                setListas={setListas}
+                updateLista={updateLista}
               />}
             />
             <Route path='/list/:id/newpayment/:paymentId?' element={

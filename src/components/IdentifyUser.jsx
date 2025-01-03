@@ -16,8 +16,17 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
               lista.userMember.map(async (member) => {
                 const docSnap = await getDoc(doc(db, "usuarios", member));
                 const userData = docSnap.exists() ? docSnap.data() : null;
-    
-                return userData.email ? null : member; // Solo retorna miembro si no tiene campo email
+                
+                if(userData) {
+                    if (userData.email !== undefined && userData.email !== "") {
+                        return null; // Si tiene un email válido, no lo incluimos explícitamente con null
+                    } else {
+                        return member; // Retorna el miembro solo si no tiene un email válido
+                    }                
+                } else {
+                    console.warn (`Documento no encontrado para ${member}`)
+                    return null
+                }
               })
             );
     
@@ -52,7 +61,7 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
 
     const replaceMember = async (uid) => {
         if(!uid) {
-            console.error("no hay usuarios");
+            console.error("no hay usuario");
             return;
         }
 
