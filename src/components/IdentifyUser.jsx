@@ -2,6 +2,7 @@ import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { db } from "../firebase-config"
+import Modal from "../ui-components/Modal"
 
 const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto, showIdentifyList, setShowIdentifyList }) => {
     const { id } = useParams()
@@ -147,13 +148,12 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
     }
 
     return (
-        <div className="modal-container no-scroll" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div className="overlay" onClick={() => "close"}></div>
-            <div className="popUp" style={{ backgroundColor: "white" }}>
-                <div className="columna-start" style={{ margin: "15px 0px" }}>
-                    <h3 style={{ fontWeight: "600", marginBottom: "5px" }}>Identifícate</h3>
-                    <h5>Estos son los miembros no registrados</h5>
-                </div>
+        <>
+            <Modal
+                title={"Identifícate"}
+                subtitle={"Estos son los miembros no registrados"}
+                styleSpan={{display: "none"}}
+            >
                 <div>
                     {filteredMembers.map((member, index) => {
                         return (
@@ -167,8 +167,8 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
                         <h4 style={{ color: "grey" }} onClick={() => updateMembers(usuario.uid)}>Soy un miembro nuevo</h4>
                     </div>
                 </div>
-            </div>
-        </div>
+            </Modal>
+        </>
     )
 }
 

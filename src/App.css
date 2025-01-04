@@ -618,52 +618,27 @@ hr {
 
 .modal-container {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 1000;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(196, 195, 195, 0.5);
-  width: 100vw;
-  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(196, 195, 195, 0.5);
 }
 
 .popUp {
   border-radius: 10px;
   box-shadow: 0px 0px 300px rgba(0,0,0,0.3);
   padding: 20px 25px;
-  z-index: 1000;
-  /* top: 200px; */
+  z-index: 1002;
   width: 90vw;
-  /* top: 50%;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); */
-  margin: auto;
+  transform: translate(-50%, -50%);
   max-width: 500px;
-  position: relative;
+  position: absolute;
 }
-
-.popUp button[type=submit] {
-  height: 30px;
-  border-radius: 5px;
-  background-color: #f4f4f4;
-  border: 2.5px solid #9E9E9E;
-  margin: 15px 0px;
-}
-
-.no-scroll {
-    overflow: hidden;
-    height: 100%;
-  }
 
 .search-container {
   /* border: 1.5px solid grey; */

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ButtonArea from "../ui-components/ButtonArea.jsx";
 import { v4 as uuidv4 } from 'uuid'
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import Modal from "../ui-components/Modal.jsx";
 const auth = getAuth(firebaseApp);
 
 const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }) => {
@@ -157,22 +158,18 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                 <h4>Las listas que hayas creado y compartido con otros usuarios que las tengan activas, no se eliminarán por lo que ellos pueden seguir consultándolas y usándolas.</h4>
             </div>
             {/* <button type="submit" style={{backgroundColor: "rgb(248, 167, 167)", position: "fixed", bottom: "30px", left: "50%", transform: "translateX(-50%)", width: "calc(100% - 30px)"}} onClick={() => setDeleteConfirmation(true)}>Eliminar cuenta</button> */}
-            {deleteConfirmation && 
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
-                    <div className="overlay"></div>
-                    <div className="popUp app-margin" style={{backgroundColor: "white"}}>
-                        <div className="fila-between" style={{ margin: "15px 0px"}}>
-                            <h5 style={{ fontWeight: "600" }}>Confirma tu contraseña</h5>
-                            <span className="material-symbols-outlined icon-medium" onClick={() => setDeleteConfirmation(false)}>close</span>
-                        </div>
-                        <h5>Introduce tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente</h5>
-                        <div className="iconed-container FormLista fila-between" style={{marginTop: "10px"}}>
-                            <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" style={{width: "100%", height: "30px", border: "none"}} value={password} onChange={(e) => setPassword(e.target.value)}/>
-                            <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
-                        </div>
-                        <button type="submit" style={{backgroundColor: "rgb(248, 167, 167)"}} onClick={() => handleDeleteUser(user)}>Eliminar cuenta</button>
+            {deleteConfirmation &&
+                <Modal
+                    title={"Confirma tu contraseña"}
+                    closeOnClick={() => setDeleteConfirmation(false)}
+                >
+                    <h5>Introduce tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente</h5>
+                    <div className="iconed-container FormLista fila-between" style={{marginTop: "10px"}}>
+                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" style={{width: "100%", height: "30px", border: "none"}} value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
-                </div>        
+                    <button className="buttonMain" style={{width: "100%", marginBottom: "10px", backgroundColor: "rgb(248, 167, 167)"}} onClick={() => handleDeleteUser(user)}>Eliminar cuenta</button>
+                </Modal>
             }
             {userDeleted && (
                 <div>Tu cuenta se ha eliminado correctamente. Sentimos decirte adiós y confiamos verte muy pronto</div>
