@@ -39,44 +39,42 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
   }
 
   return (
-    <ButtonArea 
-    buttonCopy={"Añadir pago"}
-    onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
-    >
-        <div>
-            <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <h6>Gastos en lista</h6>
-                <h4>{(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
-                {/* <h4>
-                    <CurrencyInput
-                        value={lista.listPrice}
-                        locale="es-ES"
-                        currency="EUR"
-                        editable={false}
-                    />
-                </h4> */}
-                </div>
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <h6>Total pagado</h6>
-                <h4>{totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
-                </div>
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <h6>He pagado</h6>
-                <h4>{totalGastoListaUser(usuario.uid).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
-                </div>
+
+    <>
+        <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
+            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <h6>Gastos en lista</h6>
+            <h4>{(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+            {/* <h4>
+                <CurrencyInput
+                    value={lista.listPrice}
+                    locale="es-ES"
+                    currency="EUR"
+                    editable={false}
+                />
+            </h4> */}
             </div>
+            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <h6>Total pagado</h6>
+            <h4>{totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+            </div>
+            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <h6>He pagado</h6>
+            <h4>{totalGastoListaUser(usuario.uid).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+            </div>
+        </div>
+        <ButtonArea 
+            buttonCopy={"Añadir pago"}
+            onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+        >
             {lista?.payments?.length === 0 && (
                 <EmptyState 
-                img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
-                alt={"Set of grocery bags full of items"}
-                description={"Añade tus pagos y ajusta cuentas fácilmente"}
-                onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
-                buttonCopy={"Añadir pago"}
-                style={{display: "none"}}
+                    img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                    alt={"Set of grocery bags full of items"}
+                    description={"Añade tus pagos y ajusta cuentas fácilmente"}
+                    style={{display: "none"}}
                 />
             )}
-
             {lista?.payments && lista.payments.length !== 0 && (
                 <>
                 <div className="app-margin">
@@ -99,8 +97,8 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                 </div>  
                 </>
             )}
-        </div>
-    </ButtonArea>
+        </ButtonArea>
+    </>
   )
 }
 
