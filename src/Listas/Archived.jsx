@@ -86,7 +86,7 @@ const Archived = ({ listas, deleteLista, updateLista }) => {
                                         ref={optionsMenuListHomeRef}
                                         handleArchive={() => {updateLista(lista.id, "isArchived", !lista.isArchived); navigate("/")}} //Envío desde aquí porque dentro colisiona con lista.id de Home que son distintas (archivadas y no)
                                         deleteLista={deleteLista}
-                                        listaArchivada={lista}
+                                        lista={lista}
                                     />
                                 )}
                             </div>
