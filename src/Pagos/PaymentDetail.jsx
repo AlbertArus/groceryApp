@@ -1,6 +1,5 @@
 import Head from "../components/Head"
 import { useParams, useSearchParams } from "react-router-dom"
-// import { useUsuario } from "../UsuarioContext";
 import { useEffect, useState } from "react";
 import TabItemMenu from "../components/TabItemMenu";
 import OptionsMenuPagos from "../components/OptionsMenuPagos"
@@ -8,7 +7,6 @@ import OptionsMenuPagos from "../components/OptionsMenuPagos"
 const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
     const {id, paymentId} = useParams()
     const [searchParams] = useSearchParams()
-    // const {usuario} = useUsuario()
     const lista = listas.find(lista => lista.id === id)
     const payment = lista.payments.find(payment => payment.id === paymentId)
     const [nombrePayer, setNombrePayer] = useState([]);
@@ -46,45 +44,58 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
     const deletePayment = (id) => {
         const listaPayments = lista.payments.filter(payment => payment.id !== id)
         updateLista (lista.id, "payments", listaPayments)
+        const elementsPaid = payment.elementsPaid
+        if(elementsPaid.length > 0) {
+            const selectItemsPaid = elementsPaid.map(paid => paid.item);
+            const getItemsPaid = lista.categories.map(category => ({
+                ...category,
+                items: category.items.map(item =>
+                    selectItemsPaid.includes(item.id) 
+                        ? { ...item, isPaid: false, payer: "" } 
+                        : item
+                )
+            }))
+            updateLista(lista.id, "categories", getItemsPaid)
+        }
     }
 
     return (
         <div className="app">
-        <Head 
-            path={`list/${id}?view=${searchParams.get("view")}`}
-            sectionName={""}
-            handleMenuVisibility={handleMenuVisibility}
-            state={isOptionsMenuVisible}
-            component={OptionsMenuPagos}
-            lista={lista}
-            payment={payment}
-            style={{right: "0"}}
-            deletePayment={deletePayment}
-        >
-        </Head>
-        <div className="app-margin">
-        <h2 style={{display: "flex", justifyContent: "center"}}>{payment.paymentName}</h2>
-            {nombrePayer.length > 0 && (
-            <div style={{width: "100%"}}>
-                <h3 style={{margin: "20px 0px 0px 0px"}}>Pagado por</h3>
-                <TabItemMenu
-                    key={id}
-                    iconName="account_circle"
-                    itemMenuName={nombrePayer}
-                    priceMember={`${payment.amount} €`}
-                />
-                <h3 style={{margin: "20px 0px 0px 0px"}}>Participantes</h3>
-                {payment.members.map((member, index) => (
-                <TabItemMenu 
-                    key={member.uid}
-                    iconName="account_circle"
-                    itemMenuName={nombrePaymentMember[index]}
-                    priceMember={`${member.amount} €`}
-                />
-                ))}
+            <Head 
+                path={`list/${id}?view=${searchParams.get("view")}`}
+                sectionName={""}
+                handleMenuVisibility={handleMenuVisibility}
+                state={isOptionsMenuVisible}
+                component={OptionsMenuPagos}
+                lista={lista}
+                payment={payment}
+                style={{right: "0"}}
+                deletePayment={deletePayment}
+            >
+            </Head>
+            <div className="app-margin">
+                <h2 style={{display: "flex", justifyContent: "center"}}>{payment.paymentName}</h2>
+                {nombrePayer.length > 0 && (
+                    <div style={{width: "100%"}}>
+                        <h3 style={{margin: "20px 0px 0px 0px"}}>Pagado por</h3>
+                        <TabItemMenu
+                            key={id}
+                            iconName="account_circle"
+                            itemMenuName={nombrePayer}
+                            priceMember={`${payment.amount} €`}
+                        />
+                        <h3 style={{margin: "20px 0px 0px 0px"}}>Participantes</h3>
+                        {payment.members.map((member, index) => (
+                            <TabItemMenu 
+                                key={member.uid}
+                                iconName="account_circle"
+                                itemMenuName={nombrePaymentMember[index]}
+                                priceMember={`${member.amount} €`}
+                            />
+                        ))}
+                    </div>
+                )}      
             </div>
-            )}      
-        </div>
         </div>
     )
 }
