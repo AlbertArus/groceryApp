@@ -7,6 +7,7 @@ import ButtonArea from "../ui-components/ButtonArea.jsx";
 import { v4 as uuidv4 } from 'uuid'
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import Modal from "../ui-components/Modal.jsx";
+import ModalStatus from "../ui-components/ModalStatus.jsx";
 const auth = getAuth(firebaseApp);
 
 const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }) => {
@@ -175,16 +176,16 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                 <div>Tu cuenta se ha eliminado correctamente. Sentimos decirte adiós y confiamos verte muy pronto</div>
             )}
             {!userDeleted && popUpVisible && (
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>   
-                    <div className="overlay"></div>
-                    <div className="popUp app-margin" style={{backgroundColor: "rgb(248, 167, 167)"}}>
-                        <div style={{ margin: "15px 0px", textAlign: "center"}}>
-                            <span className="material-symbols-outlined icon-medium" style={{position: "absolute", right: "20px", cursor: "pointer"}} onClick={() => setPopUpVisible(false)}>close</span>
-                            <span className="material-symbols-outlined icon-xxxlarge" style={{color: "red", margin: "15px 0px"}}>error</span>
-                            <h5 style={{ fontWeight: "600", whiteSpace: "wrap"}}>Algo ha fallado... Inténtalo más tarde</h5>
-                        </div>
-                    </div>
-                </div>   
+                <>
+                    <ModalStatus
+                        backgroundColor={"rgb(248, 167, 167)"}
+                        closeOnClick={() => setPopUpVisible(false)}
+                        title={"Algo ha fallado... Inténtalo más tarde"}
+                        icon={"error"}
+                        iconColor={"red"}
+                    >
+                    </ModalStatus>
+                </>
             )}
         </div>
     </ButtonArea>
