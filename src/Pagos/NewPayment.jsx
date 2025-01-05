@@ -57,7 +57,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 setNombreUserMember(userMembersName);
 
                 if(!paymentId) {
-                    setMembers(selectedList.userMember.map(uid => ({ uid, amount: PriceMemberEven() })));
+                    setMembers(selectedList.userMember.map(uid => ({ uid, amount: calculatePrice(uid) })));
                 }
 
                 if (!payer) {
@@ -69,7 +69,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [UsuarioCompleto, selectedList, usuario, payer, amount, paymentId]);
 
-    // Update member amounts when total amount changes
+    // Update member amounts cuando amount cambia. Es solo para visualización, el importe que se añade en addPayment es el de PriceMemberEven() 
     useEffect(() => {
         if (members.length > 0 && amount) {
             const amountPerMember = parseFloat(amount) / members.length;
