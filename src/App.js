@@ -31,7 +31,6 @@ function App() {
   const [paymentName, setPaymentName] = useState("")
   const [amount, setAmount] = useState("")
   const [payer, setPayer] = useState("")
-  const [elementsPaid, setElementsPaid] = useState([])
   const [showIdentifyList, setShowIdentifyList] = useState(false);
 
   const navigate = useNavigate()
@@ -241,7 +240,7 @@ function App() {
     return "Usuario desconocido";
   },[])
 
-    const AddPayment = (lista, listaId, paymentName, amount, payer, members) => {
+    const AddPayment = (lista, listaId, paymentName, amount, payer, members, elementsPaid) => {
 
         const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid }
         const updatedPayments = [...lista.payments, newPayment]
@@ -260,7 +259,7 @@ function App() {
         }
     }
 
-    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members) => {
+    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members, elementsPaid) => {
         const editedPayment = lista.payments.find(payment => payment.id === paymentId)
         const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date().toISOString() }
         const updatedPayments = lista.payments.map(payment => 

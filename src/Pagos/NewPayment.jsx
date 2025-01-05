@@ -7,7 +7,7 @@ import GastosLista from "./GastosLista";
 import ButtonArea from "../ui-components/ButtonArea";
 import CustomChip from "../ui-components/CustomChip";
 
-const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, elementsPaid, setElementsPaid, editPayment }) => {
+const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment }) => {
     const { usuario } = useUsuario();
     const { id, paymentId } = useParams();
     const [searchParams] = useSearchParams();
@@ -17,6 +17,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     const [selectedChip, setSelectedChip] = useState("De esta lista");
     const [finalValuePaid, setFinalValuePaid] = useState("");
     const [members, setMembers] = useState([]);
+    const [elementsPaid, setElementsPaid] = useState([])
     const navigate = useNavigate();
     const maxLength = 27;
     const paymentEditing = selectedList?.payments?.find(payment => payment.id === paymentId);
@@ -55,15 +56,6 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 );
                 setNombreUserMember(userMembersName);
 
-                // Initialize members only for new payments
-                // if (!paymentId) {
-                //     const initialMembers = selectedList.userMember.map(uid => ({
-                //         uid,
-                //         amount: amount ? parseFloat(amount) / selectedList.userMember.length : 0
-                //     }));
-                //     setMembers(initialMembers);
-                // }
-
                 if(!paymentId) {
                     setMembers(selectedList.userMember.map(uid => ({ uid, amount: PriceMemberEven() })));
                 }
@@ -90,6 +82,12 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount, members.length]);
 
+    useEffect(() => {
+        if(selectedChip === "Otro gasto") {
+            setElementsPaid([])
+        }
+    },[selectedChip])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -104,9 +102,9 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         if (!newErrors.paymentName && !newErrors.amount && !newErrors.members) {
             try {
                 if (!paymentId) {
-                    await AddPayment(selectedList, selectedList.id, paymentName, amount, payer, members);
+                    await AddPayment(selectedList, selectedList.id, paymentName, amount, payer, members, elementsPaid);
                 } else {
-                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, amount, payer, members);
+                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, amount, payer, members, elementsPaid);
                 }
                 navigate(`/list/${id}?view=payments`);
                 setAmount("");
@@ -215,7 +213,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                     sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
                 />
                 <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-                    <form style={{display: "flex"}} onSubmit={() => handleSubmit}>
+                    <form style={{display: "flex"}}>
                         <label htmlFor="nombre">Título</label>
                         <div className="iconed-container fila-between">
                         <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
