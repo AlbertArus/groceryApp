@@ -245,8 +245,8 @@ function App() {
         const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid }
         const updatedPayments = [...lista.payments, newPayment]
         updateLista(listaId, "payments", updatedPayments)
-        if(elementsPaid.length !== 0) {
-            const selectItemsPaid = elementsPaid.map(paid => paid.item);
+        if(elementsPaid.length > 0) {
+            const selectItemsPaid = elementsPaid.map(elementPaid => elementPaid.item);
             const getItemsPaid = lista.categories.map(category => ({
                 ...category,
                 items: category.items.map(item =>
@@ -266,6 +266,18 @@ function App() {
             payment.id === paymentId ? newDataPayment : payment
         )
         updateLista(listaId, "payments", updatedPayments)
+        if(elementsPaid.length > 0) {
+            const selectItemsPaid = elementsPaid.map(paid => paid.item);
+            const getItemsPaid = lista.categories.map(category => ({
+                ...category,
+                items: category.items.map(item =>
+                    selectItemsPaid.includes(item.id) 
+                        ? { ...item, isPaid: true, payer } 
+                        : item
+                )
+            }))
+            updateLista(listaId, "categories", getItemsPaid)
+        }
     }
 
   return (
@@ -362,8 +374,6 @@ function App() {
                 setPayer={setPayer}
                 amount={amount}
                 setAmount={setAmount}
-                elementsPaid={elementsPaid}
-                setElementsPaid={setElementsPaid}
                 editPayment={editPayment}
               />}
             />           
