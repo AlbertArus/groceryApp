@@ -1,8 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import firebaseApp, { db } from "../firebase-config.js";
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import Head from "../components/Head.jsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ButtonArea from "../ui-components/ButtonArea.jsx";
 import { v4 as uuidv4 } from 'uuid'
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
@@ -16,7 +15,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
     const [popUpVisible, setPopUpVisible] = useState(false)
     const [password, setPassword] = useState("")
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-    const navigate = useNavigate();
+    const [error, setError] = useState({password: false})
     const user = auth.currentUser
 
     const replaceMember = async (uid) => {
@@ -114,30 +113,41 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
         }
     }
 
-    const handleDeleteUser = async (user) => {
-
+    const deleteUserDoc = async () => {
+        const docRef = doc(db, "usuarios", usuario.uid)
         try {
-            createReplacementUser()
-            const credential = EmailAuthProvider.credential(user.email, password); // Credenciales para reautenticar al usuario
-            await reauthenticateWithCredential(user, credential)
-            await deleteUser(user);
-            setUserDeleted(true);
-            console.log("Usuario eliminado");
+            await deleteDoc(docRef)
+            console.log("doc eliminado correctamente")
         } catch(error) {
-            setPopUpVisible(true);
-            console.error("Error eliminando usuario:", error);
-        };
-    };
-
-    useEffect(() => {
-        if (userDeleted) {
-            const timer = setTimeout(() => {
-                navigate("/profile"); // Redirige a la página de perfil después de 5 segundos
-            }, 5000); // 5000 ms = 5 segundos
-
-            return () => clearTimeout(timer); // Limpia el timeout si el componente se desmonta
+            console.error("No se ha podido eliminar el doc de usuario.uid")
+            throw error
         }
-    }, [userDeleted, navigate]);
+    }
+
+    const handleDeleteUser = async (user) => {
+        setError({
+            password: password.trim() === ""
+        })
+
+        if(password.trim()) {
+            try {
+                await createReplacementUser()
+                deleteUserDoc()
+                const credential = EmailAuthProvider.credential(user.email, password); // Credenciales para reautenticar al usuario
+                await reauthenticateWithCredential(user, credential)
+                await deleteUser(user);
+                setUserDeleted(true);
+                setPopUpVisible(true);
+                console.log("Usuario eliminado");
+            } catch(error) {
+                setPopUpVisible(true);
+                console.error("Error eliminando usuario:", error);
+            };
+        } else {
+            console.error("la contraseña está vacía")
+            return
+        }
+    };
 
     const handlePasswordVisibility = () => {
         setIsPasswordVisible(prevState => !prevState)
@@ -166,27 +176,33 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                 >
                     <h5>Introduce tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente</h5>
                     <div className="iconed-container FormLista fila-between" style={{marginTop: "10px"}}>
-                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" style={{width: "100%", height: "30px", border: "none"}} value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" style={{width: "100%", height: "30px", border: "none"}} value={password} onChange={(e) => {setPassword(e.target.value); setError({password: false})}}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
+                    <h5 style={{display: error.password ? "block" : "none", color:"red"}}>Confirma tu contraseña actual</h5>
                     <button className="buttonMain" style={{width: "100%", marginBottom: "10px", backgroundColor: "rgb(248, 167, 167)"}} onClick={() => handleDeleteUser(user)}>Eliminar cuenta</button>
                 </Modal>
             }
-            {userDeleted && (
-                <div>Tu cuenta se ha eliminado correctamente. Sentimos decirte adiós y confiamos verte muy pronto</div>
-            )}
-            {!userDeleted && popUpVisible && (
-                <>
-                    <ModalStatus
-                        backgroundColor={"rgb(248, 167, 167)"}
-                        closeOnClick={() => setPopUpVisible(false)}
-                        title={"Algo ha fallado... Inténtalo más tarde"}
-                        icon={"error"}
-                        iconColor={"red"}
-                    >
-                    </ModalStatus>
-                </>
-            )}
+            {userDeleted && popUpVisible && // Ahora mismo no se ve porque como App.js no reconoce usuario, te echa de la App
+                <ModalStatus
+                    backgroundColor={"rgb(164, 207, 164)"}
+                    closeOnClick={() => setPopUpVisible(false)}
+                    title={"Tu cuenta se ha eliminado correctamente. Sentimos decirte adiós y confiamos verte muy pronto"}
+                    icon={"check_circle"}
+                    iconColor={"rgb(45, 165, 45)"}
+                >
+                </ModalStatus>
+            }
+            {!userDeleted && popUpVisible &&
+                <ModalStatus
+                    backgroundColor={"rgb(248, 167, 167)"}
+                    closeOnClick={() => setPopUpVisible(false)}
+                    title={"Algo ha fallado... Inténtalo más tarde"}
+                    icon={"error"}
+                    iconColor={"red"}
+                >
+                </ModalStatus>
+            }
         </div>
     </ButtonArea>
   )

@@ -14,7 +14,7 @@ const NewPassword = () => {
     // const [error, setError] = useState(false);
     const [errors, setErrors] = useState({})
     const [success, setSuccess] = useState(true);
-    const [popUpVisible, setPopUpVisible] = useState(true)
+    const [popUpVisible, setPopUpVisible] = useState(false)
     const navigate = useNavigate()
 
     const handlePasswordVisibility = () => {
@@ -104,30 +104,26 @@ const NewPassword = () => {
                     <h5 style={{display: errors.unalignPasswords ? "block" : "none", color:"red"}}>Las contraseñas no coinciden</h5>
                 </form>
                 </div>
-                {success && popUpVisible && (
-                    <>
-                        <ModalStatus
-                            backgroundColor={"rgb(164, 207, 164)"}
-                            closeOnClick={() => setPopUpVisible(false)}
-                            title={"¡Contraseña actualizada con éxito!"}
-                            icon={"check_circle"}
-                            iconColor={"rgb(45, 165, 45)"}
-                        >
-                        </ModalStatus>
-                    </>
-                )}
-                {!success && popUpVisible && (
-                    <>
-                        <ModalStatus
-                            backgroundColor={"rgb(248, 167, 167)"}
-                            closeOnClick={() => setPopUpVisible(false)}
-                            title={"Algo ha fallado... Inténtalo más tarde"}
-                            icon={"error"}
-                            iconColor={"red"}
-                        >
-                        </ModalStatus>
-                    </>
-                )}
+                {success && popUpVisible &&
+                    <ModalStatus
+                        backgroundColor={"rgb(164, 207, 164)"}
+                        closeOnClick={() => setPopUpVisible(false)}
+                        title={"¡Contraseña actualizada con éxito!"}
+                        icon={"check_circle"}
+                        iconColor={"rgb(45, 165, 45)"}
+                    >
+                    </ModalStatus>
+                }
+                {!success && popUpVisible &&
+                    <ModalStatus
+                        backgroundColor={"rgb(248, 167, 167)"}
+                        closeOnClick={() => setPopUpVisible(false)}
+                        title={"Algo ha fallado... Inténtalo más tarde"}
+                        icon={"error"}
+                        iconColor={"red"}
+                    >
+                    </ModalStatus>
+                }
         </div>
     </ButtonArea>
   )
