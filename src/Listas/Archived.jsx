@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import Head from "../components/Head"
 
-const Archived = ({ listas, deleteLista, updateLista }) => {
+const Archived = ({ listas, deleteLista, updateLista, handleArchive, usuario }) => {
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRefs = useRef({})
@@ -47,7 +47,6 @@ const Archived = ({ listas, deleteLista, updateLista }) => {
             return total + category.items.length
         }, 0)
     }
-
     return (
         <div className="Home app">
             <Head
@@ -59,7 +58,7 @@ const Archived = ({ listas, deleteLista, updateLista }) => {
                     <h5>{listaslength === 1 ? "Tienes 1 lista archivada" : `Tienes ${listaslength} listas archivadas`}</h5>
                 </div>
             </div>
-            {listas && listas.map(lista => lista.isArchived === true && (
+            {listas && listas.map(lista => 
                 <div key={lista.id}>
                     <div className="vistaDatos app-margin">
                         <div className="fila-between" style={{alignItems: "flex-start"}}>
@@ -84,16 +83,17 @@ const Archived = ({ listas, deleteLista, updateLista }) => {
                                         style={{right: "0"}}
                                         key={lista.id}
                                         ref={optionsMenuListHomeRef}
-                                        handleArchive={() => {updateLista(lista.id, "isArchived", !lista.isArchived); navigate("/")}} //Envío desde aquí porque dentro colisiona con lista.id de Home que son distintas (archivadas y no)
+                                        handleArchive={handleArchive}
                                         deleteLista={deleteLista}
                                         lista={lista}
+                                        usuario={usuario}
                                     />
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
-            ))}
+            )}
         </div>
     )
 }

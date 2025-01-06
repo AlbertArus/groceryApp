@@ -2,7 +2,7 @@ import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 import { useNavigate } from "react-router-dom"
 
-const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
+const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, updateLista, style, usuario }, ref) => {
   const navigate = useNavigate()
 
   return (
@@ -31,9 +31,9 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleCheckAl
         style={{display: itemslength < 2 ? "none" : "flex"}}
         />
       <ItemMenu
-        iconName={lista.isArchived ? "unarchive" : "archive"}
-        itemMenuName={`${lista.isArchived === true ? "Desarchivar lista" : "Archivar lista"}`}
-        onClick={() => {updateLista(lista.id, "isArchived", !lista.isArchived); navigate("/")}}
+        iconName={lista.userConfig[usuario.uid].isArchived ? "unarchive" : "archive"}
+        itemMenuName={lista.userConfig[usuario.uid].isArchived ? "Desarchivar lista" : "Archivar lista"}
+        onClick={() => {handleArchive(lista);  navigate("/")}}
       />
       <ItemMenu
         iconName={"delete"}

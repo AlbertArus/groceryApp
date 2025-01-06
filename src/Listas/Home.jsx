@@ -6,7 +6,7 @@ import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
 import EmptyState from "../ui-components/EmptyState";
 
-const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDuplicate, updateLista }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchived, handleDuplicate, updateLista }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const [filteredListas, setFilteredListas] = useState(listas)
@@ -122,9 +122,10 @@ const Home = ({ usuario, listas, addLista, deleteLista, AllArchived, handleDupli
                                                                 key={lista.id}
                                                                 ref={optionsMenuListHomeRef}
                                                                 handleDuplicate={() => handleDuplicate(lista.id)}
-                                                                handleArchive={() => updateLista(lista.id, "isArchived", !lista.isArchived)} //Envío desde aquí porque dentro colisiona con lista.id de Archivadas que son distintas (archivadas y no)
+                                                                handleArchive={handleArchive}
                                                                 deleteLista={deleteLista}
                                                                 lista={lista}
+                                                                usuario={usuario}
                                                             />
                                                         )}
                                                     </div>

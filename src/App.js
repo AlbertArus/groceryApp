@@ -76,8 +76,11 @@ function App() {
     });
   }, [location]);
 
+//   console.log(listas)
+
   const addLista = async (listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID) => {
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid, ...membersUID], createdAt: new Date().toISOString(), plan, descriptionLista, categories: [], items: [], payments: [], isArchived: false, isNotified, showPrices, showVotes, isPaid: false, listPrice: "" }
+    const userConfig = {[usuario.uid]: {isArchived: false, isNotified, showPrices, showVotes}}
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid, ...membersUID], createdAt: new Date().toISOString(), plan, descriptionLista, categories: [], items: [], payments: [], userConfig, isPaid: false, listPrice: "" }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);
@@ -181,8 +184,20 @@ function App() {
     }
   };
   
-  const archivedList = listas.filter(lista => lista.isArchived)
+  const archivedList = listas.filter(lista => lista.userConfig[usuario.uid].isArchived)
   const AllArchived = archivedList.length
+
+  console.log(archivedList)
+  console.log(AllArchived)
+
+const handleArchive = (lista) => {
+    const updatedArchived = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], isArchived: !lista.userConfig[usuario.uid].isArchived}}
+    // lista.userConfig[usuario.uid].isArchived 
+    // ? !lista.userConfig[usuario.uid].isArchived 
+    // : lista.userConfig[usuario.uid].isArchived 
+
+    updateLista(lista.id, "userConfig", updatedArchived)
+  }
 
   const duplicarLista = async (id) => {
     const originalLista = listas.find(lista => lista.id === id)
@@ -299,13 +314,15 @@ function App() {
               <Home
                 usuario={usuario}
                 addLista={addLista}
-                listas={listas.filter((lista) => !lista.isArchived)}
+                // listas={listas}
+                listas={listas.filter(lista => !lista.userConfig[usuario.uid].isArchived)}
                 deleteLista={deleteLista}
                 updateListaCategories={updateListaCategories}
                 updateListaItems={updateListaItems}
                 AllArchived={AllArchived}
                 handleDuplicate={handleDuplicate}
                 updateLista={updateLista}
+                handleArchive={handleArchive}
               />}
             />
             <Route path="/list/:id" element={
@@ -323,6 +340,7 @@ function App() {
                 AddPayment={AddPayment}
                 showIdentifyList={showIdentifyList}
                 setShowIdentifyList={setShowIdentifyList}
+                handleArchive={handleArchive}
               />}
             />
             <Route path="/newlist" element={
@@ -334,9 +352,12 @@ function App() {
             />
             <Route path="/archived" element={
               <Archived
-                listas={listas.filter((lista) => lista.isArchived)}
+                // listas={listas}
+                listas={listas.filter(lista => lista.userConfig[usuario.uid].isArchived)}
                 deleteLista={deleteLista}
                 updateLista={updateLista}
+                usuario={usuario}
+                handleArchive={handleArchive}
               />}
             />
             <Route path="/profile" element={

@@ -128,8 +128,11 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
 
     const addNewMember = async () => {
         const updatedUserMember = [...lista.userMember, usuario.uid];
+        const newConfig = {[usuario.uid]: {isArchived: false, isNotified: false, showPrices: true, showVotes: true}}
+        const updateduserConfig = {...lista.userConfig, ...newConfig}
         const docRef = doc(db, "listas", id);
         await updateDoc(docRef, { userMember: updatedUserMember });
+        await updateDoc(docRef, { userConfig: updateduserConfig });
 
         const updatedCategories = lista.categories.map(category => (
             {...category, items: category.items.map(item => (
