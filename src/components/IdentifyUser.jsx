@@ -144,7 +144,7 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
 
         setListas(prevListas => prevListas.map(lista => 
             lista.id === id 
-            ? { ...lista, userMember: updatedUserMember, categories: updatedCategories }
+            ? { ...lista, userMember: updatedUserMember, userConfig: updateduserConfig, categories: updatedCategories }
             : lista
         )
         );

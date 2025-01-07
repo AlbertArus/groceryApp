@@ -183,18 +183,15 @@ function App() {
       console.error("Error al actualizar las categorías en Firebase:", error);
     }
   };
-  
-  const archivedList = listas.filter(lista => lista.userConfig[usuario.uid].isArchived)
+
+  const archivedList = listas?.filter(lista => lista.userConfig?.[usuario.uid]?.isArchived)
+
   const AllArchived = archivedList.length
 
-  console.log(archivedList)
-  console.log(AllArchived)
-
-const handleArchive = (lista) => {
-    const updatedArchived = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], isArchived: !lista.userConfig[usuario.uid].isArchived}}
-    // lista.userConfig[usuario.uid].isArchived 
-    // ? !lista.userConfig[usuario.uid].isArchived 
-    // : lista.userConfig[usuario.uid].isArchived 
+    const handleArchive = (lista) => {
+        const updatedArchived = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], isArchived: !lista.userConfig[usuario.uid].isArchived}}
+        updateLista(lista.id, "userConfig", updatedArchived)
+    }
 
     updateLista(lista.id, "userConfig", updatedArchived)
   }
@@ -314,8 +311,7 @@ const handleArchive = (lista) => {
               <Home
                 usuario={usuario}
                 addLista={addLista}
-                // listas={listas}
-                listas={listas.filter(lista => !lista.userConfig[usuario.uid].isArchived)}
+                listas={listas.filter(lista => !archivedList.includes(lista))}
                 deleteLista={deleteLista}
                 updateListaCategories={updateListaCategories}
                 updateListaItems={updateListaItems}
@@ -352,8 +348,7 @@ const handleArchive = (lista) => {
             />
             <Route path="/archived" element={
               <Archived
-                // listas={listas}
-                listas={listas.filter(lista => lista.userConfig[usuario.uid].isArchived)}
+                listas={listas.filter(lista => archivedList.includes(lista))}
                 deleteLista={deleteLista}
                 updateLista={updateLista}
                 usuario={usuario}
