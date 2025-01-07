@@ -6,7 +6,7 @@ import OptionsMenuListHome from "../components/OptionsMenuListHome"
 import ToggleLista from "./ToggleLista";
 import EmptyState from "../ui-components/EmptyState";
 
-const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchived, handleDuplicate, updateLista }) => {
+const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchived, handleIsNotified, handleDuplicate, updateLista }) => {
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const [filteredListas, setFilteredListas] = useState(listas)
@@ -114,7 +114,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
                                                         </Link>
                                                     </div>
                                                     <div className="fila-start" style={{position: "relative"}}>
-                                                        <span className="material-symbols-outlined icon-medium pointer" onClick={(event) => {event.preventDefault(); updateLista(lista.id, "isNotified", !lista.isNotified)}}>{lista.isNotified ? "notifications_active" : "notifications_off"}</span>
+                                                        <span className="material-symbols-outlined icon-medium pointer" onClick={() => {handleIsNotified(lista)}}>{lista.userConfig[usuario.uid].isNotified ? "notifications_active" : "notifications_off"}</span>
                                                         <span className="material-symbols-outlined icon-medium pointer"style={{marginLeft:"4px"}} onClick={(e) => handleMenuVisibility(e, lista.id)} ref={el => buttonMenuRefs.current[lista.id] = el}>more_vert</span>
                                                         {isOptionsMenuVisible === lista.id && ( 
                                                             <OptionsMenuListHome

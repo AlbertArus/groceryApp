@@ -193,8 +193,10 @@ function App() {
         updateLista(lista.id, "userConfig", updatedArchived)
     }
 
-    updateLista(lista.id, "userConfig", updatedArchived)
-  }
+    const handleIsNotified = (lista) => {
+        const updatedNotitied = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], isNotified: !lista.userConfig[usuario.uid].isNotified}}
+        updateLista(lista.id, "userConfig", updatedNotitied)
+    }
 
   const duplicarLista = async (id) => {
     const originalLista = listas.find(lista => lista.id === id)
@@ -319,6 +321,7 @@ function App() {
                 handleDuplicate={handleDuplicate}
                 updateLista={updateLista}
                 handleArchive={handleArchive}
+                handleIsNotified={handleIsNotified}
               />}
             />
             <Route path="/list/:id" element={
