@@ -198,6 +198,11 @@ function App() {
         updateLista(lista.id, "userConfig", updatedNotitied)
     }
 
+    const handleShowVotes = (lista) => {
+        const updatedShowVotes = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], showVotes: !lista.userConfig[usuario.uid].showVotes}}
+        updateLista(lista.id, "userConfig", updatedShowVotes)
+    }
+
   const duplicarLista = async (id) => {
     const originalLista = listas.find(lista => lista.id === id)
     if (!originalLista) {
@@ -340,6 +345,7 @@ function App() {
                 showIdentifyList={showIdentifyList}
                 setShowIdentifyList={setShowIdentifyList}
                 handleArchive={handleArchive}
+                handleShowVotes={handleShowVotes}
               />}
             />
             <Route path="/newlist" element={

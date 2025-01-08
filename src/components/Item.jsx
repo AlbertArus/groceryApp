@@ -4,9 +4,11 @@ import DragIndicator from "@mui/icons-material/DragIndicator";
 import Slider from "../ui-components/Slider"
 import MenuTabs from "./MenuTabs";
 import ModalSheet from "../ui-components/ModalSheet";
+import { useUsuario } from '../UsuarioContext';
 
 const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditItem, DeleteItem, handleCounterUp, handleCounterDown, lista, handleDeleteItemUserMember }) => {
 
+  const { usuario } = useUsuario();
   const [name, setName] = useState(initialName)
   const [price, setPrice] = useState(initialPrice)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -104,11 +106,11 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
           </div>
           <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
             <div className="fila-start pointer">
-              <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
+              <div className="fila-start-group" style={{display: lista.userConfig?.[usuario.uid]?.showVotes ? "flex" : "none"}}>
                   <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
                   <h5 onClick={() => {setOpen(true); setIsActive("A favor")}}>{item.counterUp.length}</h5>
               </div>
-              <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
+              <div className="fila-start-group" style={{display: lista.userConfig?.[usuario.uid]?.showVotes ? "flex" : "none"}}>
                   <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
                   <h5 onClick={() => {setOpen(true); setIsActive("En contra")}}>{item.counterDown.length}</h5>
               </div>
@@ -173,11 +175,11 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
                 <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
               </div>
               <div className="fila-start pointer" style={{position: "relative"}}>
-                <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
+                <div className="fila-start-group" style={{display: lista.userConfig?.[usuario.uid]?.showVotes ? "flex" : "none"}}>
                     <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
                     <h5 onClick={() => {setOpen(true); setIsActive("A favor")}}>{item.counterUp.length}</h5>
                 </div>
-                <div className="fila-start-group" style={{display: lista.showVotes ? "flex" : "none"}}>
+                <div className="fila-start-group" style={{display: lista.userConfig?.[usuario.uid]?.showVotes ? "flex" : "none"}}>
                     <span className="material-symbols-outlined icon-small" onClick={handleCounterDown} style={{color: item.counterDown.length > 0 ? "red" : ""}}>thumb_down</span>
                     <h5 onClick={() => {setOpen(true); setIsActive("En contra")}}>{item.counterDown.length}</h5>
                 </div>

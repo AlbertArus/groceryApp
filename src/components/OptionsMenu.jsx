@@ -1,16 +1,18 @@
 import { forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
 import { useNavigate } from "react-router-dom"
+import { useUsuario } from '../UsuarioContext';
 
-const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, updateLista, style, usuario }, ref) => {
+const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleShowVotes, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
   const navigate = useNavigate()
+  const { usuario } = useUsuario();
 
   return (
     <div className="optionsMenu" ref={ref} style={style}>
       <ItemMenu
-        iconName={`${lista.showVotes ? "visibility_off" : "visibility"}`}
-        itemMenuName={`${lista.showVotes ? "Ocultar votaciones" : "Mostrar votaciones"}`}
-        onClick={() => updateLista(lista.id, "showVotes", !lista.showVotes)}
+        iconName={`${lista.userConfig?.[usuario.uid]?.showVotes ? "visibility_off" : "visibility"}`}
+        itemMenuName={`${lista.userConfig?.[usuario.uid]?.showVotes ? "Ocultar votaciones" : "Mostrar votaciones"}`}
+        onClick={() => handleShowVotes(lista)}
         style={{display: itemslength < 2 ? "none" : "flex"}}
         />
       <ItemMenu

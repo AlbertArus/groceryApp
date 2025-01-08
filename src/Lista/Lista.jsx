@@ -17,7 +17,7 @@ import PagoDeuda from '../Pagos/PagoDeuda'
 import IdentifyUser from '../components/IdentifyUser'
 import LoadingPage from '../components/LoadingPage'
 
-const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive }) => {
+const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes }) => {
 
   let params = useParams();
   
@@ -40,8 +40,8 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   const selectedList = listas.find(lista => lista.id === params.id);
   const [isScrolled, setIsScrolled] = useState(false)
 
-  //   console.log(selectedList)
-  
+//   console.log(selectedList)
+
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
   
@@ -460,7 +460,6 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
             lista={selectedList}
             handleCheckAll={handleCheckAll}
             handleUnCheckAll={handleUnCheckAll}
-            usuario={usuario}
             UsuarioCompleto={UsuarioCompleto}
             updateLista={updateLista}
             totalGastoLista={totalGastoLista}
@@ -469,6 +468,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
             price={FormattedFilteredListPrice()}
             filteredListaForItems={filteredListaForItems}
             handleArchive={handleArchive}
+            handleShowVotes={handleShowVotes}
           />
           <Toggle 
             option1={"Lista"}
