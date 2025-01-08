@@ -17,7 +17,7 @@ import PagoDeuda from '../Pagos/PagoDeuda'
 import IdentifyUser from '../components/IdentifyUser'
 import LoadingPage from '../components/LoadingPage'
 
-const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes }) => {
+const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices }) => {
 
   let params = useParams();
   
@@ -469,6 +469,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
             filteredListaForItems={filteredListaForItems}
             handleArchive={handleArchive}
             handleShowVotes={handleShowVotes}
+            handleShowPrices={handleShowPrices}
           />
           <Toggle 
             option1={"Lista"}

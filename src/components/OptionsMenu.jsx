@@ -3,7 +3,7 @@ import ItemMenu from "./ItemMenu"
 import { useNavigate } from "react-router-dom"
 import { useUsuario } from '../UsuarioContext';
 
-const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleShowVotes, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
+const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleShowVotes, handleShowPrices, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
   const navigate = useNavigate()
   const { usuario } = useUsuario();
 
@@ -17,8 +17,8 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive
         />
       <ItemMenu
         iconName={"euro_symbol"}
-        itemMenuName={`${lista.showPrices ? "Ocultar precios" : "Mostrar precios"}`}
-        onClick={() => updateLista(lista.id, "showPrices", !lista.showPrices)}
+        itemMenuName={`${lista.userConfig?.[usuario.uid]?.showPrices ? "Ocultar precios" : "Mostrar precios"}`}
+        onClick={() => handleShowPrices(lista)}
         />
       <ItemMenu
         iconName={"check_box"}

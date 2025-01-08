@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react"
+import { useUsuario } from '../UsuarioContext';
 
 const SubHeader = ({ itemslength, categories, itemsAdquirido, lista, price, filteredListaForItems }) => {
-
+    const { usuario } = useUsuario();
     const SubHeaderRef = useRef(null)
     const hideSubHeader = () => {
         if(SubHeaderRef.current) {
@@ -25,7 +26,7 @@ const SubHeader = ({ itemslength, categories, itemsAdquirido, lista, price, filt
                     <h3>Items: {filteredListaForItems ? filteredListaForItems.length : itemslength}</h3>
                     <h5>Adquirido: {itemsAdquirido}</h5>
                 </div>
-                <div className="columna-block" style={{display: lista.showPrices ? "block" : "none"}}>
+                <div className="columna-block" style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "block" : "none"}}>
                     <h5 style={{display:"flex", justifyContent:"flex-end"}}>Total</h5>
                     <h3>{price}</h3>
                 </div>

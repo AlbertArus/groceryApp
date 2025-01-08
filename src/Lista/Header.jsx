@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
+import { useUsuario } from '../UsuarioContext';
 
-const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems, handleShowVotes }) => {
+const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems, handleShowVotes, handleShowPrices }) => {
+    const { usuario } = useUsuario();
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
     const optionsMenuRef = useRef(null)
@@ -79,12 +81,12 @@ const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll
                     {searchParams.get("view") === "payments" ? (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
                             <h5 style={{marginRight: "8px"}}>Lista: {(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
-                            <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Pagado: {totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
+                            <h5 style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "flex" : "none"}}>Pagado: {totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
                         </div>
                     ) : (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
                             <h5 style={{marginRight: "8px"}}>Items: {filteredListaForItems ? filteredListaForItems.length : itemslength}</h5>
-                            <h5 style={{display: lista.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
+                            <h5 style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
                         </div>
                     )}
                 </div>
@@ -114,6 +116,7 @@ const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll
                             updateLista={updateLista}
                             handleArchive={handleArchive}
                             handleShowVotes={handleShowVotes}
+                            handleShowPrices={handleShowPrices}
                         />
                     }
                 </div>

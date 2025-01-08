@@ -55,10 +55,10 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
   }
 
   useEffect(() => {
-    if(lista.showPrices && ItemPriceRef.current) {
+    if(lista.userConfig?.[usuario.uid]?.showPrices && ItemPriceRef.current) {
       ItemPriceRef.current.price = price
     }
-  },[lista.showPrices, price])
+  },[lista.userConfig?.[usuario.uid]?.showPrices, price])
 
   useEffect(() => {
     if(item.isChecked) {
@@ -74,7 +74,7 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
   return (
     <Slider onDelete={DeleteItem} onCheck={onClick} disabled={isInputFocused}>
     <div className="item app-margin">
-      {lista.showPrices ? (
+      {lista.userConfig?.[usuario.uid]?.showPrices ? (
         <>
           <div className="fila-start">
             <DragIndicator 
