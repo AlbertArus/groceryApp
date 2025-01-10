@@ -47,6 +47,15 @@ const Archived = ({ listas, deleteLista, updateLista, handleArchive, usuario }) 
             return total + category.items.length
         }, 0)
     }
+
+    useEffect(() => {
+        if(listaslength > 0) {
+            return;
+        } else if (listaslength === 0){
+            navigate("/")
+        }
+    },[listaslength])
+
     return (
         <div className="Home app">
             <Head
