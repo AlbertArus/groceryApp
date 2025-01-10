@@ -73,15 +73,18 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
                 </div>
             </div>
             {isEStateHome && (
-                <EmptyState
-                    addLista={addLista}
-                    img={"_e409535c-8a88-419e-8a05-5437f5a91f35-removebg-preview"}
-                    alt={"Set of grocery bags full of items"}
-                    description={"Compra en grupo creando tu primera lista ahora"}
-                    onClick={() => navigate(`/${"newlist"}`)}
-                    buttonCopy={"Nueva lista"}
-                    // style={{display: "none"}}
-                />
+                <>
+                    <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={() => navigate("/archived")} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
+                    <EmptyState
+                        addLista={addLista}
+                        img={"_e409535c-8a88-419e-8a05-5437f5a91f35-removebg-preview"}
+                        alt={"Set of grocery bags full of items"}
+                        description={"Compra en grupo creando tu primera lista ahora"}
+                        onClick={() => navigate(`/${"newlist"}`)}
+                        buttonCopy={"Nueva lista"}
+                        // style={{display: "none"}}
+                    />
+                </>
             )}
             {!isEStateHome && (
                 <>
