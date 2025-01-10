@@ -115,13 +115,13 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
                         <div className="fila-between">
                             <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
                             <md-switch
-                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showVotes}
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showPrices}
                             ></md-switch>              
                         </div>
                         <div className="fila-between">
                             <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
                             <md-switch
-                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={showVotes} 
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={isNotified} 
                             ></md-switch>              
                         </div>
                         <h6>* Podrás modificar tu preferencia más tarde</h6>
