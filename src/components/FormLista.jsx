@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom"
 import Head from "./Head";
 import '@material/web/switch/switch.js';
 import ButtonArea from "../ui-components/ButtonArea";
@@ -8,7 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase-config.js";
 import { v4 as uuidv4 } from 'uuid'
 
-const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
+const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioCompleto}) => {
     const [listaName, setListaName] = useState("");
     const [errors, setErrors] = useState({listaName: false, plan: false})
     const [plan, setPlan] = useState("");
@@ -17,7 +17,25 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
     const [showPrices, setShowPrices] = useState(true)
     const [isNotified, setIsNotified] = useState(true)
     const [membersToAdd, setMembersToAdd] = useState([""])
+    const [currentMembers, setCurrentMembers] = useState([])
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const listaId = searchParams.get("lista")
+    const lista = listas.find(lista => lista.id === listaId)
+
+    useEffect(() => {
+        if(listaId && lista) {
+            setListaName(lista.listaName)
+            setPlan(lista.plan)
+            setDescriptionLista(lista.descriptionLista)
+            setCurrentMembers(lista.userMember)
+        } else {
+            setListaName("")
+            setPlan("")
+            setDescriptionLista("")
+            setCurrentMembers([])
+        }
+    }, [lista, listaId, setDescriptionLista, setListaName, setPlan, setCurrentMembers])
 
     const createUsers = async() => {
         try{
@@ -52,9 +70,14 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
         const membersUID = await createUsers()
         if (listaName.trim() && plan.trim()) {
         try {
-            const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID)
-            navigate(`/list/${nuevaLista.id}`)
-            setSharePopupVisible(true)
+            if(!listaId) {
+                const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID)
+                navigate(`/list/${nuevaLista.id}`)
+                setSharePopupVisible(true)
+            } else {
+                await editLista(listaId, lista, listaName, plan, descriptionLista, membersUID)
+                navigate(`/list/${lista.id}`)
+            }
         } catch (error) {
             console.error("Error al crear la lista:", error)
         }
@@ -79,14 +102,14 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
     <div className="FormLista app">
         <Head
         path={""}          
-        sectionName={"Nueva lista"}
+        // sectionName={!listaId ? "Nueva lista" : "Editar lista"}
         />
         <ButtonArea 
             onClick={handleSubmit}
-            buttonCopy={"Crear lista"}
+            buttonCopy={!listaId ? "Crear lista": "Editar lista"}
         >
             <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-                <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>Configura tu nueva lista</h3>
+                <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>{!listaId ? "Configura tu nueva lista" : "Edita tu lista"}</h3>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="nombre">Nombre</label>
                     <div className="iconed-container fila-between">
@@ -104,33 +127,38 @@ const FormLista = ({ addLista, listas, setSharePopupVisible}) => {
                     <h5 style={{display: errors.plan ? "block" : "none", color:"red"}}>Selecciona el tema de tu lista</h5>
                     <label htmlFor="descripcion"> Descripción (opcional) </label>
                     <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
-                    <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
-                        <div className="fila-between">
-                            {/* <h4>Mostrar votos</h4> */}
-                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
-                            <md-switch
-                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
-                            ></md-switch>
+                    {!listaId && lista && (
+                        <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
+                            <div className="fila-between">
+                                <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
+                                <md-switch
+                                style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
+                                ></md-switch>
+                            </div>
+                            <div className="fila-between">
+                                <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
+                                <md-switch
+                                style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showPrices}
+                                ></md-switch>              
+                            </div>
+                            <div className="fila-between">
+                                <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
+                                <md-switch
+                                style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={isNotified} 
+                                ></md-switch>              
+                            </div>
+                            <h6>* Podrás modificar tu preferencia más tarde</h6>
                         </div>
-                        <div className="fila-between">
-                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
-                            <md-switch
-                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showPrices}
-                            ></md-switch>              
-                        </div>
-                        <div className="fila-between">
-                            <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
-                            <md-switch
-                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={isNotified} 
-                            ></md-switch>              
-                        </div>
-                        <h6>* Podrás modificar tu preferencia más tarde</h6>
-                    </div>
+                    )}
                 </form>
                 <div style={{marginTop: "10px"}}>
                     <NewMembers
                         membersToAdd={membersToAdd}
                         setMembersToAdd={setMembersToAdd}
+                        lista={lista}
+                        listaId={listaId}
+                        currentMembers={currentMembers}
+                        UsuarioCompleto={UsuarioCompleto}
                     />
                 </div>
             </div>

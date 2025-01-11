@@ -38,6 +38,11 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive
         onClick={() => {handleArchive(lista);  navigate("/")}}
       />
       <ItemMenu
+        iconName={"edit"}
+        itemMenuName={"Editar lista"}
+        onClick={() => navigate(`/newlist?lista=${lista.id}`)}
+      />
+      <ItemMenu
         iconName={"delete"}
         itemMenuName={"Eliminar lista"}
         onClick={deleteLista}

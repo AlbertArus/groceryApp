@@ -90,6 +90,14 @@ function App() {
     }
   }
 
+    const editLista = async (listaId, lista, listaName, plan, descriptionLista, membersUID) => {
+        const editedLista = { ...lista, listaName, plan, descriptionLista}
+        setListas(prevListas => prevListas.map(lista => lista.id === listaId ? editedLista : lista))
+        // updateLista(listaId, "lista", editedLista)
+        const listaRef = doc(db, "listas", listaId);
+        await updateDoc(listaRef, { listaName: listaName, userMember: [...lista.userMember, ...membersUID], plan: plan, descriptionLista: descriptionLista, modifiedAt: new Date().toISOString() });
+    }
+
   const deleteLista = async (id) => {
     const ListToDelete = listas.find(lista => lista.id === id);
     if (!ListToDelete) {
@@ -357,8 +365,10 @@ function App() {
             <Route path="/newlist" element={
               <FormLista 
                 addLista={addLista}
+                editLista={editLista}
                 listas={listas}
                 setSharePopupVisible={setSharePopupVisible}
+                UsuarioCompleto={UsuarioCompleto}
               />}
             />
             <Route path="/archived" element={

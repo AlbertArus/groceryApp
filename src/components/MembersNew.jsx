@@ -1,7 +1,20 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const NewMembers = ({ membersToAdd, setMembersToAdd }) => {
+const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, listaId, UsuarioCompleto }) => {
     const inputRefs = useRef([]);
+    const [nombreUserMember, setNombreUserMember] = useState([]);
+
+    useEffect(() => {
+        if (currentMembers) {
+            const listaUserMembers = async () => {
+                const userMembersName = await Promise.all(
+                    currentMembers.map(uid => UsuarioCompleto(uid))
+                );
+                setNombreUserMember(userMembersName);
+            };
+            listaUserMembers();
+        }
+    }, [UsuarioCompleto, currentMembers]);
 
     const handleOnChange = (e, index) => {
         const name = e.target.value
@@ -38,12 +51,18 @@ const NewMembers = ({ membersToAdd, setMembersToAdd }) => {
     return (
         <form>
             <label>Añade a los miembros del plan</label>
-            {membersToAdd.map((member, index) =>
-                <div className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
-                    <input type="text" className="FormLista" placeholder="Juan Alameda" key={index} value={member} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
-                    <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index)}>close</span>
-                </div>
-            )}
+                {currentMembers.length > 0 && currentMembers.map((member, index) =>
+                    <div key={index} className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
+                        <input type="text" className="FormLista" placeholder="Juan Alameda" value={nombreUserMember[index]} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index)}>close</span>
+                    </div>
+                )}
+                {membersToAdd.map((member, index) =>
+                    <div key={index} className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
+                        <input type="text" className="FormLista" placeholder="Juan Alameda" value={member} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index)}>close</span>
+                    </div>
+                )}
         </form>
     )
 }
