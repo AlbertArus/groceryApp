@@ -129,7 +129,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                     <h4 style={{ marginLeft: "10px" }}>Toda la lista</h4>
                 </div>
                 <h4 className="priceMember">
-                    {selectedList.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                    {selectedList?.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                 </h4>
             </div>
             {selectedList.categories.map((category) => {

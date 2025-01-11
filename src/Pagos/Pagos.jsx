@@ -38,13 +38,15 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
     },0)
   }
 
+  console.log(price)
+
   return (
 
     <>
         <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <h6>Gastos en lista</h6>
-            <h4>{(lista.listPrice || 0).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+            <h4>{lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
             {/* <h4>
                 <CurrencyInput
                     value={lista.listPrice}

@@ -316,7 +316,9 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   }, [selectedList?.categories]);
 
   const listPrice = useMemo(() => {
-    if (!categoryPrice?.length) return null
+    if (!categoryPrice?.length) {
+        return 0
+    }
     const totalPrice = categoryPrice.reduce((total, category) => total + category.sumPrice, 0);
     const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
     return formattedTotalPrice
@@ -434,7 +436,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 const price = parseFloat(item?.price) || 0; // Asegurarse de que el precio sea un número válido
                 return total + price;
             }, 0)
-            : (selectedList?.listPrice) || 0; // Asegurarse de que listPrice también sea un número válido
+            : selectedList?.listPrice
     
         return totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
     }
