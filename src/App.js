@@ -192,7 +192,7 @@ function App() {
     }
   };
 
-  const archivedList = listas?.filter(lista => lista.userConfig?.[usuario.uid]?.isArchived)
+  const archivedList = usuario?.uid ? listas?.filter(lista => lista.userConfig?.[usuario.uid]?.isArchived) : [];
 
   const AllArchived = archivedList.length
 

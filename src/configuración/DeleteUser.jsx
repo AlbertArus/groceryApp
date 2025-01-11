@@ -3,10 +3,10 @@ import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } 
 import Head from "../components/Head.jsx";
 import { useState } from "react";
 import ButtonArea from "../ui-components/ButtonArea.jsx";
-import { v4 as uuidv4 } from 'uuid'
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import Modal from "../ui-components/Modal.jsx";
 import ModalStatus from "../ui-components/ModalStatus.jsx";
+import CreateReplacementUser from '../functions/CreateReplacementUser.jsx'
 const auth = getAuth(firebaseApp);
 
 const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }) => {
@@ -17,101 +17,6 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [error, setError] = useState({password: false})
     const user = auth.currentUser
-
-    const replaceMember = async (uid) => {
-        if(!uid) {
-            console.error("no hay usuario");
-            return;
-        }
-        await Promise.all(
-            listas.map(async (lista) => {
-                // Lista
-
-                    // Member en userMember
-                    const userMemberIndex = lista.userMember.findIndex(member => member === usuario.uid)
-                    const updateUserMember = [...lista.userMember]
-                    updateUserMember[userMemberIndex] = uid
-
-                    // Creator en lista
-                    const updateUserCreator = lista.userCreator === usuario.uid ? uid : lista.userCreator
-        
-                // Category e Item
-                const updatedCategories = lista.categories.map(category => {
-                    const updateCategoryCreator = category.categoryCreator === usuario.uid ? uid : category.categoryCreator
-                    const updatedItems = category.items.map(item => {
-                        const itemUserMemberIndex = item.itemUserMember.findIndex(member => member === usuario.uid);
-                        
-                        // Creator en Item
-                        const updateItemCreator = item.itemCreator === usuario.uid ? uid : item.itemCreator;
-                        //Payer en Item
-                        const updateItemPayer = item.payer === usuario.uid ? uid : item.payer;
-                        // Member en Item
-                        if (itemUserMemberIndex !== -1) {
-                            const updateItemUserMember = [...item.itemUserMember];
-                            updateItemUserMember[itemUserMemberIndex] = uid;
-                            return { ...item, itemUserMember: updateItemUserMember, itemCreator: updateItemCreator, payer: updateItemPayer };
-                        }
-
-                        return item;
-                    });
-        
-                    return { ...category, categoryCreator: updateCategoryCreator, items: updatedItems };
-                });
-                        
-                // Payments
-                const updatePayments = lista.payments.map(payment => {
-                    // Payer pagos
-                    const updatePaymentPayer = payment.payer === usuario.uid ? uid : payment.payer
-
-                    // Payer pagos
-                    const updatePaymentCreator = payment.paymentCreator === usuario.uid ? uid : payment.paymentCreator
-                    
-                    // Members en pagos
-                    const updatePaymentMembers = payment.members.map(member => {
-                        if(member.uid === usuario.uid) {
-                            return {...member, uid: uid}
-                        }
-                        return member
-                    })
-                    return { ...payment, paymentCreator: updatePaymentCreator, payer: updatePaymentPayer, members: updatePaymentMembers}
-                })
-                setListas(prevListas => prevListas.map(lista => (
-                    { ...lista, userCreator: updateUserCreator, userMember: updateUserMember, categories: updatedCategories, payments: updatePayments }
-                )));
-        
-                // Actualizo en Firebase
-                try {
-                    await updateLista(lista.id, "userCreator", updateUserCreator );
-                    await updateLista(lista.id, "userMember", updateUserMember );
-                    await updateLista(lista.id, "categories", updatedCategories );
-                    await updateLista(lista.id, "payments", updatePayments );
-                } catch (error) {
-                    console.error("Error al actualizar la lista:", error);
-                }
-            })
-        )
-    }
-
-    const createReplacementUser = async() => {
-        console.log(usuario.uid)
-        try {
-            const displayName = await UsuarioCompleto(usuario.uid)
-            const uid = uuidv4()
-            const newMember = doc(db, "usuarios", uid);
-            const data = {
-                uid,
-                displayName,
-                createdAt: new Date().toISOString(),
-            }
-            console.log(uid)
-            await setDoc(newMember, data);
-            console.log("usuario creado")
-            await replaceMember(uid)
-            console.log("replacement terminado")
-        } catch (error) {
-            console.error(error)
-        }
-    }
 
     const deleteUserDoc = async () => {
         const docRef = doc(db, "usuarios", usuario.uid)
@@ -131,7 +36,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
 
         if(password.trim()) {
             try {
-                await createReplacementUser()
+                await CreateReplacementUser({usuario, UsuarioCompleto, updateLista, listas, setListas})
                 deleteUserDoc()
                 const credential = EmailAuthProvider.credential(user.email, password); // Credenciales para reautenticar al usuario
                 await reauthenticateWithCredential(user, credential)
