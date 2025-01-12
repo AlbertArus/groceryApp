@@ -26,7 +26,7 @@ const Settings = () => {
                     // onClick={handleDeleteUser}
                 />
                 <ItemSettings 
-                    iconName={"notifications"}
+                    iconName={"edit_notifications"}
                     itemSettingsName={"Notificaciones (pending)"}
                     // onClick={handleDeleteUser}
                 />

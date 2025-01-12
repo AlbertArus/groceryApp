@@ -96,118 +96,110 @@ function App() {
         const listaRef = doc(db, "listas", listaId);
         await updateDoc(listaRef, { listaName: listaName, userMember: [...lista.userMember, ...membersUID], plan: plan, descriptionLista: descriptionLista, modifiedAt: new Date().toISOString() });
     }
-
-    console.log(listas)
-
-//   const deleteLista = async (id) => {
-//     const listToDelete = listas.find(lista => lista.id === id);
-//     if (!listToDelete) {
-//       console.warn("La lista a eliminar no se encontró en el estado");
-//       return;
-//     }
-  
-//     // Actualizar el estado local para eliminar la lista
-//     setListas(prevListas => prevListas.filter(lista => lista.id !== id));
-//     setDeletedLista(prev => [...prev, listToDelete]);
-  
-//     let timeoutId;
-//     try {
-//       // Actualizar Firebase para marcar como eliminada
-//       await updateDoc(doc(db, "listas", id), { deleted: true });
-  
-//       // Navegar a Home después de actualizar Firebase
-//       navigate("/");
-  
-//       // Mostrar notificación con opción de deshacer
-//       toast((t) => (
-//         <span style={{ display: "flex", alignItems: "center" }}>
-//           <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
-//           {`Has eliminado "${listToDelete.listaName}"`}
-//           <button onClick={() => { 
-//               undoDelete(listToDelete.id); 
-//               clearTimeout(timeoutId); 
-//               toast.dismiss(t.id); 
-//             }} 
-//             style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
-//             Deshacer
-//           </button>
-//         </span>
-//       ), {
-//         style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
-//       });
-  
-//       // Eliminar definitivamente de Firebase después de 3 segundos
-//       timeoutId = setTimeout(async () => {
-//         try {
-//           await deleteDoc(doc(db, "listas", id));
-//           setDeletedLista(prev => prev.filter(lista => lista.id !== id));
-//         } catch (error) {
-//           console.error("Error al eliminar definitivamente la lista:", error);
-//         }
-//       }, 3000);
-//     } catch (error) {
-//       console.error("Error al marcar como eliminada la lista en Firebase:", error);
-//     }
-//   };
   
     const deleteLista = async (id) => {
         const listToDelete = listas.find(lista => lista.id === id);
         if (!listToDelete) {
-        console.warn("La lista a eliminar no se encontró en el estado");
-        return;
+            console.warn("La lista a eliminar no se encontró en el estado");
+            return;
         }
-
-        const membersMail = await Promise.all(
-            listToDelete.userMember.map(async (member) => {
-                const userDoc = await getDoc(doc(db, "usuarios", member))
-                console.log(userDoc)
-            
-                if(userDoc.exists()) {
-                    const userData = userDoc.data()
-                    if (userData.email !== undefined && userData.email !== "") {
-                        return member
-                    } else {
-                        return null
-                    }
-                } else {
-                    console.log("no encuentro users")
-                }
-            })
-        )
-        const membersRegistered = membersMail.filter(Boolean)
-
+    
+        const listsToDelete = [...deletedLista, listToDelete];
+        setDeletedLista(listsToDelete);
+        
         try {
-            if(membersRegistered.length > 1) {
-                await CreateReplacementUser({usuario, UsuarioCompleto, updateLista, listas, setListas})
-                await loadListasFromFirebase()
-                console.log(listas)
-                navigate("/")
-            } else {
-                setListas(prevListas => prevListas.filter(lista => lista.id !== id))
-                try {
-                    await deleteDoc(doc(db, "listas", id));
-                    navigate("/")
-                } catch (error) {
-                    console.error("Error al eliminar la lista de Firebase", error)
-                }
-            }
+            await updateDoc(doc(db, "listas", id), {deleted: true});
+            setListas(prev => prev.filter(lista => lista.id !== id));
+            navigate("/");
         } catch (error) {
-            console.error("error al eliminar:", error)
+            console.error("Error al marcar la lista como eliminada:", error);
+            setDeletedLista(prev => prev.filter(lista => lista.id !== id));
+            return;
         }
-    }
 
-    const undoDelete = useCallback((id) => {
-        const listaToRestore = deletedLista.find(lista => lista.id === id);
+        let membersRegistered = [];
+        try {
+            const membersMail = await Promise.all(
+                listToDelete.userMember.map(async (member) => {
+                    const userDoc = await getDoc(doc(db, "usuarios", member));
+                    
+                    if(userDoc.exists()) {
+                        const userData = userDoc.data();
+                        if (userData.email !== undefined && userData.email !== "") {
+                            return member;
+                        }
+                    }
+                    return null;
+                })
+            );
+            membersRegistered = membersMail.filter(Boolean);
+        } catch (error) {
+            console.error("Error al obtener los miembros:", error);
+            // Continuamos con la ejecución aunque falle la obtención de miembros
+        }
+    
+        const handleUndo = () => {
+            undoDelete(listToDelete.id, listsToDelete);
+            clearTimeout(timeoutId);
+        };
+    
+        let timeoutId;
+        toast((t) => (
+            <span style={{ display: "flex", alignItems: "center" }}>
+                <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
+                {`Has eliminado "${listToDelete.listaName}"`}
+                <button 
+                    onClick={() => { 
+                        handleUndo();
+                        toast.dismiss(t.id);
+                    }}
+                    style={{ 
+                        marginLeft: "10px",
+                        padding: "0",
+                        backgroundColor: "#FBE7C1",
+                        border: "none",
+                        fontFamily: "poppins",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        cursor: "pointer"
+                    }}
+                >
+                    Deshacer
+                </button>
+            </span>
+        ), {
+            style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+        });
+    
+        timeoutId = setTimeout(async () => {
+            try {
+                if(membersRegistered.length > 1) {
+                    await CreateReplacementUser({usuario, UsuarioCompleto, updateLista, listas, setListas});
+                    setDeletedLista(prev => prev.filter(lista => lista.id !== id));
+                } else {
+                    setListas(prevListas => prevListas.filter(lista => lista.id !== id));
+                    await deleteDoc(doc(db, "listas", id));
+                    setDeletedLista(prev => prev.filter(lista => lista.id !== id));
+                }
+            } catch (error) {
+                console.error("Error al eliminar:", error);
+            }
+        }, 5000);
+    };
+    
+    const undoDelete = useCallback((id, currentDeletedLista) => {
+        const listaToRestore = currentDeletedLista.find(lista => lista.id === id);
+        
         if (listaToRestore) {
-        setListas(prevListas => [...prevListas, listaToRestore]);
-        setDeletedLista(prev => prev.filter(lista => lista.id !== id));
-
-        updateDoc(doc(db, "listas", listaToRestore.id), { deleted: false })
-            .catch(error => {
-            console.error("Error al restaurar la lista en Firebase:", error);
-            });
+            setListas(prevListas => [...prevListas, listaToRestore]);
+            setDeletedLista(prev => prev.filter(lista => lista.id !== id));
+            
+            updateDoc(doc(db, "listas", listaToRestore.id), { deleted: false })
+                .catch(error => {
+                    console.error("Error al restaurar la lista en Firebase:", error);
+                });
         }
-    }, [deletedLista]);
+    }, []);
   
   const updateListaItems = async (listaId, updatedItems) => {
     setListas(prevListas =>
