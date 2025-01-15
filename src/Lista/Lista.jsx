@@ -39,8 +39,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   const firstCategoryRef = useRef(null)
   const selectedList = listas.find(lista => lista.id === params.id);
   const [isScrolled, setIsScrolled] = useState(false)
-
-//   console.log(selectedList)
+  const [deletedElement, setDeletedElement] = useState([])
 
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
@@ -155,40 +154,43 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   }
 
   const DeleteItem = (id) => {  
-    // Encuentra el item y su categoría
-    let itemToDelete;
-    let categoryId;
-    selectedList.categories.forEach(category => {
-      const item = category.items.find(item => item.id === id);
-      if (item) {
-        itemToDelete = item;
-        categoryId = category.id;
-      }
-    });
-  
-    if (!itemToDelete || !categoryId) {
-      console.error("No se pudo encontrar el item o la categoría.");
-      return;
+    const itemToDelete = selectedList.categories.flatMap(category => category.items).find(item => item.id === id);
+    
+    const categoryItemToDelete = selectedList.categories.find(category => category.id === itemToDelete.categoryId);
+    const updatedCategoryItems = categoryItemToDelete.items.filter(item => item.id !== id);
+    const updatedCategory = {...categoryItemToDelete, items: updatedCategoryItems}
+    const updatedCategories = selectedList.categories.map(category =>
+        category.id === updatedCategory.id ? updatedCategory : category
+      );
+
+    if (!itemToDelete) {
+        console.error("No se pudo encontrar el item o la categoría.");
+        return;
     }
+
+    const elementsToDelete = [...deletedElement, itemToDelete]
+    setDeletedElement(elementsToDelete)
   
-    // Filtra los items actualizados
-    const filteredItems = selectedList.categories.flatMap(category =>
-      category.items.filter(item => item.id !== id)
-    );
-  
-    // Encuentra y actualiza la categoría
-    const categoryUpdated = selectedList.categories.find(category => category.id === categoryId);
-    const updatedCategoryItems = categoryUpdated.items.filter(item => item.id !== id);
-  
-    updateListaItems(params.id, filteredItems);
-    updateListaCategories(params.id, selectedList.categories.map(category => {
-      if (category.id === categoryId) {
-        return { ...category, items: updatedCategoryItems };
-      }
-      return category;
-    }));
-  
-    let newDeletedItem = { type: 'item', data: itemToDelete };
+    updateLista(selectedList.id, "categories", updatedCategories)
+    setListas(prevListas => prevListas.map(lista => ({
+        ...lista,
+        categories: lista.categories.map(category => 
+          category.id === categoryItemToDelete.id 
+            ? { ...category, items: updatedCategoryItems }
+            : category
+        )
+    })));
+
+    const updatedSelectedList = {...selectedList, categories: updatedCategories} // para enviar a undoDelete el estado local actualizado
+
+    const handleUndo = () => {
+        undoDelete(itemToDelete, categoryItemToDelete, updatedSelectedList, "item");
+        clearTimeout(timeoutId);
+    };
+
+    const timeoutId = setTimeout(() => {
+        toast.dismiss();
+      }, 5000);
   
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
@@ -200,17 +202,8 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
         </span>
         {`Has eliminado "${itemToDelete.name}"`}
         <button
-          onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id); }}
-          style={{
-            marginLeft: "10px",
-            padding: "0",
-            backgroundColor: "#FBE7C1",
-            border: "none",
-            fontFamily: "poppins",
-            fontSize: "16px",
-            fontWeight: "600",
-            cursor: "pointer"
-          }}
+          onClick={() => { handleUndo(); toast.dismiss(t.id); }}
+          style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}
         >
           Deshacer
         </button>
@@ -249,7 +242,6 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   }
 
   const totalItemsLength = getListaItemsLength()
-  // const totalItemsLength = selectedList?.items.length
   const totalCategoriesLength = selectedList?.categories.length
 
   const AddCategory = (categoryName) => {
@@ -271,45 +263,71 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
 
   const DeleteCategory = (id) => {
     const CategoryToDelete = selectedList.categories.find(category => category.id === id)
-    const ItemsToDelete = selectedList.items.filter(item => item.categoryId === id)
 
     const filteredCategories = selectedList.categories.filter(category => category.id !== id)
-    updateListaCategories(params.id, filteredCategories)
+    const updatedSelectedList = {...selectedList, categories: filteredCategories} // para enviar a undoDelete el estado local actualizado
+    updateLista(selectedList.id, "categories", filteredCategories)
+    setListas(prevListas => prevListas.map(lista => ({
+        ...lista, categories: filteredCategories
+        })
+    ))  
 
-    let newDeletedItem = { type: 'category', data: { category: CategoryToDelete, items: ItemsToDelete } };
+    const elementsToDelete = [...deletedElement, CategoryToDelete]
+    setDeletedElement(elementsToDelete)
+
+    const handleUndo = () => {
+        undoDelete(CategoryToDelete, filteredCategories, updatedSelectedList, "category"); // Envío filteredCategories porque debo enviar algo en esa posición pero no lo uso
+        clearTimeout(timeoutId);
+    };
+
+    const timeoutId = setTimeout(() => {
+        toast.dismiss();
+      }, 5000);
 
     toast((t) => (
       <span style={{ display: "flex", alignItems: "center" }}>
         <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
         {`Has eliminado "${CategoryToDelete.categoryName}"`}
-        <button onClick={() => { undoDelete(newDeletedItem); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+        <button onClick={() => { handleUndo(); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
           Deshacer
         </button>
       </span>
     ), {
-      style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" }
+      style: { border: "2px solid #ED9E04", backgroundColor: "#FBE7C1" },
     }
     )
   }
 
-  const undoDelete = useCallback((itemToRestore) => {
+  const undoDelete = useCallback((itemToRestore, categoryItemToDelete, selectedList, type) => {
     if (itemToRestore) {
-      if (itemToRestore.type === 'lista') {
-        setListas(prevListas => [...prevListas, itemToRestore.data.lista]);
-      } else if (itemToRestore.type === 'category') {
-        const updatedCategories = [...selectedList.categories, itemToRestore.data.category];
-        updateListaCategories(params.id, updatedCategories);
-        const updatedItems = [...selectedList.items, ...itemToRestore.data.items];
-        updateListaItems(params.id, updatedItems);
-      } else if (itemToRestore.type === 'item') {
-        const updatedItems = [...selectedList.items, itemToRestore.data];
-        updateListaItems(params.id, updatedItems);
-      }
+        if (type === "category") {
+            const updatedCategories = [...selectedList.categories, itemToRestore];
+            updateLista(selectedList.id, "categories", updatedCategories)
+            setListas(prevListas => prevListas.map(lista =>
+                lista.id === selectedList.id ? {...selectedList, categories: [...selectedList.categories, itemToRestore]} : lista
+            ))
+            setDeletedElement(prev => prev.filter(element => element.id !== itemToRestore.id))
+        } else if (type === "item") {
+            const updatedCategories = selectedList.categories.map(category => {
+            if (category.id === categoryItemToDelete.id) {
+                return { 
+                ...category, 
+                items: [...category.items, itemToRestore]
+                };
+            }
+            return category;
+            });
+            updateLista(selectedList.id, "categories", updatedCategories);
+            setListas(prevListas => prevListas.map(lista =>
+                lista.id === selectedList.id ? {...lista, categories: lista.categories.map(category => category.id === categoryItemToDelete.id ? {...category, items: [...category.items, itemToRestore]} : category)} : lista
+            ))
+            setDeletedElement(prev => prev.filter(element => element.id !== itemToRestore.id))
+        }
     }
-  }, [params.id, selectedList, updateListaCategories, updateListaItems, setListas])
-
+  }, [setListas, updateLista]);
+  
   const categoryPrice = useMemo(() => { // Recuerdo qué contenía y solo cuando cambia ejecuto
-    return selectedList?.categories.map(category => {
+    return selectedList?.categories?.map(category => {
       const sumPrice = category.items.reduce((acc, item) => acc + Number(item.price), 0);
       return { ...category, sumPrice: sumPrice };
     });
