@@ -184,7 +184,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     const updatedSelectedList = {...selectedList, categories: updatedCategories} // para enviar a undoDelete el estado local actualizado
 
     const handleUndo = () => {
-        undoDelete(itemToDelete, categoryItemToDelete, updatedSelectedList, "item");
+        undoDelete(itemToDelete.id, elementsToDelete, updatedSelectedList, "item");
         clearTimeout(timeoutId);
     };
 
@@ -276,12 +276,13 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     setDeletedElement(elementsToDelete)
 
     const handleUndo = () => {
-        undoDelete(CategoryToDelete, filteredCategories, updatedSelectedList, "category"); // Envío filteredCategories porque debo enviar algo en esa posición pero no lo uso
+        undoDelete(CategoryToDelete.id, elementsToDelete, updatedSelectedList, "category"); // Envío filteredCategories porque debo enviar algo en esa posición pero no lo uso
         clearTimeout(timeoutId);
     };
 
     const timeoutId = setTimeout(() => {
         toast.dismiss();
+        setDeletedElement(prevElement => prevElement.filter(element => element.id !== id))
       }, 5000);
 
     toast((t) => (
@@ -298,31 +299,32 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     )
   }
 
-  const undoDelete = useCallback((itemToRestore, categoryItemToDelete, selectedList, type) => {
-    if (itemToRestore) {
+  const undoDelete = useCallback((id, elementsToDelete, selectedList, type) => {
         if (type === "category") {
-            const updatedCategories = [...selectedList.categories, itemToRestore];
+            const elementToRestore = elementsToDelete.find(element => element.id === id)
+            const updatedCategories = [...selectedList.categories, elementToRestore];
             updateLista(selectedList.id, "categories", updatedCategories)
             setListas(prevListas => prevListas.map(lista =>
-                lista.id === selectedList.id ? {...selectedList, categories: [...selectedList.categories, itemToRestore]} : lista
+                lista.id === selectedList.id ? {...selectedList, categories: [...selectedList.categories, elementToRestore]} : lista
             ))
-            setDeletedElement(prev => prev.filter(element => element.id !== itemToRestore.id))
+            setDeletedElement(prev => prev.filter(element => element.id !== elementToRestore.id))
         } else if (type === "item") {
+            const elementToRestore = elementsToDelete.find(element => element.id === id)
+            const categoryItemToDelete = selectedList.categories.find(category => category.id === elementToRestore.categoryId)
             const updatedCategories = selectedList.categories.map(category => {
-            if (category.id === categoryItemToDelete.id) {
-                return { 
-                ...category, 
-                items: [...category.items, itemToRestore]
-                };
-            }
-            return category;
+                if (category.id === categoryItemToDelete.id) {
+                    return { 
+                        ...category, 
+                        items: [...category.items, elementToRestore]
+                    };
+                }
+                return category;
             });
             updateLista(selectedList.id, "categories", updatedCategories);
             setListas(prevListas => prevListas.map(lista =>
-                lista.id === selectedList.id ? {...lista, categories: lista.categories.map(category => category.id === categoryItemToDelete.id ? {...category, items: [...category.items, itemToRestore]} : category)} : lista
+                lista.id === selectedList.id ? {...lista, categories: lista.categories.map(category => category.id === categoryItemToDelete.id ? {...category, items: [...category.items, elementToRestore]} : category)} : lista
             ))
-            setDeletedElement(prev => prev.filter(element => element.id !== itemToRestore.id))
-        }
+            setDeletedElement(prev => prev.filter(element => element.id !== elementToRestore.id))
     }
   }, [setListas, updateLista]);
   
