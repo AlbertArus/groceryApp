@@ -197,7 +197,8 @@ function App() {
             updateDoc(doc(db, "listas", listaToRestore.id), { deleted: false })
                 .catch(error => {
                     console.error("Error al restaurar la lista en Firebase:", error);
-                });
+                }
+            );
         }
     }, []);
   
@@ -406,8 +407,10 @@ function App() {
                 addLista={addLista}
                 editLista={editLista}
                 listas={listas}
+                setListas={setListas}
                 setSharePopupVisible={setSharePopupVisible}
                 UsuarioCompleto={UsuarioCompleto}
+                updateLista={updateLista}
               />}
             />
             <Route path="/archived" element={

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import DeleteUserFromList from "../functions/DeleteUserFromList"
 
-const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, listaId, UsuarioCompleto }) => {
+const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, setListas, updateLista, UsuarioCompleto }) => {
     const inputRefs = useRef([]);
     const [nombreUserMember, setNombreUserMember] = useState([]);
 
@@ -37,14 +38,18 @@ const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, list
         }
     }
 
-    const handleDelete = (e, index) => {
-        const membersToAddTemp = [...membersToAdd]
-        if(membersToAdd.length > 1) {
-            membersToAddTemp.splice(index, 1)
-            setMembersToAdd(membersToAddTemp)
+    const handleDelete = async (e, index, member) => {
+        if(member) {
+            await DeleteUserFromList({member, lista, updateLista, setListas})
         } else {
-            membersToAddTemp[index] = ""
-            setMembersToAdd(membersToAddTemp)
+            const membersToAddTemp = [...membersToAdd]
+            if(membersToAdd.length > 1) {
+                membersToAddTemp.splice(index, 1)
+                setMembersToAdd(membersToAddTemp)
+            } else {
+                membersToAddTemp[index] = ""
+                setMembersToAdd(membersToAddTemp)
+            }
         }
     }
     
@@ -54,7 +59,7 @@ const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, list
                 {currentMembers.length > 0 && currentMembers.map((member, index) =>
                     <div key={index} className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
                         <input type="text" className="FormLista" placeholder="Juan Alameda" value={nombreUserMember[index]} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
-                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index)}>close</span>
+                        <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index, member)}>close</span>
                     </div>
                 )}
                 {membersToAdd.map((member, index) =>

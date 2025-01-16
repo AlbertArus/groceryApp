@@ -8,7 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase-config.js";
 import { v4 as uuidv4 } from 'uuid'
 
-const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioCompleto}) => {
+const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioCompleto, setListas, updateLista}) => {
     const [listaName, setListaName] = useState("");
     const [errors, setErrors] = useState({listaName: false, plan: false})
     const [plan, setPlan] = useState("");
@@ -156,9 +156,10 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
                         membersToAdd={membersToAdd}
                         setMembersToAdd={setMembersToAdd}
                         lista={lista}
-                        listaId={listaId}
+                        setListas={setListas}
                         currentMembers={currentMembers}
                         UsuarioCompleto={UsuarioCompleto}
+                        updateLista={updateLista}
                     />
                 </div>
             </div>
