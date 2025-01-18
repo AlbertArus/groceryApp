@@ -90,11 +90,16 @@ function App() {
   }
 
     const editLista = async (listaId, lista, listaName, plan, descriptionLista, membersUID) => {
-        const editedLista = { ...lista, listaName, plan, descriptionLista}
+        const newMemberUIDOnItem = lista.categories.map(category => ({
+            ...category, items: category.items.map(item => ({
+                ...item, itemUserMember: [...item.itemUserMember, ...membersUID]
+            }))
+        }))
+        const editedLista = { ...lista, listaName, plan, descriptionLista, categories: newMemberUIDOnItem}
         setListas(prevListas => prevListas.map(lista => lista.id === listaId ? editedLista : lista))
         // updateLista(listaId, "lista", editedLista)
         const listaRef = doc(db, "listas", listaId);
-        await updateDoc(listaRef, { listaName: listaName, userMember: [...lista.userMember, ...membersUID], plan: plan, descriptionLista: descriptionLista, modifiedAt: new Date().toISOString() });
+        await updateDoc(listaRef, { listaName: listaName, userMember: [...lista.userMember, ...membersUID], plan: plan, descriptionLista: descriptionLista, categories: newMemberUIDOnItem, modifiedAt: new Date().toISOString() });
     }
   
     const deleteLista = async (id) => {
