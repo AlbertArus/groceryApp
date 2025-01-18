@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import { useUsuario } from '../UsuarioContext';
+import { PriceFormatter } from "../components/PriceFormatter";
 
 const SubHeader = ({ itemslength, categories, itemsAdquirido, lista, price, filteredListaForItems }) => {
     const { usuario } = useUsuario();
@@ -28,7 +29,7 @@ const SubHeader = ({ itemslength, categories, itemsAdquirido, lista, price, filt
                 </div>
                 <div className="columna-block" style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "block" : "none"}}>
                     <h5 style={{display:"flex", justifyContent:"flex-end"}}>Total</h5>
-                    <h3>{price}</h3>
+                    <h3><PriceFormatter amount={price} /> </h3>
                 </div>
             </div>
         </div>

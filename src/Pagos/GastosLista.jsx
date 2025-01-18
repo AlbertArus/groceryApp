@@ -1,5 +1,6 @@
 import { Checkbox } from "@mui/material";
 import { useRef, useState, useMemo, useEffect } from "react";
+import { PriceFormatter } from "../components/PriceFormatter";
 
 const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, elementsPaid, setFinalValuePaid }) => {
 
@@ -102,7 +103,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
             }
         }, 0);
         
-        setFinalValuePaid(totalToPay.toLocaleString("es-ES", { style: "currency", currency: "EUR" }));
+        setFinalValuePaid(totalToPay);
         if (totalToPay > 0) {
             setAmount(totalToPay); // Pongo el if porque si no se ejecuta siempre y el input de Otro gasto empieza con el mismo 0€ que tiene totalPaid 
         }
@@ -142,14 +143,14 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                     <h4 style={{ marginLeft: "10px" }}>Toda la lista</h4>
                 </div>
                 <h4 className="priceMember">
-                    {(selectedList?.listPrice - totalPaid)}
+                    <PriceFormatter amount={(selectedList?.listPrice - totalPaid)} />
                 </h4>
             </div>
             {selectedList.categories.map((category, index) => {
                 const isCategoryFullySelected = selectedElements[category.id]?.size === category.items.length;
                 return (
-                    <div key={category.id} className="newpaymentLists">
-                        <div className="fila-between">
+                    <div key={category.id} className="">
+                        <div className="newpaymentLists fila-between">
                             <div className="fila-start">
                                 <Checkbox
                                     checked={isCategoryFullySelected}
@@ -182,7 +183,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                 </div>
                             </div>
                             <h4 className="priceMember">
-                                {(category.sumPrice - totalPaidCategory[index]).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                <PriceFormatter amount={(category.sumPrice - totalPaidCategory[index])} />
                             </h4>
                         </div>
                         <div className="columna-start" style={{ marginLeft: "32px" }}>
@@ -239,7 +240,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                                     </h5>
                                                 </div>
                                                 <h5 className="priceMember">
-                                                    {item.price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                                    <PriceFormatter amount={item.price} />
                                                 </h5>
                                             </div>
                                         );

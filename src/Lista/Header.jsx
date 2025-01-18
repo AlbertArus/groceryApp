@@ -4,6 +4,7 @@ import OptionsMenu from "../components/OptionsMenu"
 import {ShareButton} from "../components/ShareButton"
 import MembersList from "../components/MembersList"
 import { useUsuario } from '../UsuarioContext';
+import { PriceFormatter } from "../components/PriceFormatter"
 
 const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems, handleShowVotes, handleShowPrices }) => {
     const { usuario } = useUsuario();
@@ -80,13 +81,13 @@ const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll
                     <h2 style={{fontWeight: "500"}}>{lista.listaName || ""}</h2>
                     {searchParams.get("view") === "payments" ? (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
-                            <h5 style={{marginRight: "8px"}}>Lista: {lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
-                            <h5 style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "flex" : "none"}}>Pagado: {totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h5>
+                            <h5 style={{marginRight: "8px"}}>Lista: <PriceFormatter amount={lista.listPrice} /> </h5>
+                            <h5 style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "flex" : "none"}}>Pagado: <PriceFormatter amount={totalGastoLista} style={{marginLeft: "4px"}} /> </h5> {/*Añado style porque no puedo poner espacio entre precio y valor */}
                         </div>
                     ) : (
                         <div className="datosSubHeader fila-start" style={{display: isScrolled ? "flex" : "none"}}>
                             <h5 style={{marginRight: "8px"}}>Items: {filteredListaForItems ? filteredListaForItems.length : itemslength}</h5>
-                            <h5 style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "flex" : "none"}}>Precio: {price}</h5>
+                            <h5 style={{display: lista.userConfig?.[usuario.uid]?.showPrices ? "flex" : "none"}}>Precio: {<PriceFormatter amount={price} style={{marginLeft: "4px"}}/>} </h5> {/*Añado style porque no puedo poner espacio entre precio y valor */}
                         </div>
                     )}
                 </div>

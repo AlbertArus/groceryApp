@@ -1,3 +1,5 @@
+import { PriceFormatter } from "./PriceFormatter"
+
 const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemUserMember, priceMember, img }) => {
 
     return (
@@ -18,7 +20,7 @@ const TabItemMenu = ({ iconName, itemMenuName, onClick, style, handleDeleteItemU
                     </span>
                 }
                 {priceMember && 
-                    <h4>{priceMember}</h4>
+                    <h4><PriceFormatter amount={priceMember} /> </h4>
                 }
             </div>
         </div>

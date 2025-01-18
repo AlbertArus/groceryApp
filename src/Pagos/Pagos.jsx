@@ -3,7 +3,7 @@ import EmptyState from "../ui-components/EmptyState"
 import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
 import ButtonArea from "../ui-components/ButtonArea"
-// import CurrencyInput from "../components/CurrencyInput"
+import { PriceFormatter } from "../components/PriceFormatter"
 
 const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoLista, price}) => {
   const {usuario} = useUsuario()
@@ -38,31 +38,20 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
     },0)
   }
 
-  console.log(price)
-
   return (
-
     <>
         <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <h6>Gastos en lista</h6>
-            <h4>{lista.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
-            {/* <h4>
-                <CurrencyInput
-                    value={lista.listPrice}
-                    locale="es-ES"
-                    currency="EUR"
-                    editable={false}
-                />
-            </h4> */}
+                <h6>Gastos en lista</h6>
+                <h4><PriceFormatter amount={lista.listPrice} /></h4>
             </div>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <h6>Total pagado</h6>
-            <h4>{totalGastoLista.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                <h6>Total pagado</h6>
+                <h4><PriceFormatter amount={totalGastoLista} /> </h4>
             </div>
             <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <h6>He pagado</h6>
-            <h4>{totalGastoListaUser(usuario.uid).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                <h6>He pagado</h6>
+                <h4><PriceFormatter amount={totalGastoListaUser(usuario.uid)} /> </h4>
             </div>
         </div>
         <ButtonArea 
@@ -83,14 +72,13 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                     {lista.payments.map((payment, index) => {
                     return (
                         <div key={payment.id}>
-                        
                         <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
                             <div className="vistaDatos fila-between">
                             <div className="columna-start">
                                 <h4 style={{marginBottom: "4px"}}>{payment.paymentName}</h4>
                                 <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
                             </div>
-                            <h4>{payment.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                            <h4><PriceFormatter amount={payment.amount} /> </h4>
                             </div>
                         </Link>
                         </div>

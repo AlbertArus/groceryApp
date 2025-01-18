@@ -340,8 +340,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
         return 0
     }
     const totalPrice = categoryPrice.reduce((total, category) => total + category.sumPrice, 0);
-    const formattedTotalPrice = totalPrice?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-    return formattedTotalPrice
+    return totalPrice
 
   }, [categoryPrice]);
 
@@ -458,7 +457,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
             }, 0)
             : selectedList?.listPrice
     
-        return totalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+        return totalPrice;
     }
 
   return (

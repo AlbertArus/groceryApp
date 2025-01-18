@@ -79,7 +79,7 @@ function App() {
 
   const addLista = async (listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID) => {
     const userConfig = {[usuario.uid]: {isArchived: false, isNotified, showPrices, showVotes}}
-    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid, ...membersUID], createdAt: new Date().toISOString(), plan, descriptionLista, categories: [], items: [], payments: [], userConfig, isPaid: false, listPrice: "" }
+    const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid, ...membersUID], createdAt: new Date().toISOString(), plan, descriptionLista, categories: [], items: [], payments: [], userConfig, isPaid: false, listPrice: 0 }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
       setListas(prevListas => [...prevListas, newLista]);

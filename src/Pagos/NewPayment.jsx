@@ -6,6 +6,7 @@ import { Checkbox } from "@mui/material";
 import GastosLista from "./GastosLista";
 import ButtonArea from "../ui-components/ButtonArea";
 import CustomChip from "../ui-components/CustomChip";
+import { PriceFormatter } from "../components/PriceFormatter";
 
 const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment }) => {
     const { usuario } = useUsuario();
@@ -250,7 +251,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                                 {selectedChip === "De esta lista" && (
                                     <div className="columna-between" style={{alignItems: "flex-end"}}>
                                         <h4>Importe</h4>
-                                        <h3 style={{fontWeight: "400"}}>{finalValuePaid}</h3>
+                                        <h3 style={{fontWeight: "400"}}><PriceFormatter amount={finalValuePaid} /> </h3>
                                     </div>
                                 )}
                             </div>
@@ -267,14 +268,6 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                                 ) : (
                                 <div style={{marginTop: "10px"}}>
                                     <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
-                                    {/* <CurrencyInput 
-                                        value={amount}
-                                        // onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}}
-                                        onChange={(newAmount) => {setAmount(newAmount); setErrors(prevErrors => ({...prevErrors, amount: false }))}}
-                                        locale="es-ES"
-                                        currency="EUR"
-                                        editable={true}
-                                    /> */}
                                     <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
                                     <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
                                 </div>
@@ -297,7 +290,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                                                     color: selectedChip === "Otro gasto" ? "green" : "grey"
                                                 },
                                                 '&:not(.Mui-checked)': {
-                                                    color: selectedChip === "Otro gasto" ? "#9E9E9E" : "grey"
+                                                    color: "#9E9E9E"
                                                 },
                                                 '&.Mui-checked + .MuiTouchRipple-root': {
                                                     backgroundColor: selectedChip === "Otro gasto" ? members.includes(uid) ? 'green' : 'transparent' : "grey"
@@ -308,20 +301,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                                                 />           
                                                 <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
                                             </div>
-                                            <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{calculatePrice(uid).toFixed(2)} €</h4>                                  
-                                            {/* <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}>{(members.find(member => member.uid === uid) ? 
-                                                <CurrencyInput
-                                                    value={PriceMemberEven()}
-                                                    locale="es-ES"
-                                                    currency="EUR"
-                                                    editable={false}
-                                                />
-                                                : (
-                                                <>
-                                                {FormatCurrency(0, "es-ES", "EUR")}
-                                                </>
-                                                ))}
-                                            </h4> */}
+                                            <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}><PriceFormatter amount={(calculatePrice(uid) || 0)} /> </h4>                                  
                                         </div>
                                     )
                                 })}

@@ -4,6 +4,7 @@ import TabItemMenu from "../components/TabItemMenu";
 import { useUsuario } from "../UsuarioContext";
 import EmptyState from "../ui-components/EmptyState"
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { PriceFormatter } from "../components/PriceFormatter";
 
 const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     const { usuario } = useUsuario();
@@ -146,7 +147,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
                                     <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
                                 </div>
                                 <h4 className="priceMember">
-                                    {transfer.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                    <PriceFormatter amount={transfer.amount} />
                                 </h4>
                             </div>
                             <div className="barraPago">
@@ -180,7 +181,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
                                         <div className="fila-start">
                                             <h4>{nombreUserMember[index]}</h4>
                                         </div>
-                                        <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}>{user.amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h4>
+                                        <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}><PriceFormatter amount={user.amount} /> </h4>
                                     </div>
                                 )
                             })}

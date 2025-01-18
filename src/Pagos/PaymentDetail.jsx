@@ -82,15 +82,15 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
                             key={id}
                             iconName="account_circle"
                             itemMenuName={nombrePayer}
-                            priceMember={`${payment.amount} €`}
+                            priceMember={payment.amount}
                         />
                         <h3 style={{margin: "20px 0px 0px 0px"}}>Participantes</h3>
                         {payment.members.map((member, index) => (
-                            <TabItemMenu 
+                            <TabItemMenu
                                 key={member.uid}
                                 iconName="account_circle"
                                 itemMenuName={nombrePaymentMember[index]}
-                                priceMember={`${member.amount} €`}
+                                priceMember={member.amount}
                             />
                         ))}
                     </div>
