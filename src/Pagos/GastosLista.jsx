@@ -89,7 +89,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
     }, [selectedElements]);
 
     useEffect(() => {
-        const totalPaid = elementsPaid.reduce((total, paidElement) => {
+        const totalToPay = elementsPaid.reduce((total, paidElement) => {
             const category = selectedList.categories.find((category) => category.id === paidElement.category);
             if (paidElement.item) {
                 const item = category.items.find((item) => item.id === paidElement.item);
@@ -99,11 +99,22 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
             }
         }, 0);
         
-        setFinalValuePaid(totalPaid.toLocaleString("es-ES", { style: "currency", currency: "EUR" }));
-        if (totalPaid > 0) {
-            setAmount(totalPaid); // Pongo el if porque si no se ejecuta siempre y el input de Otro gasto empieza con el mismo 0€ que tiene totalPaid 
+        setFinalValuePaid(totalToPay.toLocaleString("es-ES", { style: "currency", currency: "EUR" }));
+        if (totalToPay > 0) {
+            setAmount(totalToPay); // Pongo el if porque si no se ejecuta siempre y el input de Otro gasto empieza con el mismo 0€ que tiene totalPaid 
         }
     }, [elementsPaid, selectedList.categories, setAmount, setFinalValuePaid]);
+
+    const totalPaidCategory = selectedList.categories.map(category => {
+        const itemsPaidCategory = category.items.filter(item => item.payer !== "")
+        console.log(itemsPaidCategory)
+        const priceItemsPaidCategory = itemsPaidCategory.reduce((total, item) => {
+            return total + Number(item.price || 0)
+        },0)
+        return priceItemsPaidCategory
+    })
+
+    const totalPaid = totalPaidCategory.reduce((total, category) => total + category,0)
 
     return (
         <div style={{marginTop: "10px"}}>
@@ -129,10 +140,10 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                     <h4 style={{ marginLeft: "10px" }}>Toda la lista</h4>
                 </div>
                 <h4 className="priceMember">
-                    {selectedList?.listPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                    {(selectedList?.listPrice - totalPaid)}
                 </h4>
             </div>
-            {selectedList.categories.map((category) => {
+            {selectedList.categories.map((category, index) => {
                 const isCategoryFullySelected = selectedElements[category.id]?.size === category.items.length;
                 return (
                     <div key={category.id} className="newpaymentLists">
@@ -169,7 +180,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                 </div>
                             </div>
                             <h4 className="priceMember">
-                                {category.sumPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                {(category.sumPrice - totalPaidCategory[index]).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                             </h4>
                         </div>
                         <div className="columna-start" style={{ marginLeft: "32px" }}>
@@ -180,12 +191,13 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                         return (
                                             <div key={item.id} className="newpaymentLists fila-between">
                                                 <div className="fila-start">
-                                                    <Checkbox
+                                                    {/* <Checkbox
                                                         checked={isItemSelected}
-                                                        onChange={() => handleCheckboxChange(category.id, "item", item.id)}
+                                                        onChange={item.payer === "" ? () => handleCheckboxChange(category.id, "item", item.id) : () => {}}
+                                                        disabled={item.payer !== "" ? true : false}
                                                         sx={{
                                                             "&.Mui-checked": {
-                                                                color: "green",
+                                                                color: item.payer === "" ? "green" : "grey",
                                                             },
                                                             "&:not(.Mui-checked)": {
                                                                 color: "#9E9E9E",
@@ -196,7 +208,48 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                                             padding: "0px",
                                                             cursor: "pointer",
                                                         }}
-                                                    />
+                                                    /> */}
+                                                    {item.payer === "" ? (
+                                                        <Checkbox
+                                                            checked={isItemSelected}
+                                                            onChange={() => handleCheckboxChange(category.id, "item", item.id)}
+                                                            // disabled={item.payer !== "" ? true : false}
+                                                            sx={{
+                                                                "&.Mui-checked": {
+                                                                    color: "green"
+                                                                },
+                                                                "&:not(.Mui-checked)": {
+                                                                    color: "#9E9E9E",
+                                                                },
+                                                                "&.Mui-checked + .MuiTouchRipple-root": {
+                                                                    backgroundColor: amount ? "green" : "transparent",
+                                                                },
+                                                                padding: "0px",
+                                                                cursor: "pointer",
+                                                            }}
+                                                        />
+                                                        ) : (
+                                                            <Checkbox
+                                                            checked={true}
+                                                            disabled={true}
+                                                            // onChange={() => handleCheckboxChange(category.id, "item", item.id)}
+                                                            sx={{
+                                                                "&.Mui-checked": {
+                                                                    color: "grey",
+                                                                },
+                                                                "&:not(.Mui-checked)": {
+                                                                    color: "#9E9E9E",
+                                                                },
+                                                                "&.Mui-checked + .MuiTouchRipple-root": {
+                                                                    backgroundColor: amount ? "green" : "transparent",
+                                                                },
+                                                                padding: "0px",
+                                                                cursor: "pointer",
+                                                            }}
+                                                        />                                                            
+                                                        )
+                                                    }
+                                                    
                                                     <h5 style={{ marginLeft: "10px" }}>
                                                         {item.name}
                                                     </h5>
