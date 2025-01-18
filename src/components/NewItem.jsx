@@ -12,13 +12,13 @@ const NewItem = ({ AddItem, categoryId, ItemNameInputRef, lista }) => {
     e.preventDefault();
     if(lista.userConfig?.[usuario.uid]?.showPrices) {
       if(name.trim() && price.trim()) {
-        AddItem(name, price, categoryId);
+        AddItem(name, Number(price || 0), categoryId);
         setName("")
         setPrice("")
       }
     } else {
       if(name.trim() && price.trim() === "") {
-        AddItem(name, price, categoryId);
+        AddItem(name, Number(price || 0), categoryId);
         setName("")
         setPrice("")
       }

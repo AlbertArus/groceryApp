@@ -14,7 +14,7 @@ const Category = ({ UsuarioCompleto, initialName, ItemNameInputRef, categories, 
 
   const itemsLength = items.length  
   const SumPriceFiltered = items.reduce((total, item) => {
-    return (total + Number(item.price))
+    return (total + item.price)
   },0)
 
   useEffect(() => {

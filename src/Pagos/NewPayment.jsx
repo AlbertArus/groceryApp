@@ -103,9 +103,9 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         if (!newErrors.paymentName && !newErrors.amount && !newErrors.members) {
             try {
                 if (!paymentId) {
-                    await AddPayment(selectedList, selectedList.id, paymentName, amount, payer, members, elementsPaid);
+                    await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, elementsPaid);
                 } else {
-                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, amount, payer, members, elementsPaid);
+                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, elementsPaid);
                 }
                 navigate(`/list/${id}?view=payments`);
                 setAmount("");

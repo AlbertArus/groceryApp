@@ -112,7 +112,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
     const totalPaidCategory = selectedList.categories.map(category => {
         const itemsPaidCategory = category.items.filter(item => item.payer !== "" && item.isPaid)
         const priceItemsPaidCategory = itemsPaidCategory.reduce((total, item) => {
-            return total + Number(item.price || 0)
+            return total + (item.price || 0)
         },0)
         return priceItemsPaidCategory
     })

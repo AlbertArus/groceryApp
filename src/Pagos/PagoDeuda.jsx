@@ -35,13 +35,13 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     const amountUserMember = () => {
         return lista.userMember.map(uid => {
             const usuarioPayer = lista.payments.reduce((total, payment) => {
-                return payment.payer === uid ? total + (Number(payment.amount || 0)) : total
+                return payment.payer === uid ? total + (payment.amount || 0) : total
 
             }, 0);
 
             const usuarioToPay = lista.payments.reduce((total, payment) => {
                 const amountForThisPayment = payment.members.reduce((memberPay, member) => {
-                  return member.uid === uid ? memberPay + Number(member.amount || 0) : memberPay;
+                  return member.uid === uid ? memberPay + (member.amount || 0) : memberPay;
                 }, 0);
                 return total + amountForThisPayment;
               }, 0);

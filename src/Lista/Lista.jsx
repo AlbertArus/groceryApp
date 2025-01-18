@@ -330,7 +330,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   
   const categoryPrice = useMemo(() => { // Recuerdo qué contenía y solo cuando cambia ejecuto
     return selectedList?.categories?.map(category => {
-      const sumPrice = category.items.reduce((acc, item) => acc + Number(item.price), 0);
+      const sumPrice = category.items.reduce((acc, item) => acc + item.price, 0);
       return { ...category, sumPrice: sumPrice };
     });
   }, [selectedList?.categories]);
@@ -432,7 +432,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     const totalGastoLista = selectedList?.payments?.reduce((total, payment) => {
         // Filtrar pagos que no sean "Reembolso"
         if (payment.paymentName !== "Reembolso") {
-            return total + Number(payment.amount);
+            return total + payment.amount;
         }
         return total; // No acumules si no pasa el filtro
     }, 0);
