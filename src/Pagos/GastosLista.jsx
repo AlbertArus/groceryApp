@@ -20,12 +20,12 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
     };
 
     const selectedElements = useMemo(() => {
-        return elementsPaid.reduce((acc, paid) => {
-            if (!acc[paid.category]) {
-                acc[paid.category] = new Set();
+        return elementsPaid.reduce((total, elementPaid) => {
+            if (!total[elementPaid.category]) { // Revisa si la categoría del elementPaid aún no está en el total
+                total[elementPaid.category] = new Set(); // Lo añade al set, que es un grupo de valores únicos
             }
-            acc[paid.category].add(paid.item);
-            return acc;
+            total[elementPaid.category].add(elementPaid.item);
+            return total;
         }, {});
     }, [elementsPaid]);
 
@@ -38,29 +38,32 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
 
     const handleCheckboxChange = (id, type, itemId) => {
         if (type === "list") {
-            setElementsPaid(
-                allElementsSelected 
-                ? [] 
-                : selectedList.categories.flatMap((category) =>
-                    category.items.map((item) => ({ 
-                        category: category.id, 
-                        item: item.id 
+            const filteredItems = selectedList.categories.flatMap((category) =>
+                category.items
+                    .filter((item) => item.payer === "" && !item.isPaid)
+                    .map((item) => ({
+                        category: category.id,
+                        item: item.id,
                     }))
-                )
             );
+    
+            setElementsPaid(allElementsSelected ? [] : filteredItems);
         } else if (type === "category") {
             const selectedCategory = selectedList.categories.find((category) => category.id === id);
-            const categoryElements = selectedCategory.items.map((item) => ({ 
-                category: selectedCategory.id, 
-                item: item.id 
-            }));
-            
-            const isCategoryFullySelected = selectedElements[id]?.size === categoryElements.length;
-
+        
+            const filteredCategoryElements = selectedCategory.items
+                .filter((item) => item.payer === "" && !item.isPaid)
+                .map((item) => ({
+                    category: selectedCategory.id,
+                    item: item.id,
+                }));
+        
+            const isCategoryFullySelected = selectedElements[id]?.size === filteredCategoryElements.length; //Si los seleccionados (selectedElements) son iguales a los seleccionables (cumplen las condiciones de no haber sido pagados), toda la categoría está seleccionada
+        
             setElementsPaid(
                 isCategoryFullySelected
-                ? elementsPaid.filter((paidElement) => paidElement.category !== id)
-                : [...elementsPaid.filter((paidElement) => paidElement.category !== id), ...categoryElements]
+                    ? elementsPaid.filter((paidElement) => paidElement.category !== id)
+                    : [...elementsPaid.filter((paidElement) => paidElement.category !== id), ...filteredCategoryElements]
             );
         } else if (type === "item") {
             const itemElement = { category: id, item: itemId };
@@ -106,8 +109,7 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
     }, [elementsPaid, selectedList.categories, setAmount, setFinalValuePaid]);
 
     const totalPaidCategory = selectedList.categories.map(category => {
-        const itemsPaidCategory = category.items.filter(item => item.payer !== "")
-        console.log(itemsPaidCategory)
+        const itemsPaidCategory = category.items.filter(item => item.payer !== "" && item.isPaid)
         const priceItemsPaidCategory = itemsPaidCategory.reduce((total, item) => {
             return total + Number(item.price || 0)
         },0)
@@ -191,24 +193,6 @@ const GastosLista = ({ selectedList, amount, setAmount, setElementsPaid, element
                                         return (
                                             <div key={item.id} className="newpaymentLists fila-between">
                                                 <div className="fila-start">
-                                                    {/* <Checkbox
-                                                        checked={isItemSelected}
-                                                        onChange={item.payer === "" ? () => handleCheckboxChange(category.id, "item", item.id) : () => {}}
-                                                        disabled={item.payer !== "" ? true : false}
-                                                        sx={{
-                                                            "&.Mui-checked": {
-                                                                color: item.payer === "" ? "green" : "grey",
-                                                            },
-                                                            "&:not(.Mui-checked)": {
-                                                                color: "#9E9E9E",
-                                                            },
-                                                            "&.Mui-checked + .MuiTouchRipple-root": {
-                                                                backgroundColor: amount ? "green" : "transparent",
-                                                            },
-                                                            padding: "0px",
-                                                            cursor: "pointer",
-                                                        }}
-                                                    /> */}
                                                     {item.payer === "" ? (
                                                         <Checkbox
                                                             checked={isItemSelected}
