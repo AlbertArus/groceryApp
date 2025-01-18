@@ -39,7 +39,7 @@ const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, setL
     }
 
     const handleDelete = async (e, index, member) => {
-        if(member) {
+        if(member && currentMembers.length > 1) {
             await DeleteUserFromList({member, lista, updateLista, setListas})
         } else {
             const membersToAddTemp = [...membersToAdd]
