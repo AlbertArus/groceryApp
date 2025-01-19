@@ -9,7 +9,7 @@
       "purpose": "any"
     },
     {
-      "src": "Fotos GroceryApp/favicon/android-chrome-512x512.png",
+      "src": "Fotos GroceryApp/favicon/android-chrome-512x512-test.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
