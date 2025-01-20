@@ -4,8 +4,8 @@ const LoadingPage = () => {
   return (
     <div className="LoadingPage">
       <div className='LoadingPageContent'>
-        <img src='/Fotos GroceryApp/favicon/android-chrome-512x512.png' alt='Cargando página' style={{width: "30%", marginBottom: "20px"}}/>
-        <h2>Estamos preparando tu app</h2>
+        <img src='/Fotos GroceryApp/favicon/android-chrome-512x512.png' alt='Cargando página' style={{width: "33%", marginBottom: "20px"}}/>
+        <h2 style={{fontWeight: "500"}}>Estamos preparando tu app...</h2>
       </div>
     </div>
   )
