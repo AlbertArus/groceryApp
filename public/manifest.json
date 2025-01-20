@@ -12,15 +12,25 @@
         "src": "Fotos GroceryApp/favicon/android-chrome-512x512.png",
         "sizes": "512x512",
         "type": "image/png",
-        "purpose": "any maskable"
+        "purpose": "any"
+      },
+      {
+        "src": "Fotos GroceryApp/favicon/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
       }
     ],
     "start_url": "/",
     "display": "standalone",
     "background_color": "#b8dcff",
     "theme_color": "#000000",
+    "dir": "auto",
+    "orientation": "natural",
     "scope": "/",
     "description": "Tus listas de la compra y tus pagos, ahora colaborativos",
+    "lang": "es",
+    "handle_links": "preferred",
     "categories": [
       "entertainment",
       "finance",
