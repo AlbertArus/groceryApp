@@ -9,7 +9,7 @@
         "purpose": "any"
       },
       {
-        "src": "Fotos GroceryApp/favicon/android-chrome-512x512-test.png",
+        "src": "Fotos GroceryApp/favicon/android-chrome-512x512.png",
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "any maskable"
@@ -17,7 +17,7 @@
     ],
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#016fff",
+    "background_color": "#b8dcff",
     "theme_color": "#000000",
     "scope": "/",
     "description": "Tus listas de la compra y tus pagos, ahora colaborativos",
