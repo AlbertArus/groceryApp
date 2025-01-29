@@ -133,7 +133,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     }
 
     return (
-        <div className="" style={{height: "100%"}}>
+        <div>
             {transfers.map((transfer, index) => {
                 const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
                 const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
@@ -168,8 +168,8 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
                 );
             })}
             {lista.userMember.length !== 1 && transfers.length > 0 && (
-                <div className="app-margin">
-                    <div className="fila-start" style={{margin: "25px 0px 15px 0px"}}>
+                <div className="" style={{margin: "0px 15px 18px 15px"}}>
+                    <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>
                         <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
                         <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
                     </div>
