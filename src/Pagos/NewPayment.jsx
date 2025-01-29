@@ -204,15 +204,15 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     }
 
     return (
-        <ButtonArea 
-            onClick={handleSubmit}
-            buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
-        >
-            <div className="FormLista app">
-                <Head
-                    path={`list/${id}?view=${searchParams.get("view")}`}
-                    sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
-                />
+        <div className="FormLista app">
+            <Head
+                path={`list/${id}?view=${searchParams.get("view")}`}
+                sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
+            />
+            <ButtonArea 
+                onClick={handleSubmit}
+                buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
+            >
                 <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
                     <form style={{display: "flex"}}>
                         <label htmlFor="nombre">Título</label>
@@ -309,8 +309,8 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                         )}
                     </form>
                 </div>
-            </div>
-        </ButtonArea>
+            </ButtonArea>
+        </div>
     );
 };
 
