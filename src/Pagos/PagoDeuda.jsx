@@ -19,6 +19,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     const collapserRef = useRef(null)
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         if (lista && lista.userMember && usuario?.uid) {
@@ -98,19 +99,22 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
         }
     }, [positiveMembers, negativeMembers]);
 
-    const handleDebtPaid = (transfer) => {
-        const { from, to, amount } = transfer;
+    const handleDebtPaid = () => {
+        const transfer = transfers[currentIndex];
+        console.log(transfer)
+        console.log(transfer.amount)
+        console.log(transfer.from)
         const paymentName = "Reembolso";
-        const members = [{ uid: to, amount }]
+        const members = [{ uid: transfer.to, amount: transfer.amount }]
 
         // Actualizar `pendingAmounts`
         setPendingAmounts((prev) =>
             prev.map((user) => {
-                if (user.uid === from) {
-                    return { ...user, amount: user.amount + amount };
+                if (user.uid === transfer.from) {
+                    return { ...user, amount: user.amount + transfer.amount };
                 }
-                if (user.uid === to) {
-                    return { ...user, amount: user.amount - amount };
+                if (user.uid === transfer.to) {
+                    return { ...user, amount: user.amount - transfer.amount };
                 }
                 return user;
             })
@@ -118,14 +122,12 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     
         // Actualizar `transfers`, eliminando transferencias completadas
         setTransfers((prevTransfers) =>
-            prevTransfers.filter(
-                (transfer) => !(transfer.from === from && transfer.to === to && transfer.amount === amount)
-            )
+            prevTransfers.filter(transferList => transferList !== transfer)
         );
         // Registrar el pago
-        AddPayment(lista, lista.id, paymentName, amount, from, members);
+        AddPayment(lista, lista.id, paymentName, transfer.amount, transfer.from, members);
         setOpen(false);
-    }    
+    }  
     
     const collapseList = () => {
         setIsCollapsed(prevState => !prevState)
@@ -150,23 +152,24 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
                                     <PriceFormatter amount={transfer.amount} />
                                 </h4>
                             </div>
-                            <div className="barraPago">
-                                <h6 onClick={() => setOpen(true)} style={{color: "grey"}}>Gestionar pago</h6>
-                                <ModalSheet
-                                    open={open}
-                                    setOpen={setOpen}
-                                >
-                                    <TabItemMenu
-                                    itemMenuName={"Confirmar transferencia"}
-                                    img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
-                                    onClick={() => handleDebtPaid(transfer)}
-                                    />
-                                </ModalSheet>
+                            <div key={transfer} className="barraPago">
+                                <h6 onClick={() => {setCurrentIndex(index); setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
+
                             </div>                    
                         </div>
                     </div>
                 );
             })}
+            <ModalSheet // Lo pongo fuera de la barra de pago, porque como es general por cada transfer, si está dentro de barra de pago se activa siempre (uno por pago)
+                open={open}
+                setOpen={setOpen}
+            >
+                <TabItemMenu
+                itemMenuName={"Confirmar transferencia"}
+                img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
+                onClick={() => handleDebtPaid()}
+                />
+            </ModalSheet>
             {lista.userMember.length !== 1 && transfers.length > 0 && (
                 <div className="" style={{margin: "0px 15px 18px 15px"}}>
                     <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>

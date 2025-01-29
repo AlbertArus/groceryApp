@@ -13,7 +13,6 @@ import Settings from './configuración/Settings.jsx';
 import NewPassword from './configuración/NewPassword.jsx'
 import DeleteUser from './configuración/DeleteUser.jsx';
 import LoadingPage from './components/LoadingPage.jsx';
-
 import { db } from "./firebase-config.js"
 import { doc, setDoc, getDocs, collection, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
 import { useUsuario } from './UsuarioContext.jsx';
@@ -319,10 +318,10 @@ function App() {
 
     const AddPayment = (lista, listaId, paymentName, amount, payer, members, elementsPaid) => {
 
-        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid }
+        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [] }
         const updatedPayments = [...lista.payments, newPayment]
         updateLista(listaId, "payments", updatedPayments)
-        if(elementsPaid.length > 0) {
+        if(elementsPaid && elementsPaid.length > 0) {
             const selectItemsPaid = elementsPaid.map(elementPaid => elementPaid.item);
             const getItemsPaid = lista.categories.map(category => ({
                 ...category,
