@@ -19,23 +19,13 @@ export const UsuarioProvider = ({ children }) => {
           // Cargar la información del usuario desde Firestore
           const docRef = doc(db, "usuarios", authUser.uid);
           const docSnap = await getDoc(docRef);
-        //   console.log(authUser.uid)
-        //   console.log("docSnap", docSnap)
-        //   console.log("docSnap existe?", docSnap.exists())
           
           if (docSnap.exists()) {
-            // console.log("reescribo docSnap con userData")
             const userData = docSnap.data();
-            // console.log("userData", userData)
-            // console.log(authUser)
             setUsuario({ ...authUser, ...userData });
-            // console.log("actualizo usuario con userData")
-            // console.log("usuario", usuario)
           } else {
-            // console.log("docSnap no existe")
             setUsuario(authUser);
-            // console.log("actualizo usuario con authUser")
-            // console.log("No hay información adicional del usuario");
+            console.log("No hay información adicional del usuario");
           }
         } else {
           setUsuario(null);
@@ -46,9 +36,9 @@ export const UsuarioProvider = ({ children }) => {
         setLoading(false);
       }
     });
-
+  
     return () => unsubscribe();
-    }, []);
+  }, []);
 
   return (
     <UsuarioContext.Provider value={{ usuario, setUsuario }}>
