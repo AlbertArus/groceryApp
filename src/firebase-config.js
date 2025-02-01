@@ -10,6 +10,7 @@ import { getFirestore } from "firebase/firestore"
 //   }
 
 const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG);
+console.log(process.env.REACT_APP_FIREBASE_CONFIG)
 
 const app = initializeApp(firebaseConfig);
 
