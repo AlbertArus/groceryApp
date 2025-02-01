@@ -1,13 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"
 
-let firebaseConfig = {}
+// let firebaseConfig = {}
 
-if (process.env.REACT_APP_ENV === 'production') {
-    firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG_PROD);
-  } else {
-    firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG_DEV);
-  }
+// if (process.env.REACT_APP_ENV === 'production') {
+//     firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG_PROD);
+//   } else {
+//     firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG_DEV);
+//   }
+
+const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG);
 
 const app = initializeApp(firebaseConfig);
 
