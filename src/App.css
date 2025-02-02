@@ -822,33 +822,29 @@ hr {
 }
 
 .camera-container {
-position: fixed;
-top: 0;
-left: 0;
-/* left: 50%;
-transform: translateX(-50%); */
-width: 100vw;
-height: 100vh;
-/* background: black; */
-overflow: hidden;
-display: flex;
-flex-direction: column;
-align-items: center;
-z-index: 1000;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
 }
 
 .camera-video {
 width: 100vw;
 height: 100vh;
 object-fit: cover;
-flex-grow: 1;
 }
 
 .captured-image {
 width: 100vw;
 height: 100vh;
 object-fit: cover;
-flex-grow: 1;
 }
 
 .hidden-canvas {
@@ -865,15 +861,24 @@ cursor: pointer;
 }
 
 .capture-button {
+position: absolute;
+bottom: 20px;
 background: white;
 border-radius: 50%;
-width: 70px;
-height: 70px;
+width: 60px;
+height: 60px;
 border: 5px solid black;
-font-size: 22px;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 20px;
 }
 
 .gallery-button {
+position: absolute;
+bottom: 20px;
+left: 20px;
 background: white;
 border-radius: 50%;
 width: 50px;
@@ -888,25 +893,6 @@ font-size: 18px;
 
 .gallery-button input {
 display: none;
-}
-
-.switch-camera-button {
-background: white;
-border-radius: 50%;
-width: 50px;
-height: 50px;
-border: 3px solid black;
-font-size: 18px;
-}
-
-.camera-buttons {
-position: absolute;
-bottom: 15px;
-width: 100vw;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-around;
 }
 
 .confirm-buttons {
@@ -924,7 +910,7 @@ font-size: 16px;
 cursor: pointer;
 }
 
-/* .approve {
+.approve {
 background: green;
 color: white;
 }
@@ -932,22 +918,6 @@ color: white;
 .reject {
 background: red;
 color: white;
-} */
-
-.approve {
-background: rgb(135, 251, 135);
-border-radius: 50%;
-width: 50px;
-height: 50px;
-border: 3px solid black;
-font-size: 18px;
 }
-
-.reject {
-background: rgb(254, 162, 162);
-border-radius: 50%;
-width: 50px;
-height: 50px;
-border: 3px solid black;
-font-size: 18px;
-}
+  
+  
