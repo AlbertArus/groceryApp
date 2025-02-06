@@ -2,12 +2,15 @@ import { useState, useRef, useEffect } from "react";
 
 export default function CameraOrGallery({ onClose }) {
   const [image, setImage] = useState(null);
-  const [tempImage, setTempImage] = useState(null)
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   useEffect(() => {
     startCamera();
+
+    return () => {
+      stopCamera(); // Limpia el startCamera para que si onClose cierra la vista la cámara no siga activa
+    };
   }, []);
 
   const startCamera = async () => {
@@ -18,6 +21,16 @@ export default function CameraOrGallery({ onClose }) {
       }
     } catch (error) {
       console.error("Error al acceder a la cámara:", error);
+      alert("No se pudo acceder a la cámara.");
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
     }
   };
 
@@ -28,7 +41,7 @@ export default function CameraOrGallery({ onClose }) {
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
         context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        setTempImage(canvasRef.current.toDataURL("image/png"));
+        setImage(canvasRef.current.toDataURL("image/png"));
       }
     }
   };
@@ -38,23 +51,23 @@ export default function CameraOrGallery({ onClose }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        const result = reader.result;
+        setImage(result);
+        onClose(result);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleApprove = () => {
-    setImage(tempImage);
-    onClose();
+      stopCamera();
+      onClose(image);
   };
 
   const handleRetake = () => {
-    setTempImage(null)
+    setImage(null)
     startCamera();
   };
-
-  console.log(image)
 
   return (
     <div className="camera-container">
@@ -71,7 +84,7 @@ export default function CameraOrGallery({ onClose }) {
           <video ref={videoRef} autoPlay playsInline className="camera-video" />
           <canvas ref={canvasRef} className="hidden-canvas" />
           
-          <button className="close-button" onClick={onClose}><span className="material-symbols-outlined">close</span></button>
+          <button className="close-button" onClick={() => {onClose(); stopCamera()}}><span className="material-symbols-outlined">close</span></button>
           
           <button className="capture-button" onClick={takePhoto}></button>
           
