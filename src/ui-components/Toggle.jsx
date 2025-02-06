@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useUsuario } from "../UsuarioContext"
 import { useSearchParams } from "react-router-dom"
-import CameraOrGallery from "../functions/CameraOrGallery"
+import Camera from "./Camera"
 
 const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
     const {usuario} = useUsuario()
     const [searchParams] = useSearchParams()
-    const [cameraOpen, setCameraOpen] = useState(false);
 
     const handleClickActive = (toggle) => {
         setIsToggleActive(toggle)
@@ -41,10 +40,6 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
 
     },[isToggleActive, usuario.uid, lista, setFilteredListaForItems, option2, option3, form, searchParams])
 
-    if (cameraOpen) {
-        return <CameraOrGallery onClose={() => setCameraOpen(false)} />;
-    }
-
     return (
         <>
         {form === "bars" && (
@@ -72,9 +67,7 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
                         </div>
                     </div>
                 </div>
-                <div className="search-container" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>
-                    <span className="material-symbols-outlined" onClick={() => setCameraOpen(true)}>add_a_photo</span>
-                </div>
+                <Camera />
             </div>
             ) : (
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
