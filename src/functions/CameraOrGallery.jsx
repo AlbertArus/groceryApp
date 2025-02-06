@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
-export default function CameraOrGallery({ onClose }) {
-  const [image, setImage] = useState(null);
+export default function CameraOrGallery({ onClose, image, setImage }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 

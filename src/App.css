@@ -816,8 +816,10 @@ hr {
 
 .camera-container {
     position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 0;
+    left: 0;
+    /* left: 50%;
+    transform: translateX(-50%); */
     width: 100vw;
     height: 100vh;
     background: black;
@@ -832,12 +834,14 @@ hr {
 width: 100vw;
 height: 100vh;
 object-fit: cover;
+flex-grow: 1;
 }
 
 .captured-image {
 width: 100vw;
 height: 100vh;
 object-fit: cover;
+flex-grow: 1;
 }
 
 .hidden-canvas {

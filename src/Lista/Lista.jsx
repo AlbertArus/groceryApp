@@ -516,13 +516,13 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                   setIsToggleActive={setIsToggleActive}
                   setSearchParams={setSearchParams}
                   isScrolled={isScrolled}
-                  setIsScrolled={setIsScrolled}        
+                  setIsScrolled={setIsScrolled}
                 />
               }
               {!isEStateLista && !isToggleShown &&
                 <Search
                   lista={selectedList}
-                  setSearchResult={setSearchResult}            
+                  setSearchResult={setSearchResult}
                 />
               }
               <SubHeader 

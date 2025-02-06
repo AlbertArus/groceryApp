@@ -470,7 +470,7 @@ function App() {
                 UsuarioCompleto={UsuarioCompleto}
                 updateLista={updateLista}
               />}
-            />            
+            />
           </>
         ) : (
           <Route path='*' element={<Registro />} />
