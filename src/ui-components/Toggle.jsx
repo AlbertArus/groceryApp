@@ -1,10 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useUsuario } from "../UsuarioContext"
 import { useSearchParams } from "react-router-dom"
+import CameraOrGallery from "../functions/CameraOrGallery"
 
 const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
     const {usuario} = useUsuario()
     const [searchParams] = useSearchParams()
+    const [cameraOpen, setCameraOpen] = useState(false);
 
     const handleClickActive = (toggle) => {
         setIsToggleActive(toggle)
@@ -39,30 +41,9 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
 
     },[isToggleActive, usuario.uid, lista, setFilteredListaForItems, option2, option3, form, searchParams])
 
-    // useEffect(() => {
-    //     let filteredListas;
-    //     if (isToggleActive === "mislistas") {
-    //         filteredListas = listas.filter(lista => lista.userCreator === usuario.uid)
-    //     } else if (isToggleActive === "compartidas") {
-    //         filteredListas = listas.filter(lista => lista.userCreator !== usuario.uid && lista.userMember.includes(usuario.uid))
-    //     } else {
-    //         filteredListas = listas
-    //     }
-    //     setFilteredListas(filteredListas)
-    // }, [isToggleActive, listas, usuario.uid, setFilteredListas])
-
-        // useEffect(() => {
-        //     if (origin=== "pagos")
-        //     let filteredListas;
-        //     if (isToggleActive === "mislistas") {
-        //         filteredListas = listas.filter(lista => lista.userCreator === usuario.uid)
-        //     } else if (isToggleActive === "compartidas") {
-        //         filteredListas = listas.filter(lista => lista.userCreator !== usuario.uid && lista.userMember.includes(usuario.uid))
-        //     } else {
-        //         filteredListas = listas
-        //     }
-        //     setFilteredListas(filteredListas)
-        // }, [isToggleActive, listas, usuario.uid, setFilteredListas])
+    if (cameraOpen) {
+        return <CameraOrGallery onClose={() => setCameraOpen(false)} />;
+    }
 
     return (
         <>
@@ -76,15 +57,37 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
             </div>
         )}
         {form === "tabs" && (
-            <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
-                <div className='app-margin center'>
-                    <div className='ToggleLista fila-start' style={{flex:"none"}}>
-                        <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
-                        <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
-                        <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
+            <>
+            {searchParams.get("view") !== "payments" ? (
+            <div className="fila-between" style={{justifyContent: "space-around", flex: "none"}}>
+                <div className="search-container fila-start" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>
+                    <span className="material-symbols-outlined">search</span>
+                </div>
+                <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
+                    <div className='app-margin center'>
+                        <div className='ToggleLista fila-start' style={{flex:"none"}}>
+                            <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
+                            <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
+                            <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
+                        </div>
                     </div>
                 </div>
+                <div className="search-container" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>
+                    <span className="material-symbols-outlined" onClick={() => setCameraOpen(true)}>add_a_photo</span>
+                </div>
             </div>
+            ) : (
+                <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
+                    <div className='app-margin center'>
+                        <div className='ToggleLista fila-start' style={{flex:"none"}}>
+                            <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
+                            <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
+                            <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
+                        </div>
+                    </div>
+                </div>
+            )}
+            </>
         )}
     </>
     )
