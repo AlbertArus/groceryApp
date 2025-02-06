@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useUsuario } from "../UsuarioContext"
 import { useSearchParams } from "react-router-dom"
 import Camera from "./Camera"
@@ -6,7 +6,6 @@ import Camera from "./Camera"
 const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
     const {usuario} = useUsuario()
     const [searchParams] = useSearchParams()
-    const [cameraOpen, setCameraOpen] = useState(false);
 
     const handleClickActive = (toggle) => {
         setIsToggleActive(toggle)
