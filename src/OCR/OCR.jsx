@@ -1,49 +1,69 @@
-import { useState } from 'react';
-import { VisionClient } from '@google-cloud/vision';
-import { convertirImagenABase64 } from '../functions/ConversorImagen';
+import { useEffect, useState } from 'react';
 
 function OCR({ image, setImage }) {
-  const [text, setText] = useState('');
+    const [text, setText] = useState('');
+    const [loading, setLoading] = useState(false);
 
-  const manejarSeleccionImage = (event) => {
-    const archivo = event.target.files[0];
-    setImage(archivo);
-  };
+    console.log(image)
 
-  const realizarOCR = async () => {
-    if (!image) {
-      alert('Por favor, selecciona una image.');
-      return;
-    }
+    useEffect(() => {
+        if (image) {
+            realizarOCR();
+        } else {
+            console.log("no hay imagen");
+        }
+    }, [image]);
 
-    try {
-      const credentials = JSON.parse(process.env.REACT_APP_GOOGLE_APPLICATION_CREDENTIALS);
-      const client = new VisionClient({ credentials });
+    const realizarOCR = async () => {
+        if (!image) {
+            alert('Por favor, selecciona una imagen.');
+            return;
+        }
+        setLoading(true);
+        try {
+            if (typeof image === 'string') {
+                const base64Data = image.split(',')[1]; // Separar el prefijo
+                // console.log("Base64 Image:", base64Data); // Imprime la cadena base64 en la consola (corregido)
 
-      const imageBase64 = await convertirImagenABase64(image);
+                const response = await fetch('http://localhost:5000/api/ocr', { // response declarado aquí
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ image: base64Data }), // Usar base64Data
+                });
 
-      const [result] = await client.textDetection({
-        image: {
-          content: imageBase64,
-        },
-      });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error || 'Unknown error'}`);
+                }
 
-      const detections = result.textAnnotations;
-      const extractedText = detections.map((detection) => detection.description).join(' ');
+                const data = await response.json();
+                setText(data.text);
 
-      setText(extractedText);
-    } catch (error) {
-      console.error('Error al realizar OCR:', error);
-    }
-  };
+            } else {
+                console.error("image is not a string");
+            }
 
-  return (
-    <div>
-      <input type="file" onChange={manejarSeleccionImage} />
-      <button onClick={realizarOCR}>Realizar OCR</button>
-      <p>Texto extraído: {text}</p>
-    </div>
-  );
+        } catch (error) {
+            console.error('Error al realizar OCR:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div>
+            {loading ? (
+                <div> Estamos validando tu ticket </div>
+            ) : (
+                <>
+                    <button onClick={() => realizarOCR()}>Realizar OCR</button>
+                    <p>Texto extraído: {text}</p>
+                </>
+            )}
+        </div>
+    );
 }
 
 export default OCR;

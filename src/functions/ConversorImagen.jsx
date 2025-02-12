@@ -1,8 +1,11 @@
-export function convertirImagenABase64(imagen) {
+export const convertirImagenABase64 = (file) => {
+
+    console.log(typeof file)
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(imagen);
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]); // Obtener solo la parte base64
+      reader.onerror = (error) => reject(error);
     });
-  }
+  };

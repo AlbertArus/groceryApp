@@ -19,6 +19,8 @@ const Camera = () => {
         />;
     }
 
+    console.log(image)
+
     return (
         <>
             <div className="search-container" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>

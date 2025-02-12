@@ -40,7 +40,10 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
         context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        setImage(canvasRef.current.toDataURL("image/png"));
+        // setImage(canvasRef.current.toDataURL("image/png"));
+        const newImage = canvasRef.current.toDataURL("image/png");
+        setImage(newImage); // Actualiza el estado `image`
+        console.log("Nueva imagen:", newImage)
       }
     }
   };
@@ -68,6 +71,8 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
     startCamera();
   };
 
+  console.log(image)
+
   return (
     <div className="camera-container">
       {image ? (
@@ -83,7 +88,7 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
           <video ref={videoRef} autoPlay playsInline className="camera-video" />
           <canvas ref={canvasRef} className="hidden-canvas" />
           
-          <button className="close-button" onClick={() => {onClose(); stopCamera()}}><span className="material-symbols-outlined">close</span></button>
+          <button className="close-button" onClick={() => {stopCamera(); onClose(null)}}><span className="material-symbols-outlined">close</span></button>
           
           <button className="capture-button" onClick={takePhoto}></button>
           
