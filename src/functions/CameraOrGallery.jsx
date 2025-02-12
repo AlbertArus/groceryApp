@@ -12,26 +12,69 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
     };
   }, []);
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
-      console.error("Error al acceder a la cámara:", error);
-      alert("No se pudo acceder a la cámara.");
-    }
-  };
+//   const startCamera = async () => {
+//     try {
+//       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//       if (videoRef.current) {
+//         videoRef.current.srcObject = stream;
+//       }
+//     } catch (error) {
+//       console.error("Error al acceder a la cámara:", error);
+//       alert("No se pudo acceder a la cámara.");
+//     }
+//   };
 
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject;
-      const tracks = stream.getTracks();
-      tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
+    const startCamera = async () => {
+        try {
+        const constraints = {
+            video: { 
+                facingMode: { exact: "environment" }, // Intenta abrir la cámara trasera
+                width: { ideal: 1920 }, // Resolución ideal
+                height: { ideal: 1080 },
+            } 
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+        }
+        } catch (error) {
+        console.error("Error al acceder a la cámara trasera:", error);
+        // Si falla, intenta con la cámara delantera o la única disponible
+        try {
+            const constraints = {
+            video: {
+                width: { ideal: 1920 }, // Resolución ideal
+                height: { ideal: 1080 }
+            } // Intenta con cualquier cámara disponible
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            }
+        } catch (error) {
+            console.error("Error al acceder a la cámara:", error);
+            alert("No se pudo acceder a la cámara.");
+        }
+        }
+    };
+
+    const stopCamera = () => {
+        if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject;
+        const tracks = stream.getTracks();
+    
+        // Detener todas las pistas
+        tracks.forEach((track) => {
+            track.stop(); // Detener la pista
+            console.log("Pista detenida:", track);
+        });
+    
+        // Liberar la referencia al stream
+        videoRef.current.srcObject = null;
+        } else {
+        console.log("No hay stream de cámara activo.");
+        }
+    };
 
   const takePhoto = () => {
     if (canvasRef.current && videoRef.current) {
@@ -44,6 +87,7 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
         const newImage = canvasRef.current.toDataURL("image/png");
         setImage(newImage); // Actualiza el estado `image`
         console.log("Nueva imagen:", newImage)
+        stopCamera()
       }
     }
   };
@@ -71,6 +115,22 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
     startCamera();
   };
 
+  const switchCamera = async () => {
+    stopCamera();
+    const constraints = {
+      video: { facingMode: videoRef.current.srcObject ? (videoRef.current.srcObject.getVideoTracks()[0].getSettings().facingMode === "environment" ? "user" : "environment") : "environment" }
+    };
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error("Error al alternar la cámara:", error);
+      alert("No se pudo alternar la cámara.");
+    }
+  };
+
   console.log(image)
 
   return (
@@ -79,8 +139,8 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
         <>
           <img src={image} alt="Foto tomada" className="captured-image" />
           <div className="confirm-buttons">
-            <button onClick={handleRetake} className="reject">🔄 Repetir</button>
-            <button onClick={handleApprove} className="approve">✅ Aceptar</button>
+            <button onClick={handleRetake} className="reject"><span className="material-symbols-outlined">restart_alt</span></button>
+            <button onClick={handleApprove} className="approve"><span className="material-symbols-outlined">check</span></button>
           </div>
         </>
       ) : (
@@ -89,13 +149,14 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
           <canvas ref={canvasRef} className="hidden-canvas" />
           
           <button className="close-button" onClick={() => {stopCamera(); onClose(null)}}><span className="material-symbols-outlined">close</span></button>
-          
-          <button className="capture-button" onClick={takePhoto}></button>
-          
-          <label className="gallery-button">
-            <span className="material-symbols-outlined">photo_library</span>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-          </label>
+          <div className="camera-buttons">
+            <label className="gallery-button">
+                <span className="material-symbols-outlined">photo_library</span>
+                <input type="file" accept="image/*" onChange={handleFileChange} />
+            </label>
+            <button className="capture-button" onClick={takePhoto}></button>          
+            <button className="switch-camera-button" onClick={switchCamera}><span className="material-symbols-outlined">restart_alt</span></button>
+          </div>
         </>
       )}
     </div>
