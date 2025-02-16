@@ -135,64 +135,67 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
     }
 
     return (
-        <div>
-            {transfers.map((transfer, index) => {
-                const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
-                const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
-                return (
-                    <div key={`${transfer.from}-${transfer.to}`} className="app-margin">
-                        <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
-                            <div className="fila-between" style={{ padding: "6px" }}>
-                                <div className="columna-start">
-                                    <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
-                                    <h5>debe a</h5>
-                                    <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
-                                </div>
-                                <h4 className="priceMember">
-                                    <PriceFormatter amount={transfer.amount} />
-                                </h4>
-                            </div>
-                            <div key={transfer} className="barraPago">
-                                <h6 onClick={() => {setCurrentIndex(index); setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
-
-                            </div>                    
-                        </div>
-                    </div>
-                );
-            })}
-            <ModalSheet // Lo pongo fuera de la barra de pago, porque como es general por cada transfer, si está dentro de barra de pago se activa siempre (uno por pago)
-                open={open}
-                setOpen={setOpen}
-            >
-                <TabItemMenu
-                itemMenuName={"Confirmar transferencia"}
-                img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
-                onClick={() => handleDebtPaid()}
-                />
-            </ModalSheet>
-            {lista.userMember.length !== 1 && transfers.length > 0 && (
-                <div className="" style={{margin: "0px 15px 18px 15px"}}>
-                    <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>
-                        <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
-                        <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
-                    </div>
-                    {!isCollapsed &&
-                        <>
-                            {pendingAmounts.map((user, index) => {
-                                return (
-                                    <div key={user.uid} className="newpaymentLists fila-between">
-                                        <div className="fila-start">
-                                            <h4>{nombreUserMember[index]}</h4>
-                                        </div>
-                                        <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}><PriceFormatter amount={user.amount} /> </h4>
+        <div style={{height: "100vh"}}>
+            {transfers?.length > 0 ? (
+                <>
+                {transfers.map((transfer, index) => {
+                    const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
+                    const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
+                    return (
+                        <div key={`${transfer.from}-${transfer.to}`} className="app-margin">
+                            <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
+                                <div className="fila-between" style={{ padding: "6px" }}>
+                                    <div className="columna-start">
+                                        <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
+                                        <h5>debe a</h5>
+                                        <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
                                     </div>
-                                )
-                            })}
-                        </>
-                    }
-                </div>
-            )}
-            {transfers.length === 0 && (
+                                    <h4 className="priceMember">
+                                        <PriceFormatter amount={transfer.amount} />
+                                    </h4>
+                                </div>
+                                <div key={transfer} className="barraPago">
+                                    <h6 onClick={() => {setCurrentIndex(index); setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
+    
+                                </div>                    
+                            </div>
+                        </div>
+                    );
+                })}
+                <ModalSheet // Lo pongo fuera de la barra de pago, porque como es general por cada transfer, si está dentro de barra de pago se activa siempre (uno por pago)
+                    open={open}
+                    setOpen={setOpen}
+                >
+                    <TabItemMenu
+                    itemMenuName={"Confirmar transferencia"}
+                    img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
+                    onClick={() => handleDebtPaid()}
+                    />
+                </ModalSheet>
+                {lista.userMember.length !== 1 && transfers.length > 0 && (
+                    <div className="" style={{margin: "0px 15px 18px 15px"}}>
+                        <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>
+                            <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
+                            <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
+                        </div>
+                        {!isCollapsed &&
+                            <>
+                                {pendingAmounts.map((user, index) => {
+                                    return (
+                                        <div key={user.uid} className="newpaymentLists fila-between">
+                                            <div className="fila-start">
+                                                <h4>{nombreUserMember[index]}</h4>
+                                            </div>
+                                            <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}><PriceFormatter amount={user.amount} /> </h4>
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        }
+                    </div>
+                )}
+                </>
+            ) : (
                 <EmptyState
                     img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
                     alt={"Set of grocery bags full of items"}
