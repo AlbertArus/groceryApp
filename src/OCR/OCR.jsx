@@ -60,6 +60,13 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
         }
     };
 
+    useEffect(() => {
+        if (text) {
+            console.log("7. Llamando a compararPrecios con text:", text);
+            compararPrecios(text, lista);
+        }
+    }, [text, lista]);
+
     return (
         <div className="ocr-container">
             {loading ? (
