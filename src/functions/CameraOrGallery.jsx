@@ -66,7 +66,6 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
         // Detener todas las pistas
         tracks.forEach((track) => {
             track.stop(); // Detener la pista
-            console.log("Pista detenida:", track);
         });
     
         // Liberar la referencia al stream
@@ -83,10 +82,8 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
         context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        // setImage(canvasRef.current.toDataURL("image/png"));
         const newImage = canvasRef.current.toDataURL("image/png");
-        setImage(newImage); // Actualiza el estado `image`
-        console.log("Nueva imagen:", newImage)
+        setImage(newImage);
         stopCamera()
       }
     }
@@ -130,8 +127,6 @@ export default function CameraOrGallery({ onClose, image, setImage }) {
       alert("No se pudo alternar la cámara.");
     }
   };
-
-  console.log(image)
 
   return (
     <div className="camera-container">

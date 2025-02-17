@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from "react";
+import { useEffect } from "react";
+import { compararPrecios } from "./DiferenciaPrecios";
 
-function OCR({ image, setImage }) {
+function OCR({ image, setImage, lista }) {
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
-
-    console.log(image)
 
     useEffect(() => {
         if (image) {
             realizarOCR();
         } else {
-            console.log("no hay imagen");
+            console.log("No hay imagen");
         }
     }, [image]);
 
@@ -22,15 +22,17 @@ function OCR({ image, setImage }) {
         setLoading(true);
         try {
             if (typeof image === 'string') {
-                const base64Data = image.split(',')[1]; // Separar el prefijo
-                // console.log("Base64 Image:", base64Data); // Imprime la cadena base64 en la consola (corregido)
+                console.log("=== OCR DEBUG ===");
+                console.log("1. Iniciando OCR");
+                const base64Data = image.split(',')[1];
 
-                const response = await fetch('http://localhost:5000/api/ocr', { // response declarado aquí
+                console.log("2. Enviando petición a OCR API");
+                const response = await fetch('https://5150-83-50-183-163.ngrok-free.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ image: base64Data }), // Usar base64Data
+                    body: JSON.stringify({ image: base64Data }),
                 });
 
                 if (!response.ok) {
@@ -39,10 +41,15 @@ function OCR({ image, setImage }) {
                 }
 
                 const data = await response.json();
+                console.log("3. Respuesta del servidor:", data);
+                console.log("4. Tipo de data.text:", typeof data.text);
+                console.log("5. Contenido de data.text:", data.text);
+                
                 setText(data.text);
+                console.log("6. Estado text actualizado");
 
             } else {
-                console.error("image is not a string");
+                console.error("Image no es un string");
             }
 
         } catch (error) {
@@ -52,14 +59,21 @@ function OCR({ image, setImage }) {
         }
     };
 
+    useEffect(() => {
+        if (text) {
+            console.log("7. Llamando a compararPrecios con text:", text);
+            compararPrecios(text, lista);
+        }
+    }, [text, lista]);
+
     return (
         <div>
             {loading ? (
-                <div> Estamos validando tu ticket </div>
+                <div>Estamos validando tu ticket</div>
             ) : (
                 <>
                     <button onClick={() => realizarOCR()}>Realizar OCR</button>
-                    <p>Texto extraído: {text}</p>
+                    <pre>Texto extraído: {JSON.stringify(text, null, 2)}</pre>
                 </>
             )}
         </div>
