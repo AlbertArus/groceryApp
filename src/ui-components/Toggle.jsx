@@ -67,7 +67,9 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
                         </div>
                     </div>
                 </div>
-                <Camera />
+                <Camera
+                    lista={lista}
+                />
             </div>
             ) : (
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>

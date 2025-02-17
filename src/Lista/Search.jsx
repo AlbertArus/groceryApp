@@ -3,7 +3,7 @@ import Camera from "../ui-components/Camera";
 // import ModalSheet from "../ui-components/ModalSheet";
 // import TabItemMenu from "../components/TabItemMenu";
 
-const Search = ({setSearchResult }) => {
+const Search = ({setSearchResult, lista }) => {
     const [focused, setFocused] = useState(false)
     // const [open, setOpen] = useState(false)
     const searchValueRef = useRef(null)
@@ -39,7 +39,9 @@ const Search = ({setSearchResult }) => {
                 <span className="material-symbols-outlined" style={{marginLeft: "8px", display: !focused ? "flex" : "none"}} onClick={handleSearch}>search</span>
                 <span className="material-symbols-outlined" style={{marginLeft: "8px", display: focused ? "flex" : "none"}} onClick={handleDeleteSearch}>close</span>
             </div>
-            <Camera />
+            <Camera 
+                lista={lista}
+            />
             {/* <div className="search-container" style={{padding: "5px 5px 0px 5px", marginLeft:"10px"}}>
                 <span className="material-symbols-outlined" onClick={() => setOpen(true)}>filter_list</span>
             </div>
