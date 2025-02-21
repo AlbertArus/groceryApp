@@ -27,7 +27,7 @@ function OCR({ image, setImage, lista }) {
                 const base64Data = image.split(',')[1];
 
                 console.log("2. Enviando petición a OCR API");
-                const response = await fetch('https://5150-83-50-183-163.ngrok-free.app/api/ocr', {
+                const response = await fetch('https://5302-2a02-9130-80ba-850f-95f5-360c-63ce-3ef1.ngrok-free.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
