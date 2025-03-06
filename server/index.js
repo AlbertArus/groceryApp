@@ -33,8 +33,10 @@ app.post('/api/ocr', async (req, res) => {
 
     const extractedText = result.textAnnotations[0].description;
     const structuredData = parseTextToStructuredData(extractedText);
+    console.log("extractedText", extractedText)
     console.log("Structured data:", JSON.stringify(structuredData, null, 2));
     return res.status(200).json({ text: structuredData, raw: extractedText });
+
   } catch (error) {
     console.error('OCR error:', error);
     return res.status(500).json({ 
