@@ -36,8 +36,6 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
                     body: JSON.stringify({ image: base64Data, lista: lista }),
                 });
 
-                console.log("Respuesta recibida:", response);
-
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(`Error: ${response.status}, ${errorData.error || 'Error desconocido'}`);
