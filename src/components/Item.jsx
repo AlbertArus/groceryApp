@@ -89,7 +89,7 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
               />
               <div className="ItemText" ref={ItemTextRef}>
                 <input type="text" aria-label="Nombre del item" ref={ItemNameRef} onKeyDown={(e) => handleKeyDown(e, "ItemName")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="text" enterKeyHint="done" className={`ItemName ${isExpanded ? 'expanded' : ''}`} onClick={toggleExpand} style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black' }} onChange={(e) => setName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))} value={name}></input>
-                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="decimal" enterKeyHint="done" className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={(e) => setPrice(e.target.value)} value={price}></input>
+                <input type="number" placeholder="Precio" aria-label="Precio del item" ref={ItemPriceRef} onKeyDown={(e) => handleKeyDown(e, "ItemPrice")} onBlur={handleInputBlur} onFocus={handleInputFocus} inputMode="decimal" enterKeyHint="done" className="ItemPrice" style={{ textDecoration: itemIsChecked ? 'line-through' : 'none', color: itemIsChecked ? '#9E9E9E' : 'black'}} onChange={(e) => EditItem(item.id, name, Number(e.target.value))} value={initialPrice}></input>
               </div>
             </div>
           </div>

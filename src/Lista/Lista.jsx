@@ -124,9 +124,10 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     },[])
 
   const AddItem = (name, price, categoryId) => {
+    console.log("llamo a Add")
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false, isPaid: false, payer: "" };
-    const updatedItems = [...selectedList.items, newItem];
-    updateListaItems(params.id, updatedItems);
+    // const updatedItems = [...selectedList.items, newItem];
+    // updateListaItems(params.id, updatedItems);
     
     const updatedCategories = selectedList.categories.map(category => {
         if(category.id === categoryId) {
@@ -138,6 +139,24 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     });
     updateListaCategories(params.id, updatedCategories);
   }
+
+  // En el componente Lista
+    const AddMultipleItems = (items, categoryId) => {
+        // Crea una copia profunda de las categorías
+        const updatedCategories = JSON.parse(JSON.stringify(selectedList.categories));
+        
+        // Encuentra la categoría correcta
+        const categoryToUpdate = updatedCategories.find(cat => cat.id === categoryId);
+        
+        if (categoryToUpdate) {
+                items.forEach((itemData) => {
+                    const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name: itemData.name, price: itemData.price, counterUp: [], counterDown: [], isChecked: false, isPaid: false, payer: "",}
+                    categoryToUpdate.items.push(newItem);
+                  })            
+            // Actualiza con una sola llamada
+            updateListaCategories(params.id, updatedCategories);
+        }
+    }
 
   const EditItem = (id, newName, newPrice) => {
     const updatedCategories = selectedList.categories.map(category => {
@@ -523,6 +542,8 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 <Search
                   lista={selectedList}
                   setSearchResult={setSearchResult}
+                  AddMultipleItems={AddMultipleItems}
+                  EditItem={EditItem}
                 />
               }
               <SubHeader 

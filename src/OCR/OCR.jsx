@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function OCR({ image, setImage, lista }) {
+function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
     const [text, setText] = useState('');
     const [geminiResults, setGeminiResults] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -56,6 +56,7 @@ function OCR({ image, setImage, lista }) {
         }
     };
 
+    console.log(lista)
     return (
         <div className="ocr-container">
             {loading ? (
@@ -83,10 +84,29 @@ function OCR({ image, setImage, lista }) {
                                     <div className="modified-items">
                                         <h4>Productos modificados:</h4>
                                         <pre>{JSON.stringify(geminiResults.modified_items || [], null, 2)}</pre>
+                                        <button
+                                        onClick={() => {
+                                            geminiResults.modified_items.forEach(item => {
+                                                EditItem(item.id, item.name, item.price);
+                                                console.log("edit:", item.price, item.name)
+                                            });
+                                            }}
+                                        >
+                                            Actualizar
+                                        </button>
                                     </div>
                                     <div className="new-items">
                                         <h4>Productos nuevos:</h4>
                                         <pre>{JSON.stringify(geminiResults.new_items || [], null, 2)}</pre>
+                                        <button
+                                        onClick={() => {
+                                            geminiResults.new_items.forEach(item => {
+                                                AddMultipleItems(geminiResults.new_items, lista.categories[0].id)
+                                            });
+                                            }}
+                                        >
+                                            Añadir                                            
+                                        </button>                                    
                                     </div>
                                 </div>
                             )}

@@ -1,81 +1,37 @@
-export function compararPrecios(text, raw, lista) {
-    console.log(raw)
-    console.log("=== DEBUG INICIO ===");
-    console.log("1. Texto recibido (raw):", text);
+// Función cliente para comparar precios a través de la API
+export async function compararPrecios(text, lista) {
+    console.log("=== CLIENTE: Iniciando comparación de precios ===");
     
-    // Si text ya es un objeto (porque viene como data.text del servidor)
-    let parsedText = text;
-    
-    // Asegurarnos de que tenemos la estructura correcta
-    if (!parsedText || !parsedText.items) {
-        console.log("Error: No hay items válidos para comparar");
-        return;
+    if (!text || text.trim() === '') {
+        console.log("Error: No hay texto válido para comparar");
+        return { error: "No hay texto válido para comparar" };
     }
 
     if (!lista?.categories) {
         console.log("Error: lista no tiene categories");
-        return;
+        return { error: "Lista de productos inválida" };
     }
 
-    // Obtener items para comparar
-    const itemsToCompare = lista.categories.flatMap(category =>
-        category.items.map(item => ({
-            id: item.id,
-            name: item.name,
-            price: item.price
-        }))
-    );
-    console.log("2. Items para comparar:", itemsToCompare);
-
-    // Realizar comparación
-    parsedText.items.forEach(ticketItem => {
-        console.log("3. Procesando item del ticket:", ticketItem);
-        
-        const normalizedTicketDesc = ticketItem.description
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .trim();
-            
-        console.log("4. Descripción normalizada:", normalizedTicketDesc);
-        
-        const matchedItem = itemsToCompare.find(item => {
-            const normalizedItemName = item.name
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .trim();
-            
-            console.log(`5. Comparando con [${normalizedItemName}]`);
-            
-            // Comparación más flexible
-            const isMatch = 
-                normalizedItemName.includes(normalizedTicketDesc) || 
-                normalizedTicketDesc.includes(normalizedItemName) ||
-                normalizedTicketDesc.split(' ').some(word => 
-                    normalizedItemName.includes(word) && word.length > 3
-                );
-            
-            if (isMatch) {
-                console.log(`   Match encontrado entre [${normalizedTicketDesc}] y [${normalizedItemName}]`);
-            }
-            
-            return isMatch;
+    try {
+        // En lugar de llamar directamente, hacemos una petición API
+        const response = await fetch('https://5d94-83-50-183-163.ngrok-free.app/api/compare-prices', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text, lista }),
         });
 
-        if (matchedItem) {
-            console.log(`✅ Match encontrado:`);
-            console.log(`   Producto: ${matchedItem.name}`);
-            console.log(`   Precio en ticket: ${ticketItem.price}`);
-            console.log(`   Precio en lista: ${matchedItem.price}`);
-            
-            // Aquí podrías agregar lógica adicional para manejar el match
-            // Por ejemplo, guardar los matches en un array o actualizar el UI
-            
-        } else {
-            console.log(`❌ No se encontró match para: ${ticketItem.description}`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error API: ${response.status}, ${errorData.error || 'Error desconocido'}`);
         }
-    });
-    
-    console.log("=== DEBUG FIN ===");
+
+        const data = await response.json();
+        console.log("Resultados obtenidos:", data);
+        return data;
+    } catch (error) {
+        console.error('Error al comparar precios:', error);
+        return { error: "Error: " + error.message };
+    }
 }

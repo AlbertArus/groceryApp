@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import CameraOrGallery from '../functions/CameraOrGallery';
 import OCR from '../OCR/OCR';
 
-const Camera = ({ lista }) => {
+const Camera = ({ lista, EditItem, AddMultipleItems }) => {
     const [cameraOpen, setCameraOpen] = useState(false);
     const [image, setImage] = useState(null);
 
@@ -29,6 +29,8 @@ const Camera = ({ lista }) => {
                     image={image}
                     setImage={setImage}
                     lista={lista}
+                    AddMultipleItems={AddMultipleItems}
+                    EditItem={EditItem}  
                 />
             }
         </>
