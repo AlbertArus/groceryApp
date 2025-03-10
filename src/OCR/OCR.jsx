@@ -1,80 +1,97 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { compararPrecios } from "./DiferenciaPrecios";
+import { useState, useEffect } from "react";
 
 function OCR({ image, setImage, lista }) {
     const [text, setText] = useState('');
+    const [geminiResults, setGeminiResults] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (image) {
             realizarOCR();
-        } else {
-            console.log("No hay imagen");
         }
     }, [image]);
 
     const realizarOCR = async () => {
         if (!image) {
-            alert('Por favor, selecciona una imagen.');
+            setError('Por favor, selecciona una imagen.');
             return;
         }
-        console.log("inicio OCR")
+        
         setLoading(true);
+        setError(null);
+        
         try {
             if (typeof image === 'string') {
-                console.log("=== OCR DEBUG ===");
-                console.log("1. Iniciando OCR");
                 const base64Data = image.split(',')[1];
 
-                console.log("2. Enviando petición a OCR API");
-                const response = await fetch('https://7f33-83-50-183-163.ngrok-free.app/api/ocr', {
+                const response = await fetch('https://43af-83-50-183-163.ngrok-free.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ image: base64Data }),
+                    body: JSON.stringify({ image: base64Data, lista: lista }),
                 });
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error || 'Unknown error'}`);
+                    throw new Error(`Error: ${response.status}, ${errorData.error || 'Error desconocido'}`);
                 }
 
                 const data = await response.json();
-                console.log("3. Respuesta del servidor:", data);
-                console.log("4. Tipo de data.text:", typeof data.text);
-                console.log("5. Contenido de data.text:", data.text);
                 
+                // Actualizar todos los estados relevantes
                 setText(data.text);
-                console.log("6. Estado text actualizado");
-
+                setGeminiResults(data.geminiResults);
+                
             } else {
-                console.error("Image no es un string");
+                throw new Error("El formato de la imagen no es válido");
             }
 
         } catch (error) {
             console.error('Error al realizar OCR:', error);
+            setError(error.message);
         } finally {
             setLoading(false);
         }
     };
 
-    useEffect(() => {
-        if (text) {
-            console.log("7. Llamando a compararPrecios con text:", text);
-            compararPrecios(text, lista);
-        }
-    }, [text, lista]);
-
     return (
-        <div>
+        <div className="ocr-container">
             {loading ? (
-                <div>Estamos validando tu ticket</div>
+                <div className="loading-message">Estamos validando tu ticket...</div>
             ) : (
                 <>
-                    <button onClick={() => realizarOCR()}>Realizar OCR</button>
-                    <pre>Texto extraído: {JSON.stringify(text, null, 2)}</pre>
+                    {error && <div className="error-message">{error}</div>}
+                    
+                    <button 
+                        onClick={realizarOCR}
+                        disabled={!image}
+                        className="ocr-button"
+                    >
+                        Realizar OCR
+                    </button>
+                    
+                    {text && (
+                        <div className="results-container">
+                            <h3>Texto extraído:</h3>
+                            <pre className="text-result">{text}</pre>
+                            
+                            {geminiResults && (
+                                <div className="gemini-results">
+                                    <h3>Resultados del análisis:</h3>
+                                    <div className="modified-items">
+                                        <h4>Productos modificados:</h4>
+                                        <pre>{JSON.stringify(geminiResults.modified_items || [], null, 2)}</pre>
+                                    </div>
+                                    <div className="new-items">
+                                        <h4>Productos nuevos:</h4>
+                                        <pre>{JSON.stringify(geminiResults.new_items || [], null, 2)}</pre>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </>
             )}
         </div>
