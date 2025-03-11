@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import Modal from "../ui-components/Modal";
 
 function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
     const [text, setText] = useState('');
     const [geminiResults, setGeminiResults] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [step, setStep] = useState(1)
 
     useEffect(() => {
         if (image) {
@@ -25,7 +27,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
             if (typeof image === 'string') {
                 const base64Data = image.split(',')[1];
 
-                const response = await fetch('https://43af-83-50-183-163.ngrok-free.app/api/ocr', {
+                const response = await fetch('https://4945-83-50-183-163.ngrok-free.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -65,50 +67,64 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
                 <>
                     {error && <div className="error-message">{error}</div>}
                     
-                    <button 
+                    {/* <button 
                         onClick={realizarOCR}
                         disabled={!image}
                         className="ocr-button"
                     >
                         Realizar OCR
-                    </button>
+                    </button> */}
                     
                     {text && (
                         <div className="results-container">
-                            <h3>Texto extraído:</h3>
-                            <pre className="text-result">{text}</pre>
-                            
                             {geminiResults && (
-                                <div className="gemini-results">
-                                    <h3>Resultados del análisis:</h3>
-                                    <div className="modified-items">
-                                        <h4>Productos modificados:</h4>
-                                        <pre>{JSON.stringify(geminiResults.modified_items || [], null, 2)}</pre>
-                                        <button
-                                        onClick={() => {
-                                            geminiResults.modified_items.forEach(item => {
-                                                EditItem(item.id, item.name, item.price);
-                                                console.log("edit:", item.price, item.name)
-                                            });
-                                            }}
-                                        >
-                                            Actualizar
-                                        </button>
-                                    </div>
-                                    <div className="new-items">
-                                        <h4>Productos nuevos:</h4>
-                                        <pre>{JSON.stringify(geminiResults.new_items || [], null, 2)}</pre>
-                                        <button
-                                        onClick={() => {
-                                            geminiResults.new_items.forEach(item => {
-                                                AddMultipleItems(geminiResults.new_items, lista.categories[0].id)
-                                            });
-                                            }}
-                                        >
-                                            Añadir                                            
-                                        </button>                                    
-                                    </div>
-                                </div>
+                                <>
+                                    <Modal
+                                        title={"Confirma los datos"}
+                                        subtitle={"Aquí puedes verificar los datos de los items actualizados y los nuevos"}
+                                        // styleSpan={{display: "none"}}                                    
+                                    >
+                                        {step===1 ? (
+                                            <div className="modified-items">
+                                                <h4>Productos modificados:</h4>
+                                                {geminiResults.modified_items.forEach(item => {
+                                                    <div className="space-between">{`${item.name} - ${item.price}`}</div>;
+                                                    })
+                                                }
+                                                <button className="buttonMain"
+                                                onClick={() => {
+                                                    geminiResults.modified_items.forEach(item => {
+                                                        EditItem(item.id, item.name, item.price);
+                                                        console.log("edit:", item.price, item.name)
+                                                    });
+                                                    setStep(2)
+                                                    }}
+                                                >
+                                                    Actualizar
+                                                </button>
+                                                <button onClick={() => setStep(2)}></button>
+                                            </div>
+                                        ) : (
+                                            <div className="new-items">
+                                                <h4>Productos nuevos:</h4>
+                                                {geminiResults.new_items.forEach(item => {
+                                                    <div className="space-between">{`${item.name} - ${item.price}`}</div>;
+                                                    })
+                                                }
+                                                <button onClick={() => setStep(1)}></button>
+                                                <button
+                                                onClick={() => {
+                                                    geminiResults.new_items.forEach(item => {
+                                                        AddMultipleItems(geminiResults.new_items, lista.categories[0].id)
+                                                    });
+                                                    }}
+                                                >
+                                                    Añadir                                            
+                                                </button>                             
+                                            </div>
+                                        )}
+                                    </Modal>
+                                </>
                             )}
                         </div>
                     )}
