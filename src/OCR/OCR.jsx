@@ -60,7 +60,6 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
         }
     };
 
-    console.log(lista)
     return (
         <div className="ocr-container">
             {loading ? (
