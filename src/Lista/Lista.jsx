@@ -16,6 +16,7 @@ import EmptyState from '../ui-components/EmptyState'
 import PagoDeuda from '../Pagos/PagoDeuda'
 import IdentifyUser from '../components/IdentifyUser'
 import LoadingPage from '../components/LoadingPage'
+import Camera from '../ui-components/Camera'
 
 const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices }) => {
 
@@ -539,12 +540,19 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 />
               }
               {!isEStateLista && !isToggleShown &&
+              <div className='fila-between app-margin' style={{gap: "15px"}}>
                 <Search
-                  lista={selectedList}
-                  setSearchResult={setSearchResult}
-                  AddMultipleItems={AddMultipleItems}
-                  EditItem={EditItem}
+                    lista={selectedList}
+                    setSearchResult={setSearchResult}
+                    AddMultipleItems={AddMultipleItems}
+                    EditItem={EditItem}
                 />
+                <Camera 
+                    lista={selectedList}
+                    AddMultipleItems={AddMultipleItems}
+                    EditItem={EditItem}
+                />
+              </div>
               }
               <SubHeader 
                 itemslength={totalItemsLength}
