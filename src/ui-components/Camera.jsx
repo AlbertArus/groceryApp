@@ -19,8 +19,6 @@ const Camera = ({ lista, EditItem, AddMultipleItems }) => {
         />;
     }
 
-    console.log(image)
-
     return (
         <>
             <div className="search-container" style={{ padding: "5px 5px 0px 5px" }}>
