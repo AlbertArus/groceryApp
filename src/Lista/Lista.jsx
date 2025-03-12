@@ -540,18 +540,20 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 />
               }
               {!isEStateLista && !isToggleShown &&
-              <div className='fila-between app-margin' style={{gap: "15px"}}>
-                <Search
-                    lista={selectedList}
-                    setSearchResult={setSearchResult}
-                    AddMultipleItems={AddMultipleItems}
-                    EditItem={EditItem}
-                />
-                <Camera 
-                    lista={selectedList}
-                    AddMultipleItems={AddMultipleItems}
-                    EditItem={EditItem}
-                />
+              <div className='app-margin' >
+                <div className="fila-between" style={{gap: "10px"}}>
+                    <Search
+                        lista={selectedList}
+                        setSearchResult={setSearchResult}
+                        AddMultipleItems={AddMultipleItems}
+                        EditItem={EditItem}
+                    />
+                    <Camera 
+                        lista={selectedList}
+                        AddMultipleItems={AddMultipleItems}
+                        EditItem={EditItem}
+                    />
+                </div>
               </div>
               }
               <SubHeader 
