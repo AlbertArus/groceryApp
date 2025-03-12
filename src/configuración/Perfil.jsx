@@ -40,7 +40,7 @@ const Perfil = ({ usuario }) => {
                         </div>
                     </div>
                 {/* </Link> */}
-                <hr />
+                <hr className="hr_configuration"/>
                 <div className="linksPerfil">
                     <ItemSettings 
                         iconName={"password"}

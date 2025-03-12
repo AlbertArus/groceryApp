@@ -30,7 +30,7 @@ const Settings = () => {
                     itemSettingsName={"Notificaciones (pending)"}
                     // onClick={handleDeleteUser}
                 />
-                <hr />
+                <hr className="hr_configuration"/>
                 <h4>Ayuda y Soporte</h4>            
                 <ItemSettings 
                     iconName={"help"}
@@ -48,7 +48,7 @@ const Settings = () => {
                     itemSettingsName={"Enviar sugerencias"}
                     onClick={() => window.open('https://tally.so/r/3xP8Ko', '_blank')}
                 />
-                <hr />
+                <hr className="hr_configuration"/>
                 <h4>Legal</h4>                
                 <ItemSettings 
                     iconName={"description"}

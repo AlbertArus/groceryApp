@@ -31,18 +31,22 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive
               itemMenuName={`${lista.userConfig?.[usuario.uid]?.showPrices ? "Ocultar precios" : "Mostrar precios"}`}
               onClick={() => handleShowPrices(lista)}
               />
-            <ItemMenu
-              iconName={"check_box"}
-              itemMenuName={"Completar todo"}
-              onClick={handleCheckAll}
-              style={{display: itemslength < 2 ? "none" : "flex"}}
-              />
-            <ItemMenu
-              iconName={"check_box_outline_blank"}
-              itemMenuName={"Desmarcar todo"}
-              onClick={handleUnCheckAll}
-              style={{display: itemslength < 2 ? "none" : "flex"}}
-              />
+            {itemslength > 2 && (
+                <>
+                    <hr className="hr_optionsMenu"/>
+                    <ItemMenu
+                    iconName={"check_box"}
+                    itemMenuName={"Completar todo"}
+                    onClick={handleCheckAll}
+                    />
+                    <ItemMenu
+                    iconName={"check_box_outline_blank"}
+                    itemMenuName={"Desmarcar todo"}
+                    onClick={handleUnCheckAll}
+                    />
+                </>
+            )}
+            <hr className="hr_optionsMenu"/>
             </>
         )}
         <ItemMenu

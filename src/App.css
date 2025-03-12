@@ -94,10 +94,14 @@ h6 {
   font-weight: 400;
 }
 
-hr {
+.hr_configuration {
   border: 0.01px solid rgb(219, 216, 216);
   margin: 20px 0px;
   /* width: 20rem; */
+}
+
+.hr_optionsMenu {
+    margin: 6px 8px;
 }
 
 .app {
