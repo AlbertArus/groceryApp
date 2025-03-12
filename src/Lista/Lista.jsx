@@ -444,7 +444,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     const updatedCategories = selectedList.categories.map(category => {
       const updatedItems = category.items.map(item => ({...item, isChecked: false }))
 
-      return {...category, items: updatedItems}
+      return {...category, isChecked: false, items: updatedItems}
     })
     updateListaCategories(params.id, updatedCategories)
   }
