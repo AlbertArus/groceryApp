@@ -524,81 +524,97 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
           />
           {isToggleSelected === "Lista" ? (
             <>
-              {isToggleShown &&
-                <Toggle
-                  option1={"Todos"}
-                  option2={"Mis items"}
-                  form={"tabs"}
-                  lista={selectedList}
-                  setFilteredListaForItems={setFilteredListaForItems}
-                  usuario={usuario}
-                  isToggleActive={isToggleActive}
-                  setIsToggleActive={setIsToggleActive}
-                  setSearchParams={setSearchParams}
-                  isScrolled={isScrolled}
-                  setIsScrolled={setIsScrolled}
-                />
-              }
-              {!isEStateLista && !isToggleShown &&
-              <div className='app-margin' >
-                <div className="fila-between" style={{gap: "10px"}}>
-                    <Search
-                        lista={selectedList}
-                        setSearchResult={setSearchResult}
-                        AddMultipleItems={AddMultipleItems}
-                        EditItem={EditItem}
-                    />
-                    <Camera 
-                        lista={selectedList}
-                        AddMultipleItems={AddMultipleItems}
-                        EditItem={EditItem}
-                    />
+                {isToggleShown && (
+                    <div className='app-margin'>
+                        <div className='fila-between' style={{gap: "0px"}}>
+                            <Search
+                                lista={selectedList}
+                                setSearchResult={setSearchResult}
+                                AddMultipleItems={AddMultipleItems}
+                                EditItem={EditItem}
+                            />
+                            <Toggle
+                                option1={"Todos"}
+                                option2={"Mis items"}
+                                form={"tabs"}
+                                lista={selectedList}
+                                setFilteredListaForItems={setFilteredListaForItems}
+                                usuario={usuario}
+                                isToggleActive={isToggleActive}
+                                setIsToggleActive={setIsToggleActive}
+                                setSearchParams={setSearchParams}
+                                isScrolled={isScrolled}
+                                setIsScrolled={setIsScrolled}
+                            />
+                            <Camera 
+                                lista={selectedList}
+                                AddMultipleItems={AddMultipleItems}
+                                EditItem={EditItem}
+                            />
+                        </div>
+                    </div>
+                )
+                }
+                {!isEStateLista && !isToggleShown &&
+                <div className='app-margin' >
+                    <div className="fila-between" style={{gap: "10px"}}>
+                        <Search
+                            lista={selectedList}
+                            setSearchResult={setSearchResult}
+                            AddMultipleItems={AddMultipleItems}
+                            EditItem={EditItem}
+                        />
+                        <Camera 
+                            lista={selectedList}
+                            AddMultipleItems={AddMultipleItems}
+                            EditItem={EditItem}
+                        />
+                    </div>
                 </div>
-              </div>
-              }
-              <SubHeader 
-                itemslength={totalItemsLength}
-                itemsAdquirido={ItemsChecked()}
-                categories={selectedList.categories}
-                lista={selectedList}
-                price={FormattedFilteredListPrice()}
-                filteredListaForItems={filteredListaForItems}
-              />
-              <Categories
-                items={selectedList.categories.flatMap(category => category.items)}
-                categories={selectedList.categories}
-                handleCheck={handleCheck}
-                AddCategory={AddCategory}
-                EditCategory={EditCategory}
-                DeleteCategory={DeleteCategory}
-                AddItem={AddItem}
-                EditItem={EditItem}
-                DeleteItem={DeleteItem}
-                handleCounterDown={handleCounterDown}
-                handleCounterUp={handleCounterUp}
-                isEStateLista={isEStateLista}
-                lista={selectedList}
-                setSearchResult={setSearchResult}
-                searchResult={searchResult}
-                firstCategoryRef={firstCategoryRef}
-                UsuarioCompleto={UsuarioCompleto}
-                filteredListaForItems={filteredListaForItems}
-                handleDeleteItemUserMember={handleDeleteItemUserMember}
+                }
+                <SubHeader 
+                    itemslength={totalItemsLength}
+                    itemsAdquirido={ItemsChecked()}
+                    categories={selectedList.categories}
+                    lista={selectedList}
+                    price={FormattedFilteredListPrice()}
+                    filteredListaForItems={filteredListaForItems}
                 />
-              {isEStateLista && (
-                    <EmptyState
-                    img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
-                    alt={"Set of grocery bags full of items"}
-                    description={"Completa tu lista. Crea tu primera categoría y añade tantos items como quieras"}
-                    onClick={handleAddCategory}
-                    buttonCopy={"Añadir Categoría"}
+                <Categories
+                    items={selectedList.categories.flatMap(category => category.items)}
+                    categories={selectedList.categories}
+                    handleCheck={handleCheck}
+                    AddCategory={AddCategory}
+                    EditCategory={EditCategory}
+                    DeleteCategory={DeleteCategory}
+                    AddItem={AddItem}
+                    EditItem={EditItem}
+                    DeleteItem={DeleteItem}
+                    handleCounterDown={handleCounterDown}
+                    handleCounterUp={handleCounterUp}
+                    isEStateLista={isEStateLista}
+                    lista={selectedList}
+                    setSearchResult={setSearchResult}
+                    searchResult={searchResult}
+                    firstCategoryRef={firstCategoryRef}
+                    UsuarioCompleto={UsuarioCompleto}
+                    filteredListaForItems={filteredListaForItems}
+                    handleDeleteItemUserMember={handleDeleteItemUserMember}
                     />
-              )}
-              {sharePopupVisible && 
-                <SharePopUp
-                  setSharePopupVisible={setSharePopupVisible}
-                />
-              }
+                {isEStateLista && (
+                        <EmptyState
+                        img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                        alt={"Set of grocery bags full of items"}
+                        description={"Completa tu lista. Crea tu primera categoría y añade tantos items como quieras"}
+                        onClick={handleAddCategory}
+                        buttonCopy={"Añadir Categoría"}
+                        />
+                )}
+                {sharePopupVisible && 
+                    <SharePopUp
+                    setSharePopupVisible={setSharePopupVisible}
+                    />
+                }
             </>
           ) : (
             <>

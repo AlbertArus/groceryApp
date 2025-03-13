@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useUsuario } from "../UsuarioContext"
 import { useSearchParams } from "react-router-dom"
-import Camera from "./Camera"
+// import Camera from "./Camera"
 
 const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
     const {usuario} = useUsuario()
@@ -55,9 +55,9 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
             <>
             {searchParams.get("view") !== "payments" ? (
             <div className="fila-between" style={{justifyContent: "space-around", flex: "none"}}>
-                <div className="search-container fila-start" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>
+                {/* <div className="search-container fila-start" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>
                     <span className="material-symbols-outlined">search</span>
-                </div>
+                </div> */}
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
                     <div className='app-margin center'>
                         <div className='ToggleLista fila-start' style={{flex:"none"}}>
@@ -67,9 +67,9 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
                         </div>
                     </div>
                 </div>
-                <Camera
+                {/* <Camera
                     lista={lista}
-                />
+                /> */}
             </div>
             ) : (
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
