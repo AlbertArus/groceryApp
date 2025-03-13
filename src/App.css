@@ -99,11 +99,11 @@ h6 {
 .hr_configuration {
   border: 0.01px solid rgb(219, 216, 216);
   margin: 20px 0px;
-  /* width: 20rem; */
 }
 
 .hr_optionsMenu {
     margin: 6px 8px;
+    border: 0.1px solid rgb(219, 216, 216);
 }
 
 .app {
@@ -470,10 +470,6 @@ h6 {
   top: 0;
 }
 
-.login {
-  margin-top: 20px;
-}
-
 .login form{
   display: flex;
   flex-direction: column;
@@ -576,6 +572,7 @@ h6 {
 .content {
     flex: 1;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .buttonMain.inactive {
