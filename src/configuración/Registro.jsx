@@ -1,10 +1,11 @@
 import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { Checkbox } from "@mui/material"
 import ButtonArea from "../ui-components/ButtonArea.jsx"
+// import Toggle from "../ui-components/Toggle.jsx"
 const auth = getAuth(firebaseApp)
 
 const Registro = ({setUsuario}) => {
@@ -18,9 +19,15 @@ const Registro = ({setUsuario}) => {
     const apellidoRef = useRef();
     const correoRef = useRef();
     const contraseñaRef = useRef();
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [isToggleSelected, setIsToggleSelected] = useState(false)
 
-    const handleIsRegistered = () => {
-        setIsRegistered(prevState => !prevState)
+    const handleIsRegistered = (toggle) => {
+        if(toggle === "login") {
+            setIsRegistered(true)
+        } else {
+            setIsRegistered(false)
+        }
     }
 
     const minLength = 6
@@ -88,6 +95,12 @@ const Registro = ({setUsuario}) => {
         setCommunicationsChecked(prevState => !prevState)
     }
 
+    const handleClickSelected = (toggle) => {
+        setIsToggleSelected(toggle)
+        setSearchParams({view: toggle === "login" ? "login" : "register"})
+        handleIsRegistered(toggle)
+    }
+
   return (
     <ButtonArea 
         onClick={handleSubmit}
@@ -98,7 +111,13 @@ const Registro = ({setUsuario}) => {
                 <img className="picRegistro" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
             </div>        
             <div className="login app-margin">
-                <h2 style={{marginBottom: "25px", textAlign: "center"}}>{isRegistered ? "Inicia sesión en tu cuenta" : "Regístrate en GroceryApp"}</h2>
+                <h2 style={{marginBottom: "15px", textAlign: "center"}}>GroceryApp</h2>
+                <div className="toggle" style={{backgroundColor: "white", marginBottom: "20px"}}>
+                    <div className="app-margin toggleBars">
+                        <h4 onClick={() => handleClickSelected("register")} className={isToggleSelected === `register` ? "toggleOptions toggleBar" : "toggleOptions"}>Regístrate</h4>
+                        <h4 onClick={() => handleClickSelected("login")} className={isToggleSelected === `login` ? "toggleOptions toggleBar" : "toggleOptions"}>Inicia sesión</h4>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre *</label>
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
@@ -152,7 +171,6 @@ const Registro = ({setUsuario}) => {
                         <div style={{fontSize: "12px", marginLeft: "8px"}}>Acepto recibir comunicaciones comerciales</div>
                     </div>
                 </form>
-                <div className="redirect" onClick={handleIsRegistered}>{isRegistered ? "No tienes cuenta? Regístrate" : "Ya tienes cuenta? Inicia sesión"}</div>
             </div>
         </div>
     </ButtonArea>
