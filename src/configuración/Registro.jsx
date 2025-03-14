@@ -20,7 +20,9 @@ const Registro = ({setUsuario}) => {
     const correoRef = useRef();
     const contraseñaRef = useRef();
     const [searchParams, setSearchParams] = useSearchParams()
-    const [isToggleSelected, setIsToggleSelected] = useState(false)
+    const [isToggleSelected, setIsToggleSelected] = useState(() => {
+        return searchParams.get("view") === "login" ? "login" : "register"
+    })
 
     const handleIsRegistered = (toggle) => {
         if(toggle === "login") {
@@ -107,12 +109,12 @@ const Registro = ({setUsuario}) => {
         buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
     >
         <div className="app">
-            <div className="titleRegistro" style={{margin: "40px 0px 20px 0px"}}>
+            <div className="titleRegistro" style={{margin: "40px 0px 5px 0px"}}>
                 <img className="picRegistro" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
             </div>        
             <div className="login app-margin">
-                <h2 style={{marginBottom: "15px", textAlign: "center"}}>GroceryApp</h2>
-                <div className="toggle" style={{backgroundColor: "white", marginBottom: "20px"}}>
+                <h2 style={{marginBottom: "25px", textAlign: "center"}}>GroceryApp</h2>
+                <div className="toggle" style={{backgroundColor: "white", marginBottom: "25px"}}>
                     <div className="app-margin toggleBars">
                         <h4 onClick={() => handleClickSelected("register")} className={isToggleSelected === `register` ? "toggleOptions toggleBar" : "toggleOptions"}>Regístrate</h4>
                         <h4 onClick={() => handleClickSelected("login")} className={isToggleSelected === `login` ? "toggleOptions toggleBar" : "toggleOptions"}>Inicia sesión</h4>
@@ -123,7 +125,7 @@ const Registro = ({setUsuario}) => {
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <h5 style={{display: !isRegistered && errors.nombre ? "block" : "none", color:"red"}}>Añade tu nombre</h5>
                     <label htmlFor="apellido" style={{display: isRegistered ? "none" : "block"}}>Apellido</label>
-                    <input type="text" autoComplete="family-name" placeholder="Quintana" id="apellido" ref={apellidoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, apellido: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
+                    <input type="text" autoComplete="family-name" placeholder="Marquina" id="apellido" ref={apellidoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, apellido: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <label htmlFor="correo">Correo electrónico *</label>
                     <input type="email" autoComplete="email" placeholder="profesor@gmail.com" inputMode="email" id="correo" ref={correoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, correo: false}))} style={{textTransform: "lowercase"}} autoCapitalize="off"/>
                     <h5 style={{display: errors.correo ? "block" : "none", color:"red"}}>Añade un correo electrónico</h5>
