@@ -572,7 +572,7 @@ h6 {
 .content {
     flex: 1;
     overflow-x: hidden;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 .buttonMain.inactive {
