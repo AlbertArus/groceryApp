@@ -1,20 +1,13 @@
 import { useState, useEffect, forwardRef } from "react"
 import ItemMenu from "./ItemMenu"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useUsuario } from '../UsuarioContext';
-import {useSearchParams} from "react-router-dom"
 
 const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleShowVotes, handleShowPrices, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
   const navigate = useNavigate()
   const { usuario } = useUsuario();
-  const [inPagos, setInPagos] = useState (false)
-  const [searchParams] = useSearchParams() // Es [] porque realmente es un state pero como solo leo y no actualizo valores, no tengo el setSearchParams (que el nombre es libre)
-
-  useEffect(() => {
-      if(searchParams.get("view") === "payments") {
-        setInPagos(true)
-      }
-  },[searchParams])
+  const [searchParams] = useSearchParams()
+  const [inPagos] = useState(() => searchParams.get("view") === "payments")
 
   return (
     <div className="optionsMenu" ref={ref} style={style}>
