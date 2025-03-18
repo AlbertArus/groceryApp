@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import TabItemMenu from "../components/TabItemMenu";
 import OptionsMenuPagos from "../components/OptionsMenuPagos"
+import { formattedDateCapitalized } from "../functions/FormatDate";
 
 const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
     const {id, paymentId} = useParams()
@@ -74,7 +75,10 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
             >
             </Head>
             <div className="app-margin">
-                <h2 style={{display: "flex", justifyContent: "center"}}>{payment.paymentName}</h2>
+                <div className="columna-start" style={{justifyContent: "center", alignItems: "center"}}>
+                    <h2 >{payment.paymentName}</h2>
+                    <h5>{formattedDateCapitalized(new Date(payment.selectedDate))}</h5>
+                </div>
                 {nombrePayer.length > 0 && (
                     <div style={{width: "100%"}}>
                         <h3 style={{margin: "20px 0px 0px 0px"}}>Pagado por</h3>

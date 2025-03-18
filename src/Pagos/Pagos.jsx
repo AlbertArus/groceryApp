@@ -4,6 +4,7 @@ import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
 import ButtonArea from "../ui-components/ButtonArea"
 import { PriceFormatter } from "../components/PriceFormatter"
+import { formattedDateCapitalized } from "../functions/FormatDate"
 
 const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoLista, price}) => {
   const {usuario} = useUsuario()
@@ -38,6 +39,21 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
     },0)
   }
 
+  const paymentsDateObject = lista.payments.reduce((acc, payment) => {
+    const fecha = payment.selectedDate
+
+    if (!acc[fecha]) {
+        acc[fecha] = [];
+    }
+    acc[fecha].push(payment)
+
+    return acc
+  },{})
+
+  const pagosPorFechaArray = Object.entries(paymentsDateObject)
+  .map(([fecha, payments]) => ({fecha, payments}))  
+  .sort((a, b) => { return Number(b.fecha) - Number(a.fecha)});
+
   return (
     <>
         <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
@@ -67,25 +83,30 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                 />
             )}
             {lista?.payments && lista.payments.length !== 0 && (
-                <>
                 <div className="app-margin">
-                    {lista.payments.map((payment, index) => {
-                    return (
-                        <div key={payment.id}>
-                        <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
-                            <div className="vistaDatos fila-between">
-                            <div className="columna-start">
-                                <h4 style={{marginBottom: "4px"}}>{payment.paymentName}</h4>
-                                <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
-                            </div>
-                            <h4><PriceFormatter amount={payment.amount} /> </h4>
-                            </div>
-                        </Link>
-                        </div>
-                    )
+                    {pagosPorFechaArray.map(({fecha, payments}, index) => {
+                        return (
+                            <>
+                            <h5 style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
+                            {payments.map((payment) => {
+                                return (
+                                    <div key={payment.id}>
+                                    <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+                                        <div className="vistaDatos fila-between">
+                                        <div className="columna-start">
+                                            <h4 style={{marginBottom: "4px"}}>{payment.paymentName}</h4>
+                                            <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
+                                        </div>
+                                        <h4><PriceFormatter amount={payment.amount} /> </h4>
+                                        </div>
+                                    </Link>
+                                    </div>
+                                )
+                            })}
+                            </>
+                        )
                     })}
                 </div>  
-                </>
             )}
         </ButtonArea>
     </>
