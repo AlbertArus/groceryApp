@@ -954,3 +954,60 @@ height: 50px;
 border: 3px solid black;
 font-size: 18px;
 }
+
+/* Date picker */
+/* Contenedor principal */
+.calendar-container {
+    position: relative;
+  }
+  
+  /* Estilos del input */
+  .calendar-input {
+    position: relative;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 12px;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #1f2937;
+    gap: 10px;    
+  }
+  
+  /* Icono del calendario */
+  .calendar-icon-wrapper {
+    display: flex;
+  }
+  
+  /* Contenedor del calendario desplegable */
+  .calendar-dropdown {
+    position: absolute;
+    right: 0;
+    margin-top: 4px;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+    background-color: white;
+    width: fit-content;
+  }
+  
+  /* Estilos para DayPicker */
+  :root {
+    --rdp-cell-size: 40px;
+    /* --rdp-accent-color: #3b82f6; */
+    --rdp-background-color: #e5e7eb;
+    /* Otros */
+  }
+
+  /* Capitalizar meses en el calendario */
+  .rdp-caption {
+    text-transform: capitalize;
+    font-weight: 500;
+  }
+  
+  /* Día de hoy */
+  .rdp-day_today {
+    border: 1px solid #6b7280;
+    border-radius: 25px;
+  }

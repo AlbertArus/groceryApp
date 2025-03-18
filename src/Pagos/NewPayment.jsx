@@ -7,8 +7,9 @@ import GastosLista from "./GastosLista";
 import ButtonArea from "../ui-components/ButtonArea";
 import CustomChip from "../ui-components/CustomChip";
 import { PriceFormatter } from "../components/PriceFormatter";
+import DatePicker from "../ui-components/DatePicker"
 
-const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment }) => {
+const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment, selectedDate, setSelectedDate }) => {
     const { usuario } = useUsuario();
     const { id, paymentId } = useParams();
     const [searchParams] = useSearchParams();
@@ -103,9 +104,9 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         if (!newErrors.paymentName && !newErrors.amount && !newErrors.members) {
             try {
                 if (!paymentId) {
-                    await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, elementsPaid);
+                    await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, elementsPaid, selectedDate.toISOString());
                 } else {
-                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, elementsPaid);
+                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, elementsPaid, selectedDate);
                 }
                 navigate(`/list/${id}?view=payments`);
                 setAmount("");
@@ -214,25 +215,37 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
             >
                 <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-                    <form style={{display: "flex"}}>
+                    <form>
                         <label htmlFor="nombre">Título</label>
                         <div className="iconed-container fila-between">
                         <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
                         <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
                         </div>
                         <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
-                        {nombreUserMember.length > 0 && (
-                            <>
-                            <label htmlFor="payer">Quien ha pagado</label>
-                            <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
-                            {selectedList.userMember.map((uid, index) => {
-                                return (
-                                    <option key={uid} value={uid}>{nombreUserMember[index]}</option>
-                                )
-                            })}
-                            </select>
-                            </>
-                        )}
+                        <div className="fila-between" style={{width: "100%", gap: "15px"}}>
+                            <div className="payer columna-start" style={{flex: "1 1"}}>
+                                {nombreUserMember.length > 0 && (
+                                    <>
+                                    <label htmlFor="payer">Quien ha pagado</label>
+                                    <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
+                                    {selectedList.userMember.map((uid, index) => {
+                                        return (
+                                            <option key={uid} value={uid}>{nombreUserMember[index]}</option>
+                                        )
+                                    })}
+                                    </select>
+                                    </>
+                                )}
+                            </div>
+                            <div className="calendar columna-start">
+                                <label>Fecha</label>
+                                <DatePicker 
+                                    selectedDate={selectedDate}
+                                    setSelectedDate={setSelectedDate}
+                                />
+                                {/* <input type="date" aria-label="date" autoComplete="true"/> */}
+                            </div>
+                        </div>
                         <div style={{width: "100%", marginTop: "10px"}}>
                             <div className="fila-between">
                                 <div>

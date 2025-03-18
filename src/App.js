@@ -32,6 +32,7 @@ function App() {
   const [amount, setAmount] = useState("")
   const [payer, setPayer] = useState("")
   const [showIdentifyList, setShowIdentifyList] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const navigate = useNavigate()
   const location = useLocation();
@@ -316,9 +317,9 @@ function App() {
     return "Usuario desconocido";
   },[])
 
-    const AddPayment = (lista, listaId, paymentName, amount, payer, members, elementsPaid) => {
+    const AddPayment = (lista, listaId, paymentName, amount, payer, members, elementsPaid, selectedDate) => {
 
-        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [] }
+        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [], selectedDate }
         const updatedPayments = [...lista.payments, newPayment]
         updateLista(listaId, "payments", updatedPayments)
         if(elementsPaid && elementsPaid.length > 0) {
@@ -335,9 +336,9 @@ function App() {
         }
     }
 
-    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members, elementsPaid) => {
+    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members, elementsPaid, selectedDate) => {
         const editedPayment = lista.payments.find(payment => payment.id === paymentId)
-        const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date().toISOString() }
+        const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date().toISOString(), selectedDate: selectedDate }
         const updatedPayments = lista.payments.map(payment => 
             payment.id === paymentId ? newDataPayment : payment
         )
@@ -462,6 +463,8 @@ function App() {
                 amount={amount}
                 setAmount={setAmount}
                 editPayment={editPayment}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
               />}
             />           
             <Route path='/list/:id/:paymentId' element={

@@ -125,7 +125,6 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
     },[])
 
   const AddItem = (name, price, categoryId) => {
-    console.log("llamo a Add")
     const newItem = { id: uuidv4(), listaId: params.id, itemCreator: usuario.uid, itemUserMember: selectedList.userMember, categoryId, name, price, counterUp: [], counterDown: [], isChecked: false, isPaid: false, payer: "" };
     // const updatedItems = [...selectedList.items, newItem];
     // updateListaItems(params.id, updatedItems);
