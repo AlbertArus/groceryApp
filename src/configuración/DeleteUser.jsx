@@ -64,7 +64,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
         onClick={() => setDeleteConfirmation(true)}
         style={{backgroundColor: "rgb(248, 167, 167)"}}
     >
-        <div className="app">
+        <div className="app" style={{height: "calc(100vh - 70px"}}>
             <Head 
                 path={"profile"}
             />

@@ -99,7 +99,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
   }
   
   return (
-    <div className="FormLista app">
+    <div className="FormLista app" style={{height: "calc(100vh - 70px"}}>
         <Head
         path={""}          
         // sectionName={!listaId ? "Nueva lista" : "Editar lista"}

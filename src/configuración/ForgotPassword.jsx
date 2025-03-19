@@ -33,7 +33,7 @@ const ForgotPassword = () => {
             buttonCopy={"Enviar enlace de recuperación"}
             onClick={handleResetPassword}
         >
-        <div className="app">
+        <div className="app" style={{height: "calc(100vh - 70px"}}>
             <Head
                 path={"/register"}            
                 sectionName={""}                

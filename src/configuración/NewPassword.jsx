@@ -80,7 +80,7 @@ const NewPassword = () => {
         buttonCopy={"Cambiar contraseña"}
         onClick={handleChangePassword}        
     >
-        <div className="app">
+        <div className="app" style={{height: "calc(100vh - 70px"}}>
             <Head 
                 path={"profile"}        
             />

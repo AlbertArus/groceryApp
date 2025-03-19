@@ -99,7 +99,7 @@ const Register = ({setUsuario}) => {
         onClick={handleSubmit}
         buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
     >
-        <div className="app">
+        <div className="app" style={{height: "calc(100vh - 70px"}}>
             <div className="titleRegister" style={{margin: "40px 0px 5px 0px"}}>
                 <img className="picRegister" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
             </div>        
