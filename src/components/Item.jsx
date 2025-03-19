@@ -10,7 +10,7 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
 
   const { usuario } = useUsuario();
   const [name, setName] = useState(initialName)
-  const [price, setPrice] = useState(initialPrice)
+  const [price] = useState(initialPrice)
   const [isExpanded, setIsExpanded] = useState(false)
   const [itemIsChecked, setItemIsChecked] = useState(false)
   const [isInputFocused, setIsInputFocused] = useState(false);

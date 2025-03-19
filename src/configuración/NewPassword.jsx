@@ -85,7 +85,7 @@ const NewPassword = () => {
                 path={"profile"}        
             />
             <div className="app-margin login">
-            <h2 style={{marginBottom: "25px"}}>Modifica tu contraseña</h2>
+            <h2 style={{margin: "25px 0px", fontWeight: "600"}}>Modifica tu contraseña</h2>
                 <form className="loginForm" onSubmit={handleChangePassword}>
                     <label htmlFor="newContraseña">Nueva contraseña</label>
                     <div className="iconed-container fila-between" style={{backgroundColor: "transparent", border: "1px solid #9E9E9E", margin: "5px 0px"}}>
