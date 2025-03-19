@@ -8,8 +8,9 @@ import ButtonArea from "../ui-components/ButtonArea.jsx"
 // import Toggle from "../ui-components/Toggle.jsx"
 const auth = getAuth(firebaseApp)
 
-const Registro = ({setUsuario}) => {
-    const [isRegistered, setIsRegistered] = useState(false) // Para separar página de Inicio de sesión de página de Registro
+const Register = ({setUsuario}) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const isRegistered = searchParams.get("view") === "login"
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [termsChecked, setTermsChecked] = useState(false)
     const [communicationsChecked, setCommunicationsChecked] = useState(false)
@@ -19,18 +20,9 @@ const Registro = ({setUsuario}) => {
     const apellidoRef = useRef();
     const correoRef = useRef();
     const contraseñaRef = useRef();
-    const [searchParams, setSearchParams] = useSearchParams()
     const [isToggleSelected, setIsToggleSelected] = useState(() => {
         return searchParams.get("view") === "login" ? "login" : "register"
     })
-
-    const handleIsRegistered = (toggle) => {
-        if(toggle === "login") {
-            setIsRegistered(true)
-        } else {
-            setIsRegistered(false)
-        }
-    }
 
     const minLength = 6
     const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -99,8 +91,7 @@ const Registro = ({setUsuario}) => {
 
     const handleClickSelected = (toggle) => {
         setIsToggleSelected(toggle)
-        setSearchParams({view: toggle === "login" ? "login" : "register"})
-        handleIsRegistered(toggle)
+        setSearchParams({view: toggle})
     }
 
   return (
@@ -109,8 +100,8 @@ const Registro = ({setUsuario}) => {
         buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
     >
         <div className="app">
-            <div className="titleRegistro" style={{margin: "40px 0px 5px 0px"}}>
-                <img className="picRegistro" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
+            <div className="titleRegister" style={{margin: "40px 0px 5px 0px"}}>
+                <img className="picRegister" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
             </div>        
             <div className="login app-margin">
                 <h2 style={{marginBottom: "25px", textAlign: "center"}}>GroceryApp</h2>
@@ -137,6 +128,7 @@ const Registro = ({setUsuario}) => {
                     </div>
                     <h5 style={{display: errors.contraseña ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
                     <h5 style={{display: errors.contraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
+                    <h6 style={{borderBottom: "1px solid rgb(173, 172, 172)", width: "fit-content", marginTop: "15px", display: !isRegistered ? "none" : "block"}} onClick={() => navigate("/forgot-password")}>He olvidado mi contraseña</h6>
                     <div className="fila-start" style={{marginTop: "7px", display: isRegistered ? "none" : "flex"}}>
                         <Checkbox 
                             checked={termsChecked}
@@ -179,4 +171,4 @@ const Registro = ({setUsuario}) => {
   )
 }
 
-export default Registro
+export default Register

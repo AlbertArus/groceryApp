@@ -52,7 +52,7 @@ const NavBar = ({isRegistered}) => {
                     <img className="favicon" src="/Fotos GroceryApp/favicon/favicon-16x16.png" alt="iconWeb" />
                     <h4 style={{marginLeft: "6px"}}>GroceryApp</h4>
                 </div>
-                <div className="fila-start" style={{position: "relative", alignItems: "center", display: (location.pathname === "/registro" || isRegistered) ? "none" : "flex"}}>
+                <div className="fila-start" style={{position: "relative", alignItems: "center", display: (location.pathname === "/register" || isRegistered) ? "none" : "flex"}}>
                     <span className="material-symbols-outlined icon-medium pointer">notifications</span>
                     <span className="material-symbols-outlined pointer" style={{marginLeft: "4px"}} onClick={handleMenuVisibility} ref={buttonMenuRef}>more_vert</span>
                     {isOptionsMenuVisible && 

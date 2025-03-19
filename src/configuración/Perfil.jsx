@@ -50,7 +50,7 @@ const Perfil = ({ usuario }) => {
                     <ItemSettings 
                         iconName={"logout"}
                         itemSettingsName={"Cerrar sesión"}
-                        onClick={() => {handleSignOut(); navigate("/registro")}}
+                        onClick={() => {handleSignOut(); navigate("/register")}}
                     />
                     <ItemSettings 
                         iconName={"delete_forever"}

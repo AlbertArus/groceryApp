@@ -7,7 +7,6 @@ import toast, { Toaster } from 'react-hot-toast'
 import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 import Archived from './Listas/Archived';
-import Registro from './configuración/Registro';
 import Perfil from './configuración/Perfil';
 import Settings from './configuración/Settings.jsx';
 import NewPassword from './configuración/NewPassword.jsx'
@@ -19,6 +18,8 @@ import { useUsuario } from './UsuarioContext.jsx';
 import NewPayment from './Pagos/NewPayment.jsx';
 import PaymentDetail from './Pagos/PaymentDetail.jsx';
 import CreateReplacementUser from './functions/CreateReplacementUser.jsx';
+import Register from './configuración/Register.jsx';
+import ForgotPassword from './configuración/ForgotPassword.jsx';
 
 function App() {
   
@@ -63,7 +64,7 @@ function App() {
         }
         if (usuario === null) {
             setIsLoading(false);
-            navigate("/registro");
+            navigate("/register");
         } else if(usuario) {
             loadListasFromFirebase();
         }
@@ -365,10 +366,14 @@ function App() {
       <div>
         <Toaster position="bottom-center" reverseOrder={false} />
         <Routes>
-        <Route path="/registro" element={
-          <Registro 
+        <Route path="/register" element={
+          <Register
             setUsuario={setUsuario}
           />}
+        />
+        <Route path='/forgot-password' element={
+            <ForgotPassword
+            />} 
         />
         {usuario && listasLoaded ? (
           <>
@@ -476,7 +481,7 @@ function App() {
             />
           </>
         ) : (
-          <Route path='*' element={<Registro />} />
+          <Route path='*' element={<Register />} />
         )}
         </Routes>
       </div>
