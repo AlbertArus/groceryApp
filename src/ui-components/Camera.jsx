@@ -19,6 +19,7 @@ const Camera = ({ lista, EditItem, AddMultipleItems }) => {
         />;
     }
 
+    console.log("lista desde camera", lista)
     return (
         <>
             <div className="search-container" style={{ padding: "5px 5px 0px 5px" }}>

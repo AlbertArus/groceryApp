@@ -524,34 +524,19 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
           {isToggleSelected === "Lista" ? (
             <>
                 {isToggleShown && (
-                    <div className='app-margin'>
-                        <div className='fila-between' style={{gap: "0px"}}>
-                            <Search
-                                lista={selectedList}
-                                setSearchResult={setSearchResult}
-                                AddMultipleItems={AddMultipleItems}
-                                EditItem={EditItem}
-                            />
-                            <Toggle
-                                option1={"Todos"}
-                                option2={"Mis items"}
-                                form={"tabs"}
-                                lista={selectedList}
-                                setFilteredListaForItems={setFilteredListaForItems}
-                                usuario={usuario}
-                                isToggleActive={isToggleActive}
-                                setIsToggleActive={setIsToggleActive}
-                                setSearchParams={setSearchParams}
-                                isScrolled={isScrolled}
-                                setIsScrolled={setIsScrolled}
-                            />
-                            <Camera 
-                                lista={selectedList}
-                                AddMultipleItems={AddMultipleItems}
-                                EditItem={EditItem}
-                            />
-                        </div>
-                    </div>
+                    <Toggle
+                        option1={"Todos"}
+                        option2={"Mis items"}
+                        form={"tabs"}
+                        lista={selectedList}
+                        setFilteredListaForItems={setFilteredListaForItems}
+                        usuario={usuario}
+                        isToggleActive={isToggleActive}
+                        setIsToggleActive={setIsToggleActive}
+                        setSearchParams={setSearchParams}
+                        isScrolled={isScrolled}
+                        setIsScrolled={setIsScrolled}
+                    />
                 )
                 }
                 {!isEStateLista && !isToggleShown &&

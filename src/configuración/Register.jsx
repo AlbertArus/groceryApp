@@ -30,36 +30,63 @@ const Register = ({setUsuario}) => {
     const handleSubmit = async(e) => {
         e.preventDefault()
         
-        const nombre = nombreRef.current.value;
-        const apellido = apellidoRef.current.value;
         const correo = correoRef.current.value;
         const contraseña = contraseñaRef.current.value;
-        const correoInvalid = !regex.test(correo.trim());        
-        setErrors({
-            nombre: (nombre.trim() === ""),
-            correo: (correo.trim() === ""),
-            correoInvalid: correoInvalid,
-            contraseña: (contraseña.trim() === ""),
-            contraseñaInvalid: (contraseña.trim().length < minLength),
-            termsUnchecked: !termsChecked
-        })
-
-        const capitalizedNombre = nombre.charAt(0).toUpperCase()+nombre.slice(1).toLowerCase();
-        const capitalizedApeliido = apellido.charAt(0).toUpperCase()+apellido.slice(1); // No añado toLowerCase por si es compuesto etc y necesita otra
         
-        try {
-            let userCredential;
-            if(isRegistered) {
-                if(correo.trim() && contraseña.trim()) {
-                    userCredential = await signInWithEmailAndPassword(auth, correo, contraseña);
+        if(isRegistered) {
+            // Solo validamos email y contraseña para login
+            const correoInvalid = !regex.test(correo.trim());
+            setErrors({
+                correo: (correo.trim() === ""),
+                correoInvalid: correoInvalid,
+                contraseña: (contraseña.trim() === ""),
+                contraseñaInvalid: (contraseña.trim().length < minLength),
+                nombre: false,
+                termsUnchecked: false
+            });
+            
+            // Solo intentar login si los campos necesarios están completos
+            if(correo.trim() && contraseña.trim() && !correoInvalid) {
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, correo, contraseña);
+                    if (userCredential) {
+                        navigate("/");
+                    }
+                } catch (error) {
+                    console.error("Error al iniciar sesión:", error);
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        correoInvalid: error.code === "auth/invalid-email",
+                        contraseñaInvalid: error.code === "auth/wrong-password",
+                        correo: error.code === "auth/user-not-found"
+                    }));
                 }
-            } else {
-                if(nombre.trim() && correo.trim() && contraseña.trim() && termsChecked) {
-                    userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña);
+            }
+        } else {
+            // Para registro validamos todos los campos
+            const nombre = nombreRef.current.value;
+            const apellido = apellidoRef.current.value;
+            const correoInvalid = !regex.test(correo.trim());
+            
+            setErrors({
+                nombre: (nombre.trim() === ""),
+                correo: (correo.trim() === ""),
+                correoInvalid: correoInvalid,
+                contraseña: (contraseña.trim() === ""),
+                contraseñaInvalid: (contraseña.trim().length < minLength),
+                termsUnchecked: !termsChecked
+            });
+            
+            if(nombre.trim() && correo.trim() && contraseña.trim() && termsChecked && !correoInvalid && contraseña.trim().length >= minLength) {
+                try {
+                    const capitalizedNombre = nombre.charAt(0).toUpperCase()+nombre.slice(1).toLowerCase();
+                    const capitalizedApeliido = apellido.charAt(0).toUpperCase()+apellido.slice(1);
+                    
+                    const userCredential = await createUserWithEmailAndPassword(auth, correo, contraseña);
                     await updateProfile(userCredential.user, {
                         displayName: `${nombre} ${apellido}`
                     });
-    
+
                     await setDoc(doc(db, "usuarios", userCredential.user.uid), {
                         uid: userCredential.user.uid,
                         nombre: capitalizedNombre,
@@ -69,11 +96,19 @@ const Register = ({setUsuario}) => {
                         comunicaciones: communicationsChecked,
                         createdAt: new Date().toISOString(),
                     });
+                    
+                    if (userCredential) {
+                        navigate("/");
+                    }
+                } catch (error) {
+                    console.error("Error al registrar el usuario:", error);
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        correoInvalid: error.code === "auth/invalid-email",
+                        correo: error.code === "auth/email-already-in-use"
+                    }));
                 }
             }
-            navigate("/");
-        } catch(error) {
-            console.error(isRegistered ? "Error al iniciar sesión:" : "Error al registrar el usuario:", error);
         }
     }
 

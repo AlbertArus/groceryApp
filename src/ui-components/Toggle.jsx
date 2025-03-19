@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useUsuario } from "../UsuarioContext"
 import { useSearchParams } from "react-router-dom"
-// import Camera from "./Camera"
+import Camera from "./Camera"
 
 const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilteredListas, setFilteredListaForItems, isToggleActive, setIsToggleActive, isToggleSelected, setIsToggleSelected, setSearchParams, isScrolled, setIsScrolled }) => {
     const {usuario} = useUsuario()
@@ -54,23 +54,20 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
         {form === "tabs" && (
             <>
             {searchParams.get("view") !== "payments" ? (
-            <div className="fila-between" style={{justifyContent: "space-around", flex: "none"}}>
-                {/* <div className="search-container fila-start" style={{ padding: "5px 5px 0px 5px", marginLeft: "10px" }}>
-                    <span className="material-symbols-outlined">search</span>
-                </div> */}
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
-                    <div className='app-margin center'>
-                        <div className='ToggleLista fila-start' style={{flex:"none"}}>
-                            <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
-                            <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
-                            <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
+                    <div className="fila-between app-margin">
+                        <div className='center'>
+                            <div className='ToggleLista fila-start' style={{flex:"none"}}>
+                                <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
+                                <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
+                                <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
+                            </div>
                         </div>
+                        <Camera
+                            lista={lista}
+                        />
                     </div>
                 </div>
-                {/* <Camera
-                    lista={lista}
-                /> */}
-            </div>
             ) : (
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
                     <div className='app-margin center'>
