@@ -40,19 +40,22 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
   }
 
   const paymentsDateObject = lista.payments.reduce((acc, payment) => {
-    const fecha = payment.selectedDate
-
-    if (!acc[fecha]) {
-        acc[fecha] = [];
+    const date = new Date(payment.selectedDate);
+    const normalizedDate = new Date(date.setHours(0, 0, 0, 0)).getTime(); // Convert timestamp to Date and normalize to midnight. AGain for control, not strictly necessary as date is already timestamp at midnight by saving as midnight in App.js
+    
+    if (!acc[normalizedDate]) {
+      acc[normalizedDate] = [];
     }
-    acc[fecha].push(payment)
-
-    return acc
-  },{})
+    acc[normalizedDate].push(payment);
+  
+    return acc;
+  }, {});
 
   const pagosPorFechaArray = Object.entries(paymentsDateObject)
   .map(([fecha, payments]) => ({fecha, payments}))  
   .sort((a, b) => { return Number(b.fecha) - Number(a.fecha)});
+
+  console.log(pagosPorFechaArray)
 
   return (
     <>
@@ -87,7 +90,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                     {pagosPorFechaArray.map(({fecha, payments}, index) => {
                         return (
                             <>
-                            <h5 style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
+                            <h5 key={fecha[index]} style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
                             {payments.map((payment) => {
                                 return (
                                     <div key={payment.id}>
