@@ -25,7 +25,7 @@ const Register = ({setUsuario}) => {
     })
 
     const minLength = 6
-    const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const regex = /^[\w-.]+@([\w-]+\.)+[a-zA-Z]{2,}$/;
     
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -34,7 +34,6 @@ const Register = ({setUsuario}) => {
         const contraseña = contraseñaRef.current.value;
         
         if(isRegistered) {
-            // Solo validamos email y contraseña para login
             const correoInvalid = !regex.test(correo.trim());
             setErrors({
                 correo: (correo.trim() === ""),
@@ -45,7 +44,6 @@ const Register = ({setUsuario}) => {
                 termsUnchecked: false
             });
             
-            // Solo intentar login si los campos necesarios están completos
             if(correo.trim() && contraseña.trim() && !correoInvalid) {
                 try {
                     const userCredential = await signInWithEmailAndPassword(auth, correo, contraseña);
@@ -54,16 +52,38 @@ const Register = ({setUsuario}) => {
                     }
                 } catch (error) {
                     console.error("Error al iniciar sesión:", error);
+                    let errorMessage = "";
+                    switch(error.code) {
+                        case "auth/invalid-email":
+                            errorMessage = "El formato del correo electrónico no es válido";
+                            break;
+                        case "auth/invalid-login-credentials":
+                                errorMessage = "No existe una cuenta con este correo electrónico";
+                                break;                        
+                        case "auth/user-not-found":
+                            errorMessage = "No existe una cuenta con este correo electrónico";
+                            break;
+                        case "auth/wrong-password":
+                            errorMessage = "La contraseña es incorrecta";
+                            break;
+                        case "auth/too-many-requests":
+                            errorMessage = "Demasiados intentos fallidos. Intenta más tarde";
+                            break;
+                        default:
+                            errorMessage = "Error al iniciar sesión. Por favor, inténtalo de nuevo";
+                    }
+
                     setErrors((prevErrors) => ({
                         ...prevErrors,
                         correoInvalid: error.code === "auth/invalid-email",
                         contraseñaInvalid: error.code === "auth/wrong-password",
-                        correo: error.code === "auth/user-not-found"
+                        correo: error.code === "auth/user-not-found",
+                        authError: true,
+                        authErrorMessage: errorMessage
                     }));
                 }
             }
         } else {
-            // Para registro validamos todos los campos
             const nombre = nombreRef.current.value;
             const apellido = apellidoRef.current.value;
             const correoInvalid = !regex.test(correo.trim());
@@ -101,11 +121,29 @@ const Register = ({setUsuario}) => {
                         navigate("/");
                     }
                 } catch (error) {
+
+                    let errorMessage = "";
+                    switch(error.code) {
+                        case "auth/email-already-in-use":
+                            errorMessage = "El correo electrónico no es válido";
+                            break;
+                        case "auth/invalid-email":
+                            errorMessage = "El formato del correo electrónico no es válido";
+                            break;
+                        case "auth/weak-password":
+                            errorMessage = "La contraseña es demasiado débil";
+                            break;
+                        default:
+                            errorMessage = "Error al crear la cuenta. Por favor, inténtalo de nuevo";
+                    }
+
                     console.error("Error al registrar el usuario:", error);
                     setErrors((prevErrors) => ({
                         ...prevErrors,
                         correoInvalid: error.code === "auth/invalid-email",
-                        correo: error.code === "auth/email-already-in-use"
+                        correo: error.code === "auth/email-already-in-use",
+                        authError: true,
+                        authErrorMessage: errorMessage
                     }));
                 }
             }
@@ -155,7 +193,8 @@ const Register = ({setUsuario}) => {
                     <label htmlFor="correo">Correo electrónico *</label>
                     <input type="email" autoComplete="email" placeholder="profesor@gmail.com" inputMode="email" id="correo" ref={correoRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, correo: false}))} style={{textTransform: "lowercase"}} autoCapitalize="off"/>
                     <h5 style={{display: errors.correo ? "block" : "none", color:"red"}}>Añade un correo electrónico</h5>
-                    <h5 style={{display: errors.correoInvalid ? "block" : "none", color:"red"}}>Tu dirección de correo electrónico no es correcta</h5>
+                    <h5 style={{display: errors.authError ? "block" : "none", color:"red"}}>{errors.authErrorMessage}</h5>
+                    <h5 style={{display: errors.correoInvalid ? "block" : "none", color:"red"}}>El formato del correo electrónico no es válido</h5>
                     <label htmlFor="contraseña">Contraseña *</label>
                     <div className="iconed-container fila-between" style={{backgroundColor: "transparent", border: "1px solid #9E9E9E", margin: "5px 0px"}}>
                         <input type={!isPasswordVisible ? "password" : "text"} style={{border: "none", margin: "0px"}} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
