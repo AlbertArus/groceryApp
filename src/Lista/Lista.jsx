@@ -541,7 +541,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 }
                 {!isEStateLista && !isToggleShown &&
                 <div className='app-margin' >
-                    <div className="fila-between" style={{gap: "10px"}}>
+                    <div className="fila-between" style={{gap: "10px", margin: "12px 0px"}}>
                         <Search
                             lista={selectedList}
                             setSearchResult={setSearchResult}

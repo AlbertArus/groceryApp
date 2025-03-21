@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import CameraOrGallery from '../functions/CameraOrGallery';
 import OCR from '../OCR/OCR';
+import { useSearchParams } from 'react-router-dom';
 
 const Camera = ({ lista, EditItem, AddMultipleItems }) => {
     const [cameraOpen, setCameraOpen] = useState(false);
     const [image, setImage] = useState(null);
+    const [searchParams] = useSearchParams()
+    const OCRneed = searchParams.get("view") === "lista"
 
     const handleImageCapture = (image) => {
         setImage(image)
@@ -19,13 +22,12 @@ const Camera = ({ lista, EditItem, AddMultipleItems }) => {
         />;
     }
 
-    console.log("lista desde camera", lista)
     return (
         <>
             <div className="search-container" style={{ padding: "5px 5px 0px 5px" }}>
                 <span className="material-symbols-outlined" onClick={() => setCameraOpen(true)}>add_a_photo</span>
             </div>
-            {image && 
+            {image && OCRneed &&
                 <OCR
                     image={image}
                     setImage={setImage}

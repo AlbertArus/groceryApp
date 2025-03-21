@@ -8,6 +8,7 @@ import ButtonArea from "../ui-components/ButtonArea";
 import CustomChip from "../ui-components/CustomChip";
 import { PriceFormatter } from "../components/PriceFormatter";
 import DatePicker from "../ui-components/DatePicker"
+import Camera from "../ui-components/Camera"
 
 const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment, selectedDate, setSelectedDate }) => {
     const { usuario } = useUsuario();
@@ -216,10 +217,15 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
             >
                 <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
                     <form>
-                        <label htmlFor="nombre">Título</label>
-                        <div className="iconed-container fila-between">
-                        <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
-                        <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
+                            <div className="columna-start" style={{width: "100%"}}>
+                                <label htmlFor="nombre">Título</label>
+                        <div className="fila-between" style={{gap: "10px"}}>
+                                <div className="iconed-container fila-between">
+                                    <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
+                                    <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
+                                </div>
+                                <Camera />
+                            </div>
                         </div>
                         <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
                         <div className="fila-between" style={{width: "100%", gap: "15px"}}>
