@@ -377,29 +377,31 @@ h6 {
 
 .FormLista input,
 .FormLista select {
-  border: none;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   outline: none;
-  background-color: #ebeaea;
+  /* background-color: #ebeaea; */
   flex: 1;
   font-family: inherit;
   font-size: 16px;
   color: black;
-  padding: 5px 5px;
+  /* padding: 5px 5px; */
+  padding: 6px;
   width: 100%;
 }
 
 .FormLista textarea {
-  border: none;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   outline: none;
   resize: none;
-  background-color: #ebeaea;
+  /* background-color: #ebeaea; */
   flex: 1;
   font-family: inherit;
   font-size: 16px;
   color: black;
-  padding: 5px 5px;
+  /* padding: 5px 5px; */
+  padding: 6px;
   width: 100%;
 }
 
@@ -433,13 +435,15 @@ h6 {
 .iconed-container{
   width: 100%;
   border-radius: 6px;
-  background-color: #ebeaea;
+  /* background-color: #ebeaea; */
+  border: 1px solid #d1d5db;
 }
 
 .iconed-container > input{
     width: 100%;
-    border-radius: 6px;
-    background-color: #ebeaea;
+    /* border-radius: 6px; */
+    /* background-color: #ebeaea; */
+    border: none;
   }
 
 .iconed-container-underlineInput {
@@ -654,11 +658,12 @@ h6 {
 
 .search-container {
   /* border: 1.5px solid grey; */
-  box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  /* box-shadow: 0px 0px 3px rgba(0,0,0,0.3); */
   border-radius: 5px;
-  background-color: #e0e0e06e;
-  padding: 5px;
-  margin: 12px 0px;
+  /* background-color: #e0e0e06e; */
+  border: 1px solid #d1d5db;
+  padding: 6px;
+  /* padding: 5px; */
 }
 
 .search-container input{
@@ -967,7 +972,7 @@ font-size: 18px;
     position: relative;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    padding: 12px;
+    padding: 6px;
     cursor: pointer;
     background-color: #ffffff;
     color: #1f2937;
