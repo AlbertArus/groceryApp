@@ -99,7 +99,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
   }
   
   return (
-    <div className="FormLista app" style={{height: "calc(100vh - 70px"}}>
+    <div className="FormLista app">
         <Head
         path={""}          
         // sectionName={!listaId ? "Nueva lista" : "Editar lista"}
@@ -119,7 +119,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
                     <h5 style={{display: errors.listaName ? "block" : "none", color:"red"}}>Añade un nombre a tu lista</h5>
                     <label htmlFor="plan">Plan</label>
                     <select id="plan" onChange={(e) => {setPlan(e.target.value); setErrors(prevErrors => ({...prevErrors, plan: false }))}} value={plan}>
-                    <option value="">Selecciona un plan</option>
+                    <option value="" selected disabled>Selecciona un plan</option>
                     <option value="Viaje">Viaje</option>
                     <option value="Casa compartida">Casa compartida</option>
                     <option value="Compra semanal">Compra semanal</option>

@@ -389,7 +389,6 @@ h6 {
   font-family: inherit;
   font-size: 16px;
   color: black;
-  /* padding: 5px 5px; */
   padding: 6px;
   width: 100%;
 }
@@ -404,15 +403,13 @@ h6 {
   font-family: inherit;
   font-size: 16px;
   color: black;
-  /* padding: 5px 5px; */
   padding: 6px;
   width: 100%;
 }
 
 .FormLista input::placeholder,
-.FormLista select::placeholder
 .FormLista textarea::placeholder {
-  color: lightgray;
+  color: rgb(152, 152, 152);
   opacity: 1;
 }
 
@@ -452,7 +449,8 @@ h6 {
 
 .iconed-container-underlineInput {
     width: 100%;
-    border-bottom: 1px solid grey;
+    /* border-bottom: 1px solid grey; */
+    border-bottom: 0.1px solid rgb(219, 216, 216);
     background-color: transparent;
 }
 
