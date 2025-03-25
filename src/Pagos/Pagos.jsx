@@ -91,7 +91,8 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                         return (
                             <>
                             <h5 key={fecha[index]} style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
-                            {payments.map((payment) => {
+                            {payments.map(payment => {
+                                const index = lista.payments.findIndex(listaPayment => listaPayment.id === payment.id) // Necesito el index en el array de payments de lista (no de fecha) para tener el nombrePayer que usa el index sobre pagos de la lista
                                 return (
                                     <div key={payment.id}>
                                     <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
