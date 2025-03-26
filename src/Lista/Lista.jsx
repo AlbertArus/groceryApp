@@ -18,7 +18,7 @@ import IdentifyUser from '../components/IdentifyUser'
 import LoadingPage from '../components/LoadingPage'
 import Camera from '../ui-components/Camera'
 
-const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices }) => {
+const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices, selectedDate }) => {
 
   let params = useParams();
   
@@ -628,9 +628,10 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
               />
             ) : (
               <PagoDeuda
-              lista={selectedList} 
-              UsuarioCompleto={UsuarioCompleto}
-              AddPayment={AddPayment}
+                lista={selectedList} 
+                UsuarioCompleto={UsuarioCompleto}
+                AddPayment={AddPayment}
+                selectedDate={selectedDate}
               />
             )}
             </>

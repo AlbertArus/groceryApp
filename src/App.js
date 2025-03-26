@@ -318,7 +318,8 @@ function App() {
     return "Usuario desconocido";
   },[])
 
-    const AddPayment = (lista, listaId, paymentName, amount, payer, members, elementsPaid, selectedDate) => {
+  
+  const AddPayment = (lista, listaId, paymentName, amount, payer, members, selectedDate, elementsPaid) => {
 
         const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [], selectedDate: new Date(selectedDate.setHours(0, 0, 0, 0)).getTime() }
         const updatedPayments = [...lista.payments, newPayment]
@@ -410,6 +411,7 @@ function App() {
                 handleArchive={handleArchive}
                 handleShowVotes={handleShowVotes}
                 handleShowPrices={handleShowPrices}
+                selectedDate={selectedDate}
               />}
             />
             <Route path="/newlist" element={

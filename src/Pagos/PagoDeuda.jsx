@@ -6,7 +6,7 @@ import EmptyState from "../ui-components/EmptyState"
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PriceFormatter } from "../components/PriceFormatter";
 
-const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
+const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate }) => {
     const { usuario } = useUsuario();
     const [open, setOpen] = useState(false);
     const [pendingAmounts, setPendingAmounts] = useState([]);
@@ -125,10 +125,10 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
             prevTransfers.filter(transferList => transferList !== transfer)
         );
         // Registrar el pago
-        AddPayment(lista, lista.id, paymentName, transfer.amount, transfer.from, members);
+        AddPayment(lista, lista.id, paymentName, transfer.amount, transfer.from, members, selectedDate);
         setOpen(false);
-    }  
-    
+    }
+
     const collapseList = () => {
         setIsCollapsed(prevState => !prevState)
         collapserRef.current.style.transform = !isCollapsed ? "rotate(-90deg)" : "rotate(0deg)";
@@ -169,7 +169,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment }) => {
                     <TabItemMenu
                     itemMenuName={"Confirmar transferencia"}
                     img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
-                    onClick={() => handleDebtPaid()}
+                    onClick={() => handleDebtPaid(selectedDate)}
                     />
                 </ModalSheet>
                 {lista.userMember.length !== 1 && transfers.length > 0 && (
