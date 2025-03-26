@@ -32,12 +32,22 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
     }
   }, [UsuarioCompleto, lista]);
 
-  const totalGastoListaUser = () => {
-    const gastosUser = lista.payments?.filter(payment => payment.payer === usuario.uid)
-    return gastosUser.reduce((total, payment) => {
+  const totalPagadoListaUser = () => {
+    const pagosUser = lista.payments?.filter(payment => payment.payer === usuario.uid)
+    return pagosUser.reduce((total, payment) => {
       return total + payment.amount
     },0)
   }
+
+  const totalGastoListaUser = () => {
+    const gastosUser = lista.payments?.filter(payment => 
+        payment.members.find(member => member.uid === usuario.uid))
+    return gastosUser.reduce((total, payment) => {
+        return total + payment.members.reduce((subTotal, member) => {
+            return member.uid === usuario.uid ? subTotal + member.amount : subTotal
+        }, 0);
+    }, 0);
+  };
 
   const paymentsDateObject = lista.payments.reduce((acc, payment) => {
     const date = new Date(payment.selectedDate);
@@ -55,24 +65,22 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
   .map(([fecha, payments]) => ({fecha, payments}))  
   .sort((a, b) => { return Number(b.fecha) - Number(a.fecha)});
 
-  console.log(pagosPorFechaArray)
-
   return (
     <>
-        <div className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <section className="app-margin" style={{display: "flex", justifyContent: "space-around", margin: "15px 0px"}}>
+            <article style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Gastos en lista</h6>
                 <h4><PriceFormatter amount={lista.listPrice} /></h4>
-            </div>
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            </article>
+            <article style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <h6>Total pagado</h6>
                 <h4><PriceFormatter amount={totalGastoLista} /> </h4>
-            </div>
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <h6>He pagado</h6>
+            </article>
+            <article style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                <h6>Mi gasto</h6>
                 <h4><PriceFormatter amount={totalGastoListaUser(usuario.uid)} /> </h4>
-            </div>
-        </div>
+            </article>
+        </section>
         <ButtonArea 
             buttonCopy={"Añadir pago"}
             onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
@@ -89,28 +97,28 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                 <div className="app-margin">
                     {pagosPorFechaArray.map(({fecha, payments}, index) => {
                         return (
-                            <>
-                            <h5 key={fecha[index]} style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
-                            {payments.map(payment => {
-                                const index = lista.payments.findIndex(listaPayment => listaPayment.id === payment.id) // Necesito el index en el array de payments de lista (no de fecha) para tener el nombrePayer que usa el index sobre pagos de la lista
-                                return (
-                                    <div key={payment.id}>
-                                    <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
-                                        <div className="vistaDatos fila-between">
-                                        <div className="columna-start">
-                                            <h4 style={{marginBottom: "4px"}}>{payment.paymentName}</h4>
-                                            <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
-                                        </div>
-                                        <h4><PriceFormatter amount={payment.amount} /> </h4>
-                                        </div>
-                                    </Link>
-                                    </div>
-                                )
-                            })}
-                            </>
+                            <section key={fecha}>
+                                <h5 style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
+                                {payments.map(payment => {
+                                    const index = lista.payments.findIndex(listaPayment => listaPayment.id === payment.id) // Necesito el index en el array de payments de lista (no de fecha) para tener el nombrePayer que usa el index sobre pagos de la lista
+                                    return (
+                                        <article key={payment.id}>
+                                            <Link to={`/list/${lista.id}/${payment.id}?view=${searchParams.get("view")}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+                                                <div className="vistaDatos fila-between">
+                                                    <div className="columna-start">
+                                                        <h4 style={{marginBottom: "4px"}}>{payment.paymentName}</h4>
+                                                        <h6 style={{color: "grey"}}>Pagado por <strong style={{color: "black", fontWeight: "500"}}>{nombrePayer[index]}</strong></h6>
+                                                    </div>
+                                                    <h4><PriceFormatter amount={payment.amount} /> </h4>
+                                                </div>
+                                            </Link>
+                                        </article>
+                                    )
+                                })}
+                            </section>
                         )
                     })}
-                </div>  
+                </div>
             )}
         </ButtonArea>
     </>
