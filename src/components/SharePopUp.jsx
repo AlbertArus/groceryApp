@@ -1,8 +1,13 @@
 import Modal from "../ui-components/Modal";
 import { ShareButton } from "./ShareButton"
+import { useParams } from 'react-router-dom';
 
-const SharePopUp = ({ setSharePopupVisible }) => {
-  const handleShare = ShareButton(window.location.href, null)
+const SharePopUp = ({ setSharePopupVisible, listas }) => {
+    // const params = useParams()
+    const {id} = useParams()
+    const listaParam = listas.find(lista => lista.id === id)
+  
+  const handleShare = ShareButton(window.location.href, listaParam)
 
   return (
     <>

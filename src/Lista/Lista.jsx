@@ -596,7 +596,8 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 )}
                 {sharePopupVisible && 
                     <SharePopUp
-                    setSharePopupVisible={setSharePopupVisible}
+                        setSharePopupVisible={setSharePopupVisible}
+                        listas={listas}
                     />
                 }
             </>
