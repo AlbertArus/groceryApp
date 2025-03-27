@@ -24,7 +24,7 @@ const Camera = ({ lista, EditItem, AddMultipleItems }) => {
 
     return (
         <>
-            <div className="search-container" style={{ padding: "5px 5px 0px 5px" }}>
+            <div className="element-container">
                 <span className="material-symbols-outlined" onClick={() => setCameraOpen(true)}>add_a_photo</span>
             </div>
             {image && OCRneed &&

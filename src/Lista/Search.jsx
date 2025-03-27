@@ -29,8 +29,8 @@ const Search = ({setSearchResult }) => {
     }
 
     return (
-        <div className="search fila-between">
-            <div className="search-container fila-start" style={{width: "100%"}}>
+        <div className="fila-between">
+            <div className="element-container fila-start" style={{width: "100%"}}>
                 <input type="text" placeholder="Busca lo que quieras" onClick={handleSearch} onFocus={() => setFocused(true)} onChange={handleSearch} ref={searchValueRef}/>
                 <span className="material-symbols-outlined" style={{marginLeft: "8px", display: !focused ? "flex" : "none"}} onClick={handleSearch}>search</span>
                 <span className="material-symbols-outlined" style={{marginLeft: "8px", display: focused ? "flex" : "none"}} onClick={handleDeleteSearch}>close</span>

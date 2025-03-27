@@ -186,10 +186,9 @@ h6 {
   margin-right: 2px;
 }
 
-/* .material-symbols-outlined:hover {
-  background-color: #e0e0e0;
-  border-radius: 40px;
-} */
+.material-symbols-outlined {
+    vertical-align: middle;
+}
 
 .icon-small {
   font-size: 16px;
@@ -658,17 +657,13 @@ h6 {
   position: absolute;
 }
 
-.search-container {
-  /* border: 1.5px solid grey; */
-  /* box-shadow: 0px 0px 3px rgba(0,0,0,0.3); */
+.element-container {
   border-radius: 5px;
-  /* background-color: #e0e0e06e; */
   border: 1px solid #d1d5db;
   padding: 6px;
-  /* padding: 5px; */
 }
 
-.search-container input{
+.element-container input{
   border: none;
   border-radius: 5px;
   outline: none;
@@ -678,7 +673,7 @@ h6 {
   width: 100%;
 }
 
-.search-container span {
+.element-container span {
   color: rgb(133, 133, 133);
 }
 
