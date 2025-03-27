@@ -41,7 +41,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
 
   const totalGastoListaUser = () => {
     const gastosUser = lista.payments?.filter(payment => 
-        payment.members.find(member => member.uid === usuario.uid))
+        payment.paymentName !== "Reembolso" && payment.members.some(member => member.uid === usuario.uid))
     return gastosUser.reduce((total, payment) => {
         return total + payment.members.reduce((subTotal, member) => {
             return member.uid === usuario.uid ? subTotal + member.amount : subTotal
