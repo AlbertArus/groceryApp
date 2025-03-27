@@ -98,7 +98,10 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                     {pagosPorFechaArray.map(({fecha, payments}, index) => {
                         return (
                             <section key={fecha}>
-                                <h5 style={{marginBottom: "5px"}}>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
+                                <div className="fila-between" style={{margin: "25px 0px 5px"}}>
+                                    <h5>{formattedDateCapitalized(new Date(parseInt(fecha)))}</h5>
+                                    <hr className="hr_optionsMenu"/>
+                                    </div>
                                 {payments.map(payment => {
                                     const index = lista.payments.findIndex(listaPayment => listaPayment.id === payment.id) // Necesito el index en el array de payments de lista (no de fecha) para tener el nombrePayer que usa el index sobre pagos de la lista
                                     return (
