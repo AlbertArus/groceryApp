@@ -9,7 +9,7 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
 
   return (
     <div className="optionsMenu" ref={ref} style={style}>
-        {!lista.userConfig[usuario.uid].isArchived && (
+        {!lista?.userConfig[usuario.uid]?.isArchived && (
             <>
                 <ItemMenu
                 iconName={"share"}
@@ -24,8 +24,8 @@ const OptionsMenuListHome = forwardRef(({handleDuplicate, handleArchive, deleteL
             </>
         )}
       <ItemMenu 
-        iconName={lista.userConfig[usuario.uid].isArchived ? "unarchive" : "archive"}
-        itemMenuName={lista.userConfig[usuario.uid].isArchived ? "Desarchivar lista" : "Archivar lista"}
+        iconName={lista?.userConfig[usuario.uid]?.isArchived ? "unarchive" : "archive"}
+        itemMenuName={lista?.userConfig[usuario.uid]?.isArchived ? "Desarchivar lista" : "Archivar lista"}
         onClick={() => handleArchive(lista)}
       />
       <ItemMenu 

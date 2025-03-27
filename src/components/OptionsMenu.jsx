@@ -9,6 +9,8 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive
   const [searchParams] = useSearchParams()
   const [inPagos] = useState(() => searchParams.get("view") === "payments")
 
+  console.log(lista)
+
   return (
     <div className="optionsMenu" ref={ref} style={style}>
         {!inPagos && (
@@ -43,8 +45,8 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive
             </>
         )}
         <ItemMenu
-            iconName={lista.userConfig[usuario.uid].isArchived ? "unarchive" : "archive"}
-            itemMenuName={lista.userConfig[usuario.uid].isArchived ? "Desarchivar lista" : "Archivar lista"}
+            iconName={lista?.userConfig[usuario.uid]?.isArchived ? "unarchive" : "archive"}
+            itemMenuName={lista.userConfig[usuario.uid]?.isArchived ? "Desarchivar lista" : "Archivar lista"}
             onClick={() => {handleArchive(lista);  navigate("/")}}
         />
         <ItemMenu
