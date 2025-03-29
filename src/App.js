@@ -21,7 +21,7 @@ import CreateReplacementUser from './functions/CreateReplacementUser.jsx';
 import Register from './configuración/Register.jsx';
 import ForgotPassword from './configuración/ForgotPassword.jsx';
 
-function App() {
+const App = () => {
   
   const {usuario, setUsuario} = useUsuario();
   const [listas, setListas] = useState([])
@@ -208,39 +208,39 @@ function App() {
         }
     }, []);
   
-  const updateListaItems = async (listaId, updatedItems) => {
-    setListas(prevListas =>
-      prevListas.map(lista =>
-        lista.id === listaId ? { ...lista, items: updatedItems } : lista
-      )
-    );
+    const updateListaItems = async (listaId, updatedItems) => {
+        setListas(prevListas =>
+        prevListas.map(lista =>
+            lista.id === listaId ? { ...lista, items: updatedItems } : lista
+        )
+        );
 
-    try {
-      const listaRef = doc(db, "listas", listaId);
-      await updateDoc(listaRef, { items: updatedItems });
-    } catch (error) {
-      console.error("Error al actualizar los items en Firebase:", error);
-    }
-  };
+        try {
+        const listaRef = doc(db, "listas", listaId);
+        await updateDoc(listaRef, { items: updatedItems });
+        } catch (error) {
+        console.error("Error al actualizar los items en Firebase:", error);
+        }
+    };
 
-  const updateListaCategories = async (listaId, updatedCategories) => {
-    setListas(prevListas =>
-      prevListas.map(lista =>
-        lista.id === listaId ? { ...lista, categories: updatedCategories } : lista
-      )
-    );
+    const updateListaCategories = async (listaId, updatedCategories) => {
+        setListas(prevListas =>
+        prevListas.map(lista =>
+            lista.id === listaId ? { ...lista, categories: updatedCategories } : lista
+        )
+        );
 
-    try {
-      const listaRef = doc(db, "listas", listaId);
-      await updateDoc(listaRef, { categories: updatedCategories });
-    } catch (error) {
-      console.error("Error al actualizar las categorías en Firebase:", error);
-    }
-  };
+        try {
+        const listaRef = doc(db, "listas", listaId);
+        await updateDoc(listaRef, { categories: updatedCategories });
+        } catch (error) {
+        console.error("Error al actualizar las categorías en Firebase:", error);
+        }
+    };
 
-  const archivedList = usuario?.uid ? listas?.filter(lista => lista.userConfig?.[usuario.uid]?.isArchived) : [];
+    const archivedList = usuario?.uid ? listas?.filter(lista => lista.userConfig?.[usuario.uid]?.isArchived) : [];
 
-  const AllArchived = archivedList.length
+    const AllArchived = archivedList.length
 
     const handleArchive = (lista) => {
         const updatedArchived = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], isArchived: !lista.userConfig[usuario.uid].isArchived}}
@@ -262,65 +262,63 @@ function App() {
         updateLista(lista.id, "userConfig", updatedShowPrices)
     }
 
-  const duplicarLista = async (id) => {
-    const originalLista = listas.find(lista => lista.id === id)
-    if (!originalLista) {
-      console.error("Lista original no encontrada"); // Cuando intenta duplicar una lista borrada que aun se veía por tenerla abierta pero no actualizada
-      return;
+    const duplicarLista = async (id) => {
+        const originalLista = listas.find(lista => lista.id === id)
+        if (!originalLista) {
+            console.error("Lista original no encontrada"); // Cuando intenta duplicar una lista borrada que aun se veía por tenerla abierta pero no actualizada
+            return;
+        }
+        const duplicateListaId = uuidv4()
+        const duplicateUserMember = originalLista.userMember
+        const categoryIdMap = new Map();
+        const duplicateCategories = originalLista.categories.map(category => {
+        const newCategoryId = uuidv4()
+        categoryIdMap.set(category.id, newCategoryId)
+        return {...category, id: newCategoryId, listaId: duplicateListaId, items: category.items.map(item => 
+            ({ ...item, id: uuidv4(), listaId: duplicateListaId, categoryId: newCategoryId}))
+        }
+        });
+        const duplicateLista = { ...originalLista, id: duplicateListaId, userCreator: usuario.uid, userMember: duplicateUserMember, categories: duplicateCategories, items: originalLista.items.map(item => ({...item, listaId: duplicateListaId, id: uuidv4()}))}
+
+        try {
+            await setDoc(doc(db, "listas", duplicateLista.id), duplicateLista);
+            setListas(prevListas => [...prevListas, duplicateLista]);
+        } catch (error) {
+            console.error("Error al guardar la lista duplicada en Firebase:", error);
+        }  
     }
-    const duplicateListaId = uuidv4()
-    const duplicateUserMember = originalLista.userMember
-    const categoryIdMap = new Map();
-    const duplicateCategories = originalLista.categories.map(category => {
-      const newCategoryId = uuidv4()
-      categoryIdMap.set(category.id, newCategoryId)
-      return {...category, id: newCategoryId, listaId: duplicateListaId, items: category.items.map(item => 
-        ({ ...item, id: uuidv4(), listaId: duplicateListaId, categoryId: newCategoryId}))
-      }
-    });
-    const duplicateLista = { ...originalLista, id: duplicateListaId, userCreator: usuario.uid, userMember: duplicateUserMember, categories: duplicateCategories, items: originalLista.items.map(item => ({...item, listaId: duplicateListaId, id: uuidv4()}))}
 
-    try {
-      await setDoc(doc(db, "listas", duplicateLista.id), duplicateLista);
-      setListas(prevListas => [...prevListas, duplicateLista]);
-    } catch (error) {
-      console.error("Error al guardar la lista duplicada en Firebase:", error);
-    }  
-  }
+    const handleDuplicate = (id) => {
+        duplicarLista(id)
+        navigate("/")
+    }
 
-  const handleDuplicate = (id) => {
-    duplicarLista(id)
-    navigate("/")
-  }
+    const updateLista = async (listaId, attribute, newValue) => {
+        setListas((prevListas) =>
+            prevListas.map((lista) =>
+                lista.id === listaId ? { ...lista, [attribute]: newValue } : lista
+            )
+        );
+    
+        try {
+            const listaRef = doc(db, "listas", listaId);
+            await updateDoc(listaRef, { [attribute]: newValue });
+            console.log("lista actualizada")
+        } catch (error) {
+            console.error(`Error al actualizar ${attribute} en Firebase:`, error);
+        }
+    };
 
-  const updateLista = async (listaId, attribute, newValue) => {
-    setListas((prevListas) =>
-      prevListas.map((lista) =>
-        lista.id === listaId ? { ...lista, [attribute]: newValue } : lista
-      )
-    );
+    const UsuarioCompleto = useCallback(async (uid) => {
+        const userDoc = await getDoc(doc(db, "usuarios", uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                return `${userData.displayName}`;
+            }
+        return "Usuario desconocido";
+    },[])
   
-    try {
-      const listaRef = doc(db, "listas", listaId);
-      await updateDoc(listaRef, { [attribute]: newValue });
-      console.log("lista actualizada")
-    } catch (error) {
-      console.error(`Error al actualizar ${attribute} en Firebase:`, error);
-    }
-  };
-
-  const UsuarioCompleto = useCallback(async (uid) => {
-    const userDoc = await getDoc(doc(db, "usuarios", uid));
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      return `${userData.displayName}`;
-    }
-    return "Usuario desconocido";
-  },[])
-
-  
-  const AddPayment = (lista, listaId, paymentName, amount, payer, members, selectedDate, elementsPaid) => {
-
+    const AddPayment = (lista, listaId, paymentName, amount, payer, members, selectedDate, elementsPaid) => {
         const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [], selectedDate: new Date(selectedDate.setHours(0, 0, 0, 0)).getTime() }
         const updatedPayments = [...lista.payments, newPayment]
         updateLista(listaId, "payments", updatedPayments)

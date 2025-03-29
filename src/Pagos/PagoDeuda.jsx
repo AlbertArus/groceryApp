@@ -5,8 +5,10 @@ import { useUsuario } from "../UsuarioContext";
 import EmptyState from "../ui-components/EmptyState"
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PriceFormatter } from "../components/PriceFormatter";
+import ButtonsPagos from "../components/ButtonsPagos";
+import EmptyStateDeuda from "../ui-components/EmptyStateDeuda";
 
-const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate }) => {
+const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArchive, deleteLista }) => {
     const { usuario } = useUsuario();
     const [open, setOpen] = useState(false);
     const [pendingAmounts, setPendingAmounts] = useState([]);
@@ -134,77 +136,104 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate }) => {
         collapserRef.current.style.transform = !isCollapsed ? "rotate(-90deg)" : "rotate(0deg)";
     }
 
+    const noPendingAmounts = pendingAmounts.find(user => user.uid === usuario.uid)?.amount === 0;
+
     return (
-        <div style={{height: "100vh"}}>
+        <>
             {transfers?.length > 0 ? (
                 <>
-                {transfers.map((transfer, index) => {
-                    const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
-                    const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
-                    return (
-                        <div key={`${transfer.from}-${transfer.to}`} className="app-margin">
-                            <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
-                                <div className="fila-between" style={{ padding: "6px" }}>
-                                    <div className="columna-start">
-                                        <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
-                                        <h5>debe a</h5>
-                                        <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
-                                    </div>
-                                    <h4 className="priceMember">
-                                        <PriceFormatter amount={transfer.amount} />
-                                    </h4>
-                                </div>
-                                <div key={transfer} className="barraPago">
-                                    <h6 onClick={() => {setCurrentIndex(index); setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
-    
-                                </div>                    
-                            </div>
-                        </div>
-                    );
-                })}
-                <ModalSheet // Lo pongo fuera de la barra de pago, porque como es general por cada transfer, si está dentro de barra de pago se activa siempre (uno por pago)
-                    open={open}
-                    setOpen={setOpen}
-                >
-                    <TabItemMenu
-                    itemMenuName={"Confirmar transferencia"}
-                    img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
-                    onClick={() => handleDebtPaid(selectedDate)}
-                    />
-                </ModalSheet>
-                {lista.userMember.length !== 1 && transfers.length > 0 && (
-                    <div className="" style={{margin: "0px 15px 18px 15px"}}>
-                        <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>
-                            <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
-                            <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
-                        </div>
-                        {!isCollapsed &&
-                            <>
-                                {pendingAmounts.map((user, index) => {
-                                    return (
-                                        <div key={user.uid} className="newpaymentLists fila-between">
-                                            <div className="fila-start">
-                                                <h4>{nombreUserMember[index]}</h4>
-                                            </div>
-                                            <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}><PriceFormatter amount={user.amount} /> </h4>
+                    {transfers.map((transfer, index) => {
+                        const fromUser = nombreUserMember[lista.userMember.indexOf(transfer.from)];
+                        const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
+                        return (
+                            <div key={`${transfer.from}-${transfer.to}`} className="app-margin">
+                                <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
+                                    <div className="fila-between" style={{ padding: "6px" }}>
+                                        <div className="columna-start">
+                                            <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
+                                            <h5>debe a</h5>
+                                            <h4><strong style={{ fontWeight: "500" }}>{toUser}</strong></h4>
                                         </div>
-                                    )
-                                })}
-                            </>
-                        }
-                    </div>
-                )}
+                                        <h4 className="priceMember">
+                                            <PriceFormatter amount={transfer.amount} />
+                                        </h4>
+                                    </div>
+                                    <div key={transfer} className="barraPago">
+                                        <h6 onClick={() => {setCurrentIndex(index); setOpen(true)}} style={{color: "grey"}}>Gestionar pago</h6>
+        
+                                    </div>                    
+                                </div>
+                            </div>
+                        );
+                    })}
+                    <ModalSheet // Lo pongo fuera de la barra de pago, porque como es general por cada transfer, si está dentro de barra de pago se activa siempre (uno por pago)
+                        open={open}
+                        setOpen={setOpen}
+                    >
+                        <TabItemMenu
+                        itemMenuName={"Confirmar transferencia"}
+                        img={"/Fotos GroceryApp/transferencia-de-dinero.png"}
+                        onClick={() => handleDebtPaid(selectedDate)}
+                        />
+                    </ModalSheet>
+                    {lista.userMember.length !== 1 && transfers.length > 0 && (
+                        <div style={{margin: "0px 15px 18px 15px"}}>
+                            <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>
+                                <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
+                                <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
+                            </div>
+                            {!isCollapsed &&
+                                <>
+                                    {pendingAmounts.map((user, index) => {
+                                        return (
+                                            <div key={user.uid} className="newpaymentLists fila-between">
+                                                <div className="fila-start">
+                                                    <h4>{nombreUserMember[index]}</h4>
+                                                </div>
+                                                <h4 className="priceMember" style={{color: user.amount > 0 ? "green" : user.amount === 0 ? "black" : "red"}}><PriceFormatter amount={user.amount} /> </h4>
+                                            </div>
+                                        )
+                                    })}
+                                </>
+                            }
+                        </div>
+                    )}
+                    {noPendingAmounts &&
+                        <>
+                            {/* <h5>Parece que has saldado tus cuentas. Ya estás terminado por aquí!</h5> */}
+                            <div className="button-main-fixed">
+                                <ButtonsPagos
+                                    lista={lista}
+                                    handleArchive={handleArchive}
+                                    deleteLista={deleteLista}
+                                />
+                            </div>
+                        </>
+                    }
                 </>
-            ) : (
-                <EmptyState
-                    img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
-                    alt={"Set of grocery bags full of items"}
-                    description={"No hay balance a compensar. Registra tus pagos y equilibra balances entre el grupo"}
-                    onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
-                    buttonCopy={"Añadir pago"}
-                />
-            )}
-        </div>
+            ) : lista.payments.length > 0 ? (
+                    <EmptyStateDeuda
+                        img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                        alt={"Set of grocery bags full of items"}
+                        description={"Ya habéis compensado pagos. Fue bonito mientras duró!"}
+                        lista={lista}
+                        handleArchive={handleArchive}
+                        deleteLista={deleteLista}
+                    />
+                ) : (
+                    <EmptyState
+                        img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                        alt={"Set of grocery bags full of items"}
+                        description={"No hay balance a compensar. Registra tus pagos y equilibra balances entre el grupo"}
+                        onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                        buttonCopy={"Añadir pago"}
+                        lista={lista}
+                        handleArchive={handleArchive}
+                        deleteLista={deleteLista}
+                    />
+                )
+            }
+        </>
     );
 };
 

@@ -2,9 +2,9 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import EmptyState from "../ui-components/EmptyState"
 import { useUsuario } from "../UsuarioContext"
 import { useEffect, useState } from "react"
-import ButtonArea from "../ui-components/ButtonArea"
 import { PriceFormatter } from "../components/PriceFormatter"
 import { formattedDateCapitalized } from "../functions/FormatDate"
+import Button from "../ui-components/Button"
 
 const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoLista, price}) => {
   const {usuario} = useUsuario()
@@ -81,19 +81,17 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                 <h4><PriceFormatter amount={totalGastoListaUser(usuario.uid)} /> </h4>
             </article>
         </section>
-        <ButtonArea 
-            buttonCopy={"Añadir pago"}
-            onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
-        >
-            {lista?.payments?.length === 0 && (
-                <EmptyState 
-                    img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
-                    alt={"Set of grocery bags full of items"}
-                    description={"Añade tus pagos y ajusta cuentas fácilmente"}
-                    style={{display: "none"}}
-                />
-            )}
-            {lista?.payments && lista.payments.length !== 0 && (
+        {lista?.payments?.length === 0 && (
+            <EmptyState 
+                img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
+                alt={"Set of grocery bags full of items"}
+                description={"Añade tus pagos y ajusta cuentas fácilmente"}
+                buttonCopy={"Añadir pago"}
+                onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+            />
+        )}
+        {lista?.payments && lista.payments.length !== 0 && (
+            <>
                 <div className="app-margin">
                     {pagosPorFechaArray.map(({fecha, payments}, index) => {
                         return (
@@ -122,8 +120,14 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                         )
                     })}
                 </div>
-            )}
-        </ButtonArea>
+                <div className="button-main-fixed">
+                    <Button
+                        buttonCopy={"Añadir pago"}
+                        onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                    />
+                </div>
+            </>
+        )}
     </>
   )
 }

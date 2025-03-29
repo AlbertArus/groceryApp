@@ -632,6 +632,8 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                 UsuarioCompleto={UsuarioCompleto}
                 AddPayment={AddPayment}
                 selectedDate={selectedDate}
+                handleArchive={handleArchive}
+                deleteLista={deleteLista}
               />
             )}
             </>

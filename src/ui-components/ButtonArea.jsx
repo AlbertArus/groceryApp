@@ -6,8 +6,8 @@ const ButtonArea = ({ buttonCopy, onClick, style, children }) => {
         <div className="wrapper">
             <div className="content">
                 {children}
-            </div>   
-            <div className="button-main-sticky">
+            </div>
+            <div className="button-main-fixed">
                 <Button
                     buttonCopy={buttonCopy}
                     onClick={onClick}
