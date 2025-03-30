@@ -3,8 +3,8 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import firebaseApp from "../firebase-config.js";
 import ModalStatus from "../ui-components/ModalStatus.jsx";
 import Head from "../components/Head.jsx";
-import ButtonArea from "../ui-components/ButtonArea.jsx";
 import { useNavigate } from "react-router-dom";
+import Button from "../ui-components/Button.jsx";
 
 const auth = getAuth(firebaseApp);
 
@@ -29,10 +29,6 @@ const ForgotPassword = () => {
     };
 
     return (
-        <ButtonArea 
-            buttonCopy={"Enviar enlace de recuperación"}
-            onClick={handleResetPassword}
-        >
         <div className="app" style={{height: "calc(100vh - 70px"}}>
             <Head
                 path={"/register"}            
@@ -73,8 +69,13 @@ const ForgotPassword = () => {
                     />
                 )}
             </div>
+            <div className="button-main-fixed">
+                <Button
+                    buttonCopy={"Enviar enlace de recuperación"}
+                    onClick={handleResetPassword}
+                />
+            </div>            
         </div>
-        </ButtonArea>
     );
 };
 

@@ -4,11 +4,11 @@ import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox } from "@mui/material";
 import GastosLista from "./GastosLista";
-import ButtonArea from "../ui-components/ButtonArea";
 import CustomChip from "../ui-components/CustomChip";
 import { PriceFormatter } from "../components/PriceFormatter";
 import DatePicker from "../ui-components/DatePicker"
 import Camera from "../ui-components/Camera"
+import Button from "../ui-components/Button";
 
 const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment, selectedDate, setSelectedDate }) => {
     const { usuario } = useUsuario();
@@ -211,124 +211,125 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 path={`list/${id}?view=${searchParams.get("view")}`}
                 sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
             />
-            <ButtonArea 
-                onClick={handleSubmit}
-                buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
-            >
-                <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-                    <form>
-                            <div className="columna-start" style={{width: "100%"}}>
-                                <label htmlFor="nombre">Título</label>
-                        <div className="fila-between" style={{gap: "10px"}}>
-                                <div className="iconed-container fila-between">
-                                    <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
-                                    <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
-                                </div>
-                                <Camera />
+            <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
+                <form>
+                        <div className="columna-start" style={{width: "100%"}}>
+                            <label htmlFor="nombre">Título</label>
+                    <div className="fila-between" style={{gap: "10px"}}>
+                            <div className="iconed-container fila-between">
+                                <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
+                                <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
                             </div>
+                            <Camera />
                         </div>
-                        <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
-                        <div className="fila-between" style={{width: "100%", gap: "15px"}}>
-                            <div className="payer columna-start" style={{flex: "1 1"}}>
-                                {nombreUserMember.length > 0 && (
-                                    <>
-                                    <label htmlFor="payer">Quien ha pagado</label>
-                                    <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
-                                    {selectedList.userMember.map((uid, index) => {
-                                        return (
-                                            <option key={uid} value={uid}>{nombreUserMember[index]}</option>
-                                        )
-                                    })}
-                                    </select>
-                                    </>
-                                )}
-                            </div>
-                            <div className="calendar columna-start">
-                                <label>Fecha</label>
-                                <DatePicker 
-                                    selectedDate={selectedDate}
-                                    setSelectedDate={setSelectedDate}
-                                />
-                                {/* <input type="date" aria-label="date" autoComplete="true"/> */}
-                            </div>
-                        </div>
-                        <div style={{width: "100%", marginTop: "10px"}}>
-                            <div className="fila-between">
-                                <div>
-                                    <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
-                                    <CustomChip
-                                        label="De esta lista"
-                                        isSelected={selectedChip === "De esta lista"}
-                                        onClick={() => handleChipClick("De esta lista")}
-                                    />
-                                    <CustomChip
-                                        label="Otro gasto"
-                                        isSelected={selectedChip === "Otro gasto"}
-                                        onClick={() => handleChipClick("Otro gasto")}
-                                    />
-                                </div>
-                                {selectedChip === "De esta lista" && (
-                                    <div className="columna-between" style={{alignItems: "flex-end"}}>
-                                        <h4>Importe</h4>
-                                        <h3 style={{fontWeight: "400"}}><PriceFormatter amount={finalValuePaid} /> </h3>
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                {selectedChip === "De esta lista" ? (
-                                    <GastosLista 
-                                        selectedList={selectedList}
-                                        amount={amount}
-                                        setAmount={setAmount}
-                                        elementsPaid={elementsPaid}
-                                        setElementsPaid={setElementsPaid}
-                                        setFinalValuePaid={setFinalValuePaid}
-                                    />
-                                ) : (
-                                <div style={{marginTop: "10px"}}>
-                                    <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
-                                    <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
-                                    <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
-                                </div>
-                                )}
-                            </div>
-                        </div>
-                        {nombreUserMember.length > 0 && (
-                            <div style={{width: "100%"}}>
-                                <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
-                                <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
+                    </div>
+                    <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
+                    <div className="fila-between" style={{width: "100%", gap: "15px"}}>
+                        <div className="payer columna-start" style={{flex: "1 1"}}>
+                            {nombreUserMember.length > 0 && (
+                                <>
+                                <label htmlFor="payer">Quien ha pagado</label>
+                                <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
                                 {selectedList.userMember.map((uid, index) => {
                                     return (
-                                        <div key={uid} className="newpaymentLists fila-between">
-                                            <div className="fila-start">
-                                                <Checkbox 
-                                                checked={!!members.find(member => member.uid === uid)}
-                                                onChange={ selectedChip === "Otro gasto" ? () => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))} : () => {}}
-                                                sx={{
-                                                '&.Mui-checked': {
-                                                    color: selectedChip === "Otro gasto" ? "green" : "grey"
-                                                },
-                                                '&:not(.Mui-checked)': {
-                                                    color: "#9E9E9E"
-                                                },
-                                                '&.Mui-checked + .MuiTouchRipple-root': {
-                                                    backgroundColor: selectedChip === "Otro gasto" ? members.includes(uid) ? 'green' : 'transparent' : "grey"
-                                                },
-                                                padding: "0px",
-                                                cursor: selectedChip === "Otro gasto" ? "pointer" : "none"
-                                                }}
-                                                />           
-                                                <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
-                                            </div>
-                                            <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}><PriceFormatter amount={(calculatePrice(uid) || 0)} /> </h4>                                  
-                                        </div>
+                                        <option key={uid} value={uid}>{nombreUserMember[index]}</option>
                                     )
                                 })}
+                                </select>
+                                </>
+                            )}
+                        </div>
+                        <div className="calendar columna-start">
+                            <label>Fecha</label>
+                            <DatePicker 
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                            />
+                            {/* <input type="date" aria-label="date" autoComplete="true"/> */}
+                        </div>
+                    </div>
+                    <div style={{width: "100%", marginTop: "10px"}}>
+                        <div className="fila-between">
+                            <div>
+                                <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
+                                <CustomChip
+                                    label="De esta lista"
+                                    isSelected={selectedChip === "De esta lista"}
+                                    onClick={() => handleChipClick("De esta lista")}
+                                />
+                                <CustomChip
+                                    label="Otro gasto"
+                                    isSelected={selectedChip === "Otro gasto"}
+                                    onClick={() => handleChipClick("Otro gasto")}
+                                />
                             </div>
-                        )}
-                    </form>
+                            {selectedChip === "De esta lista" && (
+                                <div className="columna-between" style={{alignItems: "flex-end"}}>
+                                    <h4>Importe</h4>
+                                    <h3 style={{fontWeight: "400"}}><PriceFormatter amount={finalValuePaid} /> </h3>
+                                </div>
+                            )}
+                        </div>
+                        <div>
+                            {selectedChip === "De esta lista" ? (
+                                <GastosLista 
+                                    selectedList={selectedList}
+                                    amount={amount}
+                                    setAmount={setAmount}
+                                    elementsPaid={elementsPaid}
+                                    setElementsPaid={setElementsPaid}
+                                    setFinalValuePaid={setFinalValuePaid}
+                                />
+                            ) : (
+                            <div style={{marginTop: "10px"}}>
+                                <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
+                                <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
+                                <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
+                            </div>
+                            )}
+                        </div>
+                    </div>
+                    {nombreUserMember.length > 0 && (
+                        <div style={{width: "100%"}}>
+                            <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
+                            <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
+                            {selectedList.userMember.map((uid, index) => {
+                                return (
+                                    <div key={uid} className="newpaymentLists fila-between">
+                                        <div className="fila-start">
+                                            <Checkbox 
+                                            checked={!!members.find(member => member.uid === uid)}
+                                            onChange={ selectedChip === "Otro gasto" ? () => {handleCheckboxChange(uid); setErrors(prevErrors => ({...prevErrors, members: false}))} : () => {}}
+                                            sx={{
+                                            '&.Mui-checked': {
+                                                color: selectedChip === "Otro gasto" ? "green" : "grey"
+                                            },
+                                            '&:not(.Mui-checked)': {
+                                                color: "#9E9E9E"
+                                            },
+                                            '&.Mui-checked + .MuiTouchRipple-root': {
+                                                backgroundColor: selectedChip === "Otro gasto" ? members.includes(uid) ? 'green' : 'transparent' : "grey"
+                                            },
+                                            padding: "0px",
+                                            cursor: selectedChip === "Otro gasto" ? "pointer" : "none"
+                                            }}
+                                            />           
+                                            <h4 style={{marginLeft: "10px"}}>{nombreUserMember[index]}</h4>
+                                        </div>
+                                        <h4 className="priceMember" style={{color: (String(amount).trim() === "") ? "grey" : "black"}}><PriceFormatter amount={(calculatePrice(uid) || 0)} /> </h4>                                  
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                </form>
+                <div className="button-main-fixed">
+                    <Button
+                        onClick={handleSubmit}
+                        buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
+                    />
                 </div>
-            </ButtonArea>
+            </div>
         </div>
     );
 };

@@ -2,11 +2,11 @@ import firebaseApp, { db } from "../firebase-config.js";
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import Head from "../components/Head.jsx";
 import { useState } from "react";
-import ButtonArea from "../ui-components/ButtonArea.jsx";
 import { deleteDoc, doc } from "firebase/firestore";
 import Modal from "../ui-components/Modal.jsx";
 import ModalStatus from "../ui-components/ModalStatus.jsx";
 import CreateReplacementUser from '../functions/CreateReplacementUser.jsx'
+import Button from "../ui-components/Button.jsx";
 const auth = getAuth(firebaseApp);
 
 const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }) => {
@@ -58,12 +58,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
         setIsPasswordVisible(prevState => !prevState)
     }
 
-  return (
-    <ButtonArea
-        buttonCopy={"Eliminar cuenta"}
-        onClick={() => setDeleteConfirmation(true)}
-        style={{backgroundColor: "rgb(248, 167, 167)"}}
-    >
+    return (
         <div className="app" style={{height: "calc(100vh - 70px"}}>
             <Head 
                 path={"profile"}
@@ -108,9 +103,15 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                 >
                 </ModalStatus>
             }
+                <div className="button-main-fixed">
+                    <Button
+                        buttonCopy={"Eliminar cuenta"}
+                        onClick={() => setDeleteConfirmation(true)}
+                        style={{backgroundColor: "rgb(248, 167, 167)"}}
+                    />
+                </div>            
         </div>
-    </ButtonArea>
-  )
+    )
 }
 
 export default DeleteUser

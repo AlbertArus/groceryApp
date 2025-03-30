@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom"
 import Head from "./Head";
 import '@material/web/switch/switch.js';
-import ButtonArea from "../ui-components/ButtonArea";
 import NewMembers from "./MembersNew.jsx";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase-config.js";
 import { v4 as uuidv4 } from 'uuid'
+import Button from "../ui-components/Button.jsx";
 
 const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioCompleto, setListas, updateLista}) => {
     const [listaName, setListaName] = useState("");
@@ -104,66 +104,67 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
         path={""}          
         // sectionName={!listaId ? "Nueva lista" : "Editar lista"}
         />
-        <ButtonArea 
-            onClick={handleSubmit}
-            buttonCopy={!listaId ? "Crear lista": "Editar lista"}
-        >
-            <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
-                <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>{!listaId ? "Configura tu nueva lista" : "Edita tu lista"}</h3>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="nombre">Nombre</label>
-                    <div className="iconed-container fila-between">
-                    <input type="text" placeholder="Finde en la costa" id="nombre" onChange={(e) => handleNewListaName(e)} value={listaName}/>
-                    <div className="iconSuperpuesto">{listaName.length}/{maxLength}</div>
-                    </div>
-                    <h5 style={{display: errors.listaName ? "block" : "none", color:"red"}}>Añade un nombre a tu lista</h5>
-                    <label htmlFor="plan">Plan</label>
-                    <select id="plan" onChange={(e) => {setPlan(e.target.value); setErrors(prevErrors => ({...prevErrors, plan: false }))}} value={plan}>
-                    <option value="" selected disabled>Selecciona un plan</option>
-                    <option value="Viaje">Viaje</option>
-                    <option value="Casa compartida">Casa compartida</option>
-                    <option value="Compra semanal">Compra semanal</option>
-                    </select>
-                    <h5 style={{display: errors.plan ? "block" : "none", color:"red"}}>Selecciona el tema de tu lista</h5>
-                    <label htmlFor="descripcion"> Descripción (opcional) </label>
-                    <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
-                    {!listaId && !lista && (
-                        <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
-                            <div className="fila-between">
-                                <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
-                                <md-switch
-                                style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
-                                ></md-switch>
-                            </div>
-                            <div className="fila-between">
-                                <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
-                                <md-switch
-                                style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showPrices}
-                                ></md-switch>              
-                            </div>
-                            <div className="fila-between">
-                                <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
-                                <md-switch
-                                style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={isNotified} 
-                                ></md-switch>              
-                            </div>
-                            <h6>* Podrás modificar tu preferencia más tarde</h6>
-                        </div>
-                    )}
-                </form>
-                <div style={{marginTop: "10px"}}>
-                    <NewMembers
-                        membersToAdd={membersToAdd}
-                        setMembersToAdd={setMembersToAdd}
-                        lista={lista}
-                        setListas={setListas}
-                        currentMembers={currentMembers}
-                        UsuarioCompleto={UsuarioCompleto}
-                        updateLista={updateLista}
-                    />
+        <div className="app-margin">
+            <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>{!listaId ? "Configura tu nueva lista" : "Edita tu lista"}</h3>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="nombre">Nombre</label>
+                <div className="iconed-container fila-between">
+                <input type="text" placeholder="Finde en la costa" id="nombre" onChange={(e) => handleNewListaName(e)} value={listaName}/>
+                <div className="iconSuperpuesto">{listaName.length}/{maxLength}</div>
                 </div>
+                <h5 style={{display: errors.listaName ? "block" : "none", color:"red"}}>Añade un nombre a tu lista</h5>
+                <label htmlFor="plan">Plan</label>
+                <select id="plan" onChange={(e) => {setPlan(e.target.value); setErrors(prevErrors => ({...prevErrors, plan: false }))}} value={plan}>
+                <option value="" selected disabled>Selecciona un plan</option>
+                <option value="Viaje">Viaje</option>
+                <option value="Casa compartida">Casa compartida</option>
+                <option value="Compra semanal">Compra semanal</option>
+                </select>
+                <h5 style={{display: errors.plan ? "block" : "none", color:"red"}}>Selecciona el tema de tu lista</h5>
+                <label htmlFor="descripcion"> Descripción (opcional) </label>
+                <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
+                {!listaId && !lista && (
+                    <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
+                        <div className="fila-between">
+                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
+                            <md-switch
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
+                            ></md-switch>
+                        </div>
+                        <div className="fila-between">
+                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
+                            <md-switch
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Precios visibles" onInput={() => handleSwitchChange(setShowPrices)} selected value={showPrices}
+                            ></md-switch>              
+                        </div>
+                        <div className="fila-between">
+                            <label htmlFor="switch" style={{marginTop: "0px"}}>Activar notificaciones</label>
+                            <md-switch
+                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Notificaciones activadas" onInput={() => handleSwitchChange(setIsNotified)} selected value={isNotified} 
+                            ></md-switch>              
+                        </div>
+                        <h6>* Podrás modificar tu preferencia más tarde</h6>
+                    </div>
+                )}
+            </form>
+            <div style={{marginTop: "10px"}}>
+                <NewMembers
+                    membersToAdd={membersToAdd}
+                    setMembersToAdd={setMembersToAdd}
+                    lista={lista}
+                    setListas={setListas}
+                    currentMembers={currentMembers}
+                    UsuarioCompleto={UsuarioCompleto}
+                    updateLista={updateLista}
+                />
             </div>
-        </ButtonArea>
+        </div>
+            <div className="button-main-fixed">
+                <Button
+                    onClick={handleSubmit}
+                    buttonCopy={!listaId ? "Crear lista": "Editar lista"}
+                />
+            </div>
     </div>
   );
 };

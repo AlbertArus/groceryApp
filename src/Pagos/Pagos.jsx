@@ -120,12 +120,12 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                         )
                     })}
                 </div>
-                <div className="button-main-fixed">
-                    <Button
-                        buttonCopy={"Añadir pago"}
-                        onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
-                    />
-                </div>
+                    <div className="button-main-fixed">
+                        <Button
+                            buttonCopy={"Añadir pago"}
+                            onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                        />
+                    </div>
             </>
         )}
     </>

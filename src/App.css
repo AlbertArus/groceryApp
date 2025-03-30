@@ -117,8 +117,10 @@ h6 {
   justify-content: flex-start;
   width: 100vw;
   height: 100vh;
-  /* height: calc(100vh - 70px); */
   margin: 0px;
+  position: relative;
+  overflow-y: auto;
+  padding-bottom: 80px;
 }
 
 .app-margin {
@@ -572,21 +574,6 @@ h6 {
     margin-right: auto;
 }
 
-.wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    max-height: 100vh;
-    height: 100%;
-    /* overflow: hidden; */
-}
-
-.content {
-    flex: 1;
-    overflow-x: hidden;
-    /* overflow-y: hidden; */
-}
-
 .buttonMain.inactive {
   background-color: #f0f0f0;
   color: #000;
@@ -731,14 +718,9 @@ h6 {
 }
 
 .picRegister {
-  width: 80px;
-  height: 80px;
-}
-
-.titleRegister {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 :root {

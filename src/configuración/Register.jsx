@@ -4,7 +4,7 @@ import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { Checkbox } from "@mui/material"
-import ButtonArea from "../ui-components/ButtonArea.jsx"
+import Button from "../ui-components/Button.jsx"
 // import Toggle from "../ui-components/Toggle.jsx"
 const auth = getAuth(firebaseApp)
 
@@ -167,16 +167,12 @@ const Register = ({setUsuario}) => {
         setSearchParams({view: toggle})
     }
 
-  return (
-    <ButtonArea 
-        onClick={handleSubmit}
-        buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
-    >
-        <div className="app" style={{height: "calc(100vh - 70px"}}>
-            <div className="titleRegister" style={{margin: "40px 0px 5px 0px"}}>
-                <img className="picRegister" src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" />
-            </div>        
-            <div className="login app-margin">
+    return (
+        <div className="app">
+            <div className="titleRegister">
+                <div className="picRegister">
+                    <img src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" style={{margin: "40px 0px 5px 0px", width: "80px", height: "80px"}}/>
+                </div>
                 <h2 style={{marginBottom: "25px", textAlign: "center"}}>GroceryApp</h2>
                 <div className="toggle" style={{backgroundColor: "white", marginBottom: "25px"}}>
                     <div className="app-margin toggleBars">
@@ -184,6 +180,8 @@ const Register = ({setUsuario}) => {
                         <h4 onClick={() => handleClickSelected("login")} className={isToggleSelected === `login` ? "toggleOptions toggleBar" : "toggleOptions"}>Inicia sesión</h4>
                     </div>
                 </div>
+            </div>        
+            <div className="login app-margin">
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre *</label>
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
@@ -240,9 +238,14 @@ const Register = ({setUsuario}) => {
                     </div>
                 </form>
             </div>
+            <div className="button-main-fixed">
+                <Button
+                    onClick={handleSubmit}
+                    buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
+                />
+            </div>
         </div>
-    </ButtonArea>
-  )
+    )
 }
 
 export default Register

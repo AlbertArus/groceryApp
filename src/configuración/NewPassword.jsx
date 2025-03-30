@@ -3,8 +3,8 @@ import { getAuth, updatePassword } from "firebase/auth";
 import { useState } from "react";
 import firebaseApp from "../firebase-config.js"
 import Head from "../components/Head";
-import ButtonArea from "../ui-components/ButtonArea.jsx";
 import ModalStatus from "../ui-components/ModalStatus.jsx";
+import Button from "../ui-components/Button.jsx";
 const auth = getAuth(firebaseApp)
 
 const NewPassword = () => {
@@ -75,12 +75,8 @@ const NewPassword = () => {
         return valid;
     };
     
-  return (
-    <ButtonArea 
-        buttonCopy={"Cambiar contraseña"}
-        onClick={handleChangePassword}        
-    >
-        <div className="app" style={{height: "calc(100vh - 70px"}}>
+    return (
+        <div className="app">
             <Head 
                 path={"profile"}        
             />
@@ -124,9 +120,14 @@ const NewPassword = () => {
                     >
                     </ModalStatus>
                 }
+                <div className="button-main-fixed">
+                    <Button
+                        buttonCopy={"Cambiar contraseña"}
+                        onClick={handleChangePassword}        
+                    />
+                </div>            
         </div>
-    </ButtonArea>
-  )
+    )
 }
 
 export default NewPassword
