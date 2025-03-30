@@ -14,7 +14,7 @@ export async function compararPrecios(text, lista) {
 
     try {
         // En lugar de llamar directamente, hacemos una petición API
-        const response = await fetch('https://5d94-83-50-183-163.ngrok-free.app/api/compare-prices', {
+        const response = await fetch('https://06e0-83-50-183-163.ngrok-free.app/api/compare-prices', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
