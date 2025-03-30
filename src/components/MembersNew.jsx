@@ -17,6 +17,19 @@ const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, setL
         }
     }, [UsuarioCompleto, currentMembers]);
 
+    useEffect(() => {
+        if (inputRefs.current.length > 0) {
+            const lastIndex = inputRefs.current.length - 1;
+            if (inputRefs.current[lastIndex]) {
+                // Scroll the element into view with smooth behavior
+                inputRefs.current[lastIndex].scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center' // This centers the element in the viewport
+                });
+            }
+        }
+    }, [membersToAdd.length]);
+
     const handleOnChange = (e, index) => {
         const name = e.target.value
         const membersToAddTemp = [...membersToAdd]
