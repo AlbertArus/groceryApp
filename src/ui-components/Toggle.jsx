@@ -55,17 +55,12 @@ const Toggle = ({form, option1, option2, option3, origin, listas, lista, setFilt
             <>
             {searchParams.get("view") !== "payments" ? (
                 <div className="toggleListaSpace" style={{top: isScrolled ? "88px" : "73px"}}>
-                    <div className="fila-between app-margin">
-                        <div className='center'>
-                            <div className='ToggleLista fila-start' style={{flex:"none"}}>
-                                <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
-                                <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
-                                <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
-                            </div>
+                    <div className='center'>
+                        <div className='ToggleLista fila-start' style={{flex:"none"}}>
+                            <h5 onClick={() => handleClickActive(option1)} className={isToggleActive === `${option1}` ? 'toggleActive center' : "toggleL"}>{option1}</h5>
+                            <h5 onClick={() => handleClickActive(option2)} className={isToggleActive === `${option2}` ? 'toggleActive' : "toggleL"}>{option2}</h5>
+                            <h5 onClick={() => handleClickActive(option3)} className={isToggleActive === `${option3}` ? 'toggleActive' : "toggleL"} style={{display: option3 ? "block" : "none"}}>{option3}</h5>
                         </div>
-                        <Camera
-                            lista={lista}
-                        />
                     </div>
                 </div>
             ) : (

@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import Modal from "../ui-components/Modal";
+import NewCategory from "../components/NewCategory";
+import { Checkbox } from "@mui/material";
 
-function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
+function OCR({ image, setImage, lista, EditItem, AddMultipleItems, AddCategory }) {
     const [text, setText] = useState('');
     const [geminiResults, setGeminiResults] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [step, setStep] = useState(1)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState(lista.categories.length > 0 ? lista.categories[0].id : "")
 
     useEffect(() => {
         if (image) {
@@ -28,7 +31,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
             if (typeof image === 'string') {
                 const base64Data = image.split(',')[1];
 
-                const response = await fetch('https://4945-83-50-183-163.ngrok-free.app/api/ocr', {
+                const response = await fetch('https://06e0-83-50-183-163.ngrok-free.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,14 +69,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
                 <div className="loading-message">Estamos validando tu ticket...</div>
             ) : (
                 <>
-                    {error && <div className="error-message">{error}</div>}
-                    {/* <button 
-                        onClick={realizarOCR}
-                        disabled={!image}
-                        className="ocr-button"
-                    >
-                        Realizar OCR
-                    </button> */}                    
+                    {error && <div className="error-message">{error}</div>}                 
                     {text && isModalOpen && (
                         <div className="results-container">
                             {geminiResults && (
@@ -85,11 +81,36 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
                                     >
                                         {step===1 ? (
                                             <div className="modified-items">
-                                                <h4 style={{textDecoration: "underline", paddingBottom: "12px"}}>Productos modificados</h4>
-                                                {geminiResults.modified_items.map(item => (
-                                                    <h4 key={item.name} className="fila-between">{`${item.name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())} - ${item.price} €`}</h4>
-                                                    ))
-                                                }
+                                                <h4 style={{textDecoration: "underline", paddingBottom: "12px"}}>(1/3) Selecciona la categoría</h4>
+                                                {lista.categories.length > 0 && lista.categories.map((category, index) => (
+                                                    <>
+                                                        <div className="categoriesLista fila-start" style={{padding: "5px 0px"}} key={category.id} >
+                                                            <Checkbox 
+                                                            checked={selectedCategory === category.id}
+                                                            onChange={() => setSelectedCategory(category.id)}
+                                                            sx={{
+                                                            '&.Mui-checked': {
+                                                                color: "green"
+                                                            },
+                                                            '&:not(.Mui-checked)': {
+                                                                color: "#9E9E9E"
+                                                            },
+                                                            '&.Mui-checked + .MuiTouchRipple-root': {
+                                                                backgroundColor: "green"
+                                                            },
+                                                            padding: "0px",
+                                                            cursor: "pointer"
+                                                            }}
+                                                            />  
+                                                            <h4 style={{marginLeft: "10px"}}>{`${category.categoryName.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}`}</h4>
+                                                        </div>
+                                                    </>
+                                                ))}
+                                                <div className="newcategoryLista" style={{marginRight: "-3px"}}>
+                                                    <NewCategory
+                                                        AddCategory={AddCategory}
+                                                    />
+                                                </div>
                                                 <div className="fila-between" style={{gap: "25px"}}>
                                                     <div className="fila-between" style={{gap: "8px"}}>
                                                         <h5 className="buttonMain" style={{flexGrow: "1"}} onClick={() => {
@@ -107,22 +128,49 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
                                                     <button className="buttonMain" onClick={() => setStep(2)}><span className="material-symbols-outlined icon-small">arrow_forward</span></button>
                                                 </div>
                                             </div>
-                                        ) : (
-                                            <div className="new-items">
-                                                <h4 style={{textDecoration: "underline", paddingBottom: "12px"}}>Productos nuevos</h4>
-                                                {geminiResults.new_items.map(item => (
+                                        ) : (step === 2 ? (
+                                            <div className="modified-items">
+                                                <h4 style={{textDecoration: "underline", paddingBottom: "12px"}}>(2/3) Revisa tus items modificados</h4>
+                                                {geminiResults.modified_items.map(item => (
                                                     <h4 key={item.name} className="fila-between">{`${item.name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())} - ${item.price} €`}</h4>
                                                     ))
                                                 }
                                                 <div className="fila-between" style={{gap: "25px"}}>
                                                     <button className="buttonMain" onClick={() => setStep(1)}><span className="material-symbols-outlined icon-small">arrow_back</span></button>
                                                     <div className="fila-between" style={{gap: "8px"}}>
-                                                        <h5 className="buttonMain" style={{flexGrow: "1"}}
-                                                        onClick={() => {
-                                                            geminiResults.new_items.forEach(item => {
-                                                                AddMultipleItems(geminiResults.new_items, lista.categories[0].id)
+                                                        <h5 className="buttonMain" style={{flexGrow: "1"}} onClick={() => {
+                                                            geminiResults.modified_items.forEach(item => {
+                                                                EditItem(item.id, item.name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase()), item.price);
+                                                                console.log("edit:", item.price, item.name)
                                                             });
+                                                            setStep(3)
                                                             }}
+                                                        >
+                                                            Actualizar items
+                                                        </h5>
+                                                        <h5 className="buttonMain" style={{flexGrow: "1"}} onClick={() => setIsModalOpen(false)}>Descartar</h5>
+                                                    </div>
+                                                    <button className="buttonMain" onClick={() => setStep(3)}><span className="material-symbols-outlined icon-small">arrow_forward</span></button>
+                                                </div>
+                                            </div>
+                                        ) :  (
+                                            <div className="new-items">
+                                                <h4 style={{textDecoration: "underline", paddingBottom: "12px"}}>(3/3) Revisa tus nuevos items</h4>
+                                                {geminiResults.new_items.map(item => (
+                                                    <h4 key={item.name} className="fila-between">{`${item.name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())} - ${item.price} €`}</h4>
+                                                    ))
+                                                }
+                                                <div className="fila-between" style={{gap: "25px"}}>
+                                                    <button className="buttonMain" onClick={() => setStep(2)}><span className="material-symbols-outlined icon-small">arrow_back</span></button>
+                                                    <div className="fila-between" style={{gap: "8px"}}>
+                                                        <h5 className="buttonMain" style={{flexGrow: "1"}}
+                                                        onClick={() => {geminiResults.new_items.forEach(item => {
+                                                                const formattedItems = geminiResults.new_items.map(item => ({
+                                                                    ...item,
+                                                                    name: item.name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())
+                                                                }));
+                                                                AddMultipleItems(formattedItems, selectedCategory);
+                                                                }); setIsModalOpen(false)}}
                                                         >
                                                             Añadir items                                       
                                                         </h5>
@@ -130,6 +178,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems }) {
                                                     </div>
                                                 </div>
                                             </div>
+                                        )
                                         )}
                                     </Modal>
                                 </>

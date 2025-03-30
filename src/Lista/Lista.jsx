@@ -524,6 +524,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
           {isToggleSelected === "Lista" ? (
             <>
                 {isToggleShown && (
+                    <div className='fila-between app-margin'>
                     <Toggle
                         option1={"Todos"}
                         option2={"Mis items"}
@@ -537,6 +538,13 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                         isScrolled={isScrolled}
                         setIsScrolled={setIsScrolled}
                     />
+                    <Camera
+                        lista={selectedList}
+                        AddMultipleItems={AddMultipleItems}
+                        EditItem={EditItem}
+                        AddCategory={AddCategory}
+                    />
+                    </div>
                 )
                 }
                 {!isEStateLista && !isToggleShown &&
@@ -548,10 +556,11 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                             AddMultipleItems={AddMultipleItems}
                             EditItem={EditItem}
                         />
-                        <Camera 
+                        <Camera
                             lista={selectedList}
                             AddMultipleItems={AddMultipleItems}
                             EditItem={EditItem}
+                            AddCategory={AddCategory}
                         />
                     </div>
                 </div>
