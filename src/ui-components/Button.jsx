@@ -1,7 +1,7 @@
+const Button = ({onClick, buttonCopy, style, inactive}) => {
 
-const Button = ({onClick, buttonCopy, style}) => {
-  return (
-    <h4 className="buttonMain app-margin" style={style} onClick={onClick}>{buttonCopy}</h4>
+    return (
+    <h4 className={`buttonMain app-margin ${inactive ? "inactive" : ""}`} style={style} onClick={onClick}>{buttonCopy}</h4>
   )
 }
 

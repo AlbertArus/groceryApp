@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
@@ -20,12 +20,20 @@ const Register = ({setUsuario}) => {
     const apellidoRef = useRef();
     const correoRef = useRef();
     const contraseñaRef = useRef();
-    const [isToggleSelected, setIsToggleSelected] = useState(() => {
-        return searchParams.get("view") === "login" ? "login" : "register"
-    })
+    // const [isToggleSelected, setIsToggleSelected] = useState(() => {
+    //     return searchParams.get("view") === "login" ? "login" : "register"
+    // })
+    const [isToggleSelected, setIsToggleSelected] = useState(isRegistered ? "login" : "register")
+    const [inactive, setInactive] = useState(false)
 
     const minLength = 6
     const regex = /^[\w-.]+@([\w-]+\.)+[a-zA-Z]{2,}$/;
+
+    useEffect(() => {
+        const view = searchParams.get("view")
+        setIsToggleSelected(view === "login" ? "login" : "register")
+        console.log("actualizo toggle")
+    }, [searchParams])
     
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -182,7 +190,7 @@ const Register = ({setUsuario}) => {
                 </div>
             </div>        
             <div className="login app-margin">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => {handleSubmit(e); setInactive(true)}}>
                     <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre *</label>
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <h5 style={{display: !isRegistered && errors.nombre ? "block" : "none", color:"red"}}>Añade tu nombre</h5>
@@ -240,8 +248,9 @@ const Register = ({setUsuario}) => {
             </div>
             <div className="button-main-fixed">
                 <Button
-                    onClick={handleSubmit}
+                    onClick={(e) => {handleSubmit(e); setInactive(true)}}
                     buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
+                    inactive={inactive}
                 />
             </div>
         </div>
