@@ -3,7 +3,7 @@ import CameraOrGallery from '../functions/CameraOrGallery';
 import OCR from '../OCR/OCR';
 import { useSearchParams } from 'react-router-dom';
 
-const Camera = ({ lista, EditItem, AddMultipleItems, AddCategory }) => {
+const Camera = ({ lista, EditItem, AddMultipleItems, AddCategory, capturePaymentImg }) => {
     const [cameraOpen, setCameraOpen] = useState(false);
     const [image, setImage] = useState(null);
     const [searchParams] = useSearchParams()
@@ -12,6 +12,10 @@ const Camera = ({ lista, EditItem, AddMultipleItems, AddCategory }) => {
     const handleImageCapture = (image) => {
         setImage(image)
         setCameraOpen(false)
+
+        if(capturePaymentImg) {
+            capturePaymentImg(image)
+        }
     }
 
     if (cameraOpen) {

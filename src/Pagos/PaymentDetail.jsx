@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TabItemMenu from "../components/TabItemMenu";
 import OptionsMenuPagos from "../components/OptionsMenuPagos"
 import { formattedDateCapitalized } from "../functions/FormatDate";
+import Modal from "../ui-components/Modal";
 
 const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
     const {id, paymentId} = useParams()
@@ -13,6 +14,7 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
     const [nombrePayer, setNombrePayer] = useState([]);
     const [nombrePaymentMember, setNombrePaymentMember] = useState([]);
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
+    const [modalOpen, setModalOpen] = useState(false)
 
     console.log(payment)
 
@@ -79,6 +81,21 @@ const PaymentDetail = ({listas, UsuarioCompleto, updateLista}) => {
                     <h2 >{payment.paymentName}</h2>
                     <h5>{formattedDateCapitalized(new Date(payment.selectedDate))}</h5>
                 </div>
+                {payment.imageURL && (
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <div className="payment-image-container">
+                            <img className="paymentImg" src={payment.imageURL} alt="Imagen del pago" onClick={() => setModalOpen(true)}/>
+                        </div>
+                    </div>
+                )}
+                {modalOpen && (
+                    <Modal 
+                        closeOnClick={() => setModalOpen(false)}
+                        overlayOnClick={() => setModalOpen(false)}
+                    >
+                        <img className="paymentImgFullWidth" src={payment.imageURL} alt="Imagen del pago" onClick={() => setModalOpen(true)}/>
+                    </Modal>
+                )}
                 {nombrePayer.length > 0 && (
                     <div style={{width: "100%"}}>
                         <h3 style={{margin: "20px 0px 0px 0px"}}>Pagado por</h3>

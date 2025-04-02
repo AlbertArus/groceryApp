@@ -9,6 +9,7 @@ import { PriceFormatter } from "../components/PriceFormatter";
 import DatePicker from "../ui-components/DatePicker"
 import Camera from "../ui-components/Camera"
 import Button from "../ui-components/Button";
+import { uploadImage, deleteImage } from '../functions/HandleImages';
 
 const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment, selectedDate, setSelectedDate }) => {
     const { usuario } = useUsuario();
@@ -24,6 +25,8 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     const navigate = useNavigate();
     const maxLength = 27;
     const paymentEditing = selectedList?.payments?.find(payment => payment.id === paymentId);
+    const [paymentImg, setPaymentImg] = useState("")
+    const [existingImageURL, setExistingImageURL] = useState("");
 
     // Initialize payment data when editing
     useEffect(() => {
@@ -34,8 +37,10 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 setMembers(paymentEditing.members || []);
                 setPayer(paymentEditing.payer);
                 setElementsPaid(paymentEditing.elementsPaid || []);
-                // Set the correct chip based on whether there are elementsPaid
-                setSelectedChip(paymentEditing.elementsPaid?.length > 0 ? "De esta lista" : "Otro gasto");
+                setSelectedChip(paymentEditing.elementsPaid?.length > 0 ? "De esta lista" : "Otro gasto"); // Set the correct chip based on whether there are elementsPaid
+                if (paymentEditing.imageURL) {
+                    setExistingImageURL(paymentEditing.imageURL);
+                }
             } else {
                 // Reset form for new payment
                 setPaymentName("");
@@ -43,6 +48,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 setPayer(usuario?.uid || "");
                 setElementsPaid([]);
                 setSelectedChip("De esta lista");
+                setExistingImageURL("");
                 // No añado miembros porque lo necesito en la dependencia para que coja los de paymentId pero si está abajo y no hay paymentId, se actualiza, y luego en el siguiente useEffect con !paymentId vuelve a actualizarse y este volvería a ejecutarse
             }
         };
@@ -104,15 +110,25 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
 
         if (!newErrors.paymentName && !newErrors.amount && !newErrors.members) {
             try {
-                if (!paymentId) {
-                    await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, selectedDate, elementsPaid);
+                let imageURL = existingImageURL;
+                if (paymentImg) {
+                    if (existingImageURL) {
+                        await deleteImage(existingImageURL);
+                    }
+                    imageURL = await uploadImage(paymentImg, 'payments');
                 } else {
-                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, selectedDate, elementsPaid);
+                    imageURL = await uploadImage(paymentImg, 'payments');
+                }
+                if (!paymentId) {
+                    await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, selectedDate, elementsPaid, imageURL );
+                } else {
+                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, selectedDate, elementsPaid, imageURL );
                 }
                 navigate(`/list/${id}?view=payments`);
                 setAmount("");
                 setPaymentName("");
                 setElementsPaid([]);
+                setExistingImageURL("")
             } catch (error) {
                 console.error("Error al añadir el pago");
             }
@@ -205,25 +221,50 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         return totalAmount
     }
 
+    const capturePaymentImg = (image) => {
+        setPaymentImg(image)
+    }
+
+    const handleRemoveImage = async () => {
+        if (existingImageURL) {
+            try {
+                await deleteImage(existingImageURL);
+                setExistingImageURL("");
+            } catch (error) {
+                console.error("Error removing image:", error);
+            }
+        } else {
+            setPaymentImg("");
+        }
+    }
+
     return (
         <div className="FormLista app">
             <Head
                 path={`list/${id}?view=${searchParams.get("view")}`}
                 sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
             />
-            <div className="app-margin" style={{display:"flex", flexDirection:"column"}}>
+            <div className="app-margin">
                 <form>
-                        <div className="columna-start" style={{width: "100%"}}>
+                    <div className="columna-start" style={{width: "100%"}}>
                             <label htmlFor="nombre">Título</label>
-                    <div className="fila-between" style={{gap: "10px"}}>
+                        <div className="fila-between" style={{gap: "10px"}}>
                             <div className="iconed-container fila-between">
                                 <input type="text" placeholder="Gasolina ida" id="nombre" onChange={(e) => handleNewPaymentName(e)} value={paymentName}/>
                                 <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
                             </div>
-                            <Camera />
+                            <Camera 
+                                capturePaymentImg={capturePaymentImg}
+                            />
                         </div>
                     </div>
                     <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
+                    {(paymentImg || existingImageURL) && (
+                        <div className="payment-image-container">
+                            <span class="material-symbols-outlined iconPaymentImg" onClick={() => handleRemoveImage()}>close</span>
+                            <img className="paymentImg" src={paymentImg || existingImageURL} alt="Imagen del pago" onClick={() => navigate()} />
+                        </div>
+                    )}
                     <div className="fila-between" style={{width: "100%", gap: "15px"}}>
                         <div className="payer columna-start" style={{flex: "1 1"}}>
                             {nombreUserMember.length > 0 && (

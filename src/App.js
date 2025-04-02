@@ -318,8 +318,8 @@ const App = () => {
         return "Usuario desconocido";
     },[])
   
-    const AddPayment = (lista, listaId, paymentName, amount, payer, members, selectedDate, elementsPaid) => {
-        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [], selectedDate: new Date(selectedDate.setHours(0, 0, 0, 0)).getTime() }
+    const AddPayment = (lista, listaId, paymentName, amount, payer, members, selectedDate, elementsPaid, imageURL) => {
+        const newPayment = { id: uuidv4(), listaId: listaId, paymentCreator: usuario.uid, createdAt: new Date().toISOString(), payer, paymentName, amount, members, elementsPaid: elementsPaid || [], selectedDate: new Date(selectedDate.setHours(0, 0, 0, 0)).getTime(), imageURL }
         const updatedPayments = [...lista.payments, newPayment]
         updateLista(listaId, "payments", updatedPayments)
         if(elementsPaid && elementsPaid.length > 0) {
@@ -336,9 +336,9 @@ const App = () => {
         }
     }
 
-    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members, elementsPaid, selectedDate) => {
+    const editPayment = (lista, listaId, paymentId, paymentName, amount, payer, members, elementsPaid, selectedDate, imageURL) => {
         const editedPayment = lista.payments.find(payment => payment.id === paymentId)
-        const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date().toISOString(), selectedDate: new Date(selectedDate.setHours(0, 0, 0, 0)).getTime() } // I get the date with hours and seconds. I create a Date object normalized to midnight so there is no difference but the day, and later I apply getTime to have it as timestamp (nanoseconds) again
+        const newDataPayment = {...editedPayment, payer: payer, paymentName: paymentName, amount: amount, members: members, elementsPaid: elementsPaid, modifiedAt: new Date().toISOString(), selectedDate: new Date(selectedDate.setHours(0, 0, 0, 0)).getTime(), imageURL } // I get the date with hours and seconds. I create a Date object normalized to midnight so there is no difference but the day, and later I apply getTime to have it as timestamp (nanoseconds) again
         const updatedPayments = lista.payments.map(payment => 
             payment.id === paymentId ? newDataPayment : payment
         )
