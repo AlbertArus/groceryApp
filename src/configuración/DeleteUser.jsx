@@ -59,7 +59,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
     }
 
     return (
-        <div className="app" style={{height: "calc(100vh - 70px"}}>
+        <div className="app">
             <Head 
                 path={"profile"}
             />
@@ -68,7 +68,6 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                 <h4 style={{marginBottom: "12px"}}>Recuerda que esta acción es irreversible. Perderás el acceso a tu cuenta, tus listas y tus datos.</h4>
                 <h4>Las listas que hayas creado y compartido con otros usuarios que las tengan activas, no se eliminarán por lo que ellos pueden seguir consultándolas y usándolas.</h4>
             </div>
-            {/* <button type="submit" style={{backgroundColor: "rgb(248, 167, 167)", position: "fixed", bottom: "30px", left: "50%", transform: "translateX(-50%)", width: "calc(100% - 30px)"}} onClick={() => setDeleteConfirmation(true)}>Eliminar cuenta</button> */}
             {deleteConfirmation &&
                 <Modal
                     title={"Confirma tu contraseña"}

@@ -29,7 +29,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="app" style={{height: "calc(100vh - 70px"}}>
+        <div className="app">
             <Head
                 path={"/register"}            
                 sectionName={""}                
