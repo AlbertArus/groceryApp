@@ -34,6 +34,8 @@ const App = () => {
   const [payer, setPayer] = useState("")
   const [showIdentifyList, setShowIdentifyList] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [image, setImage] = useState(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
 
   const navigate = useNavigate()
   const location = useLocation();
@@ -410,6 +412,10 @@ const App = () => {
                 handleShowVotes={handleShowVotes}
                 handleShowPrices={handleShowPrices}
                 selectedDate={selectedDate}
+                image={image}
+                setImage={setImage}
+                cameraOpen={cameraOpen}
+                setCameraOpen={setCameraOpen}
               />}
             />
             <Route path="/newlist" element={
@@ -470,6 +476,10 @@ const App = () => {
                 editPayment={editPayment}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
+                image={image}
+                setImage={setImage}
+                cameraOpen={cameraOpen}
+                setCameraOpen={setCameraOpen}
               />}
             />           
             <Route path='/list/:id/:paymentId' element={

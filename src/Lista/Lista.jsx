@@ -17,8 +17,9 @@ import PagoDeuda from '../Pagos/PagoDeuda'
 import IdentifyUser from '../components/IdentifyUser'
 import LoadingPage from '../components/LoadingPage'
 import Camera from '../ui-components/Camera'
+import OCR from '../OCR/OCR'
 
-const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices, selectedDate }) => {
+const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices, selectedDate, image, setImage, cameraOpen, setCameraOpen }) => {
 
   let params = useParams();
   
@@ -41,6 +42,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   const selectedList = listas.find(lista => lista.id === params.id);
   const [isScrolled, setIsScrolled] = useState(false)
   const [deletedElement, setDeletedElement] = useState([])
+  const OCRneed = searchParams?.get("view") !== "payments"
 
   const fetchLista = useCallback(async () => {
     if (!params.id) return;
@@ -539,10 +541,10 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                         setIsScrolled={setIsScrolled}
                     />
                     <Camera
-                        lista={selectedList}
-                        AddMultipleItems={AddMultipleItems}
-                        EditItem={EditItem}
-                        AddCategory={AddCategory}
+                        image={image}
+                        setImage={setImage}
+                        cameraOpen={cameraOpen}
+                        setCameraOpen={setCameraOpen}
                     />
                     </div>
                 )
@@ -553,18 +555,26 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                         <Search
                             lista={selectedList}
                             setSearchResult={setSearchResult}
-                            AddMultipleItems={AddMultipleItems}
-                            EditItem={EditItem}
                         />
                         <Camera
-                            lista={selectedList}
-                            AddMultipleItems={AddMultipleItems}
-                            EditItem={EditItem}
-                            AddCategory={AddCategory}
+                            image={image}
+                            setImage={setImage}
+                            cameraOpen={cameraOpen}
+                            setCameraOpen={setCameraOpen}
                         />
                     </div>
                 </div>
                 }
+                {image && OCRneed && !cameraOpen &&
+                    <OCR
+                        image={image}
+                        setImage={setImage}
+                        lista={selectedList}
+                        AddMultipleItems={AddMultipleItems}
+                        EditItem={EditItem}
+                        AddCategory={AddCategory}
+                    />
+                }                
                 <SubHeader 
                     itemslength={totalItemsLength}
                     itemsAdquirido={ItemsChecked()}

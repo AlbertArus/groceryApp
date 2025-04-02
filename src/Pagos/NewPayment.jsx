@@ -11,7 +11,7 @@ import Camera from "../ui-components/Camera"
 import Button from "../ui-components/Button";
 import { uploadImage, deleteImage } from '../functions/HandleImages';
 
-const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment, selectedDate, setSelectedDate }) => {
+const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amount, setAmount, paymentName, setPaymentName, editPayment, selectedDate, setSelectedDate, image, setImage, cameraOpen, setCameraOpen }) => {
     const { usuario } = useUsuario();
     const { id, paymentId } = useParams();
     const [searchParams] = useSearchParams();
@@ -25,7 +25,6 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     const navigate = useNavigate();
     const maxLength = 27;
     const paymentEditing = selectedList?.payments?.find(payment => payment.id === paymentId);
-    const [paymentImg, setPaymentImg] = useState("")
     const [existingImageURL, setExistingImageURL] = useState("");
 
     // Initialize payment data when editing
@@ -111,13 +110,13 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         if (!newErrors.paymentName && !newErrors.amount && !newErrors.members) {
             try {
                 let imageURL = existingImageURL;
-                if (paymentImg) {
+                if (image) {
                     if (existingImageURL) {
                         await deleteImage(existingImageURL);
                     }
-                    imageURL = await uploadImage(paymentImg, 'payments');
+                    imageURL = await uploadImage(image, 'payments');
                 } else {
-                    imageURL = await uploadImage(paymentImg, 'payments');
+                    imageURL = await uploadImage(image, 'payments');
                 }
                 if (!paymentId) {
                     await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, selectedDate, elementsPaid, imageURL );
@@ -221,10 +220,6 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         return totalAmount
     }
 
-    const capturePaymentImg = (image) => {
-        setPaymentImg(image)
-    }
-
     const handleRemoveImage = async () => {
         if (existingImageURL) {
             try {
@@ -234,7 +229,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 console.error("Error removing image:", error);
             }
         } else {
-            setPaymentImg("");
+            setImage("");
         }
     }
 
@@ -254,15 +249,18 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                                 <div className="iconSuperpuesto">{paymentName.length}/{maxLength}</div>
                             </div>
                             <Camera 
-                                capturePaymentImg={capturePaymentImg}
+                                image={image}
+                                setImage={setImage}
+                                cameraOpen={cameraOpen}
+                                setCameraOpen={setCameraOpen}
                             />
                         </div>
                     </div>
                     <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
-                    {(paymentImg || existingImageURL) && (
+                    {(image || existingImageURL) && (
                         <div className="payment-image-container">
                             <span class="material-symbols-outlined iconPaymentImg" onClick={() => handleRemoveImage()}>close</span>
-                            <img className="paymentImg" src={paymentImg || existingImageURL} alt="Imagen del pago" onClick={() => navigate()} />
+                            <img className="paymentImg" src={image || existingImageURL} alt="Imagen del pago" onClick={() => navigate()} />
                         </div>
                     )}
                     <div className="fila-between" style={{width: "100%", gap: "15px"}}>
