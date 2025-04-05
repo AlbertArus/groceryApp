@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useUsuario } from "../UsuarioContext";
 import Head from "../components/Head";
 import { Checkbox } from "@mui/material";
@@ -15,6 +15,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     const { usuario } = useUsuario();
     const { id, paymentId } = useParams();
     const [searchParams] = useSearchParams();
+    const location = useLocation()
     const selectedList = listas.find(lista => lista.id === id);
     const [errors, setErrors] = useState({ paymentName: false, amount: false, members: false });
     const [nombreUserMember, setNombreUserMember] = useState([]);
@@ -96,6 +97,12 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
         }
     },[selectedChip])
 
+    useEffect(() => {
+        if(!location.pathname.includes("/newpayment")) {
+            setImage("")
+        }
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -121,7 +128,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 if (!paymentId) {
                     await AddPayment(selectedList, selectedList.id, paymentName, Number(amount), payer, members, selectedDate, elementsPaid, imageURL );
                 } else {
-                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, selectedDate, elementsPaid, imageURL );
+                    await editPayment(selectedList, selectedList.id, paymentId, paymentName, Number(amount), payer, members, elementsPaid, selectedDate, imageURL );
                 }
                 navigate(`/list/${id}?view=payments`);
                 setAmount("");
@@ -259,7 +266,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                     <h5 style={{display: errors.paymentName ? "block" : "none", color:"red"}}>Añade un título a tu pago</h5>
                     {(image || existingImageURL) && (
                         <div className="payment-image-container">
-                            <span class="material-symbols-outlined iconPaymentImg" onClick={() => handleRemoveImage()}>close</span>
+                            <span className="material-symbols-outlined iconPaymentImg" onClick={() => handleRemoveImage()}>close</span>
                             <img className="paymentImg" src={image || existingImageURL} alt="Imagen del pago" onClick={() => navigate()} />
                         </div>
                     )}
