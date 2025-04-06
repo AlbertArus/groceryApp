@@ -395,7 +395,7 @@ h6 {
 
 .iconSuperpuesto {
   position: relative;
-  color: #565656;
+  color: rgb(133, 133, 133);
   opacity: 1;
   padding-right: 5px;
 }
@@ -424,10 +424,10 @@ h6 {
   align-items: center;
 }
 
-.personalData {
+/* .personalData {
   border-radius: 15px;
   background-color: #e2e0e0;
-}
+} */
 
 .infoPersonalData, .arrowPersonalData {
   padding: 10px
@@ -551,7 +551,7 @@ h6 {
 .element-container {
   border-radius: 5px;
   border: 1px solid #d1d5db;
-  padding: 6px;
+  padding: 4px 5px;
 }
 
 .element-container input{

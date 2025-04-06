@@ -169,7 +169,8 @@ const App = () => {
                         fontFamily: "poppins",
                         fontSize: "16px",
                         fontWeight: "600",
-                        cursor: "pointer"
+                        cursor: "pointer",
+                        color: "black"
                     }}
                 >
                     Deshacer

@@ -225,7 +225,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
         {`Has eliminado "${itemToDelete.name}"`}
         <button
           onClick={() => { handleUndo(); toast.dismiss(t.id); }}
-          style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}
+          style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer", color: "black"}}
         >
           Deshacer
         </button>
@@ -311,7 +311,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
       <span style={{ display: "flex", alignItems: "center" }}>
         <span className="material-symbols-outlined" style={{ marginRight: "8px", color: "#9E9E9E" }}>warning</span>
         {`Has eliminado "${CategoryToDelete.categoryName}"`}
-        <button onClick={() => { handleUndo(); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer" }}>
+        <button onClick={() => { handleUndo(); toast.dismiss(t.id) }} style={{ marginLeft: "10px", padding: "0", backgroundColor: "#FBE7C1", border: "none", fontFamily: "poppins", fontSize: "16px", fontWeight: "600", cursor: "pointer", color: "black" }}>
           Deshacer
         </button>
       </span>

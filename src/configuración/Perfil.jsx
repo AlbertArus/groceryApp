@@ -30,7 +30,7 @@ const Perfil = ({ usuario }) => {
                     <h5>{usuario.email}</h5>
                 </div>
                 {/* <Link> */}
-                    <div className="personalData fila-between" style={{ marginTop: "10px" }}>
+                    <div className="iconed-container fila-between" style={{ marginTop: "10px" }}>
                         <div className="infoPersonalData">
                             <h6>Nombre</h6>
                             <h4>{usuario.displayName}</h4>

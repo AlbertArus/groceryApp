@@ -155,6 +155,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
                     path={"newlist"}
                     icon={"add"}
                     label={""}
+                    style={{color: "black"}}
                 />
                 </>
             )}

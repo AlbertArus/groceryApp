@@ -107,7 +107,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                     <Button
                         buttonCopy={"Eliminar cuenta"}
                         onClick={() => handleDeleteUser(user)}
-                        style={{backgroundColor: inactive ? "" : "rgb(248, 167, 167)", margin: "12px 0px 0px", fontSize: "12px"}}
+                        style={{backgroundColor: inactive ? "" : "rgb(248, 167, 167)", margin: "12px 0px 0px", fontSize: "12px", color: "black"}}
                         inactive={inactive}
                     />
                 </Modal>
