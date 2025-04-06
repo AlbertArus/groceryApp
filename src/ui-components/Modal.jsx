@@ -3,7 +3,7 @@ const Modal = ({ children, title, subtitle, overlayOnClick, closeOnClick, styleS
  
    return (
     <div className="modal-container" onClick={overlayOnClick}>   
-        <div className="popUp" style={{backgroundColor: "white"}}>
+        <div className="popUp" style={{backgroundColor: "white"}} onClick={(e) => e.stopPropagation()}>
             <div className="columna-start" style={{margin: "10px 0px"}}>
                 <div className="fila-between">
                     <h4 style={{ fontWeight: "600" }}>{title}</h4>
