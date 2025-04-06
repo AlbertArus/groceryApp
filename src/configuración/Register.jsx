@@ -185,17 +185,17 @@ const Register = ({setUsuario}) => {
         <div className="app">
             <div className="titleRegister">
                 <div className="picRegister">
-                    <img src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" style={{margin: "40px 0px 5px 0px", width: "80px", height: "80px"}}/>
+                    <img src="/Fotos GroceryApp/favicon/android-chrome-192x192.png" alt="iconWeb" style={{margin: "25px 0px 5px 0px", width: "80px", height: "80px"}}/>
                 </div>
-                <h2 style={{marginBottom: "25px", textAlign: "center"}}>GroceryApp</h2>
-                <div className="toggle" style={{backgroundColor: "white", marginBottom: "25px"}}>
+                <h2 style={{marginBottom: "15px", textAlign: "center"}}>GroceryApp</h2>
+                <div className="toggle" style={{backgroundColor: "white", marginBottom: "20px"}}>
                     <div className="app-margin toggleBars">
                         <h4 onClick={() => handleClickSelected("register")} className={isToggleSelected === `register` ? "toggleOptions toggleBar" : "toggleOptions"}>Regístrate</h4>
                         <h4 onClick={() => handleClickSelected("login")} className={isToggleSelected === `login` ? "toggleOptions toggleBar" : "toggleOptions"}>Inicia sesión</h4>
                     </div>
                 </div>
             </div>        
-            <div className="login app-margin">
+            <div className="form app-margin">
                 <form>
                     <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre *</label>
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
@@ -208,14 +208,14 @@ const Register = ({setUsuario}) => {
                     <h5 style={{display: errors.authError ? "block" : "none", color:"red"}}>{errors.authErrorMessage}</h5>
                     <h5 style={{display: errors.correoInvalid ? "block" : "none", color:"red"}}>El formato del correo electrónico no es válido</h5>
                     <label htmlFor="contraseña">Contraseña *</label>
-                    <div className="iconed-container fila-between" style={{backgroundColor: "transparent", border: "1px solid #9E9E9E", margin: "5px 0px"}}>
-                        <input type={!isPasswordVisible ? "password" : "text"} style={{border: "none", margin: "0px"}} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
+                    <div className="iconed-container fila-between">
+                        <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="contraseña" ref={contraseñaRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, contraseña: false, contraseñaInvalid: false}))}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
                     <h5 style={{display: errors.contraseña ? "block" : "none", color:"red"}}>Introduce una contraseña</h5>
                     <h5 style={{display: errors.contraseñaInvalid ? "block" : "none", color:"red"}}>Tu contraseña debe tener almenos 6 caracteres</h5>
                     <h6 style={{borderBottom: "1px solid rgb(173, 172, 172)", width: "fit-content", marginTop: "15px", display: !isRegistered ? "none" : "block"}} onClick={() => navigate("/forgot-password")}>He olvidado mi contraseña</h6>
-                    <div className="fila-start" style={{marginTop: "7px", display: isRegistered ? "none" : "flex"}}>
+                    <div className="fila-start" style={{marginTop: "15px", display: isRegistered ? "none" : "flex"}}>
                         <Checkbox 
                             checked={termsChecked}
                             onChange={() => {handleTermsCheck(); setErrors((prevErrors) => ({...prevErrors, termsUnchecked: false}))}}

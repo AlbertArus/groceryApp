@@ -104,7 +104,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
   }
   
   return (
-    <div className="FormLista app">
+    <div className="form app">
         <Head
             path={""}
         />

@@ -82,7 +82,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
     }
 
     return (
-        <div className="app">
+        <div className="app form">
             <Head 
                 path={"profile"}
             />
@@ -98,7 +98,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                     overlayOnClick={() => {setDeleteConfirmation(false); setPassword(""); setError({password: false})}}
                 >
                     <h5>Introduce tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente</h5>
-                    <div className="iconed-container FormLista fila-between" style={{marginTop: "10px"}}>
+                    <div className="iconed-container fila-between" style={{marginTop: "10px"}}>
                         <input type={!isPasswordVisible ? "password" : "text"} placeholder="*******" aria-placeholder= "password" id="newContraseña" style={{width: "100%", height: "30px", border: "none"}} value={password} onChange={(e) => {setPassword(e.target.value); setError({password: false})}}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>

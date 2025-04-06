@@ -245,7 +245,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     }
 
     return (
-        <div className="FormLista app">
+        <div className="form app">
             <Head
                 path={`list/${id}?view=${searchParams.get("view")}`}
                 sectionName={paymentId ? "Editar pago" : "Nuevo pago"}
@@ -278,14 +278,14 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                         <div className="payer columna-start" style={{flex: "1 1"}}>
                             {nombreUserMember.length > 0 && (
                                 <>
-                                <label htmlFor="payer">Quien ha pagado</label>
-                                <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
-                                {selectedList.userMember.map((uid, index) => {
-                                    return (
-                                        <option key={uid} value={uid}>{nombreUserMember[index]}</option>
-                                    )
-                                })}
-                                </select>
+                                    <label htmlFor="payer">Quien ha pagado</label>
+                                    <select id="payer" onChange={(e) => setPayer(e.target.value)} value={payer || usuario.uid}>
+                                    {selectedList.userMember.map((uid, index) => {
+                                        return (
+                                            <option key={uid} value={uid}>{nombreUserMember[index]}</option>
+                                        )
+                                    })}
+                                    </select>
                                 </>
                             )}
                         </div>
@@ -301,7 +301,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                     <div style={{width: "100%", marginTop: "10px"}}>
                         <div className="fila-between">
                             <div>
-                                <h4 style={{marginBottom: "5px"}}>Qué has pagado</h4>
+                                <h5 style={{marginBottom: "5px"}}>Qué has pagado</h5>
                                 <CustomChip
                                     label="De esta lista"
                                     isSelected={selectedChip === "De esta lista"}
@@ -332,7 +332,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                                 />
                             ) : (
                             <div style={{marginTop: "10px"}}>
-                                <label htmlFor="amount" className="otherLabel" style={{marginBottom: "30px"}}> Importe </label>
+                                <label htmlFor="amount" style={{marginBottom: "30px"}}> Importe </label>
                                 <input type="number" id="amount" placeholder="25,84" onChange={(e) => {setAmount(e.target.value); setErrors(prevErrors => ({...prevErrors, amount: false }))}} value={amount} />
                                 <h5 style={{display: errors.amount ? "block" : "none", color:"red"}}>Añade un precio a tu pago</h5>
                             </div>
@@ -341,7 +341,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                     </div>
                     {nombreUserMember.length > 0 && (
                         <div style={{width: "100%"}}>
-                            <h4 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h4>
+                            <h5 style={{margin: "15px 0px 0px 0px"}}>Participantes en este gasto </h5>
                             <h5 style={{display: errors.members ? "block" : "none", color:"red"}}>Almenos una persona debe asumir este gasto</h5>
                             {selectedList.userMember.map((uid, index) => {
                                 return (

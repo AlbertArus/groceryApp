@@ -37,7 +37,7 @@ const ForgotPassword = () => {
                 path={"/register"}            
                 sectionName={""}                
             />
-            <div className="app-margin login">
+            <div className="app-margin form">
                 <h2 style={{margin: "25px 0px", fontWeight: "600"}}>Recuperar contraseña</h2>
                 <form onSubmit={handleResetPassword}>
                     <label htmlFor="email">Correo electrónico</label>

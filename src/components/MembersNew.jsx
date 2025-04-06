@@ -67,17 +67,17 @@ const NewMembers = ({ membersToAdd, setMembersToAdd, currentMembers, lista, setL
     }
     
     return (
-        <form>
+        <form className="form">
             <label>Añade a los miembros del plan</label>
                 {currentMembers.length > 0 && currentMembers.map((member, index) =>
                     <div key={index} className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
-                        <input type="text" className="FormLista" placeholder="Juan Alameda" value={nombreUserMember[index]} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                        <input type="text" placeholder="Juan Alameda" value={nombreUserMember[index]} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index, member)}>close</span>
                     </div>
                 )}
                 {membersToAdd.map((member, index) =>
                     <div key={index} className="iconed-container-underlineInput fila-between" style={{marginBottom: "5px"}}>
-                        <input type="text" className="FormLista" placeholder="Juan Alameda" value={member} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
+                        <input type="text" placeholder="Juan Alameda" value={member} ref={(input) => (inputRefs.current[index] = input)} onChange={(e) => handleOnChange(e, index)} onKeyDown={handleSubmit}/>
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" onClick={(e) => handleDelete (e, index)}>close</span>
                     </div>
                 )}

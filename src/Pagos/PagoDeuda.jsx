@@ -148,7 +148,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
                         const toUser = nombreUserMember[lista.userMember.indexOf(transfer.to)];
                         return (
                             <div key={`${transfer.from}-${transfer.to}`} className="app-margin">
-                                <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px" }}>
+                                <div className="vistaDatos" style={{ padding: "0px", margin: "15px 0px 0px" }}>
                                     <div className="fila-between" style={{ padding: "6px" }}>
                                         <div className="columna-start">
                                             <h4><strong style={{ fontWeight: "500" }}>{fromUser}</strong></h4>
@@ -178,9 +178,9 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
                         />
                     </ModalSheet>
                     {lista.userMember.length !== 1 && transfers.length > 0 && (
-                        <div style={{margin: "0px 15px 18px 15px"}}>
-                            <div className="fila-start" style={{margin: "0px 0px 10px 0px"}}>
-                                <h4 style={{fontWeight: "500"}}>Importes pendientes por usuario</h4>
+                        <div style={{margin: "15px"}}>
+                            <div className="fila-start" style={{marginBottom: "10px"}}>
+                                <h5 style={{fontWeight: "500"}}>Importes pendientes por usuario</h5>
                                 <span className="material-symbols-outlined icon-medium pointer" ref={collapserRef} onClick={() => collapseList()}>keyboard_arrow_down</span>
                             </div>
                             {!isCollapsed &&
