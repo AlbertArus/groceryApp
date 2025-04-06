@@ -27,6 +27,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     const maxLength = 27;
     const paymentEditing = selectedList?.payments?.find(payment => payment.id === paymentId);
     const [existingImageURL, setExistingImageURL] = useState("");
+    const [inactive, setInactive] = useState(false)
 
     // Initialize payment data when editing
     useEffect(() => {
@@ -104,6 +105,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
     })
 
     const handleSubmit = async (e) => {
+        setInactive(true)
         e.preventDefault();
 
         const newErrors = {
@@ -139,6 +141,8 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                 console.error("Error al añadir el pago");
             }
         }
+        setInactive(false)
+        setImage("")
     }
 
     const handleNewPaymentName = (event) => {
@@ -373,6 +377,7 @@ const NewPayment = ({ listas, UsuarioCompleto, AddPayment, payer, setPayer, amou
                     <Button
                         onClick={handleSubmit}
                         buttonCopy={paymentId ? "Guardar cambios" : "Añadir pago"}
+                        inactive={inactive}
                     />
                 </div>
             </div>

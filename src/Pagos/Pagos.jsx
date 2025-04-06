@@ -11,6 +11,7 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
   const navigate = useNavigate()
   const [nombrePayer, setNombrePayer] = useState([]);
   const [searchParams] = useSearchParams()
+  const [inactive, setInactive] = useState(false)
 
   useEffect(() => {
     if (lista && !lista.payments) {
@@ -32,12 +33,12 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
     }
   }, [UsuarioCompleto, lista]);
 
-  const totalPagadoListaUser = () => {
-    const pagosUser = lista.payments?.filter(payment => payment.payer === usuario.uid)
-    return pagosUser.reduce((total, payment) => {
-      return total + payment.amount
-    },0)
-  }
+//   const totalPagadoListaUser = () => {
+//     const pagosUser = lista.payments?.filter(payment => payment.payer === usuario.uid)
+//     return pagosUser.reduce((total, payment) => {
+//       return total + payment.amount
+//     },0)
+//   }
 
   const totalGastoListaUser = () => {
     const gastosUser = lista.payments?.filter(payment => 
@@ -87,7 +88,8 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                 alt={"Set of grocery bags full of items"}
                 description={"Añade tus pagos y ajusta cuentas fácilmente"}
                 buttonCopy={"Añadir pago"}
-                onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                onClick={() => {navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`); setInactive(true)}}
+                inactive={inactive}
             />
         )}
         {lista?.payments && lista.payments.length !== 0 && (
@@ -123,7 +125,8 @@ const Pagos = ({lista, itemsLength, UsuarioCompleto, updateLista, totalGastoList
                     <div className="button-main-fixed">
                         <Button
                             buttonCopy={"Añadir pago"}
-                            onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                            onClick={() => {navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`); setInactive(true)}}
+                            inactive={inactive}
                         />
                     </div>
             </>

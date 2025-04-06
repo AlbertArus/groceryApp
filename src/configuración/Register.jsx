@@ -37,6 +37,7 @@ const Register = ({setUsuario}) => {
     
     const handleSubmit = async(e) => {
         e.preventDefault()
+        setInactive(true)
         
         const correo = correoRef.current.value;
         const contraseña = contraseñaRef.current.value;
@@ -59,6 +60,7 @@ const Register = ({setUsuario}) => {
                         navigate("/");
                     }
                 } catch (error) {
+                    setInactive(false)
                     console.error("Error al iniciar sesión:", error);
                     let errorMessage = "";
                     switch(error.code) {
@@ -90,6 +92,8 @@ const Register = ({setUsuario}) => {
                         authErrorMessage: errorMessage
                     }));
                 }
+            } else {
+                setInactive(false)
             }
         } else {
             const nombre = nombreRef.current.value;
@@ -129,7 +133,7 @@ const Register = ({setUsuario}) => {
                         navigate("/");
                     }
                 } catch (error) {
-
+                    setInactive(false)
                     let errorMessage = "";
                     switch(error.code) {
                         case "auth/email-already-in-use":
@@ -154,6 +158,8 @@ const Register = ({setUsuario}) => {
                         authErrorMessage: errorMessage
                     }));
                 }
+            } else {
+                setInactive(false)
             }
         }
     }
@@ -190,7 +196,7 @@ const Register = ({setUsuario}) => {
                 </div>
             </div>        
             <div className="login app-margin">
-                <form onSubmit={(e) => {handleSubmit(e); setInactive(true)}}>
+                <form>
                     <label htmlFor="nombre" style={{display: isRegistered ? "none" : "block"}}>Nombre *</label>
                     <input type="text" autoComplete="given-name" placeholder="Sergio" id="nombre" ref={nombreRef} onChange={(e) => setErrors((prevErrors) => ({...prevErrors, nombre: false}))} style={{textTransform: "capitalize", display: isRegistered ? "none" : "block"}}/>
                     <h5 style={{display: !isRegistered && errors.nombre ? "block" : "none", color:"red"}}>Añade tu nombre</h5>
@@ -248,7 +254,7 @@ const Register = ({setUsuario}) => {
             </div>
             <div className="button-main-fixed">
                 <Button
-                    onClick={(e) => {handleSubmit(e); setInactive(true)}}
+                    onClick={(e) =>handleSubmit(e)}
                     buttonCopy={isRegistered ? "Iniciar sesión" : "Registrarme"}
                     inactive={inactive}
                 />

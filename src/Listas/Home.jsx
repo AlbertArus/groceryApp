@@ -10,6 +10,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
     const [isEStateHome, setIsEStateHome] = useState(false)
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(null)
     const [filteredListas, setFilteredListas] = useState(listas)
+    const [inactive, setInactive] = useState(false)
     const archivadosRef = useRef(null)
     const optionsMenuListHomeRef = useRef(null)
     const buttonMenuRefs = useRef({})
@@ -19,6 +20,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
     useEffect(() => {
         if (listaslength === 0) {
           setIsEStateHome(true);
+          setInactive(false)
         } else {
             setIsEStateHome(false);
         }
@@ -80,9 +82,9 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
                         img={"_e409535c-8a88-419e-8a05-5437f5a91f35-removebg-preview"}
                         alt={"Set of grocery bags full of items"}
                         description={"Compra en grupo creando tu primera lista ahora"}
-                        onClick={() => navigate(`/${"newlist"}`)}
+                        onClick={() => {navigate(`/${"newlist"}`); setInactive(true)}}
                         buttonCopy={"Nueva lista"}
-                        // style={{display: "none"}}
+                        inactive={inactive}
                     />
                 </>
             )}

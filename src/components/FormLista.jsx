@@ -22,6 +22,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
     const [searchParams] = useSearchParams()
     const listaId = searchParams.get("lista")
     const lista = listas.find(lista => lista.id === listaId)
+    const [inactive, setInactive] = useState(false)
 
     useEffect(() => {
         if(listaId && lista) {
@@ -62,6 +63,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
 
     const handleSubmit = async (e) => {
     e.preventDefault()
+    setInactive(true)
     
     setErrors({
         listaName: (listaName.trim() === ""),
@@ -69,18 +71,21 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
     })
         const membersUID = await createUsers()
         if (listaName.trim() && plan.trim()) {
-        try {
-            if(!listaId) {
-                const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID)
-                navigate(`/list/${nuevaLista.id}`)
-                setSharePopupVisible(true)
-            } else {
-                await editLista(listaId, lista, listaName, plan, descriptionLista, membersUID)
-                navigate(`/list/${lista.id}`)
+            try {
+                if(!listaId) {
+                    const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID)
+                    navigate(`/list/${nuevaLista.id}`)
+                    setSharePopupVisible(true)
+                } else {
+                    await editLista(listaId, lista, listaName, plan, descriptionLista, membersUID)
+                    navigate(`/list/${lista.id}`)
+                }
+            } catch (error) {
+                setInactive(false)
+                console.error("Error al crear la lista:", error)
             }
-        } catch (error) {
-            console.error("Error al crear la lista:", error)
-        }
+        } else {
+            setInactive(false)
         }
     }
 
@@ -101,8 +106,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
   return (
     <div className="FormLista app">
         <Head
-        path={""}          
-        // sectionName={!listaId ? "Nueva lista" : "Editar lista"}
+            path={""}
         />
         <div className="app-margin">
             <h3 style={{ fontWeight: "500", margin: "20px 0px" }}>{!listaId ? "Configura tu nueva lista" : "Edita tu lista"}</h3>
@@ -159,12 +163,13 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
                 />
             </div>
         </div>
-            <div className="button-main-fixed">
-                <Button
-                    onClick={handleSubmit}
-                    buttonCopy={!listaId ? "Crear lista": "Editar lista"}
-                />
-            </div>
+        <div className="button-main-fixed">
+            <Button
+                onClick={handleSubmit}
+                buttonCopy={!listaId ? "Crear lista": "Editar lista"}
+                inactive={inactive}
+            />
+        </div>
     </div>
   );
 };

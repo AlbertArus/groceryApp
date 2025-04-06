@@ -16,6 +16,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
     const [password, setPassword] = useState("")
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [error, setError] = useState({password: false})
+    const [inactive, setInactive] = useState(false)
     const user = auth.currentUser
 
     const deleteUserDoc = async () => {
@@ -30,30 +31,52 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
     }
 
     const handleDeleteUser = async (user) => {
+        setInactive(true)
         setError({
             password: password.trim() === ""
         })
-
+    
         if(password.trim()) {
             try {
                 await CreateReplacementUser({usuario, UsuarioCompleto, updateLista, listas, setListas})
                 deleteUserDoc()
-                const credential = EmailAuthProvider.credential(user.email, password); // Credenciales para reautenticar al usuario
+                const credential = EmailAuthProvider.credential(user.email, password);
                 await reauthenticateWithCredential(user, credential)
                 await deleteUser(user);
                 setUserDeleted(true);
                 setPopUpVisible(true);
                 console.log("Usuario eliminado");
             } catch(error) {
-                setPopUpVisible(true);
+                setInactive(false)
                 console.error("Error eliminando usuario:", error);
-            };
+    
+                let errorMessage = "";
+                switch(error.code) {
+                    case "auth/invalid-login-credentials":
+                        errorMessage = "La contraseña no es correcta";
+                        break;
+                    case "auth/weak-password":
+                        errorMessage = "La contraseña es demasiado débil";
+                        break;
+                    default:
+                        errorMessage = "Error al eliminar usuario. Por favor, inténtalo de nuevo";
+                }
+    
+                setError((prevError) => ({
+                    ...prevError,
+                    passwordInvalid: error.code === "auth/invalid-login-credentials",
+                }));
+            }
         } else {
+            setInactive(false)
             console.error("la contraseña está vacía")
-            return
+            setError((prevError) => ({
+                ...prevError,
+                password: true
+            }));
         }
-    };
-
+    }
+    
     const handlePasswordVisibility = () => {
         setIsPasswordVisible(prevState => !prevState)
     }
@@ -71,7 +94,8 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
             {deleteConfirmation &&
                 <Modal
                     title={"Confirma tu contraseña"}
-                    closeOnClick={() => setDeleteConfirmation(false)}
+                    closeOnClick={() => {setDeleteConfirmation(false); setPassword(""); setError({password: false})}}
+                    overlayOnClick={() => {setDeleteConfirmation(false); setPassword(""); setError({password: false})}}
                 >
                     <h5>Introduce tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente</h5>
                     <div className="iconed-container FormLista fila-between" style={{marginTop: "10px"}}>
@@ -79,7 +103,13 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                         <span className="material-symbols-outlined icon-medium iconSuperpuesto" style={{paddingRight:"5px"}} onClick={handlePasswordVisibility}>{isPasswordVisible ? "visibility_off" : "visibility"}</span>
                     </div>
                     <h5 style={{display: error.password ? "block" : "none", color:"red"}}>Confirma tu contraseña actual</h5>
-                    <button className="buttonMain" style={{width: "100%", marginBottom: "10px", backgroundColor: "rgb(248, 167, 167)"}} onClick={() => handleDeleteUser(user)}>Eliminar cuenta</button>
+                    <h5 style={{display: error.passwordInvalid ? "block" : "none", color:"red"}}>La contraseña no es correcta</h5>
+                    <Button
+                        buttonCopy={"Eliminar cuenta"}
+                        onClick={() => handleDeleteUser(user)}
+                        style={{backgroundColor: inactive ? "" : "rgb(248, 167, 167)", margin: "12px 0px 0px", fontSize: "12px"}}
+                        inactive={inactive}
+                    />
                 </Modal>
             }
             {userDeleted && popUpVisible && // Ahora mismo no se ve porque como App.js no reconoce usuario, te echa de la App
@@ -106,9 +136,10 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
                     <Button
                         buttonCopy={"Eliminar cuenta"}
                         onClick={() => setDeleteConfirmation(true)}
-                        style={{backgroundColor: "rgb(248, 167, 167)"}}
+                        style={{backgroundColor: inactive ? "" : "rgb(248, 167, 167)"}}
+                        inactive={inactive}
                     />
-                </div>            
+                </div>
         </div>
     )
 }

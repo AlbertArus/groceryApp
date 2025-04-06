@@ -12,10 +12,12 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState("");
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [inactive, setInactive] = useState(false)
     const navigate = useNavigate()
 
     const handleResetPassword = (e) => {
         e.preventDefault();
+        setInactive(true)
 
         sendPasswordResetEmail(auth, email)
             .then(() => {
@@ -23,6 +25,7 @@ const ForgotPassword = () => {
                 setPopUpVisible(true);
             })
             .catch(() => {
+                setInactive(false)
                 setSuccess(false);
                 setPopUpVisible(true);
             });
@@ -73,6 +76,7 @@ const ForgotPassword = () => {
                 <Button
                     buttonCopy={"Enviar enlace de recuperación"}
                     onClick={handleResetPassword}
+                    inactive={inactive}
                 />
             </div>            
         </div>

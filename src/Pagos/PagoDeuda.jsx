@@ -22,6 +22,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [inactive, setInactive] = useState(false)
 
     useEffect(() => {
         if (lista && lista.userMember && usuario?.uid) {
@@ -225,11 +226,12 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
                         img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
                         alt={"Set of grocery bags full of items"}
                         description={"No hay balance a compensar. Registra tus pagos y equilibra balances entre el grupo"}
-                        onClick={() => navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`)}
+                        onClick={() => {navigate(`/list/${lista.id}/newpayment?view=${searchParams.get("view")}`); setInactive(true)}}
                         buttonCopy={"Añadir pago"}
                         lista={lista}
                         handleArchive={handleArchive}
                         deleteLista={deleteLista}
+                        inactive={inactive}
                     />
                 )
             }

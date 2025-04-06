@@ -42,6 +42,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   const selectedList = listas.find(lista => lista.id === params.id);
   const [isScrolled, setIsScrolled] = useState(false)
   const [deletedElement, setDeletedElement] = useState([])
+  const [inactive, setInactive] = useState(false)
   const OCRneed = searchParams?.get("view") !== "payments"
 
   const fetchLista = useCallback(async () => {
@@ -420,6 +421,7 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
   useEffect(() => {
     if (totalCategoriesLength === 0) {
       setIsEStateLista(true);
+      setInactive(false)
     } else {
       setIsEStateLista(false);
     }
@@ -605,13 +607,14 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
                     handleDeleteItemUserMember={handleDeleteItemUserMember}
                     />
                 {isEStateLista && (
-                        <EmptyState
+                    <EmptyState
                         img={"_7b52f185-ed1a-44fe-909c-753d4c588278-removebg-preview"}
                         alt={"Set of grocery bags full of items"}
                         description={"Completa tu lista. Crea tu primera categoría y añade tantos items como quieras"}
-                        onClick={handleAddCategory}
+                        onClick={() => {handleAddCategory(); setInactive(true)}}
                         buttonCopy={"Añadir Categoría"}
-                        />
+                        inactive={inactive}
+                    />
                 )}
                 {sharePopupVisible && 
                     <SharePopUp

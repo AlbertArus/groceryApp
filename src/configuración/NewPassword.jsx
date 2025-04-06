@@ -15,6 +15,7 @@ const NewPassword = () => {
     const [errors, setErrors] = useState({})
     const [success, setSuccess] = useState(true);
     const [popUpVisible, setPopUpVisible] = useState(false)
+    const [inactive, setInactive] = useState(false)
     const navigate = useNavigate()
 
     const handlePasswordVisibility = () => {
@@ -23,10 +24,11 @@ const NewPassword = () => {
 
     const handleChangePassword = (e) => {
         e.preventDefault()
-
+        setInactive(true)
         const isValid = validatePasswords()
 
         if(!isValid) {
+            setInactive(false)
             return
         }
 
@@ -43,7 +45,10 @@ const NewPassword = () => {
             })
             .catch((error) => {
                 setPopUpVisible(true)
+                setInactive(false)
             })
+        } else {
+            setInactive(false)
         }
     }
 
@@ -123,7 +128,8 @@ const NewPassword = () => {
                 <div className="button-main-fixed">
                     <Button
                         buttonCopy={"Cambiar contraseña"}
-                        onClick={handleChangePassword}        
+                        onClick={handleChangePassword}
+                        inactive={inactive}
                     />
                 </div>            
         </div>
