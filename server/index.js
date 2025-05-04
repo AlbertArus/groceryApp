@@ -7,7 +7,7 @@ const { VertexAI } = require('@google-cloud/vertexai');
 const { processWithGemini } = require('./geminiAPI.js');
 global.processWithGemini = processWithGemini;
 const { parseTextToStructuredData } = require('./FormatTicket.js');
-const { compararPrecios } = require('./compararPrecios.js');
+const { compararPrecios } = require('./compararprecios.js');
 
 const app = express();
 app.use(express.json({ limit: '10mb' }));

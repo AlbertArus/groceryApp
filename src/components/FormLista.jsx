@@ -126,7 +126,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
                 </select>
                 <h5 style={{display: errors.plan ? "block" : "none", color:"red"}}>Selecciona el tema de tu lista</h5>
                 <label htmlFor="descripcion"> Descripción (opcional) </label>
-                <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
+                <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" style={{resize: "none"}} onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
                 {!listaId && !lista && (
                     <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
                         <div className="fila-between">

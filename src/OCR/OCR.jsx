@@ -31,7 +31,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems, AddCategory }
             if (typeof image === 'string') {
                 const base64Data = image.split(',')[1];
 
-                const response = await fetch('https://06e0-83-50-183-163.ngrok-free.app/api/ocr', {
+                const response = await fetch('https://dc6a-83-50-97-35.ngrok-free.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
