@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 export const uploadImage = async (imageData, path) => {
   if (!imageData) return "";
-  
+  console.log("image before upload:", imageData.slice(0, 30));
+
   try {
     const storage = getStorage();
     const timestamp = Date.now();
