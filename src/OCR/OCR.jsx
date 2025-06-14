@@ -31,7 +31,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems, AddCategory }
             if (typeof image === 'string') {
                 const base64Data = image.split(',')[1];
 
-                const response = await fetch('https://5b9b-83-50-98-42.ngrok-free.app/api/ocr', {
+                const response = await fetch('https://grocery-app-back.vercel.app/api/ocr', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems, AddCategory }
                     <div className="loading-message">Estamos validando tu ticket...</div>
                 ) : (
                     <>
-                        {error && <div className="error-message">{error}</div>}
+                        {/* {error && <div className="error-message">{error}</div>} */}
                         {!text && (
                             <div>No se ha encontrado texto en tu imagen</div>
                         )}
