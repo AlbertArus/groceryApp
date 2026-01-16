@@ -19,6 +19,8 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
   const ItemTextRef = useRef(null)
   const ItemNameRef = useRef(null)
   const ItemPriceRef = useRef(null)
+  const userConfig = lista.userConfig?.[usuario.uid];
+  const uid = usuario.uid;
 
   const handleEdit = (e) => {
     if(name.trim() && price.trim()) {
@@ -44,10 +46,10 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
   }
 
   useEffect(() => {
-    if(lista.userConfig?.[usuario.uid]?.showPrices && ItemPriceRef.current) {
-      ItemPriceRef.current.price = price
+    if (userConfig?.showPrices && ItemPriceRef.current) {
+      ItemPriceRef.current.price = price;
     }
-  },[lista.userConfig?.[usuario.uid]?.showPrices, price])
+  }, [userConfig, price]);
 
   useEffect(() => {
     if(item.isChecked) {
