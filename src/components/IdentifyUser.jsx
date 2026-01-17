@@ -156,6 +156,8 @@ const IdentifyUser = ({ listas, setListas, updateLista, usuario, UsuarioCompleto
                 title={"Identifícate"}
                 subtitle={"Estos son los miembros no registrados"}
                 styleSpan={{display: "none"}}
+                overlayOnClick={undefined}
+                closeOnClick={undefined}
             >
                 <div>
                     {filteredMembers.map((member, index) => {
