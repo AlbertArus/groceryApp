@@ -13,7 +13,6 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
     const [open, setOpen] = useState(false);
     const [pendingAmounts, setPendingAmounts] = useState([]);
     const [nombreUserMember, setNombreUserMember] = useState([]);
-    const [userAmountList, setUserAmountList] = useState([]);
     const [positiveMembers, setPositiveMembers] = useState([]);
     const [negativeMembers, setNegativeMembers] = useState([]);
     const [transfers, setTransfers] = useState([]);
@@ -74,7 +73,6 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
     useEffect(() => {
         if (lista) {
             const amounts = amountUserMember();
-            setUserAmountList(amounts);
             setPendingAmounts(amounts); // Copia inicial de los saldos
             const positives = amounts.filter(user => user.amount > 0);
             const negatives = amounts.filter(user => user.amount < 0);
