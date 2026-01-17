@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react"
 import Checkbox from "@mui/material/Checkbox"
-import DragIndicator from "@mui/icons-material/DragIndicator";
 import Slider from "../ui-components/Slider"
 import MenuTabs from "./MenuTabs";
 import ModalSheet from "../ui-components/ModalSheet";
