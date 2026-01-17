@@ -10,7 +10,11 @@ import { getStorage } from "firebase/storage";
 //     firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG_DEV);
 //   }
 
-const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG);
+const firebaseConfigEnv = process.env.REACT_APP_FIREBASE_CONFIG;
+if (!firebaseConfigEnv) {
+  throw new Error('REACT_APP_FIREBASE_CONFIG environment variable is not set');
+}
+const firebaseConfig = JSON.parse(firebaseConfigEnv);
 
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app)

@@ -3,7 +3,8 @@ import Button from '../ui-components/Button'
 import { useNavigate } from 'react-router-dom'
 
 const ButtonsPagos = ({lista, handleArchive, deleteLista}) => {
-    const [inactive, setInactive] = useState(false)
+    const [setInactive] = useState(false)
+    // const [inactive, setInactive] = useState(false)
     const navigate = useNavigate()
   return (
     <div className="button-main-fixed">

@@ -39,7 +39,7 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
         if(password.trim()) {
             try {
                 await CreateReplacementUser({usuario, UsuarioCompleto, updateLista, listas, setListas})
-                deleteUserDoc()
+                await deleteUserDoc()
                 const credential = EmailAuthProvider.credential(user.email, password);
                 await reauthenticateWithCredential(user, credential)
                 await deleteUser(user);
@@ -49,18 +49,6 @@ const DeleteUser = ({ usuario, UsuarioCompleto, updateLista, listas, setListas }
             } catch(error) {
                 setInactive(false)
                 console.error("Error eliminando usuario:", error);
-    
-                let errorMessage = "";
-                switch(error.code) {
-                    case "auth/invalid-login-credentials":
-                        errorMessage = "La contraseña no es correcta";
-                        break;
-                    case "auth/weak-password":
-                        errorMessage = "La contraseña es demasiado débil";
-                        break;
-                    default:
-                        errorMessage = "Error al eliminar usuario. Por favor, inténtalo de nuevo";
-                }
     
                 setError((prevError) => ({
                     ...prevError,

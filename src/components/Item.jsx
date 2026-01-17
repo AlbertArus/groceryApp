@@ -20,7 +20,7 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
   const ItemNameRef = useRef(null)
   const ItemPriceRef = useRef(null)
   const userConfig = lista.userConfig?.[usuario.uid];
-  const uid = usuario.uid;
+  // const uid = usuario.uid;
 
   const handleEdit = (e) => {
     if(name.trim() && price.trim()) {
