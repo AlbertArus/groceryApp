@@ -68,9 +68,6 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
       {lista.userConfig?.[usuario.uid]?.showPrices ? (
         <>
           <div className="fila-start">
-            <DragIndicator 
-              style={{padding: "0px"}}
-            />
             <div className="fila-between">
               <Checkbox 
                 checked={itemIsChecked}
@@ -95,7 +92,7 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
               </div>
             </div>
           </div>
-          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
+          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 39px"}}>
             <div className="fila-start pointer">
               <div className="fila-start-group" style={{display: lista.userConfig?.[usuario.uid]?.showVotes ? "flex" : "none"}}>
                   <span className="material-symbols-outlined icon-small" onClick={handleCounterUp} style={{color: item.counterUp.length > 0 ? "blue" : ""}}>thumb_up</span>
@@ -142,9 +139,6 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
       ) : (
         <>
           <div className="fila-start">
-            <DragIndicator 
-                style={{padding: "0px"}}
-              />
             <div className="fila-between">
               <Checkbox 
                 checked={itemIsChecked}
@@ -191,7 +185,7 @@ const Item = ({ UsuarioCompleto, item, initialName, initialPrice, onClick, EditI
               </div>
             </div>
           </div>
-          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 63px"}}>
+          <div className="itemFilaBajo fila-start" style={{position: "relative", margin:"3px 0px 0px 39px"}}>
             <div className="fila-start-group pointer" onClick={() => {setOpen(true); setIsActive("Miembros")}}>
               <span className="material-symbols-outlined icon-small">group</span>
               <h5>{item.itemUserMember.length}</h5>
