@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import firebaseApp, { db} from "../firebase-config.js"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
-import { doc, setDoc } from "firebase/firestore"
+import { doc, getDoc, setDoc } from "firebase/firestore"
 import { Checkbox } from "@mui/material"
 import Button from "../ui-components/Button.jsx"
 // import Toggle from "../ui-components/Toggle.jsx"
@@ -128,10 +128,14 @@ const Register = ({setUsuario}) => {
                         comunicaciones: communicationsChecked,
                         createdAt: new Date().toISOString(),
                     });
-                    
-                    if (userCredential) {
+                    const docSnap = await getDoc(doc(db, "usuarios", userCredential.user.uid));
+
+                    if (docSnap.exists()) {
+                        const finalUserData = { ...userCredential.user, ...docSnap.data() };
+                        setUsuario(finalUserData);
                         navigate("/");
                     }
+
                 } catch (error) {
                     setInactive(false)
                     let errorMessage = "";
