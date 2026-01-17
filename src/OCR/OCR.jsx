@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Modal from "../ui-components/Modal";
 import NewCategory from "../components/NewCategory";
 import { Checkbox } from "@mui/material";
@@ -12,13 +12,7 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems, AddCategory }
     const [isModalOpen, setIsModalOpen] = useState(true)
     const [selectedCategory, setSelectedCategory] = useState(lista.categories.length > 0 ? lista.categories[0].id : "")
 
-    useEffect(() => {
-        if (image) {
-            realizarOCR();
-        }
-    }, [image]);
-
-    const realizarOCR = async () => {
+    const realizarOCR = useCallback(async () => {
         if (!image) {
             setError('Por favor, selecciona una imagen.');
             return;
@@ -61,7 +55,13 @@ function OCR({ image, setImage, lista, EditItem, AddMultipleItems, AddCategory }
         } finally {
             setLoading(false);
         }
-    };
+    }, [image, lista]);
+
+    useEffect(() => {
+        if (image) {
+            realizarOCR();
+        }
+    }, [image, realizarOCR]);
 
     return (
         <div className="ocr-container">

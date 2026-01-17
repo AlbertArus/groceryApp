@@ -54,7 +54,7 @@ const Archived = ({ listas, deleteLista, updateLista, handleArchive, usuario }) 
         } else if (listaslength === 0){
             navigate("/")
         }
-    },[listaslength])
+    },[navigate, listaslength])
 
     return (
         <div className="Home app">
