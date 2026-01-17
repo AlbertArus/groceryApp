@@ -13,8 +13,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
     const [open, setOpen] = useState(false);
     const [pendingAmounts, setPendingAmounts] = useState([]);
     const [nombreUserMember, setNombreUserMember] = useState([]);
-    const [setUserAmountList] = useState([]);
-    // const [userAmountList, setUserAmountList] = useState([]);
+    const [userAmountList, setUserAmountList] = useState([]);
     const [positiveMembers, setPositiveMembers] = useState([]);
     const [negativeMembers, setNegativeMembers] = useState([]);
     const [transfers, setTransfers] = useState([]);
@@ -37,23 +36,40 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
         }
     }, [UsuarioCompleto, lista, usuario]);
 
+    // const amountUserMember = () => {
+    //     return lista.userMember.map(uid => {
+    //         const usuarioPayer = lista.payments.reduce((total, payment) => {
+    //             return payment.payer === uid ? total + (payment.amount || 0) : total
+
+    //         }, 0);
+
+    //         const usuarioToPay = lista.payments.reduce((total, payment) => {
+    //             const amountForThisPayment = payment.members.reduce((memberPay, member) => {
+    //               return member.uid === uid ? memberPay + (member.amount || 0) : memberPay;
+    //             }, 0);
+    //             return total + amountForThisPayment;
+    //           }, 0);
+
+    //         return { uid, amount: usuarioPayer - usuarioToPay }
+    //     })
+    // }
     const amountUserMember = () => {
         return lista.userMember.map(uid => {
-            const usuarioPayer = lista.payments.reduce((total, payment) => {
-                return payment.payer === uid ? total + (payment.amount || 0) : total
+            const totalPagado = lista.payments
+                .filter(payment => payment.payer === uid)
+                .reduce((total, payment) => total + (payment.amount || 0), 0);
 
-            }, 0);
+            const totalDebePagar = lista.payments
+                .map(payment => {
+                    const miembro = payment.members.find(m => m.uid === uid);
+                    return miembro ? miembro.amount || 0 : 0;
+                })
+                .reduce((total, amount) => total + amount, 0);
 
-            const usuarioToPay = lista.payments.reduce((total, payment) => {
-                const amountForThisPayment = payment.members.reduce((memberPay, member) => {
-                  return member.uid === uid ? memberPay + (member.amount || 0) : memberPay;
-                }, 0);
-                return total + amountForThisPayment;
-              }, 0);
+            return { uid, amount: totalPagado - totalDebePagar };
+        });
+    };
 
-            return { uid, amount: usuarioPayer - usuarioToPay }
-        })
-    }
 
     useEffect(() => {
         if (lista) {
@@ -103,11 +119,8 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
         }
     }, [positiveMembers, negativeMembers]);
 
-    const handleDebtPaid = () => {
+    const handleDebtPaid = (selectedDate) => {
         const transfer = transfers[currentIndex];
-        console.log(transfer)
-        console.log(transfer.amount)
-        console.log(transfer.from)
         const paymentName = "Reembolso";
         const members = [{ uid: transfer.to, amount: transfer.amount }]
 
@@ -130,6 +143,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
         );
         // Registrar el pago
         AddPayment(lista, lista.id, paymentName, transfer.amount, transfer.from, members, selectedDate);
+        console.log("Pago registrado", transfer.from, transfer.to, transfer.amount)
         setOpen(false);
     }
 
@@ -138,7 +152,7 @@ const PagoDeuda = ({ lista, UsuarioCompleto, AddPayment, selectedDate, handleArc
         collapserRef.current.style.transform = !isCollapsed ? "rotate(-90deg)" : "rotate(0deg)";
     }
 
-    const noPendingAmounts = pendingAmounts.find(user => user.uid === usuario.uid)?.amount === 0;
+    const noPendingAmounts = pendingAmounts.find(user => user.uid === usuario?.uid)?.amount === 0;
 
     return (
         <>
