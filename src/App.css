@@ -610,14 +610,14 @@ h6 {
 
 :root {
   /* System tokens */
-  --md-sys-color-primary: #08921b;
+  --md-sys-color-primary: #000000;
   --md-sys-color-on-primary: #ffffff;
   --md-sys-color-outline: #6f7979;
   --md-sys-color-surface-container-highest: #dde4e3;
   /* Tabs */
   --md-sys-color-surface: none;
   --md-primary-tab-active-indicator-color: #ED9E04;
-  /* --md-primary-tab-container-shape: end end; */
+  --md-secondary-tab-active-indicator-color: #ED9E04;
 
   /* Component tokens */
   --md-switch-handle-shape: 20px;

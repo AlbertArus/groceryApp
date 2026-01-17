@@ -19,7 +19,7 @@ import LoadingPage from '../components/LoadingPage'
 import Camera from '../ui-components/Camera'
 import OCR from '../OCR/OCR'
 
-const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowVotes, handleShowPrices, selectedDate, image, setImage, cameraOpen, setCameraOpen }) => {
+const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCategories, usuario, sharePopupVisible, setSharePopupVisible, UsuarioCompleto, updateLista, AddPayment, showIdentifyList, setShowIdentifyList, handleArchive, handleShowPrices, selectedDate, image, setImage, cameraOpen, setCameraOpen }) => {
 
   let params = useParams();
   
@@ -512,7 +512,6 @@ const Lista = ({ deleteLista, listas, setListas, updateListaItems, updateListaCa
             price={FormattedFilteredListPrice()}
             filteredListaForItems={filteredListaForItems}
             handleArchive={handleArchive}
-            handleShowVotes={handleShowVotes}
             handleShowPrices={handleShowPrices}
           />
           <Toggle 

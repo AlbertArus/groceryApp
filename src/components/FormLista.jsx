@@ -13,7 +13,6 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
     const [errors, setErrors] = useState({listaName: false, plan: false})
     const [plan, setPlan] = useState("");
     const [descriptionLista, setDescriptionLista] = useState("");
-    const [showVotes, setShowVotes] = useState(true)
     const [showPrices, setShowPrices] = useState(true)
     const [isNotified, setIsNotified] = useState(true)
     const [membersToAdd, setMembersToAdd] = useState([""])
@@ -73,7 +72,7 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
         if (listaName.trim() && plan.trim()) {
             try {
                 if(!listaId) {
-                    const nuevaLista = await addLista(listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID)
+                    const nuevaLista = await addLista(listaName, plan, descriptionLista, showPrices, isNotified, membersUID)
                     navigate(`/list/${nuevaLista.id}`)
                     setSharePopupVisible(true)
                 } else {
@@ -129,12 +128,6 @@ const FormLista = ({ addLista, editLista, listas, setSharePopupVisible, UsuarioC
                 <textarea id="descripcion" placeholder="Finde de chicas en L'Escala" style={{resize: "none"}} onChange={(e) => setDescriptionLista(e.target.value)} value={descriptionLista} />
                 {!listaId && !lista && (
                     <div style={{display: "flex", flexDirection: "column", width: "100%", marginTop: "8px"}}>
-                        <div className="fila-between">
-                            <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar votos</label>
-                            <md-switch
-                            style={{ transform: 'scale(0.7)'}} icons show-only-selected-icon aria-label="Votos visibles" onInput={() => handleSwitchChange(setShowVotes)} selected value={showVotes}
-                            ></md-switch>
-                        </div>
                         <div className="fila-between">
                             <label htmlFor="switch" style={{marginTop: "0px"}}>Visualizar precios</label>
                             <md-switch

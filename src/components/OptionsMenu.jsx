@@ -3,7 +3,7 @@ import ItemMenu from "./ItemMenu"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useUsuario } from '../UsuarioContext';
 
-const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleShowVotes, handleShowPrices, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
+const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive, handleShowPrices, handleCheckAll, handleUnCheckAll, updateLista, style }, ref) => {
   const navigate = useNavigate()
   const { usuario } = useUsuario();
   const [searchParams] = useSearchParams()
@@ -15,12 +15,6 @@ const OptionsMenu = forwardRef(({ deleteLista, itemslength, lista, handleArchive
     <div className="optionsMenu" ref={ref} style={style}>
         {!inPagos && (
             <>
-            <ItemMenu
-              iconName={`${lista.userConfig?.[usuario.uid]?.showVotes ? "visibility_off" : "visibility"}`}
-              itemMenuName={`${lista.userConfig?.[usuario.uid]?.showVotes ? "Ocultar votaciones" : "Mostrar votaciones"}`}
-              onClick={() => handleShowVotes(lista)}
-              style={{display: itemslength < 2 ? "none" : "flex"}}
-              />
             <ItemMenu
               iconName={"euro_symbol"}
               itemMenuName={`${lista.userConfig?.[usuario.uid]?.showPrices ? "Ocultar precios" : "Mostrar precios"}`}

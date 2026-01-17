@@ -78,29 +78,22 @@ const MenuTabs = ({item, UsuarioCompleto, handleDeleteItemUserMember, style, isA
         <div className="tabs" style={{alignSelf: "flex-start"}}>
             <md-tabs
             style={{ margin: "0 15px", alignSelf: "flex-start"}}
-                
                 active-tab-index={activeIndex}
                 onClick={(e) => {
                 const tabElement = e.target.closest('md-primary-tab, md-secondary-tab');
                 if (tabElement) {
                 const tabs = Array.from(e.currentTarget.children);
                 const index = tabs.indexOf(tabElement);
-                const tabValues = ["A favor", "En contra", "Miembros"];
+                const tabValues = ["Miembros actuales", "Añadir miembros"];
                 setIsActive(tabValues[index]);
                 }
             }}>
-                <md-secondary-tab inline-icon aria-label="A favor">
-                    <span className="material-symbols-outlined icon-medium" style={{color: "blue"}}>thumb_up</span>
-                    {/* A favor */}
-                </md-secondary-tab>
-                <md-primary-tab inline-icon aria-label="En contra">
-                    <span className="material-symbols-outlined icon-medium" style={{color: "red"}}>thumb_down</span>            
-                    {/* En contra */}
+                <md-primary-tab inline-icon aria-label="Miembros actuales">
+                    <span className="material-symbols-outlined icon-medium">group</span>
                 </md-primary-tab>
-                <md-primary-tab inline-icon aria-label="Miembros">
-                    <span className="material-symbols-outlined icon-medium" style={{color: "black"}}>group</span>
-                    {/* Miembros */}
-                </md-primary-tab>
+                {/* <md-secondary-tab inline-icon aria-label="Añadir miembros">
+                    <span className="material-symbols-outlined icon-medium">group_add</span>            
+                </md-secondary-tab> */}
             </md-tabs>
         </div>
         <div className="app-margin" style={{minHeight: "40px", marginBottom: contentHeight > 40 ? "20px" : "0px"}}>

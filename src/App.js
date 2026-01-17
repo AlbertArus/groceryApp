@@ -80,8 +80,8 @@ const App = () => {
     });
   }, [location]);
 
-  const addLista = async (listaName, plan, descriptionLista, showVotes, showPrices, isNotified, membersUID) => {
-    const userConfig = {[usuario.uid]: {isArchived: false, isNotified, showPrices, showVotes}}
+  const addLista = async (listaName, plan, descriptionLista, showPrices, isNotified, membersUID) => {
+    const userConfig = {[usuario.uid]: {isArchived: false, isNotified, showPrices}}
     const newLista = { id: uuidv4(), listaName, userCreator: usuario.uid, userMember: [usuario.uid, ...membersUID], createdAt: new Date().toISOString(), plan, descriptionLista, categories: [], items: [], payments: [], userConfig, isPaid: false, listPrice: 0 }
     try {
       await setDoc(doc(db, "listas", newLista.id), newLista);
@@ -255,11 +255,6 @@ const App = () => {
         updateLista(lista.id, "userConfig", updatedNotitied)
     }
 
-    const handleShowVotes = (lista) => {
-        const updatedShowVotes = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], showVotes: !lista.userConfig[usuario.uid].showVotes}}
-        updateLista(lista.id, "userConfig", updatedShowVotes)
-    }
-
     const handleShowPrices = (lista) => {
         const updatedShowPrices = {...lista.userConfig, [usuario.uid]: {...lista.userConfig[usuario.uid], showPrices: !lista.userConfig[usuario.uid].showPrices}}
         updateLista(lista.id, "userConfig", updatedShowPrices)
@@ -410,7 +405,6 @@ const App = () => {
                 showIdentifyList={showIdentifyList}
                 setShowIdentifyList={setShowIdentifyList}
                 handleArchive={handleArchive}
-                handleShowVotes={handleShowVotes}
                 handleShowPrices={handleShowPrices}
                 selectedDate={selectedDate}
                 image={image}

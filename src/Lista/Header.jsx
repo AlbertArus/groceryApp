@@ -6,7 +6,7 @@ import MembersList from "../components/MembersList"
 import { useUsuario } from '../UsuarioContext';
 import { PriceFormatter } from "../components/PriceFormatter"
 
-const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems, handleShowVotes, handleShowPrices }) => {
+const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll, handleUnCheckAll, UsuarioCompleto, updateLista, totalGastoLista, isScrolled, setIsScrolled, price, filteredListaForItems, handleShowPrices }) => {
     const { usuario } = useUsuario();
     const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false)
     const [isMembersShown, setIsMembersShown] = useState(false)
@@ -116,7 +116,6 @@ const Header = ({ deleteLista, itemslength, lista, handleArchive, handleCheckAll
                             handleUnCheckAll={handleUnCheckAll}
                             updateLista={updateLista}
                             handleArchive={handleArchive}
-                            handleShowVotes={handleShowVotes}
                             handleShowPrices={handleShowPrices}
                         />
                     }
