@@ -76,7 +76,6 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
             </div>
             {isEStateHome && (
                 <>
-                    <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px"}} onClick={() => navigate("/archived")} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
                     <EmptyState
                         addLista={addLista}
                         img={"_e409535c-8a88-419e-8a05-5437f5a91f35-removebg-preview"}
@@ -86,6 +85,7 @@ const Home = ({ usuario, listas, addLista, deleteLista, handleArchive, AllArchiv
                         buttonCopy={"Nueva lista"}
                         inactive={inactive}
                     />
+                    <h5 className="app-margin center archivedSummary" style={{ display: AllArchived > 0 ? "flex" : "none", cursor: "pointer", marginTop:"15px", position: "relative", zIndex: 10}} onClick={() => navigate("/archived")} ref={archivadosRef}>{AllArchived === 1 ? "1 lista archivada" : `${AllArchived} listas archivadas`}</h5>
                 </>
             )}
             {!isEStateHome && (
