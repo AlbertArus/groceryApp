@@ -4,6 +4,16 @@ html, body, .root {
   font-family: "Poppins", Arial, Helvetica, sans-serif;
   user-select: none;
   -webkit-user-select: none; /* Para Safari que no soporta nativamente */
+  background-color: white;
+  color: black;
+}
+
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  box-sizing: border-box;
 }
 
 #root {
