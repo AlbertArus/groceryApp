@@ -1,28 +1,33 @@
-html, body, .root {
+html, body {
   margin: 0;
-  top: 0;
+  padding: 0;
   font-family: "Poppins", Arial, Helvetica, sans-serif;
   user-select: none;
-  -webkit-user-select: none; /* Para Safari que no soporta nativamente */
-  background-color: white;
+  -webkit-user-select: none;
+  background-color: #ffeec9;
   color: black;
 }
 
 body {
-  padding-top: env(safe-area-inset-top);
+  margin: 0;
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
-  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: white;
 }
 
 #root {
   display: flex;
   justify-content: center;
+  width: 100%;
+  min-height: 100%;
 }
 
 * {
   box-sizing: border-box;
+  /* Evita el resaltado azul al tocar botones en Android */
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1 {
@@ -94,12 +99,13 @@ h6 {
 }
 
 .head {
-  margin-bottom: 8px;
-  padding: 4px 0px;
   background-color: #ffeec9;
   position: sticky;
-  z-index: 900;
   top: 0;
+  z-index: 900;
+  padding-top: calc(4px + env(safe-area-inset-top)); /* Mantenemos los 4px de respiro originales + el espacio del notch */
+  margin-bottom: 8px;
+  width: 100%;
 }
 
 .columna-start {
