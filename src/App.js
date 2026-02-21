@@ -8,6 +8,7 @@ import FormLista from './components/FormLista';
 import Lista from './Lista/Lista';
 import Archived from './Listas/Archived';
 import Perfil from './configuración/Perfil';
+import EditPerfil from './configuración/EditPerfil.jsx';
 import Settings from './configuración/Settings.jsx';
 import NewPassword from './configuración/NewPassword.jsx'
 import DeleteUser from './configuración/DeleteUser.jsx';
@@ -435,6 +436,11 @@ const App = () => {
             />
             <Route path="/profile" element={
               <Perfil
+                usuario={usuario}
+              />}
+            />
+            <Route path="/editprofile" element={
+              <EditPerfil
                 usuario={usuario}
               />}
             />
