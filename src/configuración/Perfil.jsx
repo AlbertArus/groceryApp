@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
 import firebaseApp from "../firebase-config.js";
-import { getAuth, signOut} from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import ItemSettings from "../components/ItemSettings.jsx";
 import Head from "../components/Head.jsx";
+import ItemProfile from "../components/ItemProfile.jsx";
 // import { useState } from "react";
 const auth = getAuth(firebaseApp);
 
@@ -18,7 +19,7 @@ const Perfil = ({ usuario }) => {
     return (
         <div className="perfil app">
             <Head
-                path={""}            
+                path={""}
                 sectionName={"Mi perfil"}
             />
             <div className="contentPerfil app-margin">
@@ -29,7 +30,7 @@ const Perfil = ({ usuario }) => {
                     <h1 style={{ fontWeight: "600" }}>{usuario.nombre}</h1>
                     <h5>{usuario.email}</h5>
                 </div>
-                {/* <Link> */}
+                {/* <div onClick={() => navigate("/editprofile")}>
                     <div className="iconed-container fila-between" style={{ marginTop: "10px" }}>
                         <div className="infoPersonalData">
                             <h6>Nombre</h6>
@@ -39,23 +40,65 @@ const Perfil = ({ usuario }) => {
                             <span className="material-symbols-outlined">chevron_right</span>
                         </div>
                     </div>
-                {/* </Link> */}
-                <hr className="hr_configuration"/>
+                </div> */}
+                <div>
+                    <ItemProfile
+                        titleName={"Nombre"}
+                        itemProfileName={usuario.displayName}
+                        iconName={"edit"}
+                    />
+                    <ItemProfile
+                        titleName={"Email"}
+                        itemProfileName={usuario.email}
+                    />
+                    <ItemProfile
+                        titleName={"Contraseña"}
+                        itemProfileName={"********"}
+                        iconName={"edit"}
+                        onClick={() => navigate("/password")}
+                    />
+                    <ItemProfile
+                        titleName={"Teléfono"}
+                        itemProfileName={usuario.phoneNumber || "No disponible"}
+                        iconName={"edit"}
+                    />
+                    <ItemProfile
+                        titleName={"Fecha de nacimiento"}
+                        itemProfileName={usuario.birthDate || "No disponible"}
+                        iconName={"edit"}
+                    />
+                    <ItemProfile
+                        titleName={"Género"}
+                        itemProfileName={usuario.gender || "No disponible"}
+                        iconName={"edit"}
+                    />
+                    <ItemProfile
+                        titleName={"Comunicaciones"}
+                        itemProfileName={usuario.comunicaciones === false ? "No" : "Sí"}
+                        iconName={"edit"}
+                    />
+                    <ItemProfile
+                        titleName={"Fecha de registro"}
+                        itemProfileName={usuario.metadata.creationTime || "No disponible"}
+                    />
+                </div>
+                <hr className="hr_configuration" />
                 <div className="linksPerfil">
-                    <ItemSettings 
+                    {/* <ItemSettings
                         iconName={"password"}
                         itemSettingsName={"Cambiar contraseña"}
                         onClick={() => navigate("/password")}
-                    />
-                    <ItemSettings 
+                    /> */}
+                    <ItemSettings
                         iconName={"logout"}
                         itemSettingsName={"Cerrar sesión"}
-                        onClick={() => {handleSignOut(); navigate("/register")}}
+                        onClick={() => { handleSignOut(); navigate("/register") }}
                     />
-                    <ItemSettings 
+                    <ItemSettings
                         iconName={"delete_forever"}
                         itemSettingsName={"Eliminar usuario"}
                         onClick={() => navigate("/deleteuser")}
+                        style={{ color: "#ff0000" }}
                     />
                 </div>
             </div>
