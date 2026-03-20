@@ -71,6 +71,18 @@
       "last 1 safari version"
     ]
   },
+  "overrides": {
+    "webpack-dev-server": "^5.2.3",
+    "nth-check": "^2.0.1",
+    "lodash": "^4.17.23",
+    "qs": "^6.14.2",
+    "@grpc/grpc-js": "^1.8.22",
+    "jsonpath": "^1.2.0",
+    "underscore": "^1.13.7",
+    "resolve-url-loader": {
+      "postcss": "^8.4.31"
+    }
+  },
   "devDependencies": {
     "@capacitor/cli": "^8.0.1",
     "autoprefixer": "^10.4.21",
